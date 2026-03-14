@@ -1,0 +1,231 @@
+<!-- ═══════════════════════════════════════════════════════════
+     MAPUTO BLUE — Navbar Component
+     Injected into #navbar-placeholder by components.js
+═══════════════════════════════════════════════════════════ -->
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="mb-container">
+    <div class="topbar-inner">
+
+      <!-- Contact links -->
+      <div class="topbar-contacts">
+        <a href="tel:+258840000000" class="topbar-contact-link">
+          <i class='bx bx-phone'></i>
+          <span>+258 84 000 0000</span>
+        </a>
+        <a href="mailto:info@maputoblue.com" class="topbar-contact-link">
+          <i class='bx bx-envelope'></i>
+          <span>info@maputoblue.com</span>
+        </a>
+        <span class="topbar-contact-link">
+          <i class='bx bx-map-pin'></i>
+          <span>Marina de Maputo, Av. 25 de Setembro</span>
+        </span>
+      </div>
+
+      <!-- Language switch -->
+      <div class="topbar-right">
+        <div class="lang-switch" role="group" aria-label="Language selector">
+          <button class="lang-btn active" data-lang="pt" aria-pressed="true">PT</button>
+          <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MAIN NAVBAR -->
+<nav class="main-navbar" role="navigation" aria-label="Main navigation">
+  <div class="mb-container">
+    <div class="navbar-inner">
+
+      <!-- Logo -->
+      <a href="../index.html" class="navbar-brand" aria-label="Maputo Blue – Homepage">
+        <img src="../logo.png" alt="Maputo Blue" class="navbar-logo">
+      </a>
+
+      <!-- Desktop nav links -->
+      <ul class="navbar-nav-links" role="list">
+
+        <!-- Home -->
+        <li class="nav-link-item">
+          <a href="../index.html">Home</a>
+        </li>
+
+        <!-- Sobre Nós -->
+        <li class="nav-link-item">
+          <a href="../index.html#sobre-nos">Sobre Nós</a>
+        </li>
+
+        <!-- Destinos -->
+        <li class="nav-link-item">
+          <button aria-haspopup="true" aria-expanded="false">
+            Destinos <i class='bx bx-chevron-down'></i>
+          </button>
+          <div class="nav-dropdown" role="menu">
+            <a href="../pages/destinations.html?dest=inhaca" role="menuitem">
+              <i class='bx bx-island'></i>Inhaca
+            </a>
+            <a href="../pages/destinations.html?dest=machangulo" role="menuitem">
+              <i class='bx bx-water'></i>Machangulo
+            </a>
+            <a href="../pages/destinations.html?dest=santa-maria" role="menuitem">
+              <i class='bx bx-sun'></i>Santa Maria
+            </a>
+          </div>
+        </li>
+
+        <!-- DayTours -->
+        <li class="nav-link-item">
+          <button aria-haspopup="true" aria-expanded="false">
+            DayTours <i class='bx bx-chevron-down'></i>
+          </button>
+          <div class="nav-dropdown" role="menu">
+            <a href="../pages/tours.html?category=island-daytrips" role="menuitem">
+              <i class='bx bx-sailboat'></i>Island DayTrips
+            </a>
+            <a href="../pages/tours.html?category=beach-daytrips" role="menuitem">
+              <i class='bx bx-swim'></i>Beach DayTrips
+            </a>
+            <a href="../pages/tours.html?category=safaris" role="menuitem">
+              <i class='bx bx-landscape'></i>Safaris
+            </a>
+            <a href="../pages/tours.html?category=transfers" role="menuitem">
+              <i class='bx bx-car'></i>Transfers
+            </a>
+            <a href="../pages/tours.html?category=maputo-city-tour" role="menuitem">
+              <i class='bx bx-building-house'></i>Maputo City Tour
+            </a>
+          </div>
+        </li>
+
+        <!-- Alojamentos -->
+        <li class="nav-link-item">
+          <button aria-haspopup="true" aria-expanded="false">
+            Alojamentos <i class='bx bx-chevron-down'></i>
+          </button>
+          <div class="nav-dropdown" role="menu">
+            <a href="../pages/accommodations.html?category=inhaca" role="menuitem">
+              <i class='bx bx-hotel'></i>Inhaca
+            </a>
+            <a href="../pages/accommodations.html?category=machangulo" role="menuitem">
+              <i class='bx bx-home-heart'></i>Machangulo
+            </a>
+          </div>
+        </li>
+
+        <!-- Serviços -->
+        <li class="nav-link-item">
+          <button aria-haspopup="true" aria-expanded="false">
+            Serviços <i class='bx bx-chevron-down'></i>
+          </button>
+          <div class="nav-dropdown" role="menu">
+            <a href="../pages/tours.html?category=transfers" role="menuitem">
+              <i class='bx bx-key'></i>Aluguer Privado
+            </a>
+            <a href="../pages/tours.html?category=fishing" role="menuitem">
+              <i class='bx bx-water'></i>Pesca
+            </a>
+          </div>
+        </li>
+
+      </ul>
+
+      <!-- Social icons (desktop) -->
+      <div class="navbar-socials" aria-label="Redes sociais">
+        <a href="https://facebook.com" class="navbar-social-link facebook" target="_blank" rel="noopener" aria-label="Facebook">
+          <i class='bx bxl-facebook'></i>
+        </a>
+        <a href="https://instagram.com" class="navbar-social-link instagram" target="_blank" rel="noopener" aria-label="Instagram">
+          <i class='bx bxl-instagram'></i>
+        </a>
+        <a href="https://linkedin.com" class="navbar-social-link linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <i class='bx bxl-linkedin'></i>
+        </a>
+      </div>
+
+      <!-- Hamburger -->
+      <button class="navbar-toggler" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav-overlay" aria-hidden="true"></div>
+  <div class="mobile-nav" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+
+    <div class="mobile-nav-header">
+      <img src="../logo.png" alt="Maputo Blue" style="height:40px;">
+      <button class="mobile-nav-close" aria-label="Fechar menu">
+        <i class='bx bx-x'></i>
+      </button>
+    </div>
+
+    <div class="mobile-nav-links">
+
+      <a href="../index.html" class="mobile-nav-link">Home</a>
+      <a href="../index.html#sobre-nos" class="mobile-nav-link">Sobre Nós</a>
+
+      <div class="mobile-nav-divider"></div>
+
+      <!-- Destinos accordion -->
+      <div class="mobile-nav-link" data-toggle="destinos" role="button" tabindex="0">
+        <span>Destinos</span>
+        <i class='bx bx-chevron-down'></i>
+      </div>
+      <div class="mobile-nav-submenu" data-submenu="destinos">
+        <a href="../pages/destinations.html?dest=inhaca"><i class='bx bx-island'></i>Inhaca</a>
+        <a href="../pages/destinations.html?dest=machangulo"><i class='bx bx-water'></i>Machangulo</a>
+        <a href="../pages/destinations.html?dest=santa-maria"><i class='bx bx-sun'></i>Santa Maria</a>
+      </div>
+
+      <!-- DayTours accordion -->
+      <div class="mobile-nav-link" data-toggle="daytours" role="button" tabindex="0">
+        <span>DayTours</span>
+        <i class='bx bx-chevron-down'></i>
+      </div>
+      <div class="mobile-nav-submenu" data-submenu="daytours">
+        <a href="../pages/tours.html?category=island-daytrips"><i class='bx bx-sailboat'></i>Island DayTrips</a>
+        <a href="../pages/tours.html?category=beach-daytrips"><i class='bx bx-swim'></i>Beach DayTrips</a>
+        <a href="../pages/tours.html?category=safaris"><i class='bx bx-landscape'></i>Safaris</a>
+        <a href="../pages/tours.html?category=transfers"><i class='bx bx-car'></i>Transfers</a>
+        <a href="../pages/tours.html?category=maputo-city-tour"><i class='bx bx-building-house'></i>Maputo City Tour</a>
+      </div>
+
+      <!-- Alojamentos accordion -->
+      <div class="mobile-nav-link" data-toggle="alojamentos" role="button" tabindex="0">
+        <span>Alojamentos</span>
+        <i class='bx bx-chevron-down'></i>
+      </div>
+      <div class="mobile-nav-submenu" data-submenu="alojamentos">
+        <a href="../pages/accommodations.html?category=inhaca"><i class='bx bx-hotel'></i>Inhaca</a>
+        <a href="../pages/accommodations.html?category=machangulo"><i class='bx bx-home-heart'></i>Machangulo</a>
+      </div>
+
+      <!-- Serviços accordion -->
+      <div class="mobile-nav-link" data-toggle="servicos" role="button" tabindex="0">
+        <span>Serviços</span>
+        <i class='bx bx-chevron-down'></i>
+      </div>
+      <div class="mobile-nav-submenu" data-submenu="servicos">
+        <a href="../pages/tours.html?category=transfers"><i class='bx bx-key'></i>Aluguer Privado</a>
+        <a href="../pages/tours.html?category=fishing"><i class='bx bx-water'></i>Pesca</a>
+      </div>
+
+      <div class="mobile-nav-divider"></div>
+
+      <!-- Social -->
+      <div style="display:flex;gap:10px;padding:12px 14px;">
+        <a href="https://facebook.com" class="navbar-social-link facebook" target="_blank" rel="noopener" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
+        <a href="https://instagram.com" class="navbar-social-link instagram" target="_blank" rel="noopener" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+        <a href="https://linkedin.com" class="navbar-social-link linkedin" target="_blank" rel="noopener" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+      </div>
+
+    </div>
+  </div>
+
+</nav>

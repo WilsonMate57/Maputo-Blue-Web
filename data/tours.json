@@ -1,0 +1,810 @@
+[
+  
+  {
+  "id": "santa-maria-inhaca-portugueses",
+  "category": "island-daytrips",
+  "title": "Passeio de Barco: Santa Maria, Inhaca & Ilha dos Portugueses",
+  "location": "Baía de Maputo",
+  "duration": "Dia Inteiro (08:00 – 17:00)",
+  "group_size": "Sob consulta",
+  "languages": ["Português", "English"],
+  "price_from": 5500,
+  "currency": "MZN",
+  "rating": 4.9,
+  "reviews_count": 0,
+  "badge": "Island Hopping",
+  "description": "Explore três dos destinos mais paradisíacos da Baía de Maputo num único passeio. Este passeio de barco leva os visitantes às praias cristalinas de Santa Maria, à famosa Ilha da Inhaca e à tranquila Ilha dos Portugueses. Ideal para nadar, relaxar na praia e desfrutar de atividades aquáticas num ambiente tropical único.",
+
+  "highlights": [
+    "Visita a três ilhas num único passeio",
+    "Águas cristalinas ideais para snorkeling",
+    "Relaxamento nas praias de Santa Maria",
+    "Exploração da Ilha da Inhaca",
+    "Paisagens paradisíacas da Ilha dos Portugueses"
+  ],
+
+  "included": [
+    "Taxas da Marina e Inhaca",
+    "Guia turístico",
+    "Lanche, frutas e água",
+    "Almoço",
+    "Snorkeling",
+    "Canoagem",
+    "Sombras",
+    "Cadeiras de praia"
+  ],
+
+  "excluded": [
+    "Bebidas adicionais",
+    "Despesas pessoais",
+    "Transporte até à marina"
+  ],
+
+  "images": [
+    "../assets/images/tours/passeio-barco/passeio-barco-1.jpg",
+    "../assets/images/tours/passeio-barco/passeio-barco-2.jpeg",
+    "../assets/images/tours/passeio-barco/passeio-barco-3.jpg",
+    "../assets/images/tours/passeio-barco/passeio-barco-4.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "08:00",
+      "title": "Partida da Marina de Maputo",
+      "description": "Saída em direção às ilhas da Baía de Maputo."
+    },
+    {
+      "time": "09:00",
+      "title": "Chegada à Ilha dos Portugueses",
+      "description": "Paragem para nadar, relaxar na praia e atividades aquáticas."
+    },
+    {
+      "time": "12:00",
+      "title": "Almoço",
+      "description": "Almoço servido durante o passeio com vista para o mar."
+    },
+    {
+      "time": "14:00",
+      "title": "Exploração da Ilha da Inhaca",
+      "description": "Tempo livre para explorar a ilha e desfrutar da natureza."
+    },
+    {
+      "time": "17:00",
+      "title": "Regresso a Maputo",
+      "description": "Viagem de regresso à Marina de Maputo."
+    }
+  ],
+
+  "map_location": {
+    "lat": -26.033,
+    "lng": 32.964,
+    "label": "Santa Maria / Inhaca Islands"
+  },
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "reviews": []
+},
+  {
+  "id": "dia-de-praia-santa-maria-machangulo",
+  "category": "island-daytrips",
+  "title": "Dia de Praia",
+  "location": "Santa Maria & Machangulo",
+  "duration": "Dia Inteiro (8h – 17h)",
+  "group_size": "Sob consulta",
+  "languages": ["Português", "English"],
+  "price_from": 4500,
+  "currency": "MZN",
+  "rating": 4.9,
+  "reviews_count": 0,
+  "badge": "Beach Day",
+  "description": "Desfrute de um dia completo nas águas cristalinas de Santa Maria e Machangulo. Um passeio perfeito para relaxar, nadar e aproveitar o melhor das praias da Baía de Maputo. Os visitantes podem escolher entre levar o seu próprio piquenique ou almoçar num restaurante local em Machangulo.",
+  
+  "highlights": [
+    "Dia completo em águas cristalinas",
+    "Snorkeling nas ilhas da baía",
+    "Passeio de canoa",
+    "Relaxamento com sombras e cadeiras de praia",
+    "Opção de almoço em Machangulo"
+  ],
+
+  "included": [
+    "Snorkeling",
+    "Canoagem",
+    "Cooler box com gelo",
+    "Taxas incluídas",
+    "Sombras e cadeiras de praia"
+  ],
+
+  "excluded": [
+    "Almoço (opcional)",
+    "Despesas pessoais",
+    "Transporte até ao ponto de embarque"
+  ],
+
+  "pricing": {
+    "adults": [
+      { "type": "Sem almoço", "price": 4500 },
+      { "type": "Com almoço", "price": 5500 }
+    ],
+    "children": [
+      { "type": "Sem almoço", "price": 3500 },
+      { "type": "Com almoço", "price": 4500 }
+    ]
+  },
+
+  "images": [
+    "../assets/images/tours/dia-praia-1.jpeg",
+    "../assets/images/tours/dia-praia-4.jpeg",
+    "../assets/images/tours/dia-praia-3.jpg",
+    "../assets/images/tours/dia-praia-2.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "08:00",
+      "title": "Partida",
+      "description": "Saída de barco em direção às praias de Santa Maria."
+    },
+    {
+      "time": "09:00",
+      "title": "Chegada a Santa Maria",
+      "description": "Tempo livre para nadar, snorkeling e atividades na praia."
+    },
+    {
+      "time": "12:30",
+      "title": "Almoço opcional em Machangulo",
+      "description": "Os visitantes podem escolher almoçar no restaurante local ou desfrutar do seu próprio piquenique."
+    },
+    {
+      "time": "15:30",
+      "title": "Tempo livre",
+      "description": "Relaxar na praia ou aproveitar mais atividades aquáticas."
+    },
+    {
+      "time": "17:00",
+      "title": "Regresso",
+      "description": "Regresso de barco a Maputo."
+    }
+  ],
+
+  "map_location": {
+    "lat": -26.033,
+    "lng": 32.964,
+    "label": "Santa Maria Beach"
+  },
+
+  "contact": {
+    "phone": "+258844406543",
+    "email": "maptoblue.info@gmail.com"
+  },
+
+  "reviews": []
+},
+  {
+  "id": "farol-inhaca-tour",
+  "category": "beach-daytrips",
+  "title": "Praia do Farol - Inhaca",
+  "location": "Ilha da Inhaca, Maputo",
+  "duration": "Dia Inteiro (08:00 – 17:00)",
+  "group_size": "Sob consulta",
+  "languages": ["Português", "English"],
+  "price_from": 5500,
+  "currency": "MZN",
+  "rating": 4.9,
+  "reviews_count": 0,
+  "badge": "Natureza",
+  "description": "Descubra a beleza natural da Ilha da Inhaca com uma visita ao icónico Farol de Inhaca e às famosas piscinas naturais. Este passeio combina aventura, natureza e relaxamento, incluindo um safari pela ilha, visita à vila dos coqueiros e almoço local.",
+
+  "highlights": [
+    "Visita ao Farol de Inhaca",
+    "Island safari até ao farol",
+    "Passeio pela vila dos coqueiros",
+    "Almoço na vila de Inhaca",
+    "Visita às piscinas naturais",
+    "Relaxamento na Praia do Farol"
+  ],
+
+  "included": [
+    "Transporte de barco ida e volta",
+    "Island safari na ilha",
+    "Guia local",
+    "Almoço",
+    "Tempo livre para explorar a praia"
+  ],
+
+  "excluded": [
+    "Bebidas adicionais",
+    "Despesas pessoais"
+  ],
+
+  "images": [
+    "../assets/images/tours/farol-inhaca/farol-inhaca-1.jpeg",
+    "../assets/images/tours/farol-inhaca/farol-inhaca-2.jpeg",
+    "../assets/images/tours/farol-inhaca/farol-inhaca-3.jpeg",
+    "../assets/images/tours/farol-inhaca/farol-inhaca-4.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "08:00",
+      "title": "Partida de Maputo",
+      "description": "Saída da Maputo Marina em direção à Ilha da Inhaca."
+    },
+    {
+      "time": "09:30",
+      "title": "Chegada à Ilha da Inhaca",
+      "description": "Receção e início do island safari."
+    },
+    {
+      "time": "11:00",
+      "title": "Visita ao Farol",
+      "description": "Exploração da área do Farol de Inhaca e vistas panorâmicas."
+    },
+    {
+      "time": "13:00",
+      "title": "Almoço na Vila de Inhaca",
+      "description": "Almoço tradicional na vila."
+    },
+    {
+      "time": "15:00",
+      "title": "Piscinas Naturais",
+      "description": "Tempo livre para explorar as piscinas naturais e a praia."
+    },
+    {
+      "time": "17:00",
+      "title": "Regresso a Maputo",
+      "description": "Viagem de regresso à Maputo Marina."
+    }
+  ],
+
+  "map_location": {
+    "lat": -26.033,
+    "lng": 32.964,
+    "label": "Farol de Inhaca"
+  },
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "reviews": []
+},
+  {
+  "id": "sunset-cruise-maputo-bay",
+  "category": "beach-daytrips",
+  "title": "Sunset Cruise",
+  "location": "Baía de Maputo",
+  "duration": "2 – 3 horas",
+  "group_size": "Sob consulta",
+  "languages": ["Português", "English"],
+  "price_from": 2500,
+  "currency": "MZN",
+  "rating": 4.9,
+  "reviews_count": 0,
+  "badge": "Sunset",
+  "description": "Desfrute de um inesquecível passeio de catamarã ao pôr do sol na Baía de Maputo. Durante o cruzeiro, os visitantes podem relaxar a bordo enquanto apreciam vistas panorâmicas da cidade, da Ponte Maputo–Katembe e da costa da baía ao entardecer.",
+
+  "highlights": [
+    "Cruzeiro ao pôr do sol na Baía de Maputo",
+    "Vistas panorâmicas da cidade de Maputo",
+    "Passagem pela Ponte Maputo–Katembe",
+    "Experiência relaxante em catamarã",
+    "Ideal para fotos ao pôr do sol"
+  ],
+
+  "included": [
+    "Água e refrigerantes",
+    "Snacks",
+    "Taxas de embarque"
+  ],
+
+  "excluded": [
+    "Bebidas alcoólicas",
+    "Despesas pessoais"
+  ],
+
+  "pricing": {
+    "adults": 2500,
+    "children": 1800
+  },
+
+  "route": [
+    "Av. da Marginal",
+    "Clube Naval",
+    "Porto de Maputo",
+    "Av. 10 de Novembro",
+    "Ponte Maputo–Katembe"
+  ],
+
+  "images": [
+    "../assets/images/tours/sunset-cruise/sunset-cruise-1.jpeg",
+    "../assets/images/tours/sunset-cruise/sunset-cruise-2.jpeg",
+    "../assets/images/tours/sunset-cruise/sunset-cruise-3.jpeg",
+    "../assets/images/tours/sunset-cruise/sunset-cruise-4.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "16:30",
+      "title": "Embarque",
+      "description": "Check-in e embarque na Marina de Maputo."
+    },
+    {
+      "time": "17:00",
+      "title": "Início do Cruzeiro",
+      "description": "Passeio pela Baía de Maputo com vistas da cidade."
+    },
+    {
+      "time": "17:45",
+      "title": "Pôr do Sol",
+      "description": "Momento perfeito para fotografias do pôr do sol sobre a baía."
+    },
+    {
+      "time": "18:30",
+      "title": "Regresso",
+      "description": "Regresso à marina após o cruzeiro."
+    }
+  ],
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "reviews": []
+},
+  {
+  "id": "kruger-national-park-day-trip",
+  "category": "safaris",
+  "title": "Kruger National Park Day Trip",
+  "location": "Kruger National Park, South Africa",
+  "duration": "Dia Inteiro (05:00 – 18:00)",
+  "group_size": "Sob consulta",
+  "languages": ["Português", "English"],
+  "price_from": 13500,
+  "currency": "MZN",
+  "rating": 4.9,
+  "reviews_count": 0,
+  "badge": "Safari",
+  "description": "Explore o famoso Parque Nacional Kruger numa aventura de um dia saindo de Maputo. Este safari oferece a oportunidade de observar os lendários Big Five e uma grande variedade de vida selvagem africana. A experiência inclui transporte, guia turístico e almoço num restaurante dentro do parque com vista para o Rio Sabie.",
+
+  "highlights": [
+    "Safari no famoso Parque Nacional Kruger",
+    "Possibilidade de avistar os Big Five",
+    "Paisagens naturais e vida selvagem africana",
+    "Almoço com vista para o Rio Sabie",
+    "Experiência guiada por especialista"
+  ],
+
+  "included": [
+    "Transfer ida e volta de Maputo",
+    "Taxas de entrada no Parque Nacional Kruger",
+    "Guia turístico",
+    "Almoço",
+    "Bebidas não alcoólicas",
+    "Lanches",
+    "Veículo de safari (aberto ou fechado)"
+  ],
+
+  "excluded": [
+    "Atividades extras dentro do parque",
+    "Bebidas alcoólicas",
+    "Despesas pessoais"
+  ],
+
+  "pricing": {
+    "regular_vehicle": {
+      "adults": 13500,
+      "children": 7500
+    },
+    "open_vehicle": {
+      "adults": 18500,
+      "children": 9200
+    }
+  },
+
+  "images": [
+    "../assets/images/tours/safari/safari-kruger-1.jpg",
+    "../assets/images/tours/safari/safari-kruger-2.jpg",
+    "../assets/images/tours/safari/safari-kruger-3.jpg",
+    "../assets/images/tours/safari/safari-kruger-4.jpg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "05:00",
+      "title": "Partida de Maputo",
+      "description": "Saída cedo de Maputo em direção à fronteira de Ressano Garcia."
+    },
+    {
+      "time": "06:30",
+      "title": "Chegada à Fronteira",
+      "description": "Procedimentos de imigração e alfândega."
+    },
+    {
+      "time": "07:00",
+      "title": "Continuação da viagem",
+      "description": "Viagem em direção ao Parque Nacional Kruger."
+    },
+    {
+      "time": "07:30",
+      "title": "Chegada ao Kruger",
+      "description": "Entrada no parque e início do safari."
+    },
+    {
+      "time": "12:30",
+      "title": "Almoço",
+      "description": "Almoço num restaurante dentro do parque com vista para o Rio Sabie."
+    },
+    {
+      "time": "14:00",
+      "title": "Continuação do Safari",
+      "description": "Busca pelos lendários Big Five."
+    },
+    {
+      "time": "16:00",
+      "title": "Fim do Safari",
+      "description": "Saída do parque e início do regresso."
+    },
+    {
+      "time": "18:00",
+      "title": "Chegada a Maputo",
+      "description": "Fim da excursão."
+    }
+  ],
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "reviews": []
+},
+{
+  "id": "safari-maputo-special-reserve",
+  "category": "safaris",
+  "title": "Safari Maputo Special Reserve",
+  "location": "Maputo Special Reserve, Mozambique",
+  "duration": "Dia Inteiro (05:00 – 17:00)",
+  "group_size": "Sob consulta",
+  "languages": ["Português", "English"],
+  "price_from": 9500,
+  "currency": "MZN",
+  "rating": 4.9,
+  "reviews_count": 0,
+  "badge": "Safari",
+  "description": "Explore a incrível Reserva Especial de Maputo numa aventura de safari de um dia. Esta experiência oferece a oportunidade de observar elefantes, girafas, hipopótamos e muitas outras espécies num dos parques naturais mais impressionantes de Moçambique. O passeio inclui transporte de Maputo, taxas de entrada, snacks e guia turístico.",
+
+  "highlights": [
+    "Safari na Reserva Especial de Maputo",
+    "Observação de elefantes, girafas e hipopótamos",
+    "Paisagens naturais e lagoas da reserva",
+    "Experiência guiada com especialista local",
+    "Ideal para amantes da natureza e fotografia"
+  ],
+
+  "included": [
+    "Transfer ida e volta a partir de Maputo",
+    "Taxas de entrada na reserva",
+    "Recolha e largada em Maputo",
+    "Snacks, frutas e água",
+    "Guia turístico"
+  ],
+
+  "excluded": [
+    "Bebidas alcoólicas",
+    "Despesas pessoais",
+    "Atividades adicionais dentro da reserva"
+  ],
+
+  "images": [
+    "../assets/images/tours/safari/safari-maputo-reserve-1.jpg",
+    "../assets/images/tours/safari/safari-maputo-reserve-2.jpg",
+    "../assets/images/tours/safari/safari-maputo-reserve-3.jpg",
+    "../assets/images/tours/safari/safari-maputo-reserve-4.jpg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "05:00",
+      "title": "Partida de Maputo",
+      "description": "Saída cedo de Maputo em direção à Reserva Especial de Maputo."
+    },
+    {
+      "time": "07:30",
+      "title": "Chegada à Reserva",
+      "description": "Entrada no parque e início do safari."
+    },
+    {
+      "time": "10:30",
+      "title": "Exploração da Reserva",
+      "description": "Observação da fauna local e paisagens naturais."
+    },
+    {
+      "time": "13:00",
+      "title": "Pausa para almoço",
+      "description": "Paragem para descanso e refeição durante o safari."
+    },
+    {
+      "time": "14:30",
+      "title": "Continuação do Safari",
+      "description": "Exploração de outras áreas da reserva."
+    },
+    {
+      "time": "17:00",
+      "title": "Regresso a Maputo",
+      "description": "Fim da excursão."
+    }
+  ],
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "reviews": []
+},
+  {
+    "id": "airport-transfer",
+    "category": "transfers",
+    "title": "Transfer Aeroporto – Cidade",
+    "location": "Aeroporto Internacional de Maputo",
+    "duration": "30 – 45 min",
+    "group_size": "1 – 8 pessoas",
+    "languages": ["Português", "English", "Français"],
+    "price_from": 25,
+    "currency": "USD",
+    "rating": 4.8,
+    "reviews_count": 312,
+    "badge": "Disponível 24h",
+    "description": "Transfer privado e confortável entre o Aeroporto Internacional de Maputo e qualquer hotel, marina ou ponto de encontro na cidade. Pontualidade e conforto garantidos 24 horas por dia.",
+    "highlights": [
+      "Motorista profissional certificado",
+      "Viatura climatizada e confortável",
+      "Placa de boas-vindas no aeroporto",
+      "Rastreamento de voo em tempo real",
+      "Disponível 24h/7 dias"
+    ],
+    "included": [
+      "Pick-up e drop-off porta a porta",
+      "Assistência com bagagem",
+      "Placa com o seu nome",
+      "Água fria a bordo",
+      "Seguro de viagem"
+    ],
+    "excluded": [
+      "Portagens (se aplicável)",
+      "Espera extra acima de 60 minutos"
+    ],
+    "images": [
+      "../assets/images/tours/transfer-1.jpg",
+      "../assets/images/tours/transfer-2.jpg"
+    ],
+    "itinerary": [
+      { "time": "À chegada", "title": "Recepção no Aeroporto", "description": "O motorista aguarda na zona de chegadas com placa identificativa." },
+      { "time": "+ 5 min", "title": "Assistência de Bagagem", "description": "Apoio no transporte da bagagem até à viatura." },
+      { "time": "+ 30 min", "title": "Chegada ao Destino", "description": "Chegada ao hotel, marina ou ponto de encontro." }
+    ],
+    "map_location": { "lat": -25.9213, "lng": 32.5694, "label": "Maputo International Airport" },
+    "reviews": [
+      { "author": "David Moreira", "avatar": "../assets/images/tours/review-avatar-2.jpg", "rating": 5, "date": "2026-02-01", "text": "Motorista muito simpático e pontual. Viatura impecável. Recomendo!" }
+    ]
+  },
+  {
+  "id": "inhaca-machangulo-transfer",
+  "category": "transfers",
+  "title": "Transfer de Barco – Inhaca & Machangulo",
+  "location": "Marina de Maputo",
+  "duration": "Conforme maré",
+  "group_size": "1 – 12 pessoas",
+  "languages": ["Português", "English"],
+  "price_from": 2100,
+  "currency": "MZN",
+  "rating": 4.8,
+  "reviews_count": 0,
+  "badge": "Boat Transfer",
+
+  "description": "Transfer de barco entre a Marina de Maputo, Ilha de Inhaca e Península de Machangulo. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
+
+  "highlights": [
+    "Transfer rápido de barco",
+    "Partidas da Marina de Maputo",
+    "Ligação direta para Inhaca e Machangulo",
+    "Coordenação baseada nas marés",
+    "Ideal para hóspedes de lodges e turistas"
+  ],
+
+  "included": [
+    "Transfer de barco ida e volta",
+    "Taxa da marina"
+  ],
+
+  "excluded": [
+    "Taxa de estacionamento (250 MZN por carro)",
+    "Taxa de reserva de Inhaca",
+    "Despesas pessoais"
+  ],
+
+  "fees_info": {
+    "parking_fee": "250 MZN por carro",
+    "inhaca_reservation_fee_national": "100 MZN por pessoa",
+    "inhaca_reservation_fee_foreign": "200 MZN por pessoa"
+  },
+
+  "images": [
+    "../assets/images/transfers/boat/boat-transfer-1.jpeg",
+    "../assets/images/transfers/boat/boat-transfer-2.jpeg",
+    "../assets/images/transfers/boat/boat-transfer-3.jpeg",
+    "../assets/images/transfers/boat/boat-transfer-4.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "Hora combinada",
+      "title": "Check-in na Marina",
+      "description": "Encontro na Escola Náutica para embarque."
+    },
+    {
+      "time": "En route",
+      "title": "Transfer de barco",
+      "description": "Viagem pela Baía de Maputo em direção à Ilha de Inhaca ou Machangulo."
+    },
+    {
+      "time": "Chegada",
+      "title": "Drop-off",
+      "description": "Desembarque no lodge ou ponto acordado."
+    }
+  ],
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "map_location": {
+    "lat": -25.9673,
+    "lng": 32.5834,
+    "label": "Maputo Marina"
+  },
+
+  "important_info": [
+    "Horários de partida podem variar devido às marés.",
+    "Confirme a disponibilidade antes da reserva.",
+    "Cancelamentos com menos de 48h não têm reembolso.",
+    "Após 15 minutos de tolerância o barco parte normalmente."
+  ],
+
+  "reviews": []
+}
+,
+  {
+    "id": "maputo-heritage-city-tour",
+    "category": "maputo-city-tour",
+    "title": "Maputo City Heritage Tour",
+    "location": "Maputo, Moçambique",
+    "duration": "Meio Dia (5h)",
+    "group_size": "Mín. 2 pessoas",
+    "languages": ["Português", "English", "Français"],
+    "price_from": 55,
+    "currency": "USD",
+    "rating": 4.8,
+    "reviews_count": 89,
+    "badge": "Cultural",
+    "description": "Explore a capital mais cosmopolita de África ao sul do Equador. Dos edifícios coloniais da Baixa ao vibrante Mercado Central, este tour mergulha-o na história fascinante e cultura rica de Maputo.",
+    "highlights": [
+      "Estação de Comboios histórica (Eiffel)",
+      "Catedral de Nossa Senhora da Conceição",
+      "Museu Nacional de Arte",
+      "Fortaleza de Maputo (século XVIII)",
+      "Mercado Central Municipal"
+    ],
+    "included": [
+      "Transporte com guia local",
+      "Entradas nos monumentos",
+      "Guia histórico certificado",
+      "Água e snack"
+    ],
+    "excluded": [
+      "Refeições",
+      "Compras no mercado",
+      "Despesas pessoais"
+    ],
+    "images": [
+      "../assets/images/tours/maputo-city-1.jpg",
+      "../assets/images/tours/maputo-city-2.jpg",
+      "../assets/images/tours/maputo-city-3.jpg"
+    ],
+    "itinerary": [
+      { "time": "08:30", "title": "Estação de Comboios CFM", "description": "Obra do engenheiro Gustave Eiffel, um dos edifícios mais icónicos de Maputo." },
+      { "time": "09:30", "title": "Fortaleza de Maputo", "description": "Construção do século XVIII, agora museu histórico." },
+      { "time": "10:30", "title": "Catedral e Avenida 25 de Setembro", "description": "Coração histórico e arquitectura colonial." },
+      { "time": "12:00", "title": "Mercado Central", "description": "Explosão de cores, sabores e cultura local." },
+      { "time": "13:30", "title": "Fim do Tour", "description": "Regresso ao hotel ou ponto combinado." }
+    ],
+    "map_location": { "lat": -25.9692, "lng": 32.5732, "label": "Maputo City Center" },
+    "reviews": [
+      { "author": "François Leblanc", "avatar": "../assets/images/tours/review-avatar-4.jpg", "rating": 5, "date": "2025-11-30", "text": "Notre guide était exceptionnel. Maputo est une ville fascinante, pleine d'histoire!" }
+    ]
+  },
+  {
+    "id": "maputo-food-culture-tour",
+    "category": "maputo-city-tour",
+    "title": "Maputo Food & Culture Tour",
+    "location": "Maputo, Moçambique",
+    "duration": "Meio Dia (4h)",
+    "group_size": "Mín. 2 pessoas",
+    "languages": ["Português", "English"],
+    "price_from": 45,
+    "currency": "USD",
+    "rating": 4.7,
+    "reviews_count": 61,
+    "badge": "Gastronomia",
+    "description": "Uma viagem gastronómica pelos sabores autênticos de Maputo. Prove camarão tigre, pão quente do forno, matapa, caril de caranguejo e muito mais enquanto explora os mercados locais com um guia especializado.",
+    "highlights": [
+      "Prova de camarão tigre no mercado",
+      "Visita ao Mercado do Peixe (Mercado do Xipamanine)",
+      "Degustação de Tipo Tinto (vinho moçambicano)",
+      "Culinária moçambicana no restaurante local",
+      "Mercado de artesanato"
+    ],
+    "included": [
+      "Degustações de comida incluídas",
+      "Guia gastronómico",
+      "Transporte",
+      "Água"
+    ],
+    "excluded": [
+      "Compras pessoais",
+      "Refeição completa (opcional + $)"
+    ],
+    "images": [
+      "../assets/images/tours/maputo-food-1.jpg",
+      "../assets/images/tours/maputo-food-2.jpg"
+    ],
+    "itinerary": [
+      { "time": "09:00", "title": "Mercado do Peixe", "description": "O mais famoso mercado de peixe de Maputo. Camarão e marisco frescos." },
+      { "time": "10:00", "title": "Padaria Tradicional", "description": "Pão moçambicano recém-saído do forno." },
+      { "time": "11:00", "title": "Mercado de Artesanato", "description": "Escultura em pau-preto, capulanas e arte local." },
+      { "time": "12:30", "title": "Restaurante Local", "description": "Degustação de pratos típicos: matapa, caril, camarão grelhado." }
+    ],
+    "map_location": { "lat": -25.9612, "lng": 32.5645, "label": "Maputo Markets" },
+    "reviews": [
+      { "author": "Isabella Rossi", "avatar": "../assets/images/tours/review-avatar-5.jpg", "rating": 5, "date": "2025-10-05", "text": "The food was incredible! The shrimp at the fish market was the best I've ever had!" }
+    ]
+  }
+]
