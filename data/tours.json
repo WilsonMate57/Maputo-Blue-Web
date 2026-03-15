@@ -575,51 +575,88 @@
   "reviews": []
 },
   {
-    "id": "airport-transfer",
-    "category": "transfers",
-    "title": "Transfer Aeroporto – Cidade",
-    "location": "Aeroporto Internacional de Maputo",
-    "duration": "30 – 45 min",
-    "group_size": "1 – 8 pessoas",
-    "languages": ["Português", "English", "Français"],
-    "price_from": 25,
-    "currency": "USD",
-    "rating": 4.8,
-    "reviews_count": 312,
-    "badge": "Disponível 24h",
-    "description": "Transfer privado e confortável entre o Aeroporto Internacional de Maputo e qualquer hotel, marina ou ponto de encontro na cidade. Pontualidade e conforto garantidos 24 horas por dia.",
-    "highlights": [
-      "Motorista profissional certificado",
-      "Viatura climatizada e confortável",
-      "Placa de boas-vindas no aeroporto",
-      "Rastreamento de voo em tempo real",
-      "Disponível 24h/7 dias"
-    ],
-    "included": [
-      "Pick-up e drop-off porta a porta",
-      "Assistência com bagagem",
-      "Placa com o seu nome",
-      "Água fria a bordo",
-      "Seguro de viagem"
-    ],
-    "excluded": [
-      "Portagens (se aplicável)",
-      "Espera extra acima de 60 minutos"
-    ],
-    "images": [
-      "../assets/images/tours/transfer-1.jpg",
-      "../assets/images/tours/transfer-2.jpg"
-    ],
-    "itinerary": [
-      { "time": "À chegada", "title": "Recepção no Aeroporto", "description": "O motorista aguarda na zona de chegadas com placa identificativa." },
-      { "time": "+ 5 min", "title": "Assistência de Bagagem", "description": "Apoio no transporte da bagagem até à viatura." },
-      { "time": "+ 30 min", "title": "Chegada ao Destino", "description": "Chegada ao hotel, marina ou ponto de encontro." }
-    ],
-    "map_location": { "lat": -25.9213, "lng": 32.5694, "label": "Maputo International Airport" },
-    "reviews": [
-      { "author": "David Moreira", "avatar": "../assets/images/tours/review-avatar-2.jpg", "rating": 5, "date": "2026-02-01", "text": "Motorista muito simpático e pontual. Viatura impecável. Recomendo!" }
-    ]
+  "id": "maputo-city-transfer",
+  "category": "transfers",
+  "title": "Car Transfer – Maputo City",
+  "location": "Maputo",
+  "duration": "Conforme rota",
+  "group_size": "1 – 4 pessoas",
+  "languages": ["Português", "English"],
+  "price_from": 5000,
+  "currency": "MZN",
+  "rating": 4.8,
+  "reviews_count": 0,
+  "badge": "City Transfer",
+
+  "description": "Serviço de transfer privado dentro da cidade de Maputo. Ideal para deslocações entre hotéis, restaurantes, escritórios e pontos turísticos da cidade.",
+
+  "highlights": [
+    "Motorista profissional",
+    "Transporte privado",
+    "Viatura climatizada",
+    "Flexibilidade de horários",
+    "Ideal para turistas e executivos"
+  ],
+
+  "included": [
+    "Transporte privado",
+    "Motorista profissional",
+    "Ar condicionado"
+  ],
+
+  "excluded": [
+    "Estacionamento",
+    "Portagens",
+    "Despesas pessoais"
+  ],
+
+  "images": [
+    "../assets/images/transfers/car/car-transfer-1.jpeg",
+    "../assets/images/transfers/car/car-transfer-2.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "Hora combinada",
+      "title": "Pick-up",
+      "description": "Recolha no local combinado."
+    },
+    {
+      "time": "En route",
+      "title": "Viagem",
+      "description": "Deslocação confortável até ao destino."
+    },
+    {
+      "time": "Chegada",
+      "title": "Drop-off",
+      "description": "Chegada ao destino final."
+    }
+  ],
+
+  "meeting_point": {
+    "name": "Local combinado",
+    "address": "Maputo"
   },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "map_location": {
+    "lat": -25.9692,
+    "lng": 32.5732,
+    "label": "Maputo City"
+  },
+
+  "important_info": [
+    "Horários flexíveis mediante reserva.",
+    "Confirme o local de recolha antes da viagem."
+  ],
+
+  "reviews": []
+}
+,
   {
   "id": "inhaca-machangulo-transfer",
   "category": "transfers",
@@ -806,5 +843,145 @@
     "reviews": [
       { "author": "Isabella Rossi", "avatar": "../assets/images/tours/review-avatar-5.jpg", "rating": 5, "date": "2025-10-05", "text": "The food was incredible! The shrimp at the fish market was the best I've ever had!" }
     ]
+  },
+
+  {
+    "id": "observacao-baleias",
+    "category": "sea-activities",
+    "title": "Excursão de Observação de Baleias",
+    "location": "Baía de Maputo",
+    "duration": "Dia Inteiro (09:00 – 15:00)",
+    "group_size": "Mín. 2 pessoas",
+    "languages": ["Português", "English"],
+    "price_from": 8500,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Sea Activities",
+    "description": "Viva a emoção de observar baleias em liberdade nas águas da Baía de Maputo. Esta excursão única combina o avistamento de baleias jubarte com uma paragem nas praias paradisíacas da Ilha da Inhaca ou da Ilha dos Portugueses — uma experiência inesquecível para toda a família.",
+    "highlights": [
+      "Avistamento de baleias jubarte em habitat natural",
+      "Pit stop na Ilha da Inhaca ou Ilha dos Portugueses",
+      "Almoço e frutas a bordo incluídos",
+      "Paisagens espetaculares da Baía de Maputo",
+      "Experiência adequada para toda a família, incluindo crianças"
+    ],
+    "included": [
+      "Água",
+      "Frutas",
+      "Almoço",
+      "Taxas da Marina",
+      "Guia turístico especializado",
+      "Equipamento de segurança a bordo"
+    ],
+    "excluded": [
+      "Transporte até à marina",
+      "Bebidas alcoólicas",
+      "Despesas pessoais"
+    ],
+    "images": [
+      "../assets/images/tours/sea-activities/whale-watching-1.jpg",
+      "../assets/images/tours/sea-activities/whale-watching-2.jpg",
+      "../assets/images/tours/sea-activities/whale-watching-3.jpg",
+      "../assets/images/tours/sea-activities/whale-watching-4.jpg"
+    ],
+    "itinerary": [
+      { "time": "09:00", "title": "Partida — Marina de Maputo", "description": "Embarque na Escola Náutica / Marina de Maputo. Briefing de segurança e orientações para a excursão." },
+      { "time": "10:00", "title": "Avistamento de Baleias", "description": "Navegação nas águas da Baía de Maputo à procura de baleias jubarte. O guia especializado partilha curiosidades sobre estes magníficos animais." },
+      { "time": "12:00", "title": "Pit Stop — Inhaca ou Ilha dos Portugueses", "description": "Paragem numa das ilhas paradisíacas para almoço, snorkeling e relaxamento na praia." },
+      { "time": "14:00", "title": "Regresso a Maputo", "description": "Viagem de regresso com possibilidade de mais avistamentos ao longo do percurso." },
+      { "time": "15:00", "title": "Chegada à Marina", "description": "Desembarque na Marina de Maputo. Fim da excursão." }
+    ],
+    "meeting_point": {
+      "name": "Marina de Maputo / Escola Náutica",
+      "address": "Av. 25 de Setembro, Maputo"
+    },
+    "contact": {
+      "phone": "+258 84 712 1666",
+      "email": "maputoblue.info@gmail.com",
+      "whatsapp": "+258847121666"
+    },
+    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "important_info": [
+      "Adultos: 8.500 MZN por pessoa",
+      "Crianças (4–10 anos): 6.500 MZN por pessoa",
+      "Temporada de baleias: Julho a Novembro",
+      "Recomendado trazer protetor solar, chapéu e óculos de sol",
+      "Não recomendado para pessoas com enjoo de movimento sem medicação prévia"
+    ],
+    "reviews": []
+  },
+
+  {
+    "id": "pesca-alto-mar",
+    "category": "sea-activities",
+    "title": "Pesca de Alto Mar",
+    "location": "Baía de Maputo / Oceano Índico",
+    "duration": "Dia Inteiro (06:00 – 15:00)",
+    "group_size": "Até 20 pessoas (conforme embarcação)",
+    "languages": ["Português", "English"],
+    "price_from": 38500,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Sea Activities",
+    "description": "Embarque numa emocionante aventura de pesca de alto mar nas águas ricas do Oceano Índico a partir da Marina de Maputo. Com embarcações de diferentes capacidades e todo o equipamento de pesca incluído, esta experiência é ideal para amadores e pescadores experientes — Wahoo, Marlin, Atum, Dourado, Sailfish e muito mais à espera.",
+    "highlights": [
+      "Pesca de Wahoo, Marlin, Atum, Dourado, Sailfish e Red Snapper",
+      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isco",
+      "Embarcações para 3 a 20 passageiros disponíveis",
+      "Todo o equipamento de pesca incluído (canas, isco, rapalas)",
+      "Capitão experiente nas melhores zonas de pesca do Índico",
+      "Saída ao amanhecer conforme a melhor maré do dia"
+    ],
+    "included": [
+      "Embarcação com capitão",
+      "Canas de pesca",
+      "Isco e rapalas",
+      "Equipamento completo de pesca",
+      "Combustível",
+      "Água a bordo"
+    ],
+    "excluded": [
+      "Taxa da Marina: 100 MZN por pessoa",
+      "Taxa da Reserva de Inhaca: 100 MZN (nacionais) / 200 MZN (estrangeiros)",
+      "Estacionamento: 250 MZN por viatura",
+      "Refeições e bebidas",
+      "Transporte até à marina"
+    ],
+    "images": [
+      "../assets/images/tours/sea-activities/fishing-1.jpeg",
+      "../assets/images/tours/sea-activities/fishing-2.jpeg",
+      "../assets/images/tours/sea-activities/fishing-3.jpeg",
+      "../assets/images/tours/sea-activities/fishing-4.jpeg"
+    ],
+    "itinerary": [
+      { "time": "05:30–07:00", "title": "Partida — Marina de Maputo", "description": "Embarque na Escola Náutica / Marina de Maputo. Hora de partida definida conforme a maré do dia. Distribuição de equipamento e briefing com o capitão." },
+      { "time": "07:00", "title": "Rumo ao Alto Mar", "description": "Navegação em direção às melhores zonas de pesca do Oceano Índico. O capitão seleciona os pontos com base nas condições do mar e movimentação de peixes." },
+      { "time": "07:30–13:00", "title": "Pesca Ativa", "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isco para Dorado." },
+      { "time": "13:00", "title": "Regresso a Maputo", "description": "Início do regresso à marina com as capturas do dia e memórias inesquecíveis." },
+      { "time": "14:00–15:00", "title": "Chegada à Marina", "description": "Desembarque, fotografia com as capturas e fim da excursão." }
+    ],
+    "meeting_point": {
+      "name": "Marina de Maputo / Escola Náutica",
+      "address": "Av. 25 de Setembro, Maputo"
+    },
+    "contact": {
+      "phone": "+258 84 712 1666",
+      "email": "maputoblue.info@gmail.com",
+      "whatsapp": "+258847121666"
+    },
+    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "important_info": [
+      "Lancha Rápida Menor: 38.500 MZN / 600 USD — até 3 passageiros",
+      "Lancha Rápida Intermédia: 58.000 MZN / 900 USD — até 6 passageiros",
+      "Lancha Rápida Maior: 84.000 MZN — até 8–9 passageiros",
+      "Catamarã Patron: 100.000 MZN — até 15–20 passageiros",
+      "Taxa da marina não incluída: 100 MZN por pessoa",
+      "Hora de saída varia conforme a maré (05:30 – 07:00)",
+      "Regresso previsto: 14:00 – 15:00",
+      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
+    ],
+    "reviews": []
   }
 ]

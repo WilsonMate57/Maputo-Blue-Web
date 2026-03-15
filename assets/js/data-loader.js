@@ -136,6 +136,7 @@
       'safaris':         tours.filter(t => t.category === 'safaris'),
       'transfers':       tours.filter(t => t.category === 'transfers'),
       'maputo-city-tour':tours.filter(t => t.category === 'maputo-city-tour'),
+      'sea-activities':  tours.filter(t => t.category === 'sea-activities'),
       'accommodation':   accs
     };
 
@@ -293,7 +294,7 @@
     // WhatsApp links
     const waBookText = encodeURIComponent(`Olá, quero reservar o tour: ${title}`);
     const waQaText   = encodeURIComponent(`Olá, tenho uma pergunta sobre o tour: ${title}`);
-    const waBase     = 'https://wa.me/258874240499?text=';
+    const waBase     = 'https://wa.me/258847121666?text=';
     document.querySelectorAll('#booking-whatsapp-btn, #mobile-booking-btn').forEach(el => {
       el.href = waBase + waBookText;
     });

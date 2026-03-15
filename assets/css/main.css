@@ -8,7 +8,7 @@
   /* Brand Colours */
   --primary:       #0A2540;
   --deep-navy:     #071B2E;
-  --sea-green:     #1EA896;
+  --sea-green:     #00bcd4;
   --soft-sand:     #F2E9E4;
   --light-bg:      #F8FAFC;
   --accent-coral:  #ff8800;
@@ -222,7 +222,7 @@ ul { list-style: none; }
 .tour-badge {
   display: inline-block;
   padding: 4px 12px;
-  background: var(--accent-coral);
+  background: var(--sea-green);
   color: var(--white);
   font-size: 0.75rem;
   font-weight: 700;
@@ -441,7 +441,7 @@ main, section, footer, header {
   justify-content: center;
   width: 36px;
   height: 36px;
-  border: 1px solid var(--border-light);
+  border: 2px solid var(--border-light);
   border-radius: 50%;
   color: var(--text-muted);
   font-size: 1.125rem;
@@ -450,7 +450,7 @@ main, section, footer, header {
 .navbar-social-link:hover { color: var(--primary); background: var(--light-bg); border-color: var(--primary); }
 .navbar-social-link.facebook:hover  { color: #1877F2; }
 .navbar-social-link.instagram:hover { color: #E1306C; }
-.navbar-social-link.linkedin:hover  { color: #0A66C2; }
+.navbar-social-link.tripadvisor:hover { color: #34E0A1; }
 
 /* Hamburger */
 .navbar-toggler {
@@ -459,6 +459,7 @@ main, section, footer, header {
   gap: 5px;
   padding: 8px;
   justify-self: end;
+  grid-column: 3;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background var(--transition-fast);
@@ -604,9 +605,9 @@ main, section, footer, header {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(7,27,46,.80) 0%,
-    rgba(10,37,64,.55) 50%,
-    rgba(10,37,64,.30) 100%
+    rgba(3, 13, 22, 0.8) 0%,
+    rgba(6, 22, 37, 0.55) 50%,
+    rgba(3, 10, 17, 0.3) 100%
   );
 }
 .hero-content {
@@ -677,7 +678,7 @@ main, section, footer, header {
 }
 .hero-btn-primary {
   padding: 15px 32px;
-  background: var(--accent-coral);
+  background: var(--sea-green);
   color: var(--white);
   font-weight: 700;
   font-size: 1rem;
@@ -688,9 +689,8 @@ main, section, footer, header {
   gap: 8px;
 }
 .hero-btn-primary:hover {
-  background: #d4530f;
+  background: #018bca;
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(242,100,25,.48);
   color: var(--white);
 }
 .hero-btn-secondary {
@@ -791,8 +791,26 @@ main, section, footer, header {
 @media (max-width: 767px) {
   .hero-section { height: 100svh; max-height: none; }
   .hero-scroll { display: none; }
-  .hero-carousel .carousel-control-prev { left: 12px; }
-  .hero-carousel .carousel-control-next { right: 12px; }
+  /* Move arrows to bottom on mobile — no overlap with hero text */
+  .hero-carousel .carousel-control-prev,
+  .hero-carousel .carousel-control-next {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    width: 40px;
+    height: 40px;
+  }
+  .hero-carousel .carousel-control-prev { left: calc(50% - 60px); }
+  .hero-carousel .carousel-control-next { right: calc(50% - 60px); }
+  .hero-carousel .carousel-control-prev:hover,
+  .hero-carousel .carousel-control-next:hover {
+    transform: scale(1.06);
+  }
+  /* Shift indicators up slightly to sit between the arrows */
+  .hero-carousel .carousel-indicators {
+    bottom: 22px;
+    margin-bottom: 0;
+  }
 }
 
 
@@ -1445,7 +1463,7 @@ main, section, footer, header {
   margin-bottom: 20px;
 }
 .footer-logo {
-  height: 52px;
+  height: 100px;
   filter: brightness(0) invert(1);
   opacity: .85;
 }
@@ -1627,8 +1645,12 @@ main, section, footer, header {
   border-bottom: 1px solid var(--border-light);
   position: sticky;
   top: 72px;
-  z-index: 100;
-  box-shadow: var(--shadow-xs);
+  z-index: 200;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+/* Ensure tour cards never visually break through the sticky filter bar */
+.tours-grid {
+  isolation: isolate;
 }
 .filter-row {
   display: flex;
