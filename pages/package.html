@@ -424,6 +424,45 @@
     function updateTotal() {
       var total = _pricePerPerson * (adults + children * 0.5);
       document.getElementById('booking-total').textContent = _currency + ' ' + Math.round(total);
+      updateWhatsAppLinks();
+    }
+
+    /* ── WhatsApp dynamic message ───────────────────────── */
+    function buildWhatsAppUrl() {
+      var tourName = (document.getElementById('package-title-h1').textContent || '').trim();
+      var dateVal  = document.getElementById('booking-date').value;
+      var dateStr  = 'A definir';
+      if (dateVal) {
+        var d = new Date(dateVal + 'T00:00:00');
+        dateStr = d.toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' });
+      }
+      var total = Math.round(_pricePerPerson * (adults + children * 0.5));
+
+      var msg =
+        'Olá Maputo Blue 👋\n\n' +
+        'Gostaria de reservar o seguinte tour:\n\n' +
+        'Tour: ' + tourName + '\n' +
+        'Data: ' + dateStr + '\n\n' +
+        'Participantes:\n' +
+        'Adultos: ' + adults + '\n' +
+        'Crianças: ' + children + '\n\n' +
+        'Preço total: ' + _currency + ' ' + total + '\n\n' +
+        'Por favor, confirme a disponibilidade.';
+
+      return 'https://wa.me/258847121666?text=' + encodeURIComponent(msg);
+    }
+
+    function updateWhatsAppLinks() {
+      var url = buildWhatsAppUrl();
+      var btn       = document.getElementById('booking-whatsapp-btn');
+      var mobileBtn = document.getElementById('mobile-booking-btn');
+      if (btn)       btn.href = url;
+      if (mobileBtn) mobileBtn.href = url;
+    }
+
+    /* Update WhatsApp link whenever date changes */
+    if (dateInput) {
+      dateInput.addEventListener('change', updateWhatsAppLinks);
     }
 
     function setupStepper(minusId, plusId, countId, getVal, setVal, min, max) {
@@ -449,7 +488,7 @@
     window._pkgSetPrice = function (price, currency) {
       _pricePerPerson = price;
       _currency = currency;
-      updateTotal();
+      updateTotal(); /* also triggers updateWhatsAppLinks */
     };
 
     /* ── Itinerary Accordion ────────────────────────────── */

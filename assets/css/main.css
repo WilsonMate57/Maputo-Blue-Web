@@ -800,8 +800,8 @@ main, section, footer, header {
     width: 40px;
     height: 40px;
   }
-  .hero-carousel .carousel-control-prev { left: calc(50% - 60px); }
-  .hero-carousel .carousel-control-next { right: calc(50% - 60px); }
+  .hero-carousel .carousel-control-prev { left: calc(50% - 90px); }
+  .hero-carousel .carousel-control-next { right: calc(50% - 90px); }
   .hero-carousel .carousel-control-prev:hover,
   .hero-carousel .carousel-control-next:hover {
     transform: scale(1.06);
