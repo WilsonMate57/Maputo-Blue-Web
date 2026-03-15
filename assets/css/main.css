@@ -452,6 +452,21 @@ main, section, footer, header {
 .navbar-social-link.instagram:hover { color: #E1306C; }
 .navbar-social-link.tripadvisor:hover { color: #34E0A1; }
 
+/* TripAdvisor SVG icon — matches Boxicons size & hover behaviour */
+.social-icon-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+  opacity: .65;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+.navbar-social-link:hover .social-icon-img,
+.footer-social-link:hover .social-icon-img {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 /* Hamburger */
 .navbar-toggler {
   display: none;
