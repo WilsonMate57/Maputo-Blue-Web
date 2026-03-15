@@ -5,7 +5,9 @@
   "name": "Inhaca Island One Night Package",
   "location": "Inhaca Island, Mozambique",
   "duration": "2 dias / 1 noite",
+  "duration_en": "2 days / 1 night",
   "group_size": "Sob consulta",
+  "group_size_en": "On request",
   "languages": [
     "Português",
     "English"
@@ -17,6 +19,7 @@
   "reviews_count": 0,
   "badge": "Island Escape",
   "description": "Pacote de uma noite na Ilha de Inhaca com transporte de barco desde Maputo, alojamento em lodge local e refeições incluídas. Ideal para uma escapadela rápida para desfrutar das praias tropicais e explorar a ilha.",
+  "description_en": "One-night package on Inhaca Island with speedboat transfer from Maputo, lodge accommodation, and included meals. The perfect quick getaway to enjoy tropical beaches and explore the island at your own pace.",
 
   "amenities": [
     "Piscina",
@@ -32,7 +35,8 @@
       "type": "Lodge Standard Room",
       "price": 9950,
       "capacity": 2,
-      "description": "Quarto confortável em lodge na Ilha de Inhaca."
+      "description": "Quarto confortável em lodge na Ilha de Inhaca.",
+      "description_en": "Comfortable lodge room on Inhaca Island."
     }
   ],
 
@@ -50,8 +54,22 @@
     "Acesso fácil às praias da ilha",
     "Ambiente relaxante e tropical"
   ],
+  "highlights_en": [
+    "Speedboat transfer from Maputo to Inhaca",
+    "1 night lodge accommodation on the island",
+    "Breakfast and dinner included",
+    "Easy access to the island's beaches",
+    "Relaxing tropical atmosphere"
+  ],
 
   "included": [
+    "Boat transport (speedboat)",
+    "Island fees",
+    "Lodge accommodation",
+    "Breakfast",
+    "Dinner"
+  ],
+  "included_en": [
     "Boat transport (speedboat)",
     "Island fees",
     "Lodge accommodation",
@@ -63,6 +81,11 @@
     "Actividades opcionais",
     "Bebidas alcoólicas",
     "Despesas pessoais"
+  ],
+  "excluded_en": [
+    "Optional activities",
+    "Alcoholic beverages",
+    "Personal expenses"
   ],
 
   "extra_activities": [
@@ -77,31 +100,41 @@
       "day": 1,
       "time": "08:00",
       "title": "Partida de Maputo",
-      "description": "Saída de speedboat da Maputo Marina para a Ilha de Inhaca."
+      "title_en": "Departure from Maputo",
+      "description": "Saída de speedboat da Maputo Marina para a Ilha de Inhaca.",
+      "description_en": "Speedboat departure from Maputo Marina heading to Inhaca Island."
     },
     {
       "day": 1,
       "time": "09:00",
       "title": "Chegada à Inhaca",
-      "description": "Check-in no lodge e tempo livre para explorar a ilha."
+      "title_en": "Arrival at Inhaca",
+      "description": "Check-in no lodge e tempo livre para explorar a ilha.",
+      "description_en": "Lodge check-in and free time to explore the island."
     },
     {
       "day": 1,
       "time": "19:00",
       "title": "Jantar",
-      "description": "Jantar incluído no lodge."
+      "title_en": "Dinner",
+      "description": "Jantar incluído no lodge.",
+      "description_en": "Included dinner at the lodge."
     },
     {
       "day": 2,
       "time": "08:30",
       "title": "Pequeno almoço",
-      "description": "Pequeno almoço no lodge."
+      "title_en": "Breakfast",
+      "description": "Pequeno almoço no lodge.",
+      "description_en": "Breakfast at the lodge."
     },
     {
       "day": 2,
       "time": "14:00",
       "title": "Regresso a Maputo",
-      "description": "Transfer de barco de volta à Maputo Marina."
+      "title_en": "Return to Maputo",
+      "description": "Transfer de barco de volta à Maputo Marina.",
+      "description_en": "Speedboat transfer back to Maputo Marina."
     }
   ],
 
@@ -130,7 +163,9 @@
   "name": "Mad Marlin Lodge",
   "location": "Vila da Inhaca, Ilha de Inhaca",
   "duration": "2 dias / 1 noite",
+  "duration_en": "2 days / 1 night",
   "group_size": "Sob consulta",
+  "group_size_en": "On request",
   "languages": [
     "Português",
     "English"
@@ -143,6 +178,7 @@
   "badge": "Beach Lodge",
 
   "description": "Mad Marlin Lodge está localizado na vila da Inhaca, próximo ao aeródromo e mesmo na rua da praia, de frente para a Ilha dos Portugueses. O lodge oferece uma experiência tranquila na Ilha de Inhaca com acesso fácil às praias, atividades marinhas e excursões locais.",
+  "description_en": "Mad Marlin Lodge is located in Inhaca village, close to the airstrip and right on the beach road, facing Portuguese Island. The lodge offers a peaceful Inhaca Island experience with easy access to beaches, marine activities, and local excursions.",
 
   "amenities": [
     "Piscina pequena",
@@ -158,7 +194,8 @@
       "type": "Quarto Standard",
       "price": null,
       "capacity": 2,
-      "description": "Quarto confortável em lodge de madeira com camas individuais ou casal."
+      "description": "Quarto confortável em lodge de madeira com camas individuais ou casal.",
+      "description_en": "Comfortable wooden lodge room with twin or double bed options."
     }
   ],
 
@@ -175,6 +212,12 @@
     "Snorkeling nas águas cristalinas da ilha",
     "Ambiente tranquilo na vila da Inhaca"
   ],
+  "highlights_en": [
+    "Beachfront location facing Portuguese Island",
+    "Included trip to Santa Maria Beach",
+    "Snorkeling in the island's crystal-clear waters",
+    "Peaceful atmosphere in Inhaca village"
+  ],
 
   "included": [
     "Acomodação",
@@ -184,6 +227,14 @@
     "Snorkeling",
     "Taxas da marina"
   ],
+  "included_en": [
+    "Accommodation",
+    "Return speedboat transfer",
+    "Breakfast",
+    "Tour to Santa Maria Beach",
+    "Snorkeling",
+    "Marina fees"
+  ],
 
   "excluded": [
     "Almoço e jantar",
@@ -191,37 +242,53 @@
     "Atividades opcionais",
     "Despesas pessoais"
   ],
+  "excluded_en": [
+    "Lunch and dinner",
+    "Alcoholic beverages",
+    "Optional activities",
+    "Personal expenses"
+  ],
 
   "itinerary": [
     {
       "day": 1,
       "time": "08:00",
       "title": "Partida de Maputo",
-      "description": "Transfer de barco desde Maputo Marina para a Ilha de Inhaca."
+      "title_en": "Departure from Maputo",
+      "description": "Transfer de barco desde Maputo Marina para a Ilha de Inhaca.",
+      "description_en": "Speedboat transfer from Maputo Marina to Inhaca Island."
     },
     {
       "day": 1,
       "time": "09:00",
       "title": "Check-in no Lodge",
-      "description": "Chegada ao Mad Marlin Lodge e tempo livre para explorar a ilha."
+      "title_en": "Lodge Check-in",
+      "description": "Chegada ao Mad Marlin Lodge e tempo livre para explorar a ilha.",
+      "description_en": "Arrival at Mad Marlin Lodge and free time to explore the island."
     },
     {
       "day": 1,
       "time": "14:00",
       "title": "Tour Santa Maria",
-      "description": "Excursão opcional ou incluída à famosa Praia de Santa Maria."
+      "title_en": "Santa Maria Tour",
+      "description": "Excursão opcional ou incluída à famosa Praia de Santa Maria.",
+      "description_en": "Optional or included excursion to the famous Santa Maria Beach."
     },
     {
       "day": 2,
       "time": "08:30",
       "title": "Pequeno Almoço",
-      "description": "Pequeno almoço servido no lodge."
+      "title_en": "Breakfast",
+      "description": "Pequeno almoço servido no lodge.",
+      "description_en": "Breakfast served at the lodge."
     },
     {
       "day": 2,
       "time": "14:00",
       "title": "Regresso a Maputo",
-      "description": "Transfer de barco de volta à Maputo Marina."
+      "title_en": "Return to Maputo",
+      "description": "Transfer de barco de volta à Maputo Marina.",
+      "description_en": "Speedboat transfer back to Maputo Marina."
     }
   ],
 
@@ -243,15 +310,16 @@
     "lng": 32.939,
     "label": "Mad Marlin Lodge — Ilha de Inhaca"
   }
-}
-,
+},
   {
   "id": "machangulo-beach-lodge-1-night",
   "category": "machangulo",
   "name": "Machangulo Beach Lodge",
   "location": "Machangulo Peninsula, Mozambique",
   "duration": "2 dias / 1 noite",
+  "duration_en": "2 days / 1 night",
   "group_size": "Sob consulta",
+  "group_size_en": "On request",
   "languages": [
     "Português",
     "English"
@@ -263,6 +331,7 @@
   "reviews_count": 0,
   "badge": "Luxury Escape",
   "description": "Experimente uma escapadela de luxo no Machangulo Beach Lodge, localizado numa das praias mais exclusivas da Península de Machangulo. Este pacote inclui transporte de barco de Maputo, uma noite de alojamento no lodge, refeições selecionadas e acesso a uma das praias mais bonitas de Moçambique.",
+  "description_en": "Experience a luxury escape at Machangulo Beach Lodge, set on one of the most exclusive beaches of the Machangulo Peninsula. This package includes speedboat transfer from Maputo, one night of lodge accommodation, selected meals, and access to one of Mozambique's most stunning beaches.",
 
   "amenities": [
     "Piscina",
@@ -280,7 +349,8 @@
       "type": "Beach Lodge Room",
       "price": 16950,
       "capacity": 2,
-      "description": "Quarto confortável no lodge com vista para o oceano e acesso direto à praia."
+      "description": "Quarto confortável no lodge com vista para o oceano e acesso direto à praia.",
+      "description_en": "Comfortable lodge room with ocean views and direct beach access."
     }
   ],
 
@@ -298,6 +368,13 @@
     "Experiência gastronómica no lodge",
     "Ambiente tranquilo ideal para relaxar"
   ],
+  "highlights_en": [
+    "Stay at one of Mozambique's most exclusive lodges",
+    "Pristine beach with spectacular scenery",
+    "Included speedboat transfer from Maputo",
+    "Fine dining experience at the lodge restaurant",
+    "Peaceful setting perfect for unwinding"
+  ],
 
   "included": [
     "Transporte de ida e volta de barco",
@@ -308,11 +385,25 @@
     "Água potável filtrada",
     "Wi-Fi"
   ],
+  "included_en": [
+    "Return speedboat transfer",
+    "1 night accommodation",
+    "Breakfast",
+    "Dinner",
+    "Marina fees",
+    "Filtered drinking water",
+    "Wi-Fi"
+  ],
 
   "excluded": [
     "Bebidas alcoólicas premium",
     "Actividades opcionais no lodge",
     "Despesas pessoais"
+  ],
+  "excluded_en": [
+    "Premium alcoholic beverages",
+    "Optional lodge activities",
+    "Personal expenses"
   ],
 
   "itinerary": [
@@ -320,31 +411,41 @@
       "day": 1,
       "time": "08:00",
       "title": "Partida de Maputo",
-      "description": "Partida da Maputo Marina em direção à Península de Machangulo."
+      "title_en": "Departure from Maputo",
+      "description": "Partida da Maputo Marina em direção à Península de Machangulo.",
+      "description_en": "Departure from Maputo Marina heading to the Machangulo Peninsula."
     },
     {
       "day": 1,
       "time": "10:00",
       "title": "Chegada ao Lodge",
-      "description": "Check-in no Machangulo Beach Lodge e tempo livre para explorar a praia."
+      "title_en": "Arrival at the Lodge",
+      "description": "Check-in no Machangulo Beach Lodge e tempo livre para explorar a praia.",
+      "description_en": "Check-in at Machangulo Beach Lodge and free time to explore the beach."
     },
     {
       "day": 1,
       "time": "19:00",
       "title": "Jantar",
-      "description": "Jantar servido no restaurante do lodge."
+      "title_en": "Dinner",
+      "description": "Jantar servido no restaurante do lodge.",
+      "description_en": "Dinner served at the lodge restaurant."
     },
     {
       "day": 2,
       "time": "08:00",
       "title": "Pequeno almoço",
-      "description": "Pequeno almoço com vista para o oceano."
+      "title_en": "Breakfast",
+      "description": "Pequeno almoço com vista para o oceano.",
+      "description_en": "Breakfast with ocean views."
     },
     {
       "day": 2,
       "time": "14:00",
       "title": "Regresso",
-      "description": "Partida do lodge e regresso de barco a Maputo."
+      "title_en": "Return",
+      "description": "Partida do lodge e regresso de barco a Maputo.",
+      "description_en": "Departure from the lodge and speedboat return to Maputo."
     }
   ],
 
@@ -373,7 +474,9 @@
   "name": "Villa Martins",
   "location": "Inhaca Island",
   "duration": "1–2 noites",
+  "duration_en": "1–2 nights",
   "group_size": "Sob consulta",
+  "group_size_en": "On request",
   "languages": [
     "Português",
     "English"
@@ -385,7 +488,8 @@
   "reviews_count": 0,
   "badge": "Encantador",
   "description": "Villa Martins é um refúgio de lazer situado na Ilha de Inhaca, a apenas 30 minutos de barco de Maputo. Com bangalows rodeados de jardins tropicais, piscina e acesso fácil às praias de areia branca da ilha, oferece uma experiência autêntica e tranquila no coração do Oceano Índico.",
-  
+  "description_en": "Villa Martins is a leisure retreat on Inhaca Island, just 30 minutes by speedboat from Maputo. With bungalows surrounded by tropical gardens, a pool, and easy access to the island's white-sand beaches, it offers an authentic and peaceful experience in the heart of the Indian Ocean.",
+
   "amenities": [
     "Piscina",
     "Jardim Tropical",
@@ -402,13 +506,15 @@
       "type": "Quarto Standard",
       "price": 11400,
       "capacity": 2,
-      "description": "Quarto confortável com casa de banho privativa, ar condicionado e vista para o jardim."
+      "description": "Quarto confortável com casa de banho privativa, ar condicionado e vista para o jardim.",
+      "description_en": "Comfortable room with en-suite bathroom, air conditioning, and garden views."
     },
     {
       "type": "Tarifa Criança (menos de 12 anos)",
       "price": 5700,
       "capacity": 1,
-      "description": "Tarifa especial para crianças menores de 12 anos acompanhadas de um adulto."
+      "description": "Tarifa especial para crianças menores de 12 anos acompanhadas de um adulto.",
+      "description_en": "Special rate for children under 12 years old accompanied by an adult."
     }
   ],
 
@@ -426,12 +532,26 @@
     "Snorkeling nos recifes de coral da Ilha de Inhaca",
     "Piscina com jardins tropicais e espreguiçadeiras"
   ],
+  "highlights_en": [
+    "Return speedboat transfer included in the package",
+    "Daily breakfast included",
+    "Included trip to Santa Maria Beach",
+    "Snorkeling on Inhaca Island's coral reefs",
+    "Pool surrounded by tropical gardens and sun loungers"
+  ],
 
   "included": [
     "Transfer de barco ida e volta (Maputo ↔ Inhaca)",
     "Alojamento",
     "Café da manhã diário",
     "Passeio à Praia de Santa Maria",
+    "Snorkeling"
+  ],
+  "included_en": [
+    "Return speedboat transfer (Maputo ↔ Inhaca)",
+    "Accommodation",
+    "Daily breakfast",
+    "Trip to Santa Maria Beach",
     "Snorkeling"
   ],
 
@@ -441,27 +561,41 @@
     "Actividades opcionais",
     "Despesas pessoais"
   ],
+  "excluded_en": [
+    "Lunch and dinner",
+    "Drinks",
+    "Optional activities",
+    "Personal expenses"
+  ],
 
   "itinerary": [
     {
       "day": 1,
       "title": "Partida de Maputo",
-      "description": "Transfer de barco desde a Maputo Marina até à Ilha de Inhaca e check-in no Villa Martins."
+      "title_en": "Departure from Maputo",
+      "description": "Transfer de barco desde a Maputo Marina até à Ilha de Inhaca e check-in no Villa Martins.",
+      "description_en": "Speedboat transfer from Maputo Marina to Inhaca Island and check-in at Villa Martins."
     },
     {
       "day": 1,
       "title": "Tempo Livre",
-      "description": "Aproveite a piscina, os jardins tropicais e explore as praias próximas."
+      "title_en": "Free Time",
+      "description": "Aproveite a piscina, os jardins tropicais e explore as praias próximas.",
+      "description_en": "Enjoy the pool, tropical gardens, and explore the nearby beaches."
     },
     {
       "day": 2,
       "title": "Passeio a Santa Maria",
-      "description": "Excursão incluída à Praia de Santa Maria com snorkeling nas águas cristalinas."
+      "title_en": "Santa Maria Trip",
+      "description": "Excursão incluída à Praia de Santa Maria com snorkeling nas águas cristalinas.",
+      "description_en": "Included excursion to Santa Maria Beach with snorkeling in crystal-clear waters."
     },
     {
       "day": 2,
       "title": "Regresso",
-      "description": "Transfer de barco de volta à Maputo Marina."
+      "title_en": "Return",
+      "description": "Transfer de barco de volta à Maputo Marina.",
+      "description_en": "Speedboat transfer back to Maputo Marina."
     }
   ],
 
@@ -490,7 +624,9 @@
   "name": "Manico Camp",
   "location": "Inhaca Island, Mozambique",
   "duration": "2 dias / 1 noite",
+  "duration_en": "2 days / 1 night",
   "group_size": "Sob consulta",
+  "group_size_en": "On request",
   "languages": [
     "Português",
     "English"
@@ -502,6 +638,7 @@
   "reviews_count": 0,
   "badge": "Natureza",
   "description": "Manico Camp é um alojamento tranquilo localizado na Ilha de Inhaca, ideal para uma escapadela de fim de semana. O pacote inclui transporte de barco desde Maputo, hospedagem no lodge, guia local e pequeno-almoço. Durante a estadia os visitantes podem explorar a ilha, visitar Santa Maria ou fazer passeios opcionais como off-road ou passeio de barco à Ilha dos Portugueses.",
+  "description_en": "Manico Camp is a peaceful retreat on Inhaca Island, perfect for a weekend escape. The package includes speedboat transfer from Maputo, lodge accommodation, a local guide, and breakfast. During your stay you can explore the island, visit Santa Maria Beach, or enjoy optional activities such as off-road trips or a boat excursion to Portuguese Island.",
 
   "amenities": [
     "Alojamento em lodge",
@@ -518,7 +655,8 @@
       "type": "Quarto Standard Lodge",
       "price": null,
       "capacity": 2,
-      "description": "Quarto simples e confortável em lodge na Ilha de Inhaca, ideal para uma estadia curta."
+      "description": "Quarto simples e confortável em lodge na Ilha de Inhaca, ideal para uma estadia curta.",
+      "description_en": "Simple and comfortable lodge room on Inhaca Island, ideal for a short stay."
     }
   ],
 
@@ -536,6 +674,13 @@
     "Passeios opcionais para Santa Maria ou Ponta Torres",
     "Possibilidade de passeio à Ilha dos Portugueses"
   ],
+  "highlights_en": [
+    "Speedboat transfer Maputo – Inhaca – Maputo",
+    "1 night accommodation at Manico Camp",
+    "Breakfast included",
+    "Optional trips to Santa Maria Beach or Ponta Torres",
+    "Optional boat excursion to Portuguese Island"
+  ],
 
   "included": [
     "Transfer de barco / lancha para Inhaca e regresso a Maputo",
@@ -545,6 +690,14 @@
     "1 refeição e 1 bebida (refrigerante, cerveja, cidra, água ou sumo)",
     "Guia turístico local"
   ],
+  "included_en": [
+    "Speedboat transfer to Inhaca and return to Maputo",
+    "Marina and island fees",
+    "1 night lodge accommodation",
+    "Breakfast (Sunday)",
+    "1 meal and 1 drink (soda, beer, cider, water, or juice)",
+    "Local tour guide"
+  ],
 
   "excluded": [
     "Pequeno almoço no primeiro dia",
@@ -553,61 +706,86 @@
     "Passeio de barco à Ilha dos Portugueses",
     "Despesas pessoais"
   ],
+  "excluded_en": [
+    "Breakfast on the first day",
+    "Lunch and dinner",
+    "Optional off-road trips",
+    "Boat excursion to Portuguese Island",
+    "Personal expenses"
+  ],
 
   "itinerary": [
     {
       "day": 1,
       "time": "08:00",
       "title": "Partida de Maputo",
-      "description": "Partida da Maputo Marina / Escola Náutica em direção à Ilha de Inhaca."
+      "title_en": "Departure from Maputo",
+      "description": "Partida da Maputo Marina / Escola Náutica em direção à Ilha de Inhaca.",
+      "description_en": "Departure from Maputo Marina / Escola Náutica heading to Inhaca Island."
     },
     {
       "day": 1,
       "time": "09:00",
       "title": "Chegada à Inhaca",
-      "description": "Chegada à Ilha de Inhaca ou Santa Maria."
+      "title_en": "Arrival at Inhaca",
+      "description": "Chegada à Ilha de Inhaca ou Santa Maria.",
+      "description_en": "Arrival at Inhaca Island or Santa Maria Beach."
     },
     {
       "day": 1,
       "time": "11:30",
       "title": "Passeio opcional",
-      "description": "Passeio offroad até Santa Maria ou Ponta Torres (extra/opcional)."
+      "title_en": "Optional Trip",
+      "description": "Passeio offroad até Santa Maria ou Ponta Torres (extra/opcional).",
+      "description_en": "Off-road trip to Santa Maria or Ponta Torres (extra/optional)."
     },
     {
       "day": 1,
       "time": "16:00",
       "title": "Explorar a ilha",
-      "description": "Regresso ao lodge ou passeio offroad até ao farol de Inhaca para ver o pôr-do-sol (opcional)."
+      "title_en": "Explore the Island",
+      "description": "Regresso ao lodge ou passeio offroad até ao farol de Inhaca para ver o pôr-do-sol (opcional).",
+      "description_en": "Return to the lodge or optional off-road trip to Inhaca Lighthouse for sunset views."
     },
     {
       "day": 1,
       "time": "20:00",
       "title": "Jantar",
-      "description": "Jantar na vila de Inhaca (não incluído no pacote)."
+      "title_en": "Dinner",
+      "description": "Jantar na vila de Inhaca (não incluído no pacote).",
+      "description_en": "Dinner in Inhaca village (not included in the package)."
     },
     {
       "day": 2,
       "time": "09:30",
       "title": "Pequeno almoço",
-      "description": "Pequeno almoço incluído no pacote."
+      "title_en": "Breakfast",
+      "description": "Pequeno almoço incluído no pacote.",
+      "description_en": "Breakfast included in the package."
     },
     {
       "day": 2,
       "time": "11:00",
       "title": "Passeio opcional",
-      "description": "Passeio de barco à Ilha dos Portugueses (extra/opcional)."
+      "title_en": "Optional Excursion",
+      "description": "Passeio de barco à Ilha dos Portugueses (extra/opcional).",
+      "description_en": "Boat excursion to Portuguese Island (extra/optional)."
     },
     {
       "day": 2,
       "time": "15:30",
       "title": "Regresso a Maputo",
-      "description": "Partida da Ilha de Inhaca em direção à Maputo Marina."
+      "title_en": "Return to Maputo",
+      "description": "Partida da Ilha de Inhaca em direção à Maputo Marina.",
+      "description_en": "Departure from Inhaca Island heading back to Maputo Marina."
     },
     {
       "day": 2,
       "time": "17:00",
       "title": "Chegada a Maputo",
-      "description": "Fim da experiência."
+      "title_en": "Arrival in Maputo",
+      "description": "Fim da experiência.",
+      "description_en": "End of the experience."
     }
   ],
 
