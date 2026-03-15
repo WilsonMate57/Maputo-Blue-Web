@@ -437,7 +437,7 @@
           <div class="testimonial-avatar" style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--sea-green),var(--primary));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex-shrink:0;">${t.name[0]}</div>
           <div class="testimonial-author-info">
             <strong>${t.name}</strong>
-            <small>${t.profession}</small>
+            <small>${LANG === 'en' ? (t.profession_en || t.profession) : t.profession}</small>
           </div>
         </div>
         <div class="testimonial-footer">
