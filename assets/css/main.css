@@ -251,6 +251,8 @@ main, section, footer, header {
   position: relative;
   z-index: 1;
 }
+/* Tours page: remove <main>'s stacking context so .tours-filters can sit above the navbar */
+main.tours-main { z-index: auto; }
 
 
 /* ============================================================
@@ -1659,8 +1661,8 @@ main, section, footer, header {
   padding: 20px 0;
   border-bottom: 1px solid var(--border-light);
   position: sticky;
-  top: 72px;
-  z-index: 200;
+  top: 0;
+  z-index: 1001;
   box-shadow: 0 4px 12px rgba(0,0,0,.06);
 }
 /* Ensure tour cards never visually break through the sticky filter bar */

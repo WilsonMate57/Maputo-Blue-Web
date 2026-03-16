@@ -131,8 +131,8 @@
   {
   "id": "dia-de-praia-santa-maria-machangulo",
   "category": "island-daytrips",
-  "title": "Dia de Praia",
-  "title_en": "Beach Day",
+  "title": "Dia de Praia - Santa Maria e Machangulo",
+  "title_en": "Beach Day — Santa Maria & Machangulo",
   "location": "Santa Maria & Machangulo",
   "duration": "Dia Inteiro (8h – 17h)",
   "duration_en": "Full Day (08:00 – 17:00)",
@@ -259,9 +259,9 @@
 },
   {
   "id": "farol-inhaca-tour",
-  "category": "beach-daytrips",
-  "title": "Praia do Farol - Inhaca",
-  "title_en": "Farol Beach — Inhaca Island",
+  "category": "island-daytrips",
+  "title": "Praia do Farol - Inhaca e Ilha dos Portugueses",
+  "title_en": "Farol Beach — Inhaca & Ilha dos Portugueses",
   "location": "Ilha da Inhaca, Maputo",
   "duration": "Dia Inteiro (08:00 – 17:00)",
   "duration_en": "Full Day (08:00 – 17:00)",
@@ -533,20 +533,22 @@
   "included": [
     "Transfer ida e volta de Maputo",
     "Taxas de entrada no Parque Nacional Kruger",
+    "Safari de dia inteiro",
     "Guia turístico",
     "Almoço",
-    "Bebidas não alcoólicas",
-    "Lanches",
-    "Veículo de safari (aberto ou fechado)"
+    "Cooler Box (Caixa térmica) com gelo",
+    "Lanche, frutas e água",
+    "Binóculos para observação de vida selvagem"
   ],
   "included_en": [
     "Return transfer from Maputo",
     "Kruger National Park entrance fees",
+    "Full-day safari",
     "Tour guide",
     "Lunch",
-    "Non-alcoholic drinks",
-    "Snacks",
-    "Safari vehicle (open or closed)"
+    "Cool box with ice",
+    "Snacks, fruit and water",
+    "Binoculars for wildlife viewing"
   ],
 
   "excluded": [
@@ -680,15 +682,15 @@
   "included": [
     "Transfer ida e volta a partir de Maputo",
     "Taxas de entrada na reserva",
-    "Recolha e largada em Maputo",
-    "Snacks, frutas e água",
+    "Lanche, frutas e água",
+    "Binóculos para observação de vida selvagem",
     "Guia turístico"
   ],
   "included_en": [
     "Return transfer from Maputo",
     "Reserve entrance fees",
-    "Pick-up and drop-off in Maputo",
     "Snacks, fruit and water",
+    "Binoculars for wildlife viewing",
     "Tour guide"
   ],
 
@@ -752,6 +754,152 @@
       "title_en": "Return to Maputo",
       "description": "Fim da excursão.",
       "description_en": "End of excursion."
+    }
+  ],
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "reviews": []
+},
+{
+  "id": "eswatini-mantenga-cultural-tour",
+  "category": "safaris",
+  "title": "Excursão Cultural Mantenga Village – Eswatini",
+  "title_en": "Eswatini Mantenga Village Cultural Tour",
+
+  "location": "Mantenga Village, Eswatini",
+
+  "duration": "Dia inteiro (05:30 – 17:30)",
+  "duration_en": "Full Day (05:30 – 17:30)",
+
+  "group_size": "Mínimo 2 pessoas",
+  "group_size_en": "Minimum 2 people",
+
+  "languages": ["Português", "English"],
+
+  "price_from": 15500,
+  "currency": "MZN",
+
+  "rating": 4.8,
+  "reviews_count": 0,
+
+  "badge": "Cultural Tour",
+
+  "description": "Descubra a cultura tradicional de Eswatini numa excursão de um dia saindo de Maputo. Esta experiência inclui uma visita ao famoso Mantenga Cultural Village, às cascatas de Mantenga e ao icónico restaurante House on Fire. Uma oportunidade única para conhecer a história, cultura e artesanato local.",
+
+  "description_en": "Discover the traditional culture of Eswatini on a day trip from Maputo. This experience includes a visit to the famous Mantenga Cultural Village, Mantenga Waterfall and the iconic House on Fire cultural center. A unique opportunity to experience local traditions, history and crafts.",
+
+  "highlights": [
+    "Visita ao Mantenga Cultural Village",
+    "Cascatas de Mantenga",
+    "Centro cultural House on Fire",
+    "Fábrica de velas artesanal",
+    "Experiência cultural em Eswatini"
+  ],
+
+  "highlights_en": [
+    "Visit Mantenga Cultural Village",
+    "Mantenga Waterfall visit",
+    "House on Fire cultural center",
+    "Candle factory visit",
+    "Authentic Eswatini cultural experience"
+  ],
+
+  "included": [
+    "Transfer em mini van",
+    "Guia turístico",
+    "Entrada no Mantenga Cultural Village",
+    "Visita às cascatas de Mantenga",
+    "Visita à fábrica de velas",
+    "Visita ao House on Fire",
+    "Almoço",
+    "Água e snacks",
+    "Cooler box com gelo",
+    "Binóculos"
+  ],
+
+  "included_en": [
+    "Mini van guided tour",
+    "Tour guide",
+    "Mantenga Cultural Village entry",
+    "Mantenga waterfall visit",
+    "Candle factory visit",
+    "House on Fire cultural center visit",
+    "Lunch",
+    "Water and snacks",
+    "Cooler box with ice",
+    "Binoculars"
+  ],
+
+  "excluded": [
+    "Despesas pessoais",
+    "Bebidas alcoólicas",
+    "Taxas de fronteira"
+  ],
+
+  "excluded_en": [
+    "Personal expenses",
+    "Alcoholic drinks",
+    "Border fees"
+  ],
+
+  "images": [
+    "../assets/images/tours/safari/eswatini-tour-1.jpeg",
+    "../assets/images/tours/safari/eswatini-tour-2.jpeg",
+    "../assets/images/tours/safari/eswatini-tour-3.jpeg",
+    "../assets/images/tours/safari/eswatini-tour-4.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "05:30",
+      "title": "Partida de Maputo",
+      "title_en": "Departure from Maputo",
+      "description": "Saída cedo de Maputo em direção à fronteira com Eswatini.",
+      "description_en": "Early departure from Maputo towards the Eswatini border."
+    },
+    {
+      "time": "09:00",
+      "title": "Chegada ao Mantenga Cultural Village",
+      "title_en": "Arrival at Mantenga Cultural Village",
+      "description": "Visita guiada à aldeia cultural tradicional.",
+      "description_en": "Guided visit to the traditional cultural village."
+    },
+    {
+      "time": "11:30",
+      "title": "Visita às Cascatas de Mantenga",
+      "title_en": "Mantenga Waterfall Visit",
+      "description": "Paragem nas cascatas naturais de Mantenga.",
+      "description_en": "Stop at the beautiful Mantenga Waterfall."
+    },
+    {
+      "time": "13:00",
+      "title": "Almoço",
+      "title_en": "Lunch",
+      "description": "Almoço incluído durante a excursão.",
+      "description_en": "Lunch included during the tour."
+    },
+    {
+      "time": "14:30",
+      "title": "House on Fire & Candle Factory",
+      "title_en": "House on Fire & Candle Factory",
+      "description": "Visita ao famoso centro cultural e à fábrica de velas.",
+      "description_en": "Visit to the famous cultural center and candle factory."
+    },
+    {
+      "time": "17:30",
+      "title": "Regresso a Maputo",
+      "title_en": "Return to Maputo",
+      "description": "Chegada prevista a Maputo.",
+      "description_en": "Estimated arrival in Maputo."
     }
   ],
 
@@ -880,10 +1028,10 @@
   "reviews": []
 },
   {
-  "id": "inhaca-machangulo-transfer",
+  "id": "inhaca-transfer",
   "category": "transfers",
-  "title": "Transfer de Barco – Inhaca & Machangulo",
-  "title_en": "Boat Transfer – Inhaca & Machangulo",
+  "title": "Transfer de Barco – Inhaca",
+  "title_en": "Boat Transfer – Inhaca",
   "location": "Marina de Maputo",
   "duration": "Conforme maré",
   "duration_en": "As per tide",
@@ -895,26 +1043,26 @@
   "rating": 4.8,
   "reviews_count": 0,
   "badge": "Boat Transfer",
-  "description": "Transfer de barco entre a Marina de Maputo, Ilha de Inhaca e Península de Machangulo. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
-  "description_en": "Boat transfer between Maputo Marina, Inhaca Island and Machangulo Peninsula. Departure times may vary depending on tides and weather conditions. We recommend always confirming dates and times before travel to ensure availability.",
+  "description": "Transfer de barco entre a Marina de Maputo, Ilha de Inhaca. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
+  "description_en": "Boat transfer between Maputo Marina, Inhaca Island. Departure times may vary depending on tides and weather conditions. We recommend always confirming dates and times before travel to ensure availability.",
 
   "highlights": [
     "Transfer rápido de barco",
     "Partidas da Marina de Maputo",
-    "Ligação direta para Inhaca e Machangulo",
+    "Ligação direta para Inhaca",
     "Coordenação baseada nas marés",
     "Ideal para hóspedes de lodges e turistas"
   ],
   "highlights_en": [
     "Fast boat transfer",
     "Departures from Maputo Marina",
-    "Direct connection to Inhaca and Machangulo",
+    "Direct connection to Inhaca",
     "Tide-based coordination",
     "Ideal for lodge guests and tourists"
   ],
 
   "included": [
-    "Transfer de barco ida e volta",
+    "Transfer de barco por trajecto (ida ou volta)",
     "Taxa da marina"
   ],
   "included_en": [
@@ -924,7 +1072,7 @@
 
   "excluded": [
     "Taxa de estacionamento (250 MZN por carro)",
-    "Taxa de reserva de Inhaca",
+    "Taxa de reserva de Inhaca (100 MZN por pessoa nacional, 200 MZN por pessoa estrangeira)",
     "Despesas pessoais"
   ],
   "excluded_en": [
@@ -1001,107 +1149,304 @@
 
   "reviews": []
 },
-  {
-    "id": "maputo-heritage-city-tour",
-    "category": "maputo-city-tour",
-    "title": "Maputo City Heritage Tour",
-    "title_en": "Maputo City Heritage Tour",
-    "location": "Maputo, Moçambique",
-    "duration": "Meio Dia (5h)",
-    "duration_en": "Half Day (5h)",
-    "group_size": "Mín. 2 pessoas",
-    "group_size_en": "Min. 2 people",
-    "languages": ["Português", "English", "Français"],
-    "price_from": 55,
-    "currency": "USD",
-    "rating": 4.8,
-    "reviews_count": 89,
-    "badge": "Cultural",
-    "description": "Explore a capital mais cosmopolita de África ao sul do Equador. Dos edifícios coloniais da Baixa ao vibrante Mercado Central, este tour mergulha-o na história fascinante e cultura rica de Maputo.",
-    "description_en": "Explore the most cosmopolitan capital in Africa south of the Equator. From the colonial buildings of the Baixa district to the vibrant Central Market, this tour immerses you in the fascinating history and rich culture of Maputo.",
-    "highlights": [
-      "Estação de Comboios histórica (Eiffel)",
-      "Catedral de Nossa Senhora da Conceição",
-      "Museu Nacional de Arte",
-      "Fortaleza de Maputo (século XVIII)",
-      "Mercado Central Municipal"
-    ],
-    "highlights_en": [
-      "Historic Railway Station (Eiffel)",
-      "Cathedral of Our Lady of the Conception",
-      "National Museum of Art",
-      "Maputo Fortress (18th century)",
-      "Central Municipal Market"
-    ],
-    "included": [
-      "Transporte com guia local",
-      "Entradas nos monumentos",
-      "Guia histórico certificado",
-      "Água e snack"
-    ],
-    "included_en": [
-      "Transport with local guide",
-      "Monument entrance fees",
-      "Certified historical guide",
-      "Water and snack"
-    ],
-    "excluded": [
-      "Refeições",
-      "Compras no mercado",
-      "Despesas pessoais"
-    ],
-    "excluded_en": [
-      "Meals",
-      "Market shopping",
-      "Personal expenses"
-    ],
-    "images": [
-      "../assets/images/tours/maputo-city-1.jpg",
-      "../assets/images/tours/maputo-city-2.jpg",
-      "../assets/images/tours/maputo-city-3.jpg"
-    ],
-    "itinerary": [
-      {
-        "time": "08:30",
-        "title": "Estação de Comboios CFM",
-        "title_en": "CFM Railway Station",
-        "description": "Obra do engenheiro Gustave Eiffel, um dos edifícios mais icónicos de Maputo.",
-        "description_en": "Designed by engineer Gustave Eiffel, one of the most iconic buildings in Maputo."
-      },
-      {
-        "time": "09:30",
-        "title": "Fortaleza de Maputo",
-        "title_en": "Maputo Fortress",
-        "description": "Construção do século XVIII, agora museu histórico.",
-        "description_en": "18th-century construction, now a historical museum."
-      },
-      {
-        "time": "10:30",
-        "title": "Catedral e Avenida 25 de Setembro",
-        "title_en": "Cathedral and 25 de Setembro Avenue",
-        "description": "Coração histórico e arquitectura colonial.",
-        "description_en": "Historical heart and colonial architecture."
-      },
-      {
-        "time": "12:00",
-        "title": "Mercado Central",
-        "title_en": "Central Market",
-        "description": "Explosão de cores, sabores e cultura local.",
-        "description_en": "An explosion of colours, flavours and local culture."
-      },
-      {
-        "time": "13:30",
-        "title": "Fim do Tour",
-        "title_en": "End of Tour",
-        "description": "Regresso ao hotel ou ponto combinado.",
-        "description_en": "Return to hotel or agreed point."
-      }
-    ],
-    "map_location": { "lat": -25.9692, "lng": 32.5732, "label": "Maputo City Center" },
-    "reviews": [
-      { "author": "François Leblanc", "avatar": "../assets/images/tours/review-avatar-4.jpg", "rating": 5, "date": "2025-11-30", "text": "Notre guide était exceptionnel. Maputo est une ville fascinante, pleine d'histoire!" }
-    ]
+
+{
+  "id": "machangulo-transfer",
+  "category": "transfers",
+  "title": "Transfer de Barco – Machangulo",
+  "title_en": "Boat Transfer – Machangulo",
+
+  "location": "Marina de Maputo",
+
+  "duration": "Conforme maré",
+  "duration_en": "As per tide",
+
+  "group_size": "1 – 12 pessoas",
+  "group_size_en": "1 – 12 people",
+
+  "languages": ["Português", "English"],
+
+  "price_from": 3200,
+  "currency": "MZN",
+
+  "rating": 4.8,
+  "reviews_count": 0,
+
+  "badge": "Boat Transfer",
+
+  "description": "Transfer de barco entre a Marina de Maputo e a Península de Machangulo. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
+
+  "description_en": "Boat transfer between Maputo Marina and the Machangulo Peninsula. Departure times may vary depending on tides and weather conditions. We recommend confirming dates and times before travelling to ensure availability.",
+
+  "highlights": [
+    "Transfer rápido de barco",
+    "Partidas da Marina de Maputo",
+    "Ligação direta para Machangulo",
+    "Coordenação baseada nas marés",
+    "Ideal para hóspedes de lodges e turistas"
+  ],
+
+  "highlights_en": [
+    "Fast boat transfer",
+    "Departures from Maputo Marina",
+    "Direct connection to Machangulo",
+    "Tide-based coordination",
+    "Ideal for lodge guests and tourists"
+  ],
+
+  "included": [
+    "Transfer de barco por trajecto (ida ou volta) ",
+    "Taxa da marina"
+  ],
+
+  "included_en": [
+    "Boat transfer per trip",
+    "Marina fee"
+  ],
+
+  "excluded": [
+    "Taxa de estacionamento (250 MZN por carro)",
+    "Despesas pessoais"
+  ],
+
+  "excluded_en": [
+    "Parking fee (250 MZN per car)",
+    "Personal expenses"
+  ],
+
+  "pricing": {
+    "monday_thursday": {
+      "label": "Segunda a Quinta",
+      "price_round_trip": 5000
+    },
+    "friday_saturday": {
+      "label": "Sexta e Sábado",
+      "price_one_way": 3200
+    }
   },
+
+  "images": [
+    "../assets/images/transfers/boat/machangulo-transfer-1.jpeg",
+    "../assets/images/transfers/boat/machangulo-transfer-2.jpeg",
+    "../assets/images/transfers/boat/machangulo-transfer-3.jpeg",
+    "../assets/images/transfers/boat/machangulo-transfer-4.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "Hora combinada",
+      "title": "Check-in na Marina",
+      "title_en": "Check-in at the Marina",
+      "description": "Encontro na Escola Náutica para embarque.",
+      "description_en": "Meeting at Escola Náutica for boarding."
+    },
+    {
+      "time": "En route",
+      "title": "Transfer de barco",
+      "title_en": "Boat transfer",
+      "description": "Travessia pela Baía de Maputo em direção à Península de Machangulo.",
+      "description_en": "Boat journey across Maputo Bay towards Machangulo Peninsula."
+    },
+    {
+      "time": "Chegada",
+      "title": "Drop-off",
+      "title_en": "Drop-off",
+      "description": "Desembarque no lodge ou ponto combinado.",
+      "description_en": "Disembarkation at the lodge or agreed point."
+    }
+  ],
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "map_location": {
+    "lat": -25.9673,
+    "lng": 32.5834,
+    "label": "Maputo Marina"
+  },
+
+  "important_info": [
+    "Horários de partida podem variar devido às marés.",
+    "Confirme a disponibilidade antes da reserva.",
+    "Cancelamentos com menos de 48h não têm reembolso.",
+    "Após 15 minutos de tolerância o barco parte normalmente."
+  ],
+
+  "important_info_en": [
+    "Departure times may vary due to tides.",
+    "Confirm availability before booking.",
+    "Cancellations within 48h are non-refundable.",
+    "After 15 minutes tolerance the boat departs as normal."
+  ],
+
+  "reviews": []
+},
+
+  {
+  "id": "maputo-city-tour",
+  "category": "maputo-city-tour",
+  "title": "Maputo City Tour",
+  "title_en": "Maputo City Tour",
+
+  "location": "Maputo, Mozambique",
+
+  "duration": "3 horas",
+  "duration_en": "3 hours",
+
+  "group_size": "Mínimo 2 pessoas",
+  "group_size_en": "Minimum 2 people",
+
+  "languages": ["Português", "English"],
+
+  "price_from": 2500,
+  "currency": "MZN",
+
+  "rating": 4.7,
+  "reviews_count": 0,
+
+  "badge": "City Tour",
+
+  "description": "Descubra os principais pontos históricos e culturais da cidade de Maputo num tour guiado de 3 horas. Explore monumentos icónicos, mercados locais e edifícios históricos enquanto aprende sobre a história e cultura da capital moçambicana.",
+
+  "description_en": "Discover the main historical and cultural landmarks of Maputo on a guided 3-hour city tour. Explore iconic monuments, local markets and historic buildings while learning about the history and culture of Mozambique’s capital.",
+
+  "highlights": [
+    "Igreja da Polana",
+    "FEIMA – Feira de Artesanato",
+    "Jardim Botânico Tunduru",
+    "Casa de Ferro",
+    "Estátua de Samora Machel",
+    "Catedral de Maputo",
+    "Fortaleza de Maputo",
+    "Estação de Comboios CFM",
+    "Mercado Central"
+  ],
+
+  "highlights_en": [
+    "Polana Church",
+    "FEIMA Craft Market",
+    "Tunduru Botanical Gardens",
+    "Iron House",
+    "Samora Machel Statue",
+    "Maputo Cathedral",
+    "Maputo Fortress",
+    "CFM Railway Station",
+    "Central Market"
+  ],
+
+  "included": [
+    "Guia turístico local",
+    "Transporte durante o tour",
+    "Água"
+  ],
+
+  "included_en": [
+    "Local tour guide",
+    "Transport during the tour",
+    "Water"
+  ],
+
+  "excluded": [
+    "Entradas em museus ou monumentos pagos",
+    "Compras pessoais",
+    "Pickup fora da cidade de Maputo"
+  ],
+
+  "excluded_en": [
+    "Entrance fees to paid monuments or museums",
+    "Personal purchases",
+    "Pickup outside Maputo city"
+  ],
+
+  "pricing": {
+    "adults": 2500,
+    "children": 1800
+  },
+
+  "images": [
+    "../assets/images/tours/city-tours/maputo-city-tour-1.jpeg",
+    "../assets/images/tours/city-tours/maputo-city-tour-2.jpeg",
+    "../assets/images/tours/city-tours/maputo-city-tour-3.jpeg",
+    "../assets/images/tours/city-tours/maputo-city-tour-4.jpeg"
+  ],
+
+  "itinerary": [
+    {
+      "time": "00:00",
+      "title": "Pickup",
+      "title_en": "Pickup",
+      "description": "Recolha no hotel ou ponto combinado na cidade.",
+      "description_en": "Pickup at hotel or agreed point in the city."
+    },
+    {
+      "time": "00:30",
+      "title": "Igreja da Polana",
+      "title_en": "Polana Church",
+      "description": "Visita a um dos monumentos mais emblemáticos de Maputo.",
+      "description_en": "Visit one of the most iconic monuments in Maputo."
+    },
+    {
+      "time": "01:00",
+      "title": "Jardim Botânico & Casa de Ferro",
+      "title_en": "Botanical Garden & Iron House",
+      "description": "Passeio pelo histórico Jardim Tunduru e visita à famosa Casa de Ferro.",
+      "description_en": "Walk through the historic Tunduru Gardens and visit the famous Iron House."
+    },
+    {
+      "time": "01:30",
+      "title": "Catedral & Estátua Samora Machel",
+      "title_en": "Cathedral & Samora Machel Statue",
+      "description": "Paragem no coração histórico da cidade.",
+      "description_en": "Stop in the historic heart of the city."
+    },
+    {
+      "time": "02:00",
+      "title": "Fortaleza & Estação CFM",
+      "title_en": "Fortress & CFM Railway Station",
+      "description": "Visita a dois dos edifícios históricos mais importantes de Maputo.",
+      "description_en": "Visit two of the most important historic buildings in Maputo."
+    },
+    {
+      "time": "02:30",
+      "title": "Mercado Central & FEIMA",
+      "title_en": "Central Market & FEIMA",
+      "description": "Exploração do mercado local e da feira de artesanato.",
+      "description_en": "Explore the local market and the craft fair."
+    },
+    {
+      "time": "03:00",
+      "title": "Fim do tour",
+      "title_en": "End of tour",
+      "description": "Regresso ao hotel ou ponto de encontro.",
+      "description_en": "Return to hotel or meeting point."
+    }
+  ],
+
+  "meeting_point": {
+    "name": "Maputo Marina",
+    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+  },
+
+  "contact": {
+    "phone": "+258847121666",
+    "email": "maputoblue.info@gmail.com"
+  },
+
+  "map_location": {
+    "lat": -25.9692,
+    "lng": 32.5732,
+    "label": "Maputo City Center"
+  },
+
+  "reviews": []
+},
   {
     "id": "maputo-food-culture-tour",
     "category": "maputo-city-tour",

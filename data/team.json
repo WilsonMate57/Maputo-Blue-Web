@@ -2,8 +2,8 @@
   {
     "id": 1,
     "name": "Rasmus Nielsen",
-    "position": "Director Executivo & Co-fundador",
-    "position_en": "Executive Director & Co-founder",
+    "position": "Director Executivo & Fundador",
+    "position_en": "Executive Director & Founder",
     "photo": "../assets/images/team/team-1.jpeg",
     "bio": "Com mais de 15 anos no sector do turismo em Moçambique, Carlos fundou a Maputo Blue com a missão de mostrar ao mundo a beleza escondida do país.",
     "bio_en": "With over 15 years in Mozambique's tourism sector, Rasmus co-founded Maputo Blue with a mission to show the world the country's hidden beauty.",
@@ -27,12 +27,12 @@
   },
   {
     "id": 3,
-    "name": "Miguel Sitoe",
+    "name": "Lázaro Pelembe",
     "position": "Guia Turístico",
     "position_en": "Tour Guide",
     "photo": "../assets/images/team/team-3.jpg",
     "bio": "Mergulhador certificado e guia de vida selvagem, Miguel é o especialista em ecoturismo marinho da equipa.",
-    "bio_en": "A certified diver and wildlife guide, Miguel is the team's marine ecotourism specialist.",
+    "bio_en": "A certified diver and wildlife guide, Lázaro is the team's marine ecotourism specialist.",
     "social": {
       "linkedin": "#",
       "instagram": "#"
@@ -40,12 +40,12 @@
   },
   {
     "id": 4,
-    "name": "Amelia Machava",
-    "position": "Guia Turístico",
-    "position_en": "Tour Guide",
+    "name": "Alexandre Nhaca",
+    "position": "Guia Turístico e Recepcionista",
+    "position_en": "Tour Guide & Receptionist",
     "photo": "../assets/images/team/team-4.png",
     "bio": "A voz da Maputo Blue nas redes sociais, Amelia cria experiências memoráveis e garante a satisfação de cada cliente.",
-    "bio_en": "Maputo Blue's voice on social media, Amelia creates memorable experiences and ensures every client's satisfaction.",
+    "bio_en": "Alexandre is a key part of the Maputo Blue team, delivering memorable experiences and ensuring every client's satisfaction.",
     "social": {
       "linkedin": "#",
       "instagram": "#"
@@ -53,25 +53,12 @@
   },
   {
     "id": 5,
-    "name": "João Tembe",
-    "position": "Guia Turístico",
-    "position_en": "Tour Guide",
-    "photo": "../assets/images/team/team-5.jpg",
-    "bio": "Guia de safari certificado com 10 anos de experiência nas reservas e parques de Moçambique.",
-    "bio_en": "Certified safari guide with 10 years of experience in Mozambique's reserves and national parks.",
-    "social": {
-      "linkedin": "#",
-      "instagram": "#"
-    }
-  },
-  {
-    "id": 6,
-    "name": "Isabel Mondlane",
-    "position": "Coordenadora de Alojamentos",
-    "position_en": "Accommodations Coordinator",
+    "name": "Ian Uiliamo",
+    "position": "Guia Turístico e Recepcionista",
+    "position_en": "Tour Guide & Receptionist",
     "photo": "../assets/images/team/team-6.jpg",
     "bio": "Isabel cuida de todos os alojamentos parceiros, garantindo os mais altos padrões de qualidade e conforto para os nossos hóspedes.",
-    "bio_en": "Isabel manages all partner accommodations, ensuring the highest standards of quality and comfort for our guests.",
+    "bio_en": "Ian is part of the Maputo Blue team, supporting guests and ensuring the highest standards of quality and comfort throughout every experience.",
     "social": {
       "linkedin": "#",
       "instagram": "#"
