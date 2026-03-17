@@ -510,11 +510,11 @@
       "description_en": "Comfortable room with en-suite bathroom, air conditioning, and garden views."
     },
     {
-      "type": "Tarifa Criança (menos de 12 anos)",
+      "type": "Tarifa Criança (4–10 anos)",
       "price": 5700,
       "capacity": 1,
-      "description": "Tarifa especial para crianças menores de 12 anos acompanhadas de um adulto.",
-      "description_en": "Special rate for children under 12 years old accompanied by an adult."
+      "description": "Tarifa especial para crianças dos 4 aos 10 anos acompanhadas de um adulto. Crianças com menos de 4 anos ficam gratuitamente.",
+      "description_en": "Special rate for children aged 4–10 years accompanied by an adult. Children under 4 years stay free of charge."
     }
   ],
 
