@@ -518,7 +518,19 @@
       el.textContent = `(${reviewsCount} ${t('reviews')})`;
     });
 
-    if (window._pkgSetPrice) window._pkgSetPrice(price, currency);
+    let childPrice = null;
+    if (item.child_price === 'consulta') {
+      childPrice = 'consulta';
+    } else if (typeof item.child_price === 'number') {
+      childPrice = item.child_price;
+    } else if (item.pricing) {
+      if (typeof item.pricing.children === 'number') {
+        childPrice = item.pricing.children;
+      } else if (item.pricing.regular_vehicle && typeof item.pricing.regular_vehicle.children === 'number') {
+        childPrice = item.pricing.regular_vehicle.children;
+      }
+    }
+    if (window._pkgSetPrice) window._pkgSetPrice(price, currency, childPrice);
 
     // WhatsApp messages
     const waBookMsg  = LANG === 'en'

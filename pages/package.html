@@ -202,7 +202,11 @@
                   <span class="booking-card__price-from">A partir de</span>
                   <div style="display:flex;align-items:baseline;gap:6px;">
                     <span class="booking-card__price-value" id="package-price">USD 00</span>
-                    <span class="booking-card__price-unit">/pessoa</span>
+                    <span class="booking-card__price-unit">/ Adulto</span>
+                  </div>
+                  <div id="child-price-row" style="display:none;align-items:baseline;gap:6px;margin-top:4px;">
+                    <span class="booking-card__price-value" style="font-size:1rem;" id="package-price-child"></span>
+                    <span class="booking-card__price-unit">/ Criança</span>
                   </div>
                 </div>
                 <div class="booking-card__rating">
@@ -433,12 +437,14 @@
 
     /* ── Booking Steppers ───────────────────────────────── */
     var _pricePerPerson = 0;
+    var _childPrice     = 0;
     var _currency = 'USD';
     var adults   = 1;
     var children = 0;
 
     function updateTotal() {
-      var total = _pricePerPerson * (adults + children * 0.5);
+      var childP = _childPrice || _pricePerPerson;
+      var total  = (adults * _pricePerPerson) + (children * childP);
       document.getElementById('booking-total').textContent = _currency + ' ' + Math.round(total);
       updateWhatsAppLinks();
     }
@@ -452,7 +458,8 @@
         var d = new Date(dateVal + 'T00:00:00');
         dateStr = d.toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' });
       }
-      var total = Math.round(_pricePerPerson * (adults + children * 0.5));
+      var childP = _childPrice || _pricePerPerson;
+      var total  = Math.round((adults * _pricePerPerson) + (children * childP));
 
       var msg =
         'Olá Maputo Blue 👋\n\n' +
@@ -460,9 +467,9 @@
         'Tour: ' + tourName + '\n' +
         'Data: ' + dateStr + '\n\n' +
         'Participantes:\n' +
-        'Adultos: ' + adults + '\n' +
-        'Crianças: ' + children + '\n\n' +
-        'Preço total: ' + _currency + ' ' + total + '\n\n' +
+        'Adultos: ' + adults + ' × ' + _currency + ' ' + _pricePerPerson + ' = ' + _currency + ' ' + Math.round(adults * _pricePerPerson) + '\n' +
+        (children > 0 ? 'Crianças: ' + children + ' × ' + _currency + ' ' + childP + ' = ' + _currency + ' ' + Math.round(children * childP) + '\n' : '') +
+        '\nPreço total: ' + _currency + ' ' + total + '\n\n' +
         'Por favor, confirme a disponibilidade.';
 
       return 'https://wa.me/258847121666?text=' + encodeURIComponent(msg);
@@ -501,9 +508,24 @@
     setupStepper('children-minus', 'children-plus', 'children-count',
       function () { return children; }, function (v) { children = v; }, 0, 10);
 
-    window._pkgSetPrice = function (price, currency) {
+    window._pkgSetPrice = function (price, currency, childPrice) {
       _pricePerPerson = price;
-      _currency = currency;
+      _currency       = currency;
+      _childPrice     = (typeof childPrice === 'number') ? childPrice : 0;
+      var childRow = document.getElementById('child-price-row');
+      var childEl  = document.getElementById('package-price-child');
+      var unitEl   = childRow ? childRow.querySelector('.booking-card__price-unit') : null;
+      if (childPrice === 'consulta') {
+        if (childEl)  childEl.textContent = '';
+        if (unitEl)   { unitEl.textContent = 'Crianças (sob consulta)'; unitEl.style.display = ''; }
+        if (childRow) childRow.style.display = 'flex';
+      } else if (_childPrice) {
+        if (childEl)  childEl.textContent = currency + ' ' + _childPrice;
+        if (unitEl)   unitEl.style.display = '';
+        if (childRow) childRow.style.display = 'flex';
+      } else {
+        if (childRow) childRow.style.display = 'none';
+      }
       updateTotal(); /* also triggers updateWhatsAppLinks */
     };
 
