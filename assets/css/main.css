@@ -2005,7 +2005,7 @@ main.tours-main { z-index: auto; }
   line-height: 0;
   overflow: hidden;
 }
-.wave-divider svg { display: block; width: 100%; }
+.wave-divider svg { display: block; width: 100%; margin-bottom: -1px; }
 
 /* Loading skeleton */
 .skeleton {
