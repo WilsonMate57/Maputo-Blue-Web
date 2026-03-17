@@ -64,7 +64,7 @@ function starsHTML(rating, interactive = false) {
     const filled = i <= Math.round(rating);
     if (interactive) {
       html += `<button type="button" class="star-pick${filled ? ' active' : ''}" data-value="${i}" aria-label="${i} ${LANG === 'en' ? 'star' : 'estrela'}${i > 1 ? 's' : ''}">
-        <i class='bx bx${filled ? 's' : '-'}-star'></i>
+        <i class='bx bxs-star'></i>
       </button>`;
     } else {
       html += `<i class='bx bx${filled ? 's' : '-'}-star reviews-star${filled ? ' filled' : ''}'></i>`;
@@ -86,8 +86,8 @@ function buildStarPicker() {
     el.querySelectorAll('.star-pick').forEach((btn, i) => {
       const on = i < val;
       btn.classList.toggle('active', on);
-      btn.querySelector('i').className = `bx bx${on ? 's' : '-'}-star`;
-      if (hover) btn.classList.toggle('hover', on);
+      btn.querySelector('i').className = 'bx bxs-star';
+      btn.classList.toggle('hover', hover && on);
     });
   }
 
