@@ -17,6 +17,36 @@
   // From root: link to pages/package.html | from /pages/ or /en/: link to package.html
   const PAGES_PREFIX = (IN_EN || IN_PAGES) ? '' : 'pages/';
 
+  /* ── Important Information defaults ─────────────────────── */
+  const IMPORTANT_INFO = {
+    pt: {
+      title: 'Informações Importantes',
+      items: [
+        'Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.',
+        'Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.',
+        'Por favor, respeite os horários de partida e os outros participantes.',
+        'A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.',
+        'Para a segurança de todos, entre em águas profundas apenas se for um nadador confiante.',
+        'Nunca nade sob efeito de álcool.',
+        'Pais e responsáveis devem supervisionar as crianças em todos os momentos.',
+        'Para sua segurança e proteção do meio ambiente, não toque em vida marinha, corais ou criaturas do mar, pois algumas podem ser venenosas.',
+      ],
+    },
+    en: {
+      title: 'Important Information',
+      items: [
+        'Cancellations made less than 48 hours prior to the trip date are non-refundable.',
+        'We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.',
+        'Please respect our departure times and fellow guests.',
+        'Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.',
+        "For everyone's safety, please only enter the deeper water if you are a strong and confident swimmer.",
+        'Never swim while intoxicated.',
+        'Parents and guardians must closely supervise their children at all times.',
+        'For your safety and to protect the environment, do not touch any marine life, corals, or sea creatures, as some may be venomous.',
+      ],
+    },
+  };
+
   /* ── i18n string table ───────────────────────────────────── */
   const STR = {
     pt: {
@@ -283,6 +313,176 @@
     if (!item) { el.innerHTML = '<p class="text-muted p-4">Package not found.</p>'; return; }
 
     renderPackageDetail(item, type);
+    renderRelatedExperiences(item, type, data);
+    renderImportantInfo(item);
+    initShareButtons();
+  }
+
+  /* ── Share Buttons ───────────────────────────────────────── */
+  function initShareButtons() {
+    const card = document.querySelector('#pkg-share');
+    if (!card) return;
+
+    const labelEl    = card.querySelector('#pkg-share-label');
+    const feedbackEl = card.querySelector('#pkg-share-feedback');
+    const btnWA      = card.querySelector('#share-whatsapp');
+    const btnFB      = card.querySelector('#share-facebook');
+    const btnTW      = card.querySelector('#share-twitter');
+    const btnIG      = card.querySelector('#share-instagram');
+    const btnCopy    = card.querySelector('#share-copy');
+
+    const rawUrl = window.location.href;
+    const encUrl = encodeURIComponent(rawUrl);
+
+    /* i18n strings */
+    const S = LANG === 'en' ? {
+      title:     'Share this tour',
+      wa:        'WhatsApp',
+      fb:        'Facebook',
+      tw:        'X / Twitter',
+      ig:        'Instagram',
+      copy:      'Copy link',
+      copied:    'Link copied!',
+      ig_copied: 'Link copied! Share it on Instagram.',
+      wa_msg:    `Check out this experience with Maputo Blue: ${rawUrl}`,
+      tw_msg:    'Check out this experience with Maputo Blue!',
+    } : {
+      title:     'Partilhar este tour',
+      wa:        'WhatsApp',
+      fb:        'Facebook',
+      tw:        'X / Twitter',
+      ig:        'Instagram',
+      copy:      'Copiar link',
+      copied:    'Link copiado!',
+      ig_copied: 'Link copiado! Partilha no Instagram.',
+      wa_msg:    `Confere esta experiência com a Maputo Blue: ${rawUrl}`,
+      tw_msg:    'Confere esta experiência com a Maputo Blue!',
+    };
+
+    /* Update label and tooltips */
+    if (labelEl) labelEl.textContent = S.title;
+    if (btnWA)   { btnWA.setAttribute('data-tooltip', S.wa);   btnWA.setAttribute('aria-label',   `${S.title} — ${S.wa}`);   }
+    if (btnFB)   { btnFB.setAttribute('data-tooltip', S.fb);   btnFB.setAttribute('aria-label',   `${S.title} — ${S.fb}`);   }
+    if (btnTW)   { btnTW.setAttribute('data-tooltip', S.tw);   btnTW.setAttribute('aria-label',   `${S.title} — ${S.tw}`);   }
+    if (btnIG)   { btnIG.setAttribute('data-tooltip', S.ig);   btnIG.setAttribute('aria-label',   `${S.title} — ${S.ig}`);   }
+    if (btnCopy) { btnCopy.setAttribute('data-tooltip', S.copy); btnCopy.setAttribute('aria-label', `${S.title} — ${S.copy}`); }
+
+    /* Feedback helper */
+    let feedbackTimer = null;
+    function showFeedback(msg) {
+      if (!feedbackEl) return;
+      feedbackEl.textContent = msg;
+      feedbackEl.classList.add('visible');
+      clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(() => feedbackEl.classList.remove('visible'), 3000);
+    }
+
+    /* Clipboard helper with execCommand fallback */
+    function copyToClipboard(text, feedbackMsg, btn) {
+      function onSuccess() {
+        showFeedback(feedbackMsg);
+        if (btn) {
+          btn.classList.add('copied');
+          setTimeout(() => btn.classList.remove('copied'), 2000);
+        }
+      }
+      function fallback() {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); onSuccess(); } catch (_) { /* silent */ }
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(onSuccess).catch(fallback);
+      } else {
+        fallback();
+      }
+    }
+
+    /* Button handlers */
+    if (btnWA) {
+      btnWA.addEventListener('click', () => {
+        window.open(`https://wa.me/?text=${encodeURIComponent(S.wa_msg)}`, '_blank', 'noopener');
+      });
+    }
+    if (btnFB) {
+      btnFB.addEventListener('click', () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encUrl}`, '_blank', 'noopener,width=640,height=420');
+      });
+    }
+    if (btnTW) {
+      btnTW.addEventListener('click', () => {
+        window.open(
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(S.tw_msg)}&url=${encUrl}`,
+          '_blank', 'noopener,width=640,height=420'
+        );
+      });
+    }
+    if (btnIG) {
+      /* Instagram has no direct web-share URL — copy link and guide user */
+      btnIG.addEventListener('click', () => copyToClipboard(rawUrl, S.ig_copied, null));
+    }
+    if (btnCopy) {
+      btnCopy.addEventListener('click', () => copyToClipboard(rawUrl, S.copied, btnCopy));
+    }
+  }
+
+  /* ── Important Information ───────────────────────────────── */
+  function renderImportantInfo(item) {
+    const container = document.querySelector('#package-important-info');
+    if (!container) return;
+
+    // Per-package override: add important_info / important_info_en arrays to a
+    // JSON entry to replace the global defaults for that specific package.
+    const defaults = IMPORTANT_INFO[LANG] || IMPORTANT_INFO.pt;
+    const title = LANG === 'en'
+      ? (item.important_info_title_en || defaults.title)
+      : (item.important_info_title    || defaults.title);
+    const items = LANG === 'en'
+      ? (item.important_info_en || defaults.items)
+      : (item.important_info    || defaults.items);
+
+    if (!items || !items.length) return;
+
+    container.innerHTML = `
+<div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+  <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:18px;">
+    <i class='bx bx-info-circle' style="color:var(--sea-green);margin-right:6px;"></i>${title}
+  </h2>
+  <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;" aria-label="${title}">
+    ${items.map(info => `
+    <li style="display:flex;align-items:flex-start;gap:10px;font-size:.9375rem;line-height:1.6;">
+      <i class='bx bx-chevron-right' style="color:var(--sea-green);flex-shrink:0;margin-top:3px;font-size:1.1rem;"></i>
+      <span style="color:var(--text-body);">${info}</span>
+    </li>`).join('')}
+  </ul>
+</div>`;
+  }
+
+  /* ── Related Experiences ─────────────────────────────────── */
+  function renderRelatedExperiences(currentItem, type, allData) {
+    const grid = document.querySelector('#related-tours');
+    if (!grid) return;
+
+    const MAX     = 4;
+    const related = allData
+      .filter(item => item.id !== currentItem.id && item.category === currentItem.category)
+      .slice(0, MAX);
+
+    if (!related.length) {
+      const section = grid.closest('section');
+      if (section) section.style.display = 'none';
+      return;
+    }
+
+    grid.innerHTML = related
+      .map(item => type === 'accommodation'
+        ? buildAccommodationCard(item)
+        : buildTourCard(item))
+      .join('');
   }
 
   function renderPackageDetail(item, type) {

@@ -2481,3 +2481,258 @@ main.tours-main { z-index: auto; }
 }
 .mobile-booking-bar__value { font-size: 1.25rem; font-weight: 800; color: var(--primary); }
 .mobile-booking-bar__label { font-size: .75rem; color: var(--text-muted); }
+
+/* ═══════════════════════════════════════════════════════════
+   24. SHARE BUTTONS
+═══════════════════════════════════════════════════════════ */
+.pkg-share-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  border: 1.5px solid var(--border-light);
+  padding: 20px;
+  margin-top: 16px;
+}
+.pkg-share-title {
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0 0 14px;
+}
+.pkg-share-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.share-btn {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-light);
+  background: var(--light-bg);
+  color: var(--text-muted);
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast), color var(--transition-fast),
+              border-color var(--transition-fast), transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+}
+.share-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+}
+.share-btn--whatsapp:hover  { background: #25D366; color: #fff; border-color: #25D366; }
+.share-btn--facebook:hover  { background: #1877F2; color: #fff; border-color: #1877F2; }
+.share-btn--twitter:hover   { background: #000;    color: #fff; border-color: #000; }
+.share-btn--instagram:hover { background: #E1306C; color: #fff; border-color: #E1306C; }
+.share-btn--copy:hover      { background: var(--sea-green); color: #fff; border-color: var(--sea-green); }
+.share-btn--copy.copied     { background: var(--sea-green); color: #fff; border-color: var(--sea-green);
+                               transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,188,212,.28); }
+
+/* Tooltip */
+.share-btn::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--primary);
+  color: var(--white);
+  font-size: .6875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  z-index: 10;
+}
+.share-btn:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Copy feedback */
+.pkg-share-feedback {
+  font-size: .75rem;
+  color: var(--sea-green);
+  font-weight: 500;
+  margin: 10px 0 0;
+  min-height: 1.1em;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.pkg-share-feedback.visible { opacity: 1; }
+
+/* =============================================================
+   25. REVIEWS & RATINGS
+   ============================================================= */
+
+/* Aggregate block */
+.reviews-aggregate {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0 20px;
+  border-bottom: 1.5px solid var(--border-light);
+  margin-bottom: 20px;
+}
+.reviews-avg-score {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.reviews-avg-right {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.reviews-avg-stars {
+  display: flex;
+  gap: 3px;
+}
+.reviews-avg-label {
+  font-size: .8125rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Display stars (read-only) */
+.reviews-star { font-size: 1rem; color: var(--border-light); }
+.reviews-star.filled { color: #F59E0B; }
+
+/* Interactive star picker */
+.star-picker {
+  display: flex;
+  gap: 4px;
+}
+.star-pick {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  font-size: 1.375rem;
+  color: var(--border-light);
+  line-height: 1;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+.star-pick.active,
+.star-pick.hover { color: #F59E0B; }
+.star-pick:hover { transform: scale(1.15); }
+
+/* Review cards list */
+.reviews-empty {
+  font-size: .9375rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 0 8px;
+}
+.review-card {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.review-card:last-child { border-bottom: none; }
+.review-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.review-card__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.review-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.review-card__name {
+  font-size: .9375rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  line-height: 1.2;
+}
+.review-card__date {
+  font-size: .75rem;
+  color: var(--text-muted);
+}
+.review-card__stars {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+.review-card__comment {
+  font-size: .9375rem;
+  color: var(--text-body);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Review form */
+.review-form-wrap {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1.5px solid var(--border-light);
+}
+.review-form-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+.review-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.review-form-label {
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+.review-form-input { width: 100%; }
+.review-form-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 96px;
+}
+.review-form-feedback {
+  font-size: .8125rem;
+  font-weight: 500;
+  min-height: 1.1em;
+  margin-bottom: 12px;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.review-form-feedback.visible { opacity: 1; }
+.review-form-feedback.success { color: var(--sea-green); }
+.review-form-feedback.error   { color: #E53935; }
+.review-form-submit {
+  width: 100%;
+  justify-content: center;
+}
+.review-form-submit:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
