@@ -1,6 +1,10 @@
 /* ============================================================
    MAPUTO BLUE — Design System
    main.css
+
+   Copyright (c) 2026 Maputo Blue. All rights reserved.
+   Designed & developed by Wilson Creative Studio.
+   Unauthorised reproduction or distribution is prohibited.
    ============================================================ */
 
 /* ── 1. CSS CUSTOM PROPERTIES ──────────────────────────────── */
@@ -2737,3 +2741,26 @@ main.tours-main { z-index: auto; }
   opacity: .6;
   cursor: not-allowed;
 }
+
+/* ============================================================
+   PRELOADER
+   ============================================================ */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+#preloader lottie-player {
+  width: 180px;
+  height: 180px;
+}
+
