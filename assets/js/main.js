@@ -2,6 +2,10 @@
  * main.js
  * Global page initialisation — FAQ accordion, scroll-to-top,
  * smooth scroll, lazy image fallback, misc UI enhancements.
+ *
+ * @copyright  2026 Maputo Blue. All rights reserved.
+ * @author     Wilson Creative Studio
+ * @license    Proprietary — Unauthorised use or distribution is prohibited.
  */
 (function () {
   'use strict';

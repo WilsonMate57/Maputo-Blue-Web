@@ -3,6 +3,10 @@
  * Loads JSON data and renders dynamic card grids + sliders.
  * Supports bilingual output — reads `<html lang="">` and uses
  * `field_en` JSON fallbacks when lang is English.
+ *
+ * @copyright  2026 Maputo Blue. All rights reserved.
+ * @author     Wilson Creative Studio
+ * @license    Proprietary — Unauthorised use or distribution is prohibited.
  */
 (function () {
   'use strict';

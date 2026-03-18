@@ -5,6 +5,10 @@
 // Loaded as <script type="module"> on any page that renders tour cards.
 // Works alongside data-loader.js (IIFE) which renders cards asynchronously.
 // A MutationObserver detects when cards are injected and patches them.
+//
+// @copyright  2026 Maputo Blue. All rights reserved.
+// @author     Wilson Creative Studio
+// @license    Proprietary — Unauthorised use or distribution is prohibited.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { loadRatingsMap } from './ratings-cache.js';

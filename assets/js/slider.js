@@ -2,6 +2,10 @@
  * slider.js
  * Custom multi-item and single-item sliders with touch/swipe support.
  * Safe – guards all DOM selectors.
+ *
+ * @copyright  2026 Maputo Blue. All rights reserved.
+ * @author     Wilson Creative Studio
+ * @license    Proprietary — Unauthorised use or distribution is prohibited.
  */
 (function () {
   'use strict';

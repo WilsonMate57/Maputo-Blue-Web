@@ -1,6 +1,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // reviews.js  —  Firebase/Firestore reviews & ratings system
 // Imported as <script type="module"> in package.html pages.
+//
+// @copyright  2026 Maputo Blue. All rights reserved.
+// @author     Wilson Creative Studio
+// @license    Proprietary — Unauthorised use or distribution is prohibited.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { db } from './firebase.js';

@@ -1,6 +1,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // ratings-cache.js  —  Fetch all Firestore reviews once, compute per-package
 //                      averages, and cache the result for the session.
+//
+// @copyright  2026 Maputo Blue. All rights reserved.
+// @author     Wilson Creative Studio
+// @license    Proprietary — Unauthorised use or distribution is prohibited.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { db } from './firebase.js';

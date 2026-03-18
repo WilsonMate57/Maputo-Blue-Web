@@ -2,6 +2,10 @@
  * components.js
  * Fetches and injects navbar.html / navbar-en.html and footer components.
  * Handles path resolution for root, /pages/, and /en/ locations.
+ *
+ * @copyright  2026 Maputo Blue. All rights reserved.
+ * @author     Wilson Creative Studio
+ * @license    Proprietary — Unauthorised use or distribution is prohibited.
  */
 (function () {
   'use strict';

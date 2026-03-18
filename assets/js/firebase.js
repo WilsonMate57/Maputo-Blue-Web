@@ -1,5 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // firebase.js  —  Initialise Firebase app & export Firestore db
+//
+// @copyright  2026 Maputo Blue. All rights reserved.
+// @author     Wilson Creative Studio
+// @license    Proprietary — Unauthorised use or distribution is prohibited.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js';
