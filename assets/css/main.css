@@ -608,22 +608,44 @@ main.tours-main { z-index: auto; }
   height: 100%;
   display: flex;
   align-items: center;
+  overflow: hidden;
+}
+
+/* Background image lives on ::before so only it zooms */
+.hero-slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  transform: scale(1);
+  will-change: transform;
 }
-.hero-slide-1 { background-image: url('../images/hero/hero-1.JPG'); }
-.hero-slide-2 { background-image: url('../images/hero/hero-2.jpg'); }
-.hero-slide-3 { background-image: url('../images/hero/hero-3.jpg'); }
-
-/* Fallback gradient when images fail to load */
+/* Fallback colours */
 .hero-slide-1 { background-color: #0A2540; }
 .hero-slide-2 { background-color: #071B2E; }
 .hero-slide-3 { background-color: #0A2540; }
 
+.hero-slide-1::before { background-image: url('../images/hero/hero-1.JPG'); }
+.hero-slide-2::before { background-image: url('../images/hero/hero-2.jpg'); }
+.hero-slide-3::before { background-image: url('../images/hero/hero-3.jpg'); }
+
+/* Zoom keyframe */
+@keyframes heroZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
+
+/* Trigger zoom only while the slide is active */
+.carousel-item.active .hero-slide::before {
+  animation: heroZoom 7s ease-out forwards;
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(
     135deg,
     rgba(3, 13, 22, 0.8) 0%,
