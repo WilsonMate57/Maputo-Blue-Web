@@ -626,10 +626,22 @@ main.tours-main { z-index: auto; }
 .hero-slide-1 { background-color: #0A2540; }
 .hero-slide-2 { background-color: #071B2E; }
 .hero-slide-3 { background-color: #0A2540; }
+.hero-slide-4 { background-color: #071B2E; }
+.hero-slide-5 { background-color: #0A2540; }
+.hero-slide-6 { background-color: #071B2E; }
+.hero-slide-7 { background-color: #0A2540; }
+.hero-slide-8 { background-color: #071B2E; }
+.hero-slide-9 { background-color: #0A2540; }
 
-.hero-slide-1::before { background-image: url('../images/hero/hero-1.JPG'); }
-.hero-slide-2::before { background-image: url('../images/hero/hero-2.jpg'); }
-.hero-slide-3::before { background-image: url('../images/hero/hero-3.jpg'); }
+.hero-slide-1::before { background-image: url('../images/hero/hero-1.webp'); }
+.hero-slide-2::before { background-image: url('../images/hero/hero-2.webp'); }
+.hero-slide-3::before { background-image: url('../images/hero/hero-3.webp'); }
+.hero-slide-4::before { background-image: url('../images/hero/hero-4.webp'); }
+.hero-slide-5::before { background-image: url('../images/hero/hero-5.webp'); }
+.hero-slide-6::before { background-image: url('../images/hero/hero-6.webp'); }
+.hero-slide-7::before { background-image: url('../images/hero/hero-7.webp'); }
+.hero-slide-8::before { background-image: url('../images/hero/hero-8.webp'); }
+.hero-slide-9::before { background-image: url('../images/hero/hero-9.webp'); }
 
 /* Zoom keyframe */
 @keyframes heroZoom {
@@ -648,9 +660,9 @@ main.tours-main { z-index: auto; }
   z-index: 1;
   background: linear-gradient(
     135deg,
-    rgba(3, 13, 22, 0.8) 0%,
-    rgba(6, 22, 37, 0.55) 50%,
-    rgba(3, 10, 17, 0.3) 100%
+    rgba(3, 13, 22, 0) 0%,
+    rgba(6, 22, 37, 0) 50%,
+    rgba(3, 10, 17, 0) 100%
   );
 }
 .hero-content {
@@ -660,6 +672,10 @@ main.tours-main { z-index: auto; }
   padding-inline: var(--container-px);
   margin-inline: auto;
   width: 100%;
+}
+.hero-content--centered {
+  text-align: center;
+  max-width: 800px;
 }
 .hero-eyebrow {
   display: inline-flex;
@@ -1658,7 +1674,7 @@ main.tours-main { z-index: auto; }
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('../images/hero/hero-1.JPG');
+  background-image: url('../images/hero/hero-1.webp');
   background-size: cover;
   background-position: center;
   opacity: .18;

@@ -67,47 +67,68 @@
   ],
 
   "images": [
-    "../assets/images/tours/passeio-barco/passeio-barco-1.jpg",
-    "../assets/images/tours/passeio-barco/passeio-barco-2.jpeg",
-    "../assets/images/tours/passeio-barco/passeio-barco-3.jpg",
-    "../assets/images/tours/passeio-barco/passeio-barco-4.jpeg"
+    "../assets/images/tours/passeio-barco/passeio-barco-1.webp",
+    "../assets/images/tours/passeio-barco/passeio-barco-2.webp",
+    "../assets/images/tours/passeio-barco/passeio-barco-3.webp",
+    "../assets/images/tours/passeio-barco/passeio-barco-4.webp"
   ],
 
   "itinerary": [
     {
+      "time": "07:45",
+      "title": "Concentração no Ponto de Encontro",
+      "title_en": "Meeting Point Check-in",
+      "description": "Chegue às 07:45 à Maputo Marina / Escola Náutica, ao lado do Waterfront, no fim da Av. 10 de Novembro. Estacionamento disponível no local a 250 MZN por carro/dia.",
+      "description_en": "Arrive by 07:45 at Maputo Marina / Escola Náutica, next to the Waterfront at the end of Av. 10 de Novembro. Parking available on site at 250 MZN per car/day."
+    },
+    {
       "time": "08:00",
-      "title": "Partida da Marina de Maputo",
-      "title_en": "Departure from Maputo Marina",
-      "description": "Saída em direção às ilhas da Baía de Maputo.",
-      "description_en": "Boat departure towards the islands of Maputo Bay."
+      "title": "Partida de Maputo",
+      "title_en": "Departure from Maputo",
+      "description": "Saída em barco da Marina de Maputo em direção a Santa Maria.",
+      "description_en": "Boat departure from Maputo Marina towards Santa Maria."
     },
     {
       "time": "09:00",
-      "title": "Chegada à Ilha dos Portugueses",
-      "title_en": "Arrival at Ilha dos Portugueses",
-      "description": "Paragem para nadar, relaxar na praia e atividades aquáticas.",
-      "description_en": "Stop for swimming, beach relaxation and water activities."
+      "title": "Chegada a Santa Maria",
+      "title_en": "Arrival at Santa Maria",
+      "description": "Tempo livre para snorkel, nadar, explorar os corais e o recife.",
+      "description_en": "Free time for snorkelling, swimming and exploring the corals and reef."
     },
     {
-      "time": "12:00",
-      "title": "Almoço",
-      "title_en": "Lunch",
-      "description": "Almoço servido durante o passeio com vista para o mar.",
-      "description_en": "Lunch served during the trip with sea views."
+      "time": "12:30",
+      "title": "Partida para Vila de Inhaca",
+      "title_en": "Departure to Vila de Inhaca",
+      "description": "Viagem de barco de Santa Maria para a Vila de Inhaca.",
+      "description_en": "Boat trip from Santa Maria to Vila de Inhaca."
     },
     {
-      "time": "14:00",
-      "title": "Exploração da Ilha da Inhaca",
-      "title_en": "Exploration of Inhaca Island",
-      "description": "Tempo livre para explorar a ilha e desfrutar da natureza.",
-      "description_en": "Free time to explore the island and enjoy nature."
+      "time": "13:00",
+      "title": "Chegada à Vila de Inhaca — Almoço",
+      "title_en": "Arrival at Vila de Inhaca — Lunch",
+      "description": "Almoço no Restaurante Lucas na Vila de Inhaca.",
+      "description_en": "Lunch at Restaurante Lucas in Vila de Inhaca."
+    },
+    {
+      "time": "14:30",
+      "title": "Partida para Ilha dos Portugueses",
+      "title_en": "Departure to Ilha dos Portugueses",
+      "description": "Viagem de barco para a Ilha dos Portugueses para desfrutar da praia.",
+      "description_en": "Boat trip to Ilha dos Portugueses to enjoy the beach."
+    },
+    {
+      "time": "16:00",
+      "title": "Partida de Volta a Maputo",
+      "title_en": "Departure Back to Maputo",
+      "description": "Início da viagem de regresso à Marina de Maputo.",
+      "description_en": "Start of the return journey to Maputo Marina."
     },
     {
       "time": "17:00",
-      "title": "Regresso a Maputo",
-      "title_en": "Return to Maputo",
-      "description": "Viagem de regresso à Marina de Maputo.",
-      "description_en": "Return journey to Maputo Marina."
+      "title": "Chegada a Maputo",
+      "title_en": "Arrival in Maputo",
+      "description": "Chegada à Marina de Maputo. Fim do passeio.",
+      "description_en": "Arrival at Maputo Marina. End of the trip."
     }
   ],
 
@@ -118,8 +139,8 @@
   },
 
   "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    "name": "Maputo Marina / Escola Náutica",
+    "address": "Ao lado do Waterfront, no fim da Av. 10 de Novembro, Maputo"
   },
 
   "contact": {
@@ -202,10 +223,10 @@
   },
 
   "images": [
-    "../assets/images/tours/dia-praia-1.jpeg",
-    "../assets/images/tours/dia-praia-4.jpeg",
-    "../assets/images/tours/dia-praia-3.jpg",
-    "../assets/images/tours/dia-praia-2.jpeg"
+    "../assets/images/tours/dia-praia-1.webp",
+    "../assets/images/tours/dia-praia-4.webp",
+    "../assets/images/tours/dia-praia-3.webp",
+    "../assets/images/tours/dia-praia-2.webp"
   ],
 
   "itinerary": [
@@ -321,10 +342,10 @@
   ],
 
   "images": [
-    "../assets/images/tours/farol-inhaca/farol-inhaca-1.jpeg",
-    "../assets/images/tours/farol-inhaca/farol-inhaca-2.jpeg",
-    "../assets/images/tours/farol-inhaca/farol-inhaca-3.jpeg",
-    "../assets/images/tours/farol-inhaca/farol-inhaca-4.jpeg"
+    "../assets/images/tours/farol-inhaca/farol-inhaca-1.webp",
+    "../assets/images/tours/farol-inhaca/farol-inhaca-2.webp",
+    "../assets/images/tours/farol-inhaca/farol-inhaca-3.webp",
+    "../assets/images/tours/farol-inhaca/farol-inhaca-4.webp"
   ],
 
   "itinerary": [
@@ -396,12 +417,12 @@
   "title": "Sunset Cruise",
   "title_en": "Sunset Cruise",
   "location": "Baía de Maputo",
-  "duration": "2 – 3 horas",
-  "duration_en": "2 – 3 hours",
+  "duration": "3 horas",
+  "duration_en": "3 hours",
   "group_size": "Sob consulta",
   "group_size_en": "On request",
   "languages": ["Português", "English"],
-  "price_from": 2500,
+  "price_from": 1600,
   "currency": "MZN",
   "rating": 4.9,
   "reviews_count": 0,
@@ -450,10 +471,10 @@
   },
 
   "images": [
-    "../assets/images/tours/sunset-cruise/sunset-cruise-1.jpeg",
-    "../assets/images/tours/sunset-cruise/sunset-cruise-2.jpeg",
-    "../assets/images/tours/sunset-cruise/sunset-cruise-3.jpeg",
-    "../assets/images/tours/sunset-cruise/sunset-cruise-4.jpeg"
+    "../assets/images/tours/sunset-cruise/sunset-cruise-1.webp",
+    "../assets/images/tours/sunset-cruise/sunset-cruise-2.webp",
+    "../assets/images/tours/sunset-cruise/sunset-cruise-3.webp",
+    "../assets/images/tours/sunset-cruise/sunset-cruise-4.webp"
   ],
 
   "itinerary": [
@@ -571,10 +592,10 @@
   },
 
   "images": [
-    "../assets/images/tours/safari/safari-kruger-1.jpg",
-    "../assets/images/tours/safari/safari-kruger-2.jpg",
-    "../assets/images/tours/safari/safari-kruger-3.jpg",
-    "../assets/images/tours/safari/safari-kruger-4.jpg"
+    "../assets/images/tours/safari/safari-kruger-1.webp",
+    "../assets/images/tours/safari/safari-kruger-2.webp",
+    "../assets/images/tours/safari/safari-kruger-3.webp",
+    "../assets/images/tours/safari/safari-kruger-4.webp"
   ],
 
   "itinerary": [
@@ -730,10 +751,10 @@
   ],
 
   "images": [
-    "../assets/images/tours/safari/safari-maputo-reserve-1.jpg",
-    "../assets/images/tours/safari/safari-maputo-reserve-2.jpg",
-    "../assets/images/tours/safari/safari-maputo-reserve-3.jpg",
-    "../assets/images/tours/safari/safari-maputo-reserve-4.jpg"
+    "../assets/images/tours/safari/safari-maputo-reserve-1.webp",
+    "../assets/images/tours/safari/safari-maputo-reserve-2.webp",
+    "../assets/images/tours/safari/safari-maputo-reserve-3.webp",
+    "../assets/images/tours/safari/safari-maputo-reserve-4.webp"
   ],
 
   "itinerary": [
@@ -877,10 +898,10 @@
   ],
 
   "images": [
-    "../assets/images/tours/safari/eswatini-tour-1.jpeg",
-    "../assets/images/tours/safari/eswatini-tour-2.jpeg",
-    "../assets/images/tours/safari/eswatini-tour-3.jpeg",
-    "../assets/images/tours/safari/eswatini-tour-4.jpeg"
+    "../assets/images/tours/safari/eswatini-tour-1.webp",
+    "../assets/images/tours/safari/eswatini-tour-2.webp",
+    "../assets/images/tours/safari/eswatini-tour-3.webp",
+    "../assets/images/tours/safari/eswatini-tour-4.webp"
   ],
 
   "itinerary": [
@@ -943,15 +964,15 @@
   {
   "id": "maputo-city-transfer",
   "category": "transfers",
-  "title": "Car Transfer – Maputo City",
-  "title_en": "Car Transfer – Maputo City",
+  "title": "Airport Car Transfer – Maputo City",
+  "title_en": "Airport Car Transfer – Maputo City",
   "location": "Maputo",
   "duration": "Conforme rota",
   "duration_en": "As per route",
-  "group_size": "1 – 4 pessoas",
-  "group_size_en": "1 – 4 people",
+  "group_size": "Mínimo 2 pessoas",
+  "group_size_en": "Minimum 2 people",
   "languages": ["Português", "English"],
-  "price_from": 5000,
+  "price_from": 1250,
   "currency": "MZN",
   "rating": 4.8,
   "reviews_count": 0,
@@ -997,8 +1018,8 @@
   ],
 
   "images": [
-    "../assets/images/transfers/car/car-transfer-1.jpeg",
-    "../assets/images/transfers/car/car-transfer-2.jpeg"
+    "../assets/images/transfers/car/car-transfer-1.webp",
+    "../assets/images/transfers/car/car-transfer-2.webp"
   ],
 
   "itinerary": [
@@ -1113,10 +1134,10 @@
   },
 
   "images": [
-    "../assets/images/transfers/boat/boat-transfer-1.jpeg",
-    "../assets/images/transfers/boat/boat-transfer-2.jpeg",
-    "../assets/images/transfers/boat/boat-transfer-3.jpeg",
-    "../assets/images/transfers/boat/boat-transfer-4.jpeg"
+    "../assets/images/transfers/boat/boat-transfer-1.webp",
+    "../assets/images/transfers/boat/boat-transfer-2.webp",
+    "../assets/images/transfers/boat/boat-transfer-3.webp",
+    "../assets/images/transfers/boat/boat-transfer-4.webp"
   ],
 
   "itinerary": [
@@ -1251,10 +1272,10 @@
   },
 
   "images": [
-    "../assets/images/transfers/boat/machangulo-transfer-1.jpeg",
-    "../assets/images/transfers/boat/machangulo-transfer-2.jpeg",
-    "../assets/images/transfers/boat/machangulo-transfer-3.jpeg",
-    "../assets/images/transfers/boat/machangulo-transfer-4.jpeg"
+    "../assets/images/transfers/boat/machangulo-transfer-1.webp",
+    "../assets/images/transfers/boat/machangulo-transfer-2.webp",
+    "../assets/images/transfers/boat/machangulo-transfer-3.webp",
+    "../assets/images/transfers/boat/machangulo-transfer-4.webp"
   ],
 
   "itinerary": [
@@ -1394,10 +1415,10 @@
   },
 
   "images": [
-    "../assets/images/tours/city-tours/maputo-city-tour-1.jpeg",
-    "../assets/images/tours/city-tours/maputo-city-tour-2.jpeg",
-    "../assets/images/tours/city-tours/maputo-city-tour-3.jpeg",
-    "../assets/images/tours/city-tours/maputo-city-tour-4.jpeg"
+    "../assets/images/tours/city-tours/maputo-city-tour-1.webp",
+    "../assets/images/tours/city-tours/maputo-city-tour-2.webp",
+    "../assets/images/tours/city-tours/maputo-city-tour-3.webp",
+    "../assets/images/tours/city-tours/maputo-city-tour-4.webp"
   ],
 
   "itinerary": [
@@ -1473,7 +1494,7 @@
 
   {
     "id": "observacao-baleias",
-    "category": "sea-activities",
+    "category": "whale-watching",
     "title": "Excursão de Observação de Baleias",
     "title_en": "Whale Watching Excursion",
     "location": "Baía de Maputo",
@@ -1482,12 +1503,12 @@
     "group_size": "Mín. 2 pessoas",
     "group_size_en": "Min. 2 people",
     "languages": ["Português", "English"],
-    "price_from": 8500,
-    "child_price": 7500,
+    "price_from": 7500,
+    "child_price": 5500,
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Sea Activities",
+    "badge": "Whale Watching",
     "description": "Viva a emoção de observar baleias em liberdade nas águas da Baía de Maputo. Esta excursão única combina o avistamento de baleias jubarte com uma paragem nas praias paradisíacas da Ilha da Inhaca ou da Ilha dos Portugueses — uma experiência inesquecível para toda a família.",
     "description_en": "Experience the thrill of watching whales in the wild waters of Maputo Bay. This unique excursion combines humpback whale sightings with a stop at the paradisiacal beaches of Inhaca Island or Ilha dos Portugueses — an unforgettable experience for the whole family.",
     "highlights": [
@@ -1531,10 +1552,10 @@
       "Personal expenses"
     ],
     "images": [
-      "../assets/images/tours/sea-activities/whale-watching-1.jpg",
-      "../assets/images/tours/sea-activities/whale-watching-2.jpg",
-      "../assets/images/tours/sea-activities/whale-watching-3.jpg",
-      "../assets/images/tours/sea-activities/whale-watching-4.jpg"
+      "../assets/images/tours/sea-activities/whale-watching-1.webp",
+      "../assets/images/tours/sea-activities/whale-watching-2.webp",
+      "../assets/images/tours/sea-activities/whale-watching-3.webp",
+      "../assets/images/tours/sea-activities/whale-watching-4.webp"
     ],
     "itinerary": [
       {
@@ -1602,7 +1623,7 @@
 
   {
     "id": "pesca-alto-mar",
-    "category": "sea-activities",
+    "category": "fishing-charters",
     "title": "Pesca de Alto Mar",
     "title_en": "Deep Sea Fishing",
     "location": "Baía de Maputo / Oceano Índico",
@@ -1615,7 +1636,7 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Sea Activities",
+    "badge": "Fishing Charters",
     "description": "Embarque numa emocionante aventura de pesca de alto mar nas águas ricas do Oceano Índico a partir da Marina de Maputo. Com embarcações de diferentes capacidades e todo o equipamento de pesca incluído, esta experiência é ideal para amadores e pescadores experientes — Wahoo, Marlin, Atum, Dourado, Sailfish e muito mais à espera.",
     "description_en": "Embark on an exciting deep sea fishing adventure in the rich waters of the Indian Ocean from Maputo Marina. With boats of different capacities and all fishing equipment included, this experience is ideal for amateurs and experienced anglers alike — Wahoo, Marlin, Tuna, Dorado, Sailfish and much more awaiting.",
     "highlights": [
@@ -1665,10 +1686,10 @@
       "Transport to the marina"
     ],
     "images": [
-      "../assets/images/tours/sea-activities/fishing-1.jpeg",
-      "../assets/images/tours/sea-activities/fishing-2.jpeg",
-      "../assets/images/tours/sea-activities/fishing-3.jpeg",
-      "../assets/images/tours/sea-activities/fishing-4.jpeg"
+      "../assets/images/tours/sea-activities/fishing-1.webp",
+      "../assets/images/tours/sea-activities/fishing-2.webp",
+      "../assets/images/tours/sea-activities/fishing-3.webp",
+      "../assets/images/tours/sea-activities/fishing-4.webp"
     ],
     "itinerary": [
       {

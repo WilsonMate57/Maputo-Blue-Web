@@ -131,7 +131,7 @@
     const detailUrl = `${PAGES_PREFIX}package.html?id=${tour.id}`;
 
     return `
-<article class="tour-card" data-category="${tour.category}" data-id="${tour.id}">
+<article class="tour-card" data-category="${tour.category}" data-id="${tour.id}" onclick="location.href='${detailUrl}'" style="cursor:pointer">
   <div class="tour-card-image">
     ${imgTag}
     <div class="tour-card-badge">${badge}</div>
@@ -170,8 +170,9 @@
       .map(a => `<span class="amenity-chip"><i class='bx bx-check'></i>${a}</span>`)
       .join('');
 
+    const accUrl = `${PAGES_PREFIX}package.html?id=${acc.id}&type=accommodation`;
     return `
-<article class="accommodation-card" data-category="${acc.category}" data-id="${acc.id}">
+<article class="accommodation-card" data-category="${acc.category}" data-id="${acc.id}" onclick="location.href='${accUrl}'" style="cursor:pointer">
   <div class="accommodation-card-image">${imgTag}</div>
   <div class="accommodation-card-body">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
@@ -217,7 +218,8 @@
       'safaris':          tours.filter(t => t.category === 'safaris'),
       'transfers':        tours.filter(t => t.category === 'transfers'),
       'maputo-city-tour': tours.filter(t => t.category === 'maputo-city-tour'),
-      'sea-activities':   tours.filter(t => t.category === 'sea-activities'),
+      'whale-watching':   tours.filter(t => t.category === 'whale-watching'),
+      'fishing-charters': tours.filter(t => t.category === 'fishing-charters'),
       'accommodation':    accs,
     };
 
@@ -234,16 +236,26 @@
         .join('');
     }
 
+    const STORAGE_KEY = 'mb_active_category';
+
     tabsEl.querySelectorAll('.category-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         tabsEl.querySelectorAll('.category-tab').forEach(tb => tb.classList.remove('active'));
         tab.classList.add('active');
+        localStorage.setItem(STORAGE_KEY, tab.dataset.category);
         renderGrid(tab.dataset.category);
       });
     });
 
-    const firstActive = tabsEl.querySelector('.category-tab.active');
-    if (firstActive) renderGrid(firstActive.dataset.category);
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const toActivate = saved
+      ? tabsEl.querySelector(`.category-tab[data-category="${saved}"]`)
+      : tabsEl.querySelector('.category-tab.active');
+    if (toActivate) {
+      tabsEl.querySelectorAll('.category-tab').forEach(tb => tb.classList.remove('active'));
+      toActivate.classList.add('active');
+      renderGrid(toActivate.dataset.category);
+    }
   }
 
   /* ── Full Tours Grid (tours.html / en/tours.html) ────────── */

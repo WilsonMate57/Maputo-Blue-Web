@@ -42,10 +42,10 @@
   ],
 
   "images": [
-    "../assets/images/accommodations/inhaca-package/inhaca-1.jpeg",
-    "../assets/images/accommodations/inhaca-package/inhaca-2.jpeg",
-    "../assets/images/accommodations/inhaca-package/inhaca-3.jpeg",
-    "../assets/images/accommodations/inhaca-package/inhaca-4.jpeg"
+    "../assets/images/accommodations/inhaca-package/inhaca-1.webp",
+    "../assets/images/accommodations/inhaca-package/inhaca-2.webp",
+    "../assets/images/accommodations/inhaca-package/inhaca-3.webp",
+    "../assets/images/accommodations/inhaca-package/inhaca-4.webp"
   ],
 
   "highlights": [
@@ -159,161 +159,6 @@
   }
 },
   {
-  "id": "mad-marlin-inhaca",
-  "category": "inhaca",
-  "name": "Mad Marlin Lodge",
-  "location": "Vila da Inhaca, Ilha de Inhaca",
-  "duration": "2 dias / 1 noite",
-  "duration_en": "2 days / 1 night",
-  "group_size": "Sob consulta",
-  "group_size_en": "On request",
-  "languages": [
-    "Português",
-    "English"
-  ],
-  "difficulty": "Fácil",
-  "price_per_night": 10500,
-  "child_price": 6500,
-  "currency": "MZN",
-  "rating": 4.6,
-  "reviews_count": 0,
-  "badge": "Beach Lodge",
-
-  "description": "Mad Marlin Lodge está localizado na vila da Inhaca, próximo ao aeródromo e mesmo na rua da praia, de frente para a Ilha dos Portugueses. O lodge oferece uma experiência tranquila na Ilha de Inhaca com acesso fácil às praias, atividades marinhas e excursões locais.",
-  "description_en": "Mad Marlin Lodge is located in Inhaca village, close to the airstrip and right on the beach road, facing Portuguese Island. The lodge offers a peaceful Inhaca Island experience with easy access to beaches, marine activities, and local excursions.",
-
-  "amenities": [
-    "Piscina pequena",
-    "Restaurante Self Service",
-    "Frente para o mar",
-    "Áreas de descanso",
-    "Snorkeling",
-    "Passeios locais"
-  ],
-
-  "rooms": [
-    {
-      "type": "Quarto Standard",
-      "price": null,
-      "capacity": 2,
-      "description": "Quarto confortável em lodge de madeira com camas individuais ou casal.",
-      "description_en": "Comfortable wooden lodge room with twin or double bed options."
-    }
-  ],
-
-  "images": [
-    "../assets/images/accommodations/mad-marlin/mad-marlin-1.jpg",
-    "../assets/images/accommodations/mad-marlin/mad-marlin-2.jpg",
-    "../assets/images/accommodations/mad-marlin/mad-marlin-3.jpg",
-    "../assets/images/accommodations/mad-marlin/mad-marlin-4.jpg"
-  ],
-
-  "highlights": [
-    "Localização frente para a Ilha dos Portugueses",
-    "Passeio incluído à Praia de Santa Maria",
-    "Snorkeling nas águas cristalinas da ilha",
-    "Ambiente tranquilo na vila da Inhaca"
-  ],
-  "highlights_en": [
-    "Beachfront location facing Portuguese Island",
-    "Included trip to Santa Maria Beach",
-    "Snorkeling in the island's crystal-clear waters",
-    "Peaceful atmosphere in Inhaca village"
-  ],
-
-  "included": [
-    "Acomodação",
-    "Transfer de barco ida e volta",
-    "Pequeno almoço",
-    "Tour à Praia de Santa Maria",
-    "Snorkeling",
-    "Taxas da marina"
-  ],
-  "included_en": [
-    "Accommodation",
-    "Return speedboat transfer",
-    "Breakfast",
-    "Tour to Santa Maria Beach",
-    "Snorkeling",
-    "Marina fees"
-  ],
-
-  "excluded": [
-    "Almoço e jantar",
-    "Bebidas alcoólicas",
-    "Atividades opcionais",
-    "Despesas pessoais"
-  ],
-  "excluded_en": [
-    "Lunch and dinner",
-    "Alcoholic beverages",
-    "Optional activities",
-    "Personal expenses"
-  ],
-
-  "itinerary": [
-    {
-      "day": 1,
-      "time": "08:00",
-      "title": "Partida de Maputo",
-      "title_en": "Departure from Maputo",
-      "description": "Transfer de barco desde Maputo Marina para a Ilha de Inhaca.",
-      "description_en": "Speedboat transfer from Maputo Marina to Inhaca Island."
-    },
-    {
-      "day": 1,
-      "time": "09:00",
-      "title": "Check-in no Lodge",
-      "title_en": "Lodge Check-in",
-      "description": "Chegada ao Mad Marlin Lodge e tempo livre para explorar a ilha.",
-      "description_en": "Arrival at Mad Marlin Lodge and free time to explore the island."
-    },
-    {
-      "day": 1,
-      "time": "14:00",
-      "title": "Tour Santa Maria",
-      "title_en": "Santa Maria Tour",
-      "description": "Excursão opcional ou incluída à famosa Praia de Santa Maria.",
-      "description_en": "Optional or included excursion to the famous Santa Maria Beach."
-    },
-    {
-      "day": 2,
-      "time": "08:30",
-      "title": "Pequeno Almoço",
-      "title_en": "Breakfast",
-      "description": "Pequeno almoço servido no lodge.",
-      "description_en": "Breakfast served at the lodge."
-    },
-    {
-      "day": 2,
-      "time": "14:00",
-      "title": "Regresso a Maputo",
-      "title_en": "Return to Maputo",
-      "description": "Transfer de barco de volta à Maputo Marina.",
-      "description_en": "Speedboat transfer back to Maputo Marina."
-    }
-  ],
-
-  "check_in": "09:00",
-  "check_out": "14:00",
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "map_location": {
-    "lat": -25.995,
-    "lng": 32.939,
-    "label": "Mad Marlin Lodge — Ilha de Inhaca"
-  }
-},
-  {
   "id": "machangulo-beach-lodge-1-night",
   "category": "machangulo",
   "name": "Machangulo Beach Lodge",
@@ -327,7 +172,7 @@
     "English"
   ],
   "difficulty": "Fácil",
-  "price_per_night": 16950,
+  "price_per_night": 19950,
   "child_price": "consulta",
   "currency": "MZN",
   "rating": 4.9,
@@ -358,10 +203,10 @@
   ],
 
   "images": [
-    "../assets/images/accommodations/machangulo/machangulo-beach-lodge-1.jpg",
-    "../assets/images/accommodations/machangulo/machangulo-beach-lodge-2.jpg",
-    "../assets/images/accommodations/machangulo/machangulo-beach-lodge-3.jpg",
-    "../assets/images/accommodations/machangulo/machangulo-beach-lodge-4.jpg"
+    "../assets/images/accommodations/machangulo/machangulo-beach-lodge-1.webp",
+    "../assets/images/accommodations/machangulo/machangulo-beach-lodge-2.webp",
+    "../assets/images/accommodations/machangulo/machangulo-beach-lodge-3.webp",
+    "../assets/images/accommodations/machangulo/machangulo-beach-lodge-4.webp"
   ],
 
   "highlights": [
@@ -523,10 +368,10 @@
   ],
 
   "images": [
-    "../assets/images/accommodations/villa-martins/villa-martins-1.jpeg",
-    "../assets/images/accommodations/villa-martins/villa-martins-2.jpeg",
-    "../assets/images/accommodations/villa-martins/villa-martins-4.jpg",
-    "../assets/images/accommodations/villa-martins/villa-martins-3.jpg"
+    "../assets/images/accommodations/villa-martins/villa-martins-1.webp",
+    "../assets/images/accommodations/villa-martins/villa-martins-2.webp",
+    "../assets/images/accommodations/villa-martins/villa-martins-4.webp",
+    "../assets/images/accommodations/villa-martins/villa-martins-3.webp"
   ],
 
   "highlights": [
@@ -666,10 +511,10 @@
   ],
 
   "images": [
-    "../assets/images/accommodations/manico-camp/manico-camp-1.jpeg",
-    "../assets/images/accommodations/manico-camp/manico-camp-2.jpeg",
-    "../assets/images/accommodations/manico-camp/manico-camp-3.jpeg",
-    "../assets/images/accommodations/manico-camp/manico-camp-4.jpeg"
+    "../assets/images/accommodations/manico-camp/manico-camp-1.webp",
+    "../assets/images/accommodations/manico-camp/manico-camp-2.webp",
+    "../assets/images/accommodations/manico-camp/manico-camp-3.webp",
+    "../assets/images/accommodations/manico-camp/manico-camp-4.webp"
   ],
 
   "highlights": [
