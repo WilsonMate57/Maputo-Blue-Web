@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Boat Charter | Maputo Blue</title>
+  <meta name="description" content="Book your private boat charter with Maputo Blue. Select your destination, add extras and get an instant total.">
+  <meta name="author" content="Maputo Blue">
+  <meta name="robots" content="noindex">
+  <link rel="alternate" hreflang="en" href="https://www.maputoblue.com/en/charter-booking.html">
+  <link rel="alternate" hreflang="pt" href="https://www.maputoblue.com/pages/charter-booking.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="icon" type="image/png" href="../logo.webp">
+</head>
+<body>
+
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <div id="preloader" aria-hidden="true">
+    <lottie-player src="../assets/preloader/boat steering.json" background="transparent" speed="1" loop autoplay></lottie-player>
+  </div>
+  <script>(function(){var t=Date.now();function hide(){document.getElementById('preloader').classList.add('hidden');}window.addEventListener('load',function(){var elapsed=Date.now()-t;var remaining=3000-elapsed;if(remaining<=0){hide();}else{setTimeout(hide,remaining);}});})();</script>
+
+  <div id="navbar-placeholder"></div>
+
+  <!-- Lightbox -->
+  <div class="pkg-lightbox" id="pkg-lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery">
+    <div class="pkg-lightbox__backdrop" id="lightbox-backdrop"></div>
+    <button class="pkg-lightbox__close" id="lightbox-close" aria-label="Close gallery"><i class='bx bx-x'></i></button>
+    <button class="pkg-lightbox__nav pkg-lightbox__nav--prev" id="lightbox-prev" aria-label="Previous photo"><i class='bx bx-chevron-left'></i></button>
+    <button class="pkg-lightbox__nav pkg-lightbox__nav--next" id="lightbox-next" aria-label="Next photo"><i class='bx bx-chevron-right'></i></button>
+    <div class="pkg-lightbox__inner">
+      <img class="pkg-lightbox__main-img" id="lightbox-img" src="" alt="">
+      <div class="pkg-lightbox__caption" id="lightbox-caption"></div>
+      <div class="pkg-lightbox__thumbs" id="lightbox-thumbs"></div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- Breadcrumb -->
+    <div style="background:var(--white);border-bottom:1px solid var(--border-light);padding:14px 0;">
+      <div class="mb-container">
+        <nav style="display:flex;align-items:center;gap:4px;font-size:.875rem;flex-wrap:wrap;" aria-label="Breadcrumb">
+          <a href="index.html" style="color:var(--sea-green);text-decoration:none;">Home</a>
+          <span style="color:var(--border-light);margin:0 4px;">/</span>
+          <a href="services.html" style="color:var(--sea-green);text-decoration:none;">Services</a>
+          <span style="color:var(--border-light);margin:0 4px;">/</span>
+          <span id="cb-breadcrumb" style="color:var(--text-body);">Private Boat</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Gallery -->
+    <div style="background:var(--white);padding:24px 0 0;">
+      <div class="mb-container">
+        <div class="pkg-gallery" id="pkg-gallery" aria-label="Photo gallery">
+          <div class="pkg-gallery__main" id="gallery-slot-main">
+            <img src="" alt="Boat main photo" id="gallery-img-main">
+          </div>
+          <div class="pkg-gallery__side" id="gallery-slot-side1">
+            <img src="" alt="Photo 2" id="gallery-img-side1">
+          </div>
+          <div class="pkg-gallery__side" id="gallery-slot-side2">
+            <img src="" alt="Photo 3" id="gallery-img-side2">
+          </div>
+          <span class="pkg-gallery__counter" id="gallery-counter"></span>
+          <button class="pkg-gallery__all-btn" id="gallery-all-btn" aria-label="View all photos">
+            <i class='bx bx-grid-alt'></i>View all photos
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <section style="background:var(--light-bg);padding:36px 0 80px;">
+      <div class="mb-container">
+        <div class="row g-5">
+
+          <!-- ── LEFT COLUMN ─────────────────────────────────── -->
+          <div class="col-lg-8">
+
+            <!-- Title + rating -->
+            <div style="margin-bottom:4px;">
+              <h1 id="cb-title" style="font-size:clamp(1.5rem,3vw,2.125rem);font-weight:800;color:var(--primary);margin-bottom:10px;"></h1>
+              <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                <span style="display:flex;align-items:center;gap:5px;font-size:.875rem;color:var(--text-muted);">
+                  <i class='bx bx-map-pin' style="color:var(--sea-green);"></i>
+                  <span>Maputo Marina, Mozambique</span>
+                </span>
+                <div class="star-rating" id="package-rating"></div>
+                <span style="font-size:.875rem;color:var(--text-muted);" id="package-reviews-count"></span>
+              </div>
+            </div>
+
+            <!-- Overview bar -->
+            <div class="pkg-overview-bar">
+              <div class="pkg-overview-item">
+                <i class='bx bx-group'></i>
+                <span class="pkg-overview-item__label">Capacity</span>
+                <span class="pkg-overview-item__value" id="cb-capacity">—</span>
+              </div>
+              <div class="pkg-overview-item">
+                <i class='bx bx-map'></i>
+                <span class="pkg-overview-item__label">Destinations</span>
+                <span class="pkg-overview-item__value" id="cb-dest-count">—</span>
+              </div>
+              <div class="pkg-overview-item">
+                <i class='bx bx-time-five'></i>
+                <span class="pkg-overview-item__label">Typical Duration</span>
+                <span class="pkg-overview-item__value" id="cb-duration">—</span>
+              </div>
+              <div class="pkg-overview-item">
+                <i class='bx bx-walk'></i>
+                <span class="pkg-overview-item__label">Level</span>
+                <span class="pkg-overview-item__value">Easy</span>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:14px;">About This Boat</h2>
+              <p id="cb-desc" style="color:var(--text-muted);line-height:1.8;font-size:.9375rem;margin:0;"></p>
+            </div>
+
+            <!-- Highlights -->
+            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:16px;">
+                <i class='bx bxs-star' style="color:var(--sea-green);margin-right:6px;"></i>Highlights
+              </h2>
+              <ul id="cb-highlights" style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;"></ul>
+            </div>
+
+            <!-- Included / Not Included -->
+            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <h2 style="font-size:1.0625rem;font-weight:700;color:var(--primary);margin-bottom:14px;">
+                    <i class='bx bx-check-circle' style="color:var(--sea-green);margin-right:6px;"></i>Included
+                  </h2>
+                  <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Experienced skipper</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Life jackets</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Fuel</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Safety equipment</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>On-board cooler box</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h2 style="font-size:1.0625rem;font-weight:700;color:var(--primary);margin-bottom:14px;">
+                    <i class='bx bx-x-circle' style="color:#EF4444;margin-right:6px;"></i>Not Included
+                  </h2>
+                  <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Marina tax (100 MZN/person)</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Inhaca Reserve fee</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Snorkeling fee</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Snorkeling gear rental</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Parking</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Destination Options -->
+            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:6px;">
+                <i class='bx bx-map' style="color:var(--sea-green);margin-right:6px;"></i>Choose Your Destination
+              </h2>
+              <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:18px;">Select a destination to calculate the total price.</p>
+
+              <!-- Catamaran pax stepper -->
+              <div id="cb-pax-section" style="display:none;margin-bottom:20px;">
+                <label style="font-size:.875rem;font-weight:600;color:var(--text-dark);display:block;margin-bottom:10px;">
+                  <i class='bx bx-group' style="color:var(--sea-green);margin-right:4px;"></i>Number of People
+                </label>
+                <div style="display:flex;align-items:center;gap:14px;">
+                  <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);overflow:hidden;display:inline-flex;align-items:center;">
+                    <button class="stepper-btn" id="pax-minus" type="button" style="width:42px;height:42px;" aria-label="Decrease">−</button>
+                    <span id="pax-count" style="min-width:46px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-size:.9375rem;font-weight:700;color:var(--primary);border-left:1.5px solid var(--border-light);border-right:1.5px solid var(--border-light);">1</span>
+                    <button class="stepper-btn" id="pax-plus"  type="button" style="width:42px;height:42px;" aria-label="Increase">+</button>
+                  </div>
+                  <span id="cb-pax-note" style="font-size:.8125rem;color:var(--text-muted);"></span>
+                </div>
+              </div>
+
+              <div id="cb-dest-options" style="display:flex;flex-direction:column;gap:10px;"></div>
+            </div>
+
+            <!-- Extras -->
+            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:6px;">
+                <i class='bx bx-package' style="color:var(--sea-green);margin-right:6px;"></i>Extras
+              </h2>
+              <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:18px;">Additional fees and equipment — priced per person, kit or vehicle.</p>
+              <div id="cb-extras" style="display:flex;flex-direction:column;gap:10px;"></div>
+            </div>
+
+            <!-- Reviews -->
+            <!-- Reviews -->
+            <div id="reviews-aggregate"></div>
+            <div id="fb-reviews-list"></div>
+            <div id="fb-review-form"></div>
+
+          </div><!-- /col-lg-8 -->
+
+          <!-- ── RIGHT COLUMN ────────────────────────────────── -->
+          <div class="col-lg-4">
+            <div class="pkg-sidebar-sticky">
+
+              <!-- Booking Card -->
+              <div class="booking-card" aria-label="Booking summary">
+
+                <!-- Price -->
+                <div class="booking-card__price-row">
+                  <div>
+                    <span class="booking-card__price-from">From</span>
+                    <div style="display:flex;align-items:baseline;gap:6px;">
+                      <span class="booking-card__price-value" id="cb-starting-price">— MZN</span>
+                    </div>
+                    <span class="booking-card__price-unit" id="cb-price-unit">/ per boat</span>
+                  </div>
+                  <div class="booking-card__rating">
+                    <div class="star-rating" id="booking-rating"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
+                    <span style="font-size:.75rem;color:var(--text-muted);" id="booking-reviews-count"></span>
+                  </div>
+                </div>
+
+                <!-- Date -->
+                <div style="margin-bottom:16px;">
+                  <label for="cb-date" class="booking-input-label">Date</label>
+                  <input type="date" id="cb-date" class="booking-input" aria-label="Select date">
+                </div>
+
+                <!-- Pax stepper — catamaran only -->
+                <div id="cb-card-pax" style="display:none;margin-bottom:16px;">
+                  <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);overflow:hidden;">
+                    <div class="booking-stepper-row" style="padding:12px 16px;">
+                      <div>
+                        <div class="booking-stepper-label">People</div>
+                        <div class="booking-stepper-sublabel" id="cb-pax-max-note">Max. 50 people</div>
+                      </div>
+                      <div class="booking-stepper-controls">
+                        <button class="stepper-btn" id="card-pax-minus" aria-label="Decrease" disabled>−</button>
+                        <span class="stepper-count" id="card-pax-count">1</span>
+                        <button class="stepper-btn" id="card-pax-plus" aria-label="Increase">+</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Selected destination -->
+                <div id="cb-card-dest-row" style="display:none;padding:12px 14px;background:var(--light-bg);border-radius:var(--radius-md);border:1px solid var(--border-light);margin-bottom:12px;font-size:.875rem;">
+                  <div style="color:var(--text-muted);margin-bottom:2px;">Selected destination</div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span id="cb-card-dest-name" style="font-weight:600;color:var(--primary);"></span>
+                    <span id="cb-card-dest-price" style="font-weight:700;color:var(--primary);"></span>
+                  </div>
+                </div>
+
+                <!-- Extras selected list -->
+                <div id="cb-card-extras-section" style="display:none;padding:12px 14px;background:var(--light-bg);border-radius:var(--radius-md);border:1px solid var(--border-light);margin-bottom:12px;">
+                  <div style="color:var(--text-muted);font-size:.8125rem;margin-bottom:8px;">Selected extras</div>
+                  <div id="cb-card-extras-list" style="display:flex;flex-direction:column;gap:6px;font-size:.875rem;"></div>
+                </div>
+
+                <!-- Total -->
+                <div class="booking-total-row" style="margin-bottom:16px;">
+                  <span class="booking-total-label">Estimated total</span>
+                  <span class="booking-total-value" id="cb-total">0 MZN</span>
+                </div>
+
+                <!-- CTA -->
+                <button id="cb-whatsapp-btn"
+                  type="button"
+                  class="btn-primary-mb"
+                  style="width:100%;justify-content:center;font-size:1rem;padding:15px;border-radius:var(--radius-md);display:flex;align-items:center;gap:8px;opacity:.5;cursor:not-allowed;"
+                  disabled
+                  aria-label="Confirm booking via WhatsApp">
+                  <i class='bx bxl-whatsapp'></i>Confirm via WhatsApp
+                </button>
+                <p id="cb-hint" style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:8px;margin-bottom:0;">Select a destination to activate</p>
+
+                <!-- Trust -->
+                <div class="booking-trust" style="margin-top:16px;">
+                  <div class="booking-trust-item"><i class='bx bx-shield-check'></i>100% secure booking</div>
+                  <div class="booking-trust-item"><i class='bx bx-support'></i>24/7 support</div>
+                  <div class="booking-trust-item"><i class='bx bx-refresh'></i>Flexible cancellation</div>
+                </div>
+
+              </div><!-- /booking-card -->
+
+              <!-- Host card -->
+              <div class="host-card">
+                <div class="host-card__profile">
+                  <div class="host-card__avatar">MB</div>
+                  <div>
+                    <div class="host-card__name">Maputo Blue</div>
+                    <div class="host-card__label">Verified operator</div>
+                  </div>
+                </div>
+                <div class="host-card__response-rate">
+                  <i class='bx bx-time'></i>Responds in under 1 hour
+                </div>
+                <a href="https://wa.me/258847121666?text=Hello%2C+I+have+a+question+about+the+private+boat+charter."
+                   class="btn-outline-mb"
+                   target="_blank" rel="noopener"
+                   style="width:100%;justify-content:center;display:flex;align-items:center;gap:8px;">
+                  <i class='bx bxl-whatsapp'></i>Ask a Question
+                </a>
+              </div>
+
+              <!-- Share card -->
+              <div class="pkg-share-card">
+                <p class="pkg-share-title">Share this page</p>
+                <div class="pkg-share-buttons" role="list">
+                  <button class="share-btn share-btn--whatsapp" id="share-whatsapp" data-tooltip="WhatsApp"    type="button"><i class='bx bxl-whatsapp'></i></button>
+                  <button class="share-btn share-btn--facebook" id="share-facebook" data-tooltip="Facebook"    type="button"><i class='bx bxl-facebook'></i></button>
+                  <button class="share-btn share-btn--twitter"  id="share-twitter"  data-tooltip="X / Twitter" type="button"><i class='bx bxl-twitter'></i></button>
+                  <button class="share-btn share-btn--copy"     id="share-copy"     data-tooltip="Copy link"   type="button"><i class='bx bx-link'></i></button>
+                </div>
+                <p class="pkg-share-feedback" id="pkg-share-feedback" aria-live="polite"></p>
+              </div>
+
+            </div><!-- /pkg-sidebar-sticky -->
+          </div><!-- /col-lg-4 -->
+
+        </div><!-- /row -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Booking Bar -->
+  <div class="mobile-booking-bar" id="mobile-booking-bar">
+    <div>
+      <div class="mobile-booking-bar__value" id="cb-mobile-price">— MZN</div>
+      <div class="mobile-booking-bar__label" id="cb-mobile-label">from / per boat</div>
+    </div>
+    <button id="cb-mobile-btn" type="button" class="btn-primary-mb"
+      style="padding:12px 28px;white-space:nowrap;flex-shrink:0;" disabled>
+      <i class='bx bxl-whatsapp'></i>Book
+    </button>
+  </div>
+
+  <div id="footer-placeholder"></div>
+  <button class="scroll-to-top" aria-label="Back to top"><i class='bx bx-chevron-up'></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var BOATS = {
+      '5': {
+        name: 'Private Boat — 5 People',
+        breadcrumb: '5-Seater Boat',
+        desc: 'A fast and agile vessel, perfect for families and small groups seeking total privacy. Cruise through the crystal-clear waters of Maputo with the flexibility to set your own pace and explore your favourite destinations.',
+        capacity: 'Up to 5 people',
+        destCount: '6 destinations',
+        duration: 'Full day',
+        startingPrice: 8000,
+        priceUnit: '/ per boat',
+        isCatamaran: false,
+        images: [
+          '../assets/images/private-charter/5-seater-1.webp',
+          '../assets/images/private-charter/5-seater-2.webp',
+          '../assets/images/private-charter/5-seater-3.webp',
+          '../assets/images/private-charter/5-seater-4.webp'
+        ],
+        highlights: [
+          'Fast and agile vessel for small groups',
+          'Perfect for families and couples',
+          'Access to 6 destinations — islands, beaches and bays',
+          'Experienced skipper and safety equipment included',
+          'Ideal for snorkelling and coastal exploration'
+        ],
+        destinations: [
+          { id: 'santa-maria-inhaca-port', label: 'Santa Maria + Inhaca + Ilha dos Portugueses', price: 20000 },
+          { id: 'inhaca-port',             label: 'Inhaca + Ilha dos Portugueses',               price: 18000 },
+          { id: 'maputo-bay',              label: 'Maputo Bay',                             price: 8000  },
+          { id: 'xefina',                  label: 'Xefina Island',                          price: 14000 },
+          { id: 'transfer-inhaca',         label: 'Transfer — Inhaca',                      price: 15000 },
+          { id: 'transfer-machangulo',     label: 'Transfer — Machangulo',                  price: 16000 }
+        ]
+      },
+      '11': {
+        name: 'Private Boat — 11 People',
+        breadcrumb: '11-Seater Boat',
+        desc: 'Space and comfort on board for medium-sized groups. Ideal for celebrations, birthdays or getaways with friends. With 6 available destinations, this vessel combines capacity and versatility for an unforgettable experience.',
+        capacity: 'Up to 11 people',
+        destCount: '6 destinations',
+        duration: 'Full day',
+        startingPrice: 10000,
+        priceUnit: '/ per boat',
+        isCatamaran: false,
+        images: [
+          '../assets/images/private-charter/11-seater-1.webp',
+          '../assets/images/private-charter/11-seater-2.webp',
+          '../assets/images/private-charter/11-seater-3.webp',
+          '../assets/images/private-charter/11-seater-4.webp'
+        ],
+        highlights: [
+          'Spacious on-board area for medium groups',
+          'Great for celebrations and group events',
+          'Access to 6 destinations — islands, beaches and bays',
+          'Experienced skipper and safety equipment included',
+          'On-board cooler box for your drinks'
+        ],
+        destinations: [
+          { id: 'santa-maria-inhaca-port', label: 'Santa Maria + Inhaca + Ilha dos Portugueses', price: 35000 },
+          { id: 'inhaca-port',             label: 'Inhaca + Ilha dos Portugueses',               price: 30000 },
+          { id: 'maputo-bay',              label: 'Maputo Bay',                             price: 10000 },
+          { id: 'xefina',                  label: 'Xefina Island',                          price: 20000 },
+          { id: 'transfer-inhaca',         label: 'Transfer — Inhaca',                      price: 20000 },
+          { id: 'transfer-machangulo',     label: 'Transfer — Machangulo',                  price: 23000 }
+        ]
+      },
+      '13': {
+        name: 'Private Boat — 13 People',
+        breadcrumb: '13-Seater Boat',
+        desc: 'Extended capacity with every comfort. An excellent choice for larger groups, corporate events or school outings. Full privacy and flexibility to explore the most exclusive destinations along the Maputo coast.',
+        capacity: 'Up to 13 people',
+        destCount: '6 destinations',
+        duration: 'Full day',
+        startingPrice: 10000,
+        priceUnit: '/ per boat',
+        isCatamaran: false,
+        images: [
+          '../assets/images/private-charter/13-seater-1.webp',
+          '../assets/images/private-charter/13-seater-2.webp',
+          '../assets/images/private-charter/13-seater-3.webp',
+          '../assets/images/private-charter/13-seater-4.webp'
+        ],
+        highlights: [
+          'Largest standard capacity in the fleet',
+          'Ideal for corporate events and school groups',
+          'Access to 6 destinations — islands, beaches and bays',
+          'Experienced skipper and safety equipment included',
+          'Versatile for any type of group'
+        ],
+        destinations: [
+          { id: 'santa-maria-inhaca-port', label: 'Santa Maria + Inhaca + Ilha dos Portugueses', price: 35000 },
+          { id: 'inhaca-port',             label: 'Inhaca + Ilha dos Portugueses',               price: 30000 },
+          { id: 'maputo-bay',              label: 'Maputo Bay',                             price: 10000 },
+          { id: 'xefina',                  label: 'Xefina Island',                          price: 22000 },
+          { id: 'transfer-inhaca',         label: 'Transfer — Inhaca',                      price: 20000 },
+          { id: 'transfer-machangulo',     label: 'Transfer — Machangulo',                  price: 23000 }
+        ]
+      },
+      '16': {
+        name: 'Private Boat — 16 People',
+        breadcrumb: '16-Seater Boat',
+        desc: 'The largest standard vessel in our fleet. Built for large groups who want comfort and privacy in a single boat. Perfect for incentive trips, special events and large-scale celebrations.',
+        capacity: 'Up to 16 people',
+        destCount: '6 destinations',
+        duration: 'Full day',
+        startingPrice: 15000,
+        priceUnit: '/ per boat',
+        isCatamaran: false,
+        images: [
+          '../assets/images/transfers/boat/machangulo-transfer-1.webp',
+          '../assets/images/transfers/boat/machangulo-transfer-2.webp',
+          '../assets/images/transfers/boat/machangulo-transfer-3.webp',
+          '../assets/images/transfers/boat/machangulo-transfer-4.webp'
+        ],
+        highlights: [
+          'Largest standard vessel in the fleet',
+          'Ideal for large groups and special events',
+          'Access to 6 destinations — islands, beaches and bays',
+          'Experienced skipper and safety equipment included',
+          'Excellent for team-building and incentive trips'
+        ],
+        destinations: [
+          { id: 'santa-maria-inhaca-port', label: 'Santa Maria + Inhaca + Ilha dos Portugueses', price: 50000 },
+          { id: 'inhaca-port',             label: 'Inhaca + Ilha dos Portugueses',               price: 45000 },
+          { id: 'maputo-bay',              label: 'Maputo Bay',                             price: 15000 },
+          { id: 'xefina',                  label: 'Xefina Island',                          price: 28000 },
+          { id: 'transfer-inhaca',         label: 'Transfer — Inhaca',                      price: 24000 },
+          { id: 'transfer-machangulo',     label: 'Transfer — Machangulo',                  price: 26000 }
+        ]
+      },
+      'catamaran': {
+        name: 'Private Catamaran — up to 50 People',
+        breadcrumb: 'Catamaran',
+        desc: 'The ultimate sea experience. Our catamaran accommodates up to 50 people with unmatched space, comfort and views on exclusive routes. The base price covers groups of 1 to 20 people; a per-person surcharge applies above 20.',
+        capacity: 'Up to 50 people',
+        destCount: '3 routes',
+        duration: '3–8 hours',
+        startingPrice: 30000,
+        priceUnit: '/ 1–20 pax',
+        isCatamaran: true,
+        maxPax: 50,
+        images: [
+          '../assets/images/private-charter/catamaran-1.webp',
+          '../assets/images/private-charter/catamaran-2.webp',
+          '../assets/images/private-charter/catamaran-3.webp',
+          '../assets/images/private-charter/catamaran-4.webp'
+        ],
+        highlights: [
+          'Accommodates up to 50 people in comfort',
+          'Spacious deck with panoramic sea views',
+          '3 exclusive routes — Sunset, Xefina and Inhaca',
+          'Experienced skipper and safety equipment included',
+          'Premium experience for large groups and events'
+        ],
+        destinations: [
+          { id: 'sunset-cruise', label: 'Sunset Cruise',           schedule: '14:30 → 17:30', basePrice: 30000, extraPerPax: 1500 },
+          { id: 'xefina-day',    label: 'Xefina Day Trip',          schedule: '09:00 → 17:30', basePrice: 40000, extraPerPax: 2000 },
+          { id: 'inhaca-day',    label: 'Day Trip Inhaca / Porto',  schedule: '08:00 → 16:00', basePrice: 60000, extraPerPax: 3000 }
+        ]
+      }
+    };
+
+    var EXTRAS = [
+      { id: 'marina-tax',      label: 'Marina Tax',                   price: 100,  unit: '/person'  },
+      { id: 'inhaca-nat',      label: 'Inhaca Reserve (nationals)',    price: 100,  unit: '/person'  },
+      { id: 'inhaca-foreign',  label: 'Inhaca Reserve (foreigners)',   price: 200,  unit: '/person'  },
+      { id: 'snorkeling-fee',  label: 'Snorkeling Fee',               price: 200,  unit: '/person'  },
+      { id: 'snorkeling-gear', label: 'Snorkeling Gear Rental',       price: 350,  unit: '/kit'     },
+      { id: 'parking',         label: 'Parking',                      price: 250,  unit: '/vehicle' }
+    ];
+
+    var state = { boatKey: null, destId: null, pax: 1, extras: {} };
+
+    function fmt(n) { return n.toLocaleString('en-MZ') + ' MZN'; }
+    function getParam(k) { return new URLSearchParams(window.location.search).get(k); }
+
+    function calcDestPrice(dest) {
+      if (!dest) return 0;
+      if (dest.basePrice !== undefined) return dest.basePrice + Math.max(0, state.pax - 20) * dest.extraPerPax;
+      return dest.price;
+    }
+    function calcExtrasTotal() {
+      var t = 0;
+      EXTRAS.forEach(function (ex) { t += (state.extras[ex.id] || 0) * ex.price; });
+      return t;
+    }
+    function calcTotal() {
+      var boat = BOATS[state.boatKey];
+      if (!boat || !state.destId) return 0;
+      var dest = boat.destinations.find(function (d) { return d.id === state.destId; });
+      return calcDestPrice(dest) + calcExtrasTotal();
+    }
+
+    /* ── Lightbox ─────────────────────────────────────── */
+    var _imgs = [], _idx = 0;
+    var lb = document.getElementById('pkg-lightbox');
+    var lbImg = document.getElementById('lightbox-img');
+    var lbCap = document.getElementById('lightbox-caption');
+    var lbThumbs = document.getElementById('lightbox-thumbs');
+
+    function openLightbox(idx) {
+      if (!_imgs.length) return;
+      _idx = ((idx % _imgs.length) + _imgs.length) % _imgs.length;
+      lbImg.src = _imgs[_idx]; lbCap.textContent = (_idx+1)+' / '+_imgs.length;
+      lbThumbs.querySelectorAll('.pkg-lightbox__thumb').forEach(function(t,i){t.classList.toggle('active',i===_idx);});
+      lb.classList.add('open'); document.body.style.overflow='hidden';
+    }
+    function closeLightbox(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-backdrop').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-prev').addEventListener('click', function(){ openLightbox(_idx-1); });
+    document.getElementById('lightbox-next').addEventListener('click', function(){ openLightbox(_idx+1); });
+    document.addEventListener('keydown', function(e){
+      if(!lb.classList.contains('open')) return;
+      if(e.key==='ArrowLeft') openLightbox(_idx-1);
+      else if(e.key==='ArrowRight') openLightbox(_idx+1);
+      else if(e.key==='Escape') closeLightbox();
+    });
+    document.getElementById('gallery-slot-main').addEventListener('click', function(){ openLightbox(0); });
+    document.getElementById('gallery-slot-side1').addEventListener('click', function(){ openLightbox(1); });
+    document.getElementById('gallery-slot-side2').addEventListener('click', function(){ openLightbox(2); });
+    document.getElementById('gallery-all-btn').addEventListener('click', function(e){ e.stopPropagation(); openLightbox(0); });
+
+    function initLightbox(images) {
+      _imgs = images;
+      lbThumbs.innerHTML = images.map(function(src,i){
+        return '<div class="pkg-lightbox__thumb'+(i===0?' active':'')+'" data-index="'+i+'"><img src="'+src+'" alt="Photo '+(i+1)+'" loading="lazy"></div>';
+      }).join('');
+      lbThumbs.querySelectorAll('.pkg-lightbox__thumb').forEach(function(t){
+        t.addEventListener('click', function(){ openLightbox(parseInt(t.dataset.index)); });
+      });
+    }
+
+    /* ── Gallery ──────────────────────────────────────── */
+    function renderGallery(boat) {
+      document.getElementById('gallery-img-main').src  = boat.images[0];
+      document.getElementById('gallery-img-side1').src = boat.images[1] || boat.images[0];
+      document.getElementById('gallery-img-side2').src = boat.images[2] || boat.images[0];
+      document.getElementById('gallery-counter').textContent = boat.images.length + ' photos';
+      initLightbox(boat.images);
+    }
+
+    /* ── Destinations ─────────────────────────────────── */
+    function renderDestinations(boat) {
+      var container = document.getElementById('cb-dest-options');
+      container.innerHTML = '';
+      boat.destinations.forEach(function(dest) {
+        var div = document.createElement('div');
+        div.className = 'charter-dest-option';
+        div.setAttribute('data-dest-id', dest.id);
+        div.setAttribute('role','radio'); div.setAttribute('tabindex','0'); div.setAttribute('aria-checked','false');
+        var priceStr = dest.basePrice !== undefined ? 'From '+fmt(dest.basePrice) : fmt(dest.price);
+        var scheduleHtml = dest.schedule ? '<div style="font-size:.8rem;color:var(--text-muted);margin-top:2px;"><i class=\'bx bx-time\' style="vertical-align:middle;margin-right:3px;"></i>'+dest.schedule+'</div>' : '';
+        var extraHtml = dest.extraPerPax ? '<div style="font-size:.8rem;color:var(--text-muted);margin-top:2px;">+'+dest.extraPerPax.toLocaleString('en')+' MZN/pax above 20</div>' : '';
+        div.innerHTML =
+          '<div style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s;" class="dest-radio-dot">'+
+          '<div style="width:10px;height:10px;border-radius:50%;background:var(--primary);display:none;" class="dest-radio-fill"></div></div>'+
+          '<div style="flex:1;"><div style="font-weight:600;font-size:.9375rem;color:var(--text-dark);">'+dest.label+'</div>'+scheduleHtml+extraHtml+'</div>'+
+          '<div style="font-weight:700;color:var(--primary);white-space:nowrap;font-size:.9375rem;text-align:right;">'+priceStr+'</div>';
+        div.addEventListener('click', function(){ selectDest(dest.id); });
+        div.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); selectDest(dest.id); } });
+        container.appendChild(div);
+      });
+    }
+
+    function selectDest(destId) {
+      state.destId = destId;
+      document.querySelectorAll('.charter-dest-option').forEach(function(el) {
+        var sel = el.getAttribute('data-dest-id') === destId;
+        el.classList.toggle('selected', sel); el.setAttribute('aria-checked', sel?'true':'false');
+        el.querySelector('.dest-radio-dot').style.borderColor = sel ? 'var(--primary)' : 'var(--border-light)';
+        el.querySelector('.dest-radio-fill').style.display = sel ? 'block' : 'none';
+      });
+      updateSummary();
+    }
+
+    /* ── Extras ───────────────────────────────────────── */
+    function renderExtras() {
+      var container = document.getElementById('cb-extras');
+      container.innerHTML = '';
+      EXTRAS.forEach(function(ex) {
+        state.extras[ex.id] = 0;
+        var div = document.createElement('div');
+        div.className = 'charter-extra-item';
+        div.innerHTML =
+          '<div style="display:flex;align-items:center;gap:10px;flex:1;">'+
+          '<input type="checkbox" id="ex-'+ex.id+'" style="width:18px;height:18px;accent-color:var(--sea-green);cursor:pointer;flex-shrink:0;">'+
+          '<label for="ex-'+ex.id+'" style="font-weight:600;font-size:.9rem;color:var(--text-dark);cursor:pointer;flex:1;">'+ex.label+'</label>'+
+          '<span style="font-size:.875rem;color:var(--text-muted);white-space:nowrap;">'+ex.price.toLocaleString('en')+' MZN'+ex.unit+'</span></div>'+
+          '<div class="extra-qty-wrap" style="display:none;align-items:center;gap:8px;margin-top:10px;margin-left:28px;">'+
+          '<span style="font-size:.8125rem;color:var(--text-muted);">Qty:</span>'+
+          '<div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);overflow:hidden;display:inline-flex;align-items:center;">'+
+          '<button class="stepper-btn" type="button" data-action="minus" data-extra="'+ex.id+'" style="width:36px;height:36px;">−</button>'+
+          '<span id="qty-'+ex.id+'" style="min-width:38px;height:36px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.875rem;color:var(--primary);border-left:1.5px solid var(--border-light);border-right:1.5px solid var(--border-light);">1</span>'+
+          '<button class="stepper-btn" type="button" data-action="plus" data-extra="'+ex.id+'" style="width:36px;height:36px;">+</button>'+
+          '</div></div>';
+        var cb = div.querySelector('input[type=checkbox]');
+        var qtyWrap = div.querySelector('.extra-qty-wrap');
+        cb.addEventListener('change', function() {
+          if(cb.checked){ state.extras[ex.id]=1; document.getElementById('qty-'+ex.id).textContent='1'; qtyWrap.style.display='flex'; }
+          else{ state.extras[ex.id]=0; qtyWrap.style.display='none'; }
+          updateSummary();
+        });
+        div.querySelectorAll('.stepper-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var exId=btn.getAttribute('data-extra'), action=btn.getAttribute('data-action');
+            var qty=state.extras[exId]||1;
+            qty = action==='plus' ? qty+1 : Math.max(1,qty-1);
+            state.extras[exId]=qty; document.getElementById('qty-'+exId).textContent=qty;
+            updateSummary();
+          });
+        });
+        container.appendChild(div);
+      });
+    }
+
+    /* ── Pax stepper (catamaran) ──────────────────────── */
+    function syncPax(val) {
+      state.pax = val;
+      document.getElementById('pax-count').textContent      = val;
+      document.getElementById('card-pax-count').textContent = val;
+      document.getElementById('pax-minus').disabled      = val <= 1;
+      document.getElementById('card-pax-minus').disabled = val <= 1;
+      updateSummary();
+    }
+    ['pax-minus','card-pax-minus'].forEach(function(id){ document.getElementById(id).addEventListener('click', function(){ syncPax(Math.max(1,state.pax-1)); }); });
+    ['pax-plus','card-pax-plus'].forEach(function(id){ document.getElementById(id).addEventListener('click', function(){ var b=BOATS[state.boatKey]; syncPax(Math.min(b?b.maxPax:50,state.pax+1)); }); });
+
+    /* ── Update summary ───────────────────────────────── */
+    function updateSummary() {
+      var boat = BOATS[state.boatKey]; if(!boat) return;
+      var dest = state.destId ? boat.destinations.find(function(d){ return d.id===state.destId; }) : null;
+      var destRow = document.getElementById('cb-card-dest-row');
+      if(dest){
+        destRow.style.display='block';
+        document.getElementById('cb-card-dest-name').textContent  = dest.label;
+        document.getElementById('cb-card-dest-price').textContent = fmt(calcDestPrice(dest));
+      } else { destRow.style.display='none'; }
+      var activeExtras = EXTRAS.filter(function(ex){ return (state.extras[ex.id]||0)>0; });
+      var extSection = document.getElementById('cb-card-extras-section');
+      var extList    = document.getElementById('cb-card-extras-list');
+      if(activeExtras.length){
+        extSection.style.display='block';
+        extList.innerHTML = activeExtras.map(function(ex){
+          var qty=state.extras[ex.id];
+          return '<div style="display:flex;justify-content:space-between;"><span style="color:var(--text-muted);">'+ex.label+' ×'+qty+'</span><span style="font-weight:600;">'+fmt(qty*ex.price)+'</span></div>';
+        }).join('');
+      } else { extSection.style.display='none'; }
+      var total = calcTotal();
+      document.getElementById('cb-total').textContent        = fmt(total);
+      document.getElementById('cb-mobile-price').textContent = state.destId ? fmt(total) : fmt(boat.startingPrice);
+      var btn=document.getElementById('cb-whatsapp-btn'), mobileBtn=document.getElementById('cb-mobile-btn'), hint=document.getElementById('cb-hint');
+      if(state.destId){
+        btn.disabled=false; mobileBtn.disabled=false; btn.style.opacity='1'; btn.style.cursor='pointer';
+        if(hint) hint.style.display='none';
+        var url = buildWhatsAppUrl(boat, dest, total);
+        btn.onclick=function(){ window.open(url,'_blank'); };
+        mobileBtn.onclick=function(){ window.open(url,'_blank'); };
+      } else {
+        btn.disabled=true; mobileBtn.disabled=true; btn.style.opacity='.5'; btn.style.cursor='not-allowed';
+        if(hint) hint.style.display='block';
+      }
+    }
+
+    /* ── WhatsApp ─────────────────────────────────────── */
+    function buildWhatsAppUrl(boat, dest, total) {
+      var dateVal=document.getElementById('cb-date').value, dateStr='To be confirmed';
+      if(dateVal){ var d=new Date(dateVal+'T00:00:00'); dateStr=d.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}); }
+      var msg='Hello Maputo Blue 👋\n\nI would like to book a private boat charter:\n\n';
+      msg+='Vessel: '+boat.name+'\n';
+      msg+='Destination: '+dest.label+'\n';
+      if(boat.isCatamaran) msg+='No. of People: '+state.pax+'\n';
+      msg+='Date: '+dateStr+'\n';
+      msg+='Boat Price: '+fmt(calcDestPrice(dest))+'\n';
+      var ae=EXTRAS.filter(function(ex){ return (state.extras[ex.id]||0)>0; });
+      if(ae.length){ msg+='\nExtras:\n'; ae.forEach(function(ex){ var q=state.extras[ex.id]; msg+='  • '+ex.label+' ×'+q+': '+fmt(q*ex.price)+'\n'; }); }
+      msg+='\nEstimated Total: '+fmt(total)+'\n\nPlease confirm availability.';
+      return 'https://wa.me/258847121666?text='+encodeURIComponent(msg);
+    }
+
+    document.getElementById('cb-date').addEventListener('change', function(){ if(state.destId) updateSummary(); });
+
+    /* ── Share ────────────────────────────────────────── */
+    var pageUrl = window.location.href;
+    document.getElementById('share-whatsapp').addEventListener('click', function(){ window.open('https://wa.me/?text='+encodeURIComponent(pageUrl),'_blank'); });
+    document.getElementById('share-facebook').addEventListener('click', function(){ window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(pageUrl),'_blank'); });
+    document.getElementById('share-twitter').addEventListener('click',  function(){ window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(pageUrl),'_blank'); });
+    document.getElementById('share-copy').addEventListener('click', function(){
+      navigator.clipboard.writeText(pageUrl).then(function(){
+        var fb=document.getElementById('pkg-share-feedback'); fb.textContent='Link copied!';
+        setTimeout(function(){ fb.textContent=''; }, 2500);
+      });
+    });
+
+    /* ── Init ─────────────────────────────────────────── */
+    function init() {
+      var boatKey = getParam('boat') || '5';
+      state.boatKey = BOATS[boatKey] ? boatKey : '5';
+      var boat = BOATS[state.boatKey];
+      var today=new Date(), mm=String(today.getMonth()+1).padStart(2,'0'), dd=String(today.getDate()).padStart(2,'0');
+      document.getElementById('cb-date').min = today.getFullYear()+'-'+mm+'-'+dd;
+      document.getElementById('cb-breadcrumb').textContent   = boat.breadcrumb;
+      document.getElementById('cb-title').textContent        = boat.name;
+      document.getElementById('cb-capacity').textContent     = boat.capacity;
+      document.getElementById('cb-dest-count').textContent   = boat.destCount;
+      document.getElementById('cb-duration').textContent     = boat.duration;
+      document.getElementById('cb-desc').textContent         = boat.desc;
+      document.getElementById('cb-starting-price').textContent = fmt(boat.startingPrice);
+      document.getElementById('cb-price-unit').textContent   = boat.priceUnit;
+      document.getElementById('cb-mobile-price').textContent = fmt(boat.startingPrice);
+      document.getElementById('cb-mobile-label').textContent = 'from ' + boat.priceUnit;
+      var ul = document.getElementById('cb-highlights');
+      boat.highlights.forEach(function(h){
+        var li=document.createElement('li');
+        li.style.cssText='display:flex;align-items:flex-start;gap:10px;font-size:.9375rem;color:var(--text-muted);';
+        li.innerHTML='<i class=\'bx bx-check-circle\' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;margin-top:2px;"></i>'+h;
+        ul.appendChild(li);
+      });
+      renderGallery(boat);
+      if(boat.isCatamaran){
+        document.getElementById('cb-pax-section').style.display='block';
+        document.getElementById('cb-card-pax').style.display='block';
+        document.getElementById('cb-pax-note').textContent='Maximum '+boat.maxPax+' people';
+      }
+      renderDestinations(boat);
+      renderExtras();
+      updateSummary();
+
+      /* Inject ?id= so reviews.js can load the correct reviews */
+      var reviewUrl = new URL(window.location.href);
+      reviewUrl.searchParams.set('id', 'charter-boat-' + state.boatKey);
+      window.history.replaceState({}, '', reviewUrl.toString());
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  })();
+  </script>
+
+  <script type="module" src="../assets/js/reviews.js"></script>
+
+</body>
+</html>

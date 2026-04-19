@@ -2781,6 +2781,417 @@ main.tours-main { z-index: auto; }
 }
 
 /* ============================================================
+   15. SERVICES PAGE
+   ============================================================ */
+.services-tab-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+.services-tabs {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.services-tabs::-webkit-scrollbar { display: none; }
+
+.service-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+  white-space: nowrap;
+}
+.service-tab:hover { color: var(--primary); }
+.service-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.service-panel.hidden { display: none; }
+
+/* ── Boats grid ── */
+.boats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 24px;
+}
+
+/* ── Boat card ── */
+.boat-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+}
+.boat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.boat-card-img { height: 200px; overflow: hidden; flex-shrink: 0; }
+.boat-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.boat-card:hover .boat-card-img img { transform: scale(1.05); }
+
+.boat-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+
+.boat-capacity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary);
+  color: var(--white);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  font-size: .8125rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  align-self: flex-start;
+}
+
+.boat-pricing-list { list-style: none; padding: 0; margin: 0 0 20px; flex: 1; }
+.boat-pricing-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-light);
+  gap: 12px;
+}
+.boat-pricing-item:last-child { border-bottom: none; }
+.boat-dest-name { font-size: .8125rem; font-weight: 500; color: var(--text-dark); line-height: 1.3; }
+.boat-dest-type { font-size: .75rem; color: var(--text-muted); margin-top: 2px; }
+.boat-dest-price { font-weight: 700; color: var(--primary); font-size: .875rem; white-space: nowrap; }
+
+/* ── Catamaran card (full-width, horizontal on desktop) ── */
+.boat-card--catamaran { grid-column: 1 / -1; }
+@media (min-width: 768px) {
+  .boat-card--catamaran { flex-direction: row; }
+  .boat-card--catamaran .boat-card-img { width: 32%; height: auto; }
+  .catamaran-routes { grid-template-columns: repeat(3, 1fr); }
+}
+.catamaran-routes { display: grid; gap: 12px; }
+.catamaran-route {
+  background: var(--light-bg);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+.catamaran-route-name { font-weight: 700; color: var(--primary); font-size: .875rem; margin-bottom: 5px; }
+.catamaran-route-schedule {
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.catamaran-route-price { font-size: 1.125rem; font-weight: 800; color: var(--text-dark); }
+.catamaran-route-extra { font-size: .75rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+
+/* ── Extras box ── */
+.extras-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-sm);
+  margin-top: 48px;
+}
+.extras-box-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.extras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+}
+.extra-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: var(--light-bg);
+  border-radius: var(--radius-md);
+}
+.extra-item > i { font-size: 1.25rem; color: var(--sea-green); flex-shrink: 0; margin-top: 1px; }
+.extra-name { font-size: .8125rem; font-weight: 600; color: var(--text-dark); }
+.extra-price { font-size: .75rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ── Car services ── */
+.car-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+.car-service-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+}
+.car-service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.car-service-card-img { height: 220px; overflow: hidden; }
+.car-service-card-img img { width: 100%; height: 100%; object-fit: cover; }
+.car-service-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+.car-service-title { font-size: 1.0625rem; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+.car-service-desc { font-size: .875rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; flex: 1; }
+.car-feature-list { list-style: none; padding: 0; margin: 0 0 20px; display: flex; flex-direction: column; gap: 8px; }
+.car-feature-list li { display: flex; align-items: center; gap: 8px; font-size: .875rem; color: var(--text-dark); }
+.car-feature-list i { color: var(--sea-green); }
+
+/* ============================================================
+   16. CHARTER BOOKING PAGE
+   ============================================================ */
+
+/* Simplified boat card extras */
+.boat-card-title { font-size: 1.0625rem; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
+.boat-card-highlights { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.boat-card-highlight { display: flex; align-items: center; gap: 8px; font-size: .875rem; color: var(--text-muted); }
+.boat-card-highlight i { color: var(--sea-green); font-size: 1rem; }
+.boat-card-desc { font-size: .875rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 16px; flex: 1; }
+
+/* Boat card starting price */
+.boat-card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(7,27,46,.04);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--primary);
+  margin-bottom: 16px;
+}
+.boat-card-price__from { font-size: .75rem; color: var(--text-muted); white-space: nowrap; }
+.boat-card-price__value { font-size: 1.1875rem; font-weight: 800; color: var(--primary); }
+.boat-card-price__unit  { font-size: .75rem; color: var(--text-muted); }
+
+/* Step label */
+.charter-step-label {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--sea-green);
+  margin-bottom: 8px;
+}
+.charter-section-title { font-size: 1.0625rem; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; }
+
+/* Group size stepper */
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.qty-stepper button {
+  width: 40px; height: 40px;
+  background: var(--light-bg);
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  transition: background .15s;
+}
+.qty-stepper button:hover { background: var(--border-light); }
+.qty-stepper input {
+  width: 52px; height: 40px;
+  border: none;
+  border-left: 1.5px solid var(--border-light);
+  border-right: 1.5px solid var(--border-light);
+  text-align: center;
+  font-family: inherit;
+  font-size: .9375rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+.qty-stepper input:focus { outline: none; }
+.qty-val {
+  min-width: 48px; height: 40px;
+  border-left: 1.5px solid var(--border-light);
+  border-right: 1.5px solid var(--border-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9375rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* Destination options */
+.charter-dest-options { display: flex; flex-direction: column; gap: 10px; }
+.charter-dest-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--white);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  user-select: none;
+}
+.charter-dest-option:hover { border-color: var(--primary); }
+.charter-dest-option.selected { border-color: var(--primary); background: rgba(7,27,46,.03); }
+.charter-radio-dot {
+  width: 20px; height: 20px; min-width: 20px;
+  border: 2px solid var(--border-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s, background .15s;
+}
+.charter-dest-option.selected .charter-radio-dot { border-color: var(--primary); background: var(--primary); }
+.charter-radio-dot::after {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--white);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.charter-dest-option.selected .charter-radio-dot::after { opacity: 1; }
+.charter-dest-info { flex: 1; }
+.charter-dest-name { font-size: .9rem; font-weight: 600; color: var(--text-dark); }
+.charter-dest-meta { font-size: .75rem; color: var(--text-muted); margin-top: 2px; }
+.charter-dest-price { font-weight: 700; color: var(--primary); font-size: .9375rem; white-space: nowrap; }
+
+/* Extras */
+.charter-extras-list { display: flex; flex-direction: column; gap: 10px; }
+.charter-extra-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: var(--white);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color .15s;
+  user-select: none;
+}
+.charter-extra-item:hover { border-color: var(--sea-green); }
+.charter-extra-item.selected { border-color: var(--sea-green); background: rgba(0,138,120,.03); }
+.charter-checkbox {
+  width: 20px; height: 20px; min-width: 20px;
+  border: 2px solid var(--border-light);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s, background .15s;
+}
+.charter-extra-item.selected .charter-checkbox { border-color: var(--sea-green); background: var(--sea-green); }
+.charter-checkbox i { font-size: .875rem; color: var(--white); opacity: 0; transition: opacity .15s; }
+.charter-extra-item.selected .charter-checkbox i { opacity: 1; }
+.charter-extra-info { flex: 1; }
+.charter-extra-name { font-size: .875rem; font-weight: 600; color: var(--text-dark); }
+.charter-extra-unit { font-size: .75rem; color: var(--text-muted); margin-top: 2px; }
+.charter-extra-price { font-weight: 700; color: var(--sea-green); font-size: .875rem; white-space: nowrap; }
+.extra-qty-wrap { display: none; align-items: center; gap: 6px; }
+.charter-extra-item.selected .extra-qty-wrap { display: flex; }
+.extra-qty-wrap label { font-size: .75rem; color: var(--text-muted); white-space: nowrap; }
+.extra-qty-wrap input {
+  width: 52px; height: 32px;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-family: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+}
+.extra-qty-wrap input:focus { outline: 2px solid var(--sea-green); outline-offset: 1px; }
+
+/* Booking summary */
+.charter-summary {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  position: sticky;
+  top: 88px;
+  overflow: hidden;
+}
+.charter-summary-header {
+  background: var(--primary);
+  color: var(--white);
+  padding: 20px 24px;
+}
+.charter-summary-boat-name { font-size: 1rem; font-weight: 700; }
+.charter-summary-capacity { font-size: .8125rem; opacity: .7; margin-top: 2px; }
+.charter-summary-body { padding: 20px 24px; }
+.charter-summary-lines { display: flex; flex-direction: column; gap: 6px; margin-bottom: 4px; }
+.charter-summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: .875rem;
+  gap: 12px;
+}
+.charter-summary-line .s-label { color: var(--text-muted); }
+.charter-summary-line .s-value { font-weight: 600; color: var(--text-dark); text-align: right; }
+.charter-summary-line .s-value.muted { color: var(--text-muted); font-weight: 400; font-style: italic; }
+hr.charter-divider { border: none; border-top: 1px solid var(--border-light); margin: 16px 0; }
+.charter-total-row { display: flex; justify-content: space-between; align-items: baseline; }
+.charter-total-label { font-weight: 700; font-size: .9375rem; color: var(--text-dark); }
+.charter-total-value { font-size: 1.625rem; font-weight: 800; color: var(--primary); }
+.charter-total-note { font-size: .75rem; color: var(--text-muted); margin-top: 4px; text-align: right; }
+.charter-summary-footer { padding: 0 24px 24px; }
+.charter-cta { display: flex; flex-direction: column; gap: 8px; }
+
+/* Notes textarea */
+.charter-notes {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: .875rem;
+  color: var(--text-dark);
+  resize: vertical;
+  transition: border-color .15s;
+}
+.charter-notes:focus { outline: none; border-color: var(--primary); }
+
+/* Gallery for booking page */
+.charter-gallery { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 8px; border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16/9; }
+.charter-gallery-main { grid-column: 1 / 3; grid-row: 1 / 3; overflow: hidden; cursor: pointer; }
+.charter-gallery-main img, .charter-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.charter-gallery-main:hover img { transform: scale(1.03); }
+.charter-gallery-thumb { overflow: hidden; cursor: pointer; position: relative; }
+.charter-gallery-thumb:hover img { transform: scale(1.06); }
+.charter-gallery-thumb:last-child::after {
+  content: attr(data-count);
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.5);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem; font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .charter-gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; aspect-ratio: auto; }
+  .charter-gallery-main { grid-column: 1 / 3; grid-row: 1; aspect-ratio: 16/9; }
+  .charter-summary { position: static; margin-top: 32px; }
+}
+
+/* ============================================================
    PRELOADER
    ============================================================ */
 #preloader {
