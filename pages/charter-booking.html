@@ -189,15 +189,6 @@
               <div id="cb-dest-options" style="display:flex;flex-direction:column;gap:10px;"></div>
             </div>
 
-            <!-- Extras -->
-            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
-              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:6px;">
-                <i class='bx bx-package' style="color:var(--sea-green);margin-right:6px;"></i>Extras
-              </h2>
-              <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:18px;">Taxas e equipamentos adicionais — preço por pessoa, kit ou viatura.</p>
-              <div id="cb-extras" style="display:flex;flex-direction:column;gap:10px;"></div>
-            </div>
-
             <!-- Reviews -->
             <div id="reviews-aggregate"></div>
             <div id="fb-reviews-list"></div>
@@ -257,12 +248,6 @@
                     <span id="cb-card-dest-name" style="font-weight:600;color:var(--primary);"></span>
                     <span id="cb-card-dest-price" style="font-weight:700;color:var(--primary);"></span>
                   </div>
-                </div>
-
-                <!-- Extras selected list -->
-                <div id="cb-card-extras-section" style="display:none;padding:12px 14px;background:var(--light-bg);border-radius:var(--radius-md);border:1px solid var(--border-light);margin-bottom:12px;">
-                  <div style="color:var(--text-muted);font-size:.8125rem;margin-bottom:8px;">Extras seleccionados</div>
-                  <div id="cb-card-extras-list" style="display:flex;flex-direction:column;gap:6px;font-size:.875rem;"></div>
                 </div>
 
                 <!-- Total -->
@@ -521,19 +506,10 @@
       }
     };
 
-    var EXTRAS = [
-      { id: 'marina-tax',      label: 'Taxa da Marina',                  price: 100,  unit: '/pessoa'  },
-      { id: 'inhaca-nat',      label: 'Reserva Inhaca (nacionais)',       price: 100,  unit: '/pessoa'  },
-      { id: 'inhaca-foreign',  label: 'Reserva Inhaca (estrangeiros)',    price: 200,  unit: '/pessoa'  },
-      { id: 'snorkeling-fee',  label: 'Taxa de Snorkeling',              price: 200,  unit: '/pessoa'  },
-      { id: 'snorkeling-gear', label: 'Aluguer Equipamento Snorkeling',  price: 350,  unit: '/kit'     },
-      { id: 'parking',         label: 'Estacionamento',                  price: 250,  unit: '/viatura' }
-    ];
-
     /* ═══════════════════════════════════════════════════════
        STATE
     ═══════════════════════════════════════════════════════ */
-    var state = { boatKey: null, destId: null, pax: 1, extras: {} };
+    var state = { boatKey: null, destId: null, pax: 1 };
 
     /* ═══════════════════════════════════════════════════════
        HELPERS
@@ -549,17 +525,11 @@
       return dest.price;
     }
 
-    function calcExtrasTotal() {
-      var t = 0;
-      EXTRAS.forEach(function (ex) { t += (state.extras[ex.id] || 0) * ex.price; });
-      return t;
-    }
-
     function calcTotal() {
       var boat = BOATS[state.boatKey];
       if (!boat || !state.destId) return 0;
       var dest = boat.destinations.find(function (d) { return d.id === state.destId; });
-      return calcDestPrice(dest) + calcExtrasTotal();
+      return calcDestPrice(dest);
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -682,62 +652,6 @@
     }
 
     /* ═══════════════════════════════════════════════════════
-       RENDER EXTRAS
-    ═══════════════════════════════════════════════════════ */
-    function renderExtras() {
-      var container = document.getElementById('cb-extras');
-      container.innerHTML = '';
-      EXTRAS.forEach(function (ex) {
-        state.extras[ex.id] = 0;
-        var div = document.createElement('div');
-        div.className = 'charter-extra-item';
-
-        div.innerHTML =
-          '<div style="display:flex;align-items:center;gap:10px;flex:1;">' +
-          '<input type="checkbox" id="ex-' + ex.id + '" style="width:18px;height:18px;accent-color:var(--sea-green);cursor:pointer;flex-shrink:0;">' +
-          '<label for="ex-' + ex.id + '" style="font-weight:600;font-size:.9rem;color:var(--text-dark);cursor:pointer;flex:1;">' + ex.label + '</label>' +
-          '<span style="font-size:.875rem;color:var(--text-muted);white-space:nowrap;">' + ex.price.toLocaleString('pt-MZ') + ' MZN' + ex.unit + '</span>' +
-          '</div>' +
-          '<div class="extra-qty-wrap" style="display:none;align-items:center;gap:8px;margin-top:10px;margin-left:28px;">' +
-          '<span style="font-size:.8125rem;color:var(--text-muted);">Qtd.:</span>' +
-          '<div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);overflow:hidden;display:inline-flex;align-items:center;">' +
-          '<button class="stepper-btn" type="button" data-action="minus" data-extra="' + ex.id + '" style="width:36px;height:36px;">−</button>' +
-          '<span id="qty-' + ex.id + '" style="min-width:38px;height:36px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.875rem;color:var(--primary);border-left:1.5px solid var(--border-light);border-right:1.5px solid var(--border-light);">1</span>' +
-          '<button class="stepper-btn" type="button" data-action="plus" data-extra="' + ex.id + '" style="width:36px;height:36px;">+</button>' +
-          '</div></div>';
-
-        var cb      = div.querySelector('input[type=checkbox]');
-        var qtyWrap = div.querySelector('.extra-qty-wrap');
-
-        cb.addEventListener('change', function () {
-          if (cb.checked) {
-            state.extras[ex.id] = 1;
-            document.getElementById('qty-' + ex.id).textContent = '1';
-            qtyWrap.style.display = 'flex';
-          } else {
-            state.extras[ex.id] = 0;
-            qtyWrap.style.display = 'none';
-          }
-          updateSummary();
-        });
-
-        div.querySelectorAll('.stepper-btn').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            var exId   = btn.getAttribute('data-extra');
-            var action = btn.getAttribute('data-action');
-            var qty    = state.extras[exId] || 1;
-            qty = action === 'plus' ? qty + 1 : Math.max(1, qty - 1);
-            state.extras[exId] = qty;
-            document.getElementById('qty-' + exId).textContent = qty;
-            updateSummary();
-          });
-        });
-
-        container.appendChild(div);
-      });
-    }
-
-    /* ═══════════════════════════════════════════════════════
        PAX STEPPER (catamaran — synced left col & card)
     ═══════════════════════════════════════════════════════ */
     function syncPax(val) {
@@ -780,23 +694,6 @@
         document.getElementById('cb-card-dest-price').textContent = fmt(calcDestPrice(dest));
       } else {
         destRow.style.display = 'none';
-      }
-
-      /* Extras list */
-      var activeExtras = EXTRAS.filter(function (ex) { return (state.extras[ex.id] || 0) > 0; });
-      var extSection   = document.getElementById('cb-card-extras-section');
-      var extList      = document.getElementById('cb-card-extras-list');
-      if (activeExtras.length) {
-        extSection.style.display = 'block';
-        extList.innerHTML = activeExtras.map(function (ex) {
-          var qty = state.extras[ex.id];
-          var sub = qty * ex.price;
-          return '<div style="display:flex;justify-content:space-between;">' +
-            '<span style="color:var(--text-muted);">' + ex.label + ' ×' + qty + '</span>' +
-            '<span style="font-weight:600;">' + fmt(sub) + '</span></div>';
-        }).join('');
-      } else {
-        extSection.style.display = 'none';
       }
 
       /* Total */
@@ -845,14 +742,7 @@
       msg += 'Data: ' + dateStr + '\n';
       msg += 'Preço do Barco: ' + fmt(calcDestPrice(dest)) + '\n';
 
-      var activeExtras = EXTRAS.filter(function (ex) { return (state.extras[ex.id] || 0) > 0; });
-      if (activeExtras.length) {
-        msg += '\nExtras:\n';
-        activeExtras.forEach(function (ex) {
-          var qty = state.extras[ex.id];
-          msg += '  • ' + ex.label + ' ×' + qty + ': ' + fmt(qty * ex.price) + '\n';
-        });
-      }
+
 
       msg += '\nTotal Estimado: ' + fmt(total) + '\n';
       msg += '\nPor favor, confirme a disponibilidade.';
@@ -933,7 +823,6 @@
 
       /* Destinations & Extras */
       renderDestinations(boat);
-      renderExtras();
       updateSummary();
 
       /* Inject ?id= so reviews.js can load the correct reviews */
