@@ -256,44 +256,53 @@
 
   "itinerary": [
     {
-      "day": 1,
-      "time": "08:00",
+      "time": "Dia 1 — 08:00",
       "title": "Partida de Maputo",
       "title_en": "Departure from Maputo",
-      "description": "Partida da Maputo Marina em direção à Península de Machangulo.",
-      "description_en": "Departure from Maputo Marina heading to the Machangulo Peninsula."
+      "description": "Concentração na Maputo Marina para embarque. Transfer de barco em direção à Península de Machangulo.",
+      "description_en": "Meeting at Maputo Marina for boarding. Speedboat transfer towards Machangulo Peninsula."
     },
     {
-      "day": 1,
-      "time": "10:00",
+      "time": "Dia 1 — 09:20",
       "title": "Chegada ao Lodge",
       "title_en": "Arrival at the Lodge",
-      "description": "Check-in no Machangulo Beach Lodge e tempo livre para explorar a praia.",
-      "description_en": "Check-in at Machangulo Beach Lodge and free time to explore the beach."
+      "description": "Chegada ao Machangulo Beach Lodge. Check-in e instalação.",
+      "description_en": "Arrival at Machangulo Beach Lodge. Check-in and settling in."
     },
     {
-      "day": 1,
-      "time": "19:00",
+      "time": "Dia 1 — 10:30",
+      "title": "Tempo Livre",
+      "title_en": "Free Time",
+      "description": "Tempo livre para relaxar na praia e desfrutar do lodge. Actividades opcionais disponíveis mediante consulta.",
+      "description_en": "Free time to relax on the beach and enjoy the lodge. Optional activities available on request."
+    },
+    {
+      "time": "Dia 1 — 19:00",
       "title": "Jantar",
       "title_en": "Dinner",
-      "description": "Jantar servido no restaurante do lodge.",
-      "description_en": "Dinner served at the lodge restaurant."
+      "description": "Jantar servido no restaurante do lodge. (Não incluído no pacote — pagamento no local.)",
+      "description_en": "Dinner served at the lodge restaurant. (Not included in the package — payable on site.)"
     },
     {
-      "day": 2,
-      "time": "08:00",
-      "title": "Pequeno almoço",
+      "time": "Dia 2 — 08:30",
+      "title": "Pequeno-Almoço",
       "title_en": "Breakfast",
-      "description": "Pequeno almoço com vista para o oceano.",
-      "description_en": "Breakfast with ocean views."
+      "description": "Pequeno-almoço incluído com vista para o oceano.",
+      "description_en": "Included breakfast with ocean views."
     },
     {
-      "day": 2,
-      "time": "14:00",
-      "title": "Regresso",
-      "title_en": "Return",
-      "description": "Partida do lodge e regresso de barco a Maputo.",
-      "description_en": "Departure from the lodge and speedboat return to Maputo."
+      "time": "Dia 2 — 09:30",
+      "title": "Tempo Livre",
+      "title_en": "Free Time",
+      "description": "Tempo livre para explorar a praia, nadar ou fazer um passeio opcional pela área envolvente.",
+      "description_en": "Free time to explore the beach, swim or take an optional stroll around the surroundings."
+    },
+    {
+      "time": "Dia 2 — 14:00 / 15:00",
+      "title": "Regresso a Maputo",
+      "title_en": "Return to Maputo",
+      "description": "Transfer de barco de volta à Maputo Marina. Fim do pacote.",
+      "description_en": "Speedboat transfer back to Maputo Marina. End of the package."
     }
   ],
 
@@ -419,32 +428,60 @@
 
   "itinerary": [
     {
-      "day": 1,
+      "time": "Dia 1 — 08:00",
       "title": "Partida de Maputo",
       "title_en": "Departure from Maputo",
-      "description": "Transfer de barco desde a Maputo Marina até à Ilha de Inhaca e check-in no Villa Martins.",
-      "description_en": "Speedboat transfer from Maputo Marina to Inhaca Island and check-in at Villa Martins."
+      "description": "Concentração na Maputo Marina para embarque. Transfer de barco em direção à Ilha de Inhaca.",
+      "description_en": "Meeting at Maputo Marina for boarding. Speedboat transfer towards Inhaca Island."
     },
     {
-      "day": 1,
+      "time": "Dia 1 — 09:15",
+      "title": "Chegada ao Lodge",
+      "title_en": "Arrival at the Lodge",
+      "description": "Chegada ao Villa Martins. Check-in e instalação no bangalow.",
+      "description_en": "Arrival at Villa Martins. Check-in and settling into the bungalow."
+    },
+    {
+      "time": "Dia 1 — 11:30",
+      "title": "Passeio a Santa Maria",
+      "title_en": "Trip to Santa Maria",
+      "description": "Passeio incluído à deslumbrante Praia de Santa Maria. Tempo livre para snorkeling, nadar e relaxar na praia.",
+      "description_en": "Included trip to the stunning Santa Maria Beach. Free time for snorkelling, swimming and relaxing on the beach."
+    },
+    {
+      "time": "Dia 1 — 14:30",
+      "title": "Regresso ao Lodge",
+      "title_en": "Return to the Lodge",
+      "description": "Regresso ao Villa Martins. Tempo livre para usufruir da piscina e dos jardins tropicais.",
+      "description_en": "Return to Villa Martins. Free time to enjoy the pool and tropical gardens."
+    },
+    {
+      "time": "Dia 1 — 19:30",
+      "title": "Jantar",
+      "title_en": "Dinner",
+      "description": "Jantar no lodge. (Não incluído no pacote — pagamento no local.)",
+      "description_en": "Dinner at the lodge. (Not included in the package — payable on site.)"
+    },
+    {
+      "time": "Dia 2 — 08:30",
+      "title": "Pequeno-Almoço",
+      "title_en": "Breakfast",
+      "description": "Pequeno-almoço incluído servido no lodge.",
+      "description_en": "Included breakfast served at the lodge."
+    },
+    {
+      "time": "Dia 2 — 09:30",
       "title": "Tempo Livre",
       "title_en": "Free Time",
-      "description": "Aproveite a piscina, os jardins tropicais e explore as praias próximas.",
-      "description_en": "Enjoy the pool, tropical gardens, and explore the nearby beaches."
+      "description": "Tempo livre para explorar a ilha, relaxar na piscina ou fazer snorkeling nos recifes de coral.",
+      "description_en": "Free time to explore the island, relax by the pool or snorkel on the coral reefs."
     },
     {
-      "day": 2,
-      "title": "Passeio a Santa Maria",
-      "title_en": "Santa Maria Trip",
-      "description": "Excursão incluída à Praia de Santa Maria com snorkeling nas águas cristalinas.",
-      "description_en": "Included excursion to Santa Maria Beach with snorkeling in crystal-clear waters."
-    },
-    {
-      "day": 2,
-      "title": "Regresso",
-      "title_en": "Return",
-      "description": "Transfer de barco de volta à Maputo Marina.",
-      "description_en": "Speedboat transfer back to Maputo Marina."
+      "time": "Dia 2 — 14:00 / 15:00",
+      "title": "Regresso a Maputo",
+      "title_en": "Return to Maputo",
+      "description": "Transfer de barco de volta à Maputo Marina. Fim do pacote.",
+      "description_en": "Speedboat transfer back to Maputo Marina. End of the package."
     }
   ],
 

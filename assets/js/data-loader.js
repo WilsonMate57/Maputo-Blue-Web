@@ -147,7 +147,7 @@
     <div class="tour-card-footer">
       <div class="tour-card-price">
         <span class="price-from">${t('from')}</span>
-        <span class="price-value">${tour.currency} ${tour.price_from}<span>${t('per_person')}</span></span>
+        <span class="price-value">${tour.currency} ${tour.price_from}<span>${(LANG === 'en' ? tour.price_unit_en : tour.price_unit) || t('per_person')}</span></span>
         <div class="star-rating">
           ${starHTML(tour.rating)}
           <span class="rating-value">${tour.rating}</span>
@@ -329,6 +329,7 @@
     if (!item) { el.innerHTML = '<p class="text-muted p-4">Package not found.</p>'; return; }
 
     renderPackageDetail(item, type);
+    renderBoatSelector(item);
     renderRelatedExperiences(item, type, data);
     renderImportantInfo(item);
     initShareButtons();
@@ -647,6 +648,97 @@
           <p style="font-size:.875rem;color:var(--text-body);line-height:1.65;margin:0;">${r.text}</p>
         </div>`).join('');
     }
+  }
+
+  /* ── Boat Selector (fishing-charters) ───────────────────── */
+  function renderBoatSelector(item) {
+    const wrap = document.getElementById('boat-selector-wrap');
+    if (!wrap || !item.boat_options || !item.boat_options.length) return;
+
+    const isEn = LANG === 'en';
+    const label = isEn ? 'Select Vessel' : 'Escolha a Embarcação';
+    const waBase = 'https://wa.me/258847121666?text=';
+    const title  = isEn ? (item.title_en || item.title) : item.title;
+    const dateInput = document.getElementById('booking-date');
+
+    function buildBoatWAUrl(boatName, price) {
+      const dateVal = dateInput ? dateInput.value : '';
+      let dateStr = isEn ? 'To be confirmed' : 'A definir';
+      if (dateVal) {
+        const d = new Date(dateVal + 'T00:00:00');
+        dateStr = d.toLocaleDateString(isEn ? 'en-GB' : 'pt-PT', { day: '2-digit', month: 'long', year: 'numeric' });
+      }
+      const msg = isEn
+        ? `Hello Maputo Blue 👋\n\nI would like to book the following:\n\nTour: ${title}\nVessel: ${boatName}\nDate: ${dateStr}\nPrice: MZN ${price}\n\nPlease confirm availability.`
+        : `Olá Maputo Blue 👋\n\nGostaria de reservar o seguinte:\n\nTour: ${title}\nEmbarcação: ${boatName}\nData: ${dateStr}\nPreço: MZN ${price}\n\nPor favor confirme a disponibilidade.`;
+      return waBase + encodeURIComponent(msg);
+    }
+
+    function selectBoat(card) {
+      wrap.querySelectorAll('.boat-opt-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      const price    = parseInt(card.dataset.price) || 0;
+      const priceUsd = card.dataset.priceUsd ? ` / USD ${card.dataset.priceUsd}` : '';
+      const boatName = card.dataset.name;
+      const priceStr = `MZN ${price.toLocaleString()}${priceUsd}`;
+
+      const priceEl = document.querySelector('#package-price');
+      if (priceEl) priceEl.textContent = priceStr;
+      const totalEl = document.querySelector('#booking-total');
+      if (totalEl) totalEl.textContent = priceStr;
+      const mobilePriceEl = document.querySelector('#mobile-price');
+      if (mobilePriceEl) mobilePriceEl.textContent = `MZN ${price.toLocaleString()}`;
+
+      const url = buildBoatWAUrl(boatName, price.toLocaleString());
+      document.querySelectorAll('#booking-whatsapp-btn, #mobile-booking-btn').forEach(el => { el.href = url; });
+    }
+
+    wrap.innerHTML = `<div style="margin-bottom:16px;">
+      <label class="booking-input-label" style="margin-bottom:10px;display:block;">${label}</label>
+      <div class="boat-opts">
+        ${item.boat_options.map((b, i) => {
+          const name     = isEn ? (b.name_en || b.name) : b.name;
+          const cap      = isEn ? (b.capacity_en || b.capacity) : b.capacity;
+          const pricePT  = `MZN ${b.price_mzn.toLocaleString()}`;
+          const priceUsd = b.price_usd ? ` / USD ${b.price_usd}` : '';
+          return `<label class="boat-opt-card${i === 0 ? ' selected' : ''}"
+            data-price="${b.price_mzn}" data-price-usd="${b.price_usd || ''}" data-name="${name}" tabindex="0" role="radio" aria-checked="${i === 0}">
+            <input type="radio" name="boat-option" value="${b.key}"${i === 0 ? ' checked' : ''} style="display:none;">
+            <div class="boat-opt-card__top">
+              <span class="boat-opt-card__name">${name}</span>
+              <i class='bx bx-check-circle boat-opt-card__check'></i>
+            </div>
+            <div class="boat-opt-card__cap"><i class='bx bx-group'></i>${cap}</div>
+            <div class="boat-opt-card__price">${pricePT}${priceUsd}</div>
+          </label>`;
+        }).join('')}
+      </div>
+    </div>`;
+
+    // hide pax steppers — pricing is per boat
+    const steppersWrap = document.querySelector('#adults-minus, #children-minus');
+    if (steppersWrap) {
+      const row = steppersWrap.closest('[style*="border:1.5px solid var(--border-light)"]');
+      if (row) row.style.display = 'none';
+    }
+    const childRow = document.getElementById('child-price-row');
+    if (childRow) childRow.style.display = 'none';
+    const priceUnit = document.querySelector('.booking-card__price-unit');
+    if (priceUnit) priceUnit.textContent = isEn ? '/ per boat' : '/ por barco';
+
+    // attach click handlers
+    wrap.querySelectorAll('.boat-opt-card').forEach(card => {
+      card.addEventListener('click', () => selectBoat(card));
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectBoat(card); } });
+    });
+    if (dateInput) dateInput.addEventListener('change', () => {
+      const sel = wrap.querySelector('.boat-opt-card.selected');
+      if (sel) selectBoat(sel);
+    });
+
+    // trigger initial state
+    const first = wrap.querySelector('.boat-opt-card');
+    if (first) selectBoat(first);
   }
 
   /* ── Testimonials (homepage) ─────────────────────────────── */

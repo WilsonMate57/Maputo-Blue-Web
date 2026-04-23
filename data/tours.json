@@ -58,12 +58,14 @@
   "excluded": [
     "Bebidas adicionais",
     "Despesas pessoais",
-    "Transporte até à marina"
+    "Transporte até à marina",
+    "Taxa de estacionamento — 250 MZN por carro/dia"
   ],
   "excluded_en": [
     "Additional drinks",
     "Personal expenses",
-    "Transport to the marina"
+    "Transport to the marina",
+    "Parking fee — 250 MZN per car/day"
   ],
 
   "images": [
@@ -203,12 +205,14 @@
   "excluded": [
     "Almoço (opcional)",
     "Despesas pessoais",
-    "Transporte até ao ponto de embarque"
+    "Transporte até ao ponto de embarque",
+    "Taxa de estacionamento — 250 MZN por carro/dia"
   ],
   "excluded_en": [
     "Lunch (optional)",
     "Personal expenses",
-    "Transport to the embarkation point"
+    "Transport to the embarkation point",
+    "Parking fee — 250 MZN per car/day"
   ],
 
   "pricing": {
@@ -334,11 +338,13 @@
 
   "excluded": [
     "Bebidas adicionais",
-    "Despesas pessoais"
+    "Despesas pessoais",
+    "Taxa de estacionamento — 250 MZN por carro/dia"
   ],
   "excluded_en": [
     "Additional drinks",
-    "Personal expenses"
+    "Personal expenses",
+    "Parking fee — 250 MZN per car/day"
   ],
 
   "images": [
@@ -379,10 +385,10 @@
     },
     {
       "time": "15:00",
-      "title": "Piscinas Naturais",
-      "title_en": "Natural Pools",
-      "description": "Tempo livre para explorar as piscinas naturais e a praia.",
-      "description_en": "Free time to explore the natural pools and beach."
+      "title": "Ilha dos Portugueses",
+      "title_en": "Ilha dos Portugueses",
+      "description": "Paragem na tranquila Ilha dos Portugueses para relaxar na praia, nadar em águas cristalinas e desfrutar das paisagens paradisíacas.",
+      "description_en": "Stop at the tranquil Ilha dos Portugueses to relax on the beach, swim in crystal-clear waters and enjoy the paradisiacal scenery."
     },
     {
       "time": "17:00",
@@ -458,11 +464,13 @@
 
   "excluded": [
     "Bebidas alcoólicas",
-    "Despesas pessoais"
+    "Despesas pessoais",
+    "Taxa de estacionamento — 250 MZN por carro/dia"
   ],
   "excluded_en": [
     "Alcoholic drinks",
-    "Personal expenses"
+    "Personal expenses",
+    "Parking fee — 250 MZN per car/day"
   ],
 
   "pricing": {
@@ -479,32 +487,32 @@
 
   "itinerary": [
     {
-      "time": "16:30",
+      "time": "15:45",
       "title": "Embarque",
       "title_en": "Boarding",
       "description": "Check-in e embarque na Marina de Maputo.",
       "description_en": "Check-in and boarding at Maputo Marina."
     },
     {
-      "time": "17:00",
+      "time": "16:00",
       "title": "Início do Cruzeiro",
       "title_en": "Start of Cruise",
-      "description": "Passeio pela Baía de Maputo com vistas da cidade.",
-      "description_en": "Cruise through Maputo Bay with city views."
+      "description": "Início da navegação pela Baía de Maputo com vistas panorâmicas da cidade e da Ponte Maputo–Katembe.",
+      "description_en": "Start of the cruise through Maputo Bay with panoramic views of the city and the Maputo–Katembe Bridge."
     },
     {
-      "time": "17:45",
+      "time": "17:45 – 18:30",
       "title": "Pôr do Sol",
       "title_en": "Sunset",
-      "description": "Momento perfeito para fotografias do pôr do sol sobre a baía.",
-      "description_en": "Perfect moment for sunset photos over the bay."
+      "description": "O momento mais esperado do cruzeiro — hora exata varia consoante a época do ano. Momento ideal para fotografias do pôr do sol sobre a baía.",
+      "description_en": "The most anticipated moment of the cruise — exact time varies depending on the time of year. Perfect for sunset photos over the bay."
     },
     {
-      "time": "18:30",
+      "time": "19:00",
       "title": "Regresso",
       "title_en": "Return",
-      "description": "Regresso à marina após o cruzeiro.",
-      "description_en": "Return to the marina after the cruise."
+      "description": "Regresso à Marina de Maputo. Fim do cruzeiro.",
+      "description_en": "Return to Maputo Marina. End of the cruise."
     }
   ],
 
@@ -536,6 +544,7 @@
   "rating": 4.9,
   "reviews_count": 0,
   "badge": "Safari",
+  "child_price": 11000,
   "description": "Explore o famoso Parque Nacional Kruger numa aventura de um dia saindo de Maputo. Este safari oferece a oportunidade de observar os lendários Big Five e uma grande variedade de vida selvagem africana. A experiência inclui transporte, guia turístico e almoço num restaurante dentro do parque com vista para o Rio Sabie.",
   "description_en": "Explore the famous Kruger National Park on a day adventure from Maputo. This safari offers the opportunity to spot the legendary Big Five and a wide variety of African wildlife. The experience includes transport, a tour guide and lunch at a restaurant inside the park overlooking the Sabie River.",
 
@@ -578,16 +587,18 @@
   "excluded": [
     "Atividades extras dentro do parque",
     "Bebidas alcoólicas",
-    "Despesas pessoais"
+    "Despesas pessoais",
+    "Taxa de estacionamento — 250 MZN por carro/dia"
   ],
   "excluded_en": [
     "Extra activities inside the park",
     "Alcoholic drinks",
-    "Personal expenses"
+    "Personal expenses",
+    "Parking fee — 250 MZN per car/day"
   ],
 
   "pricing": {
-    "regular_vehicle": { "adults": 13500, "children": 7500 },
+    "regular_vehicle": { "adults": 13500, "children": 11000 },
     "open_vehicle":    { "adults": 18500, "children": 9200 }
   },
 
@@ -600,7 +611,7 @@
 
   "itinerary": [
     {
-      "time": "05:00",
+      "time": "05:45",
       "title": "Partida de Maputo",
       "title_en": "Departure from Maputo",
       "description": "Saída cedo de Maputo em direção à fronteira de Ressano Garcia.",
@@ -701,7 +712,8 @@
   "group_size": "Sob consulta",
   "group_size_en": "On request",
   "languages": ["Português", "English"],
-  "price_from": 9500,
+  "price_from": 11500,
+  "child_price": 9500,
   "currency": "MZN",
   "rating": 4.9,
   "reviews_count": 0,
@@ -742,12 +754,14 @@
   "excluded": [
     "Bebidas alcoólicas",
     "Despesas pessoais",
-    "Atividades adicionais dentro da reserva"
+    "Atividades adicionais dentro da reserva",
+    "Taxa de estacionamento — 250 MZN por carro/dia"
   ],
   "excluded_en": [
     "Alcoholic drinks",
     "Personal expenses",
-    "Additional activities inside the reserve"
+    "Additional activities inside the reserve",
+    "Parking fee — 250 MZN per car/day"
   ],
 
   "images": [
@@ -759,7 +773,7 @@
 
   "itinerary": [
     {
-      "time": "05:00",
+      "time": "06:15",
       "title": "Partida de Maputo",
       "title_en": "Departure from Maputo",
       "description": "Saída cedo de Maputo em direção à Reserva Especial de Maputo.",
@@ -888,13 +902,15 @@
   "excluded": [
     "Despesas pessoais",
     "Bebidas alcoólicas",
-    "Taxas de fronteira"
+    "Taxas de fronteira",
+    "Taxa de estacionamento — 250 MZN por carro/dia"
   ],
 
   "excluded_en": [
     "Personal expenses",
     "Alcoholic drinks",
-    "Border fees"
+    "Border fees",
+    "Parking fee — 250 MZN per car/day"
   ],
 
   "images": [
@@ -1007,12 +1023,12 @@
   ],
 
   "excluded": [
-    "Estacionamento",
+    "Estacionamento — 250 MZN por carro/dia",
     "Portagens",
     "Despesas pessoais"
   ],
   "excluded_en": [
-    "Parking",
+    "Parking — 250 MZN per car/day",
     "Tolls",
     "Personal expenses"
   ],
@@ -1400,13 +1416,15 @@
   "excluded": [
     "Entradas em museus ou monumentos pagos",
     "Compras pessoais",
-    "Pickup fora da cidade de Maputo"
+    "Pickup fora da cidade de Maputo",
+    "Taxa de estacionamento — 250 MZN por carro/dia"
   ],
 
   "excluded_en": [
     "Entrance fees to paid monuments or museums",
     "Personal purchases",
-    "Pickup outside Maputo city"
+    "Pickup outside Maputo city",
+    "Parking fee — 250 MZN per car/day"
   ],
 
   "pricing": {
@@ -1423,49 +1441,49 @@
 
   "itinerary": [
     {
-      "time": "00:00",
+      "time": "Início",
       "title": "Pickup",
       "title_en": "Pickup",
-      "description": "Recolha no hotel ou ponto combinado na cidade.",
-      "description_en": "Pickup at hotel or agreed point in the city."
+      "description": "Recolha no hotel ou ponto combinado. Hora de início flexível conforme disponibilidade.",
+      "description_en": "Pickup at hotel or agreed point. Start time is flexible depending on availability."
     },
     {
-      "time": "00:30",
+      "time": "+ 30 min",
       "title": "Igreja da Polana",
       "title_en": "Polana Church",
       "description": "Visita a um dos monumentos mais emblemáticos de Maputo.",
       "description_en": "Visit one of the most iconic monuments in Maputo."
     },
     {
-      "time": "01:00",
+      "time": "+ 30 min",
       "title": "Jardim Botânico & Casa de Ferro",
       "title_en": "Botanical Garden & Iron House",
       "description": "Passeio pelo histórico Jardim Tunduru e visita à famosa Casa de Ferro.",
       "description_en": "Walk through the historic Tunduru Gardens and visit the famous Iron House."
     },
     {
-      "time": "01:30",
+      "time": "+ 30 min",
       "title": "Catedral & Estátua Samora Machel",
       "title_en": "Cathedral & Samora Machel Statue",
       "description": "Paragem no coração histórico da cidade.",
       "description_en": "Stop in the historic heart of the city."
     },
     {
-      "time": "02:00",
+      "time": "+ 30 min",
       "title": "Fortaleza & Estação CFM",
       "title_en": "Fortress & CFM Railway Station",
       "description": "Visita a dois dos edifícios históricos mais importantes de Maputo.",
       "description_en": "Visit two of the most important historic buildings in Maputo."
     },
     {
-      "time": "02:30",
+      "time": "+ 30 min",
       "title": "Mercado Central & FEIMA",
       "title_en": "Central Market & FEIMA",
       "description": "Exploração do mercado local e da feira de artesanato.",
       "description_en": "Explore the local market and the craft fair."
     },
     {
-      "time": "03:00",
+      "time": "+ 30 min",
       "title": "Fim do tour",
       "title_en": "End of tour",
       "description": "Regresso ao hotel ou ponto de encontro.",
@@ -1500,8 +1518,8 @@
     "location": "Baía de Maputo",
     "duration": "Dia Inteiro (09:00 – 15:00)",
     "duration_en": "Full Day (09:00 – 15:00)",
-    "group_size": "Mín. 2 pessoas",
-    "group_size_en": "Min. 2 people",
+    "group_size": "Temporada: Jul – Nov",
+    "group_size_en": "Season: Jul – Nov",
     "languages": ["Português", "English"],
     "price_from": 7500,
     "child_price": 5500,
@@ -1544,12 +1562,14 @@
     "excluded": [
       "Transporte até à marina",
       "Bebidas alcoólicas",
-      "Despesas pessoais"
+      "Despesas pessoais",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
     ],
     "excluded_en": [
       "Transport to the marina",
       "Alcoholic drinks",
-      "Personal expenses"
+      "Personal expenses",
+      "Parking fee — 250 MZN per car/day"
     ],
     "images": [
       "../assets/images/tours/sea-activities/whale-watching-1.webp",
@@ -1559,39 +1579,39 @@
     ],
     "itinerary": [
       {
-        "time": "09:00",
+        "time": "08:00",
         "title": "Partida — Marina de Maputo",
         "title_en": "Departure — Maputo Marina",
         "description": "Embarque na Escola Náutica / Marina de Maputo. Briefing de segurança e orientações para a excursão.",
         "description_en": "Boarding at Escola Náutica / Maputo Marina. Safety briefing and excursion guidelines."
       },
       {
-        "time": "10:00",
+        "time": "09:20",
         "title": "Avistamento de Baleias",
         "title_en": "Whale Watching",
         "description": "Navegação nas águas da Baía de Maputo à procura de baleias jubarte. O guia especializado partilha curiosidades sobre estes magníficos animais.",
         "description_en": "Navigation through Maputo Bay waters in search of humpback whales. The specialist guide shares fascinating facts about these magnificent animals."
       },
       {
-        "time": "12:00",
-        "title": "Pit Stop — Inhaca ou Ilha dos Portugueses",
-        "title_en": "Pit Stop — Inhaca or Ilha dos Portugueses",
-        "description": "Paragem numa das ilhas paradisíacas para almoço, snorkeling e relaxamento na praia.",
-        "description_en": "Stop at one of the paradisiacal islands for lunch, snorkelling and beach relaxation."
+        "time": "11:30",
+        "title": "Pit Stop — Ilha dos Portugueses",
+        "title_en": "Pit Stop — Ilha dos Portugueses",
+        "description": "Paragem na tranquila Ilha dos Portugueses para relaxar na praia e desfrutar das águas cristalinas.",
+        "description_en": "Stop at the tranquil Ilha dos Portugueses to relax on the beach and enjoy the crystal-clear waters."
       },
       {
-        "time": "14:00",
-        "title": "Regresso a Maputo",
-        "title_en": "Return to Maputo",
-        "description": "Viagem de regresso com possibilidade de mais avistamentos ao longo do percurso.",
-        "description_en": "Return journey with the possibility of more sightings along the way."
+        "time": "12:30",
+        "title": "Partida para Inhaca — Almoço & Tour na Vila",
+        "title_en": "Departure to Inhaca — Lunch & Village Tour",
+        "description": "Viagem até à Ilha da Inhaca para almoço e tour pela vila local, descobrindo a cultura e o quotidiano da ilha.",
+        "description_en": "Journey to Inhaca Island for lunch and a tour of the local village, discovering the island's culture and everyday life."
       },
       {
         "time": "15:00",
-        "title": "Chegada à Marina",
-        "title_en": "Arrival at the Marina",
-        "description": "Desembarque na Marina de Maputo. Fim da excursão.",
-        "description_en": "Disembarkation at Maputo Marina. End of excursion."
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Viagem de regresso à Marina de Maputo. Fim da excursão.",
+        "description_en": "Return journey to Maputo Marina. End of excursion."
       }
     ],
     "meeting_point": {
@@ -1605,18 +1625,16 @@
     },
     "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
     "important_info": [
-      "Adultos: 8.500 MZN por pessoa",
-      "Crianças (4–10 anos): 6.500 MZN por pessoa",
       "Temporada de baleias: Julho a Novembro",
       "Recomendado trazer protetor solar, chapéu e óculos de sol",
-      "Não recomendado para pessoas com enjoo de movimento sem medicação prévia"
+      "Não recomendado para pessoas com enjoo de movimento sem medicação prévia",
+      "Atenção: as baleias são animais selvagens e os avistamentos nunca são garantidos a uma hora exata. Podemos encontrá-las em minutos ou demorar um pouco mais. De qualquer forma, a nossa equipa experiente estará constantemente a vigiar o oceano, fazendo tudo o que puder para as avistar e garantindo-lhe a maior probabilidade de um encontro inesquecível."
     ],
     "important_info_en": [
-      "Adults: 8,500 MZN per person",
-      "Children (4–10 years): 6,500 MZN per person",
       "Whale season: July to November",
       "Recommended: sunscreen, hat and sunglasses",
-      "Not recommended for those prone to motion sickness without prior medication"
+      "Not recommended for those prone to motion sickness without prior medication",
+      "Please note these are wild whales, so sightings are never guaranteed at a specific time. We might find them within minutes, or it might take a bit longer. Either way, our experienced crew will be constantly scanning the ocean and doing their best to spot them, giving you the highest chance of an unforgettable encounter."
     ],
     "reviews": []
   },
@@ -1633,7 +1651,15 @@
     "group_size_en": "Up to 20 people (depending on vessel)",
     "languages": ["Português", "English"],
     "price_from": 38500,
+    "price_unit": "/barco",
+    "price_unit_en": "/boat",
     "currency": "MZN",
+    "boat_options": [
+      { "key": "lancha-menor",     "name": "Lancha Rápida Menor",     "name_en": "Small Speed Boat",    "capacity": "até 3 pax",      "capacity_en": "up to 3 pax",      "price_mzn": 38500, "price_usd": 600 },
+      { "key": "lancha-intermedia","name": "Lancha Rápida Intermédia","name_en": "Medium Speed Boat",   "capacity": "até 6 pax",      "capacity_en": "up to 6 pax",      "price_mzn": 58000, "price_usd": 900 },
+      { "key": "lancha-maior",     "name": "Lancha Rápida Maior",     "name_en": "Large Speed Boat",    "capacity": "até 8-9 pax",    "capacity_en": "up to 8-9 pax",    "price_mzn": 84000 },
+      { "key": "catamarao-patron", "name": "Catamarã Patron",         "name_en": "Patron Catamaran",    "capacity": "até 15-20 pax",  "capacity_en": "up to 15-20 pax",  "price_mzn": 100000 }
+    ],
     "rating": 4.9,
     "reviews_count": 0,
     "badge": "Fishing Charters",
