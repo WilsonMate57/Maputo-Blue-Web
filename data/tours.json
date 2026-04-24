@@ -1642,33 +1642,27 @@
   {
     "id": "pesca-alto-mar",
     "category": "fishing-charters",
-    "title": "Pesca de Alto Mar",
-    "title_en": "Deep Sea Fishing",
+    "title": "Pesca de Alto Mar — Lancha Menor",
+    "title_en": "Deep Sea Fishing — Small Boat",
     "location": "Baía de Maputo / Oceano Índico",
     "duration": "Dia Inteiro (06:00 – 15:00)",
     "duration_en": "Full Day (06:00 – 15:00)",
-    "group_size": "Até 20 pessoas (conforme embarcação)",
-    "group_size_en": "Up to 20 people (depending on vessel)",
+    "group_size": "até 3 pessoas",
+    "group_size_en": "up to 3 people",
     "languages": ["Português", "English"],
     "price_from": 38500,
     "price_unit": "/barco",
     "price_unit_en": "/boat",
     "currency": "MZN",
-    "boat_options": [
-      { "key": "lancha-menor",     "name": "Lancha Rápida Menor",     "name_en": "Small Speed Boat",    "capacity": "até 3 pax",      "capacity_en": "up to 3 pax",      "price_mzn": 38500, "price_usd": 600 },
-      { "key": "lancha-intermedia","name": "Lancha Rápida Intermédia","name_en": "Medium Speed Boat",   "capacity": "até 6 pax",      "capacity_en": "up to 6 pax",      "price_mzn": 58000, "price_usd": 900 },
-      { "key": "lancha-maior",     "name": "Lancha Rápida Maior",     "name_en": "Large Speed Boat",    "capacity": "até 8-9 pax",    "capacity_en": "up to 8-9 pax",    "price_mzn": 84000 },
-      { "key": "catamarao-patron", "name": "Catamarã Patron",         "name_en": "Patron Catamaran",    "capacity": "até 15-20 pax",  "capacity_en": "up to 15-20 pax",  "price_mzn": 100000 }
-    ],
     "rating": 4.9,
     "reviews_count": 0,
     "badge": "Fishing Charters",
-    "description": "Embarque numa emocionante aventura de pesca de alto mar nas águas ricas do Oceano Índico a partir da Marina de Maputo. Com embarcações de diferentes capacidades e todo o equipamento de pesca incluído, esta experiência é ideal para amadores e pescadores experientes — Wahoo, Marlin, Atum, Dourado, Sailfish e muito mais à espera.",
-    "description_en": "Embark on an exciting deep sea fishing adventure in the rich waters of the Indian Ocean from Maputo Marina. With boats of different capacities and all fishing equipment included, this experience is ideal for amateurs and experienced anglers alike — Wahoo, Marlin, Tuna, Dorado, Sailfish and much more awaiting.",
+    "description": "Ideal para grupos pequenos até 3 pessoas, a Lancha Rápida Menor oferece uma experiência íntima e ágil de pesca de alto mar nas águas ricas do Oceano Índico. Velocidade máxima para alcançar as melhores zonas de pesca — Wahoo, Marlin, Atum, Dourado e Sailfish à espera.",
+    "description_en": "Perfect for small groups of up to 3 people, the Small Speed Boat offers an intimate and agile deep sea fishing experience in the rich waters of the Indian Ocean. Maximum speed to reach the best fishing spots — Wahoo, Marlin, Tuna, Dorado and Sailfish awaiting.",
     "highlights": [
       "Pesca de Wahoo, Marlin, Atum, Dourado, Sailfish e Red Snapper",
       "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isco",
-      "Embarcações para 3 a 20 passageiros disponíveis",
+      "Ideal para grupos até 3 pessoas",
       "Todo o equipamento de pesca incluído (canas, isco, rapalas)",
       "Capitão experiente nas melhores zonas de pesca do Índico",
       "Saída ao amanhecer conforme a melhor maré do dia"
@@ -1676,7 +1670,7 @@
     "highlights_en": [
       "Fishing for Wahoo, Marlin, Tuna, Dorado, Sailfish and Red Snapper",
       "Techniques: Trolling, Vertical Jigging, Spinning, Bottom Fishing and Live Bait Drifting",
-      "Boats for 3 to 20 passengers available",
+      "Ideal for groups of up to 3 people",
       "All fishing equipment included (rods, bait, lures)",
       "Experienced captain in the best fishing spots of the Indian Ocean",
       "Sunrise departure according to the best tide of the day"
@@ -1766,19 +1760,421 @@
     "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
     "important_info": [
       "Lancha Rápida Menor: 38.500 MZN / 600 USD — até 3 passageiros",
-      "Lancha Rápida Intermédia: 58.000 MZN / 900 USD — até 6 passageiros",
-      "Lancha Rápida Maior: 84.000 MZN — até 8–9 passageiros",
-      "Catamarã Patron: 100.000 MZN — até 15–20 passageiros",
       "Taxa da marina não incluída: 100 MZN por pessoa",
       "Hora de saída varia conforme a maré (05:30 – 07:00)",
       "Regresso previsto: 14:00 – 15:00",
       "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
     ],
     "important_info_en": [
-      "Small Fast Boat: 38,500 MZN / 600 USD — up to 3 passengers",
-      "Medium Fast Boat: 58,000 MZN / 900 USD — up to 6 passengers",
-      "Large Fast Boat: 84,000 MZN — up to 8–9 passengers",
-      "Patron Catamaran: 100,000 MZN — up to 15–20 passengers",
+      "Small Speed Boat: 38,500 MZN / 600 USD — up to 3 passengers",
+      "Marina fee not included: 100 MZN per person",
+      "Departure time varies according to tide (05:30 – 07:00)",
+      "Expected return: 14:00 – 15:00",
+      "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
+    ],
+    "reviews": []
+  },
+
+  {
+    "id": "pesca-alto-mar-intermedia",
+    "category": "fishing-charters",
+    "title": "Pesca de Alto Mar — Lancha Intermédia",
+    "title_en": "Deep Sea Fishing — Medium Boat",
+    "location": "Baía de Maputo / Oceano Índico",
+    "duration": "Dia Inteiro (06:00 – 15:00)",
+    "duration_en": "Full Day (06:00 – 15:00)",
+    "group_size": "até 6 pessoas",
+    "group_size_en": "up to 6 people",
+    "languages": ["Português", "English"],
+    "price_from": 58000,
+    "price_unit": "/barco",
+    "price_unit_en": "/boat",
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Fishing Charters",
+    "description": "Para grupos até 6 pessoas, a Lancha Rápida Intermédia combina velocidade e espaço para uma experiência de pesca de alto mar completa e confortável. Com todo o equipamento incluído, é a escolha perfeita para grupos de amigos ou família — Wahoo, Marlin, Atum, Dourado e Sailfish à espera.",
+    "description_en": "For groups of up to 6 people, the Medium Speed Boat combines speed and space for a complete and comfortable deep sea fishing experience. With all equipment included, it's the perfect choice for groups of friends or family — Wahoo, Marlin, Tuna, Dorado and Sailfish awaiting.",
+    "highlights": [
+      "Pesca de Wahoo, Marlin, Atum, Dourado, Sailfish e Red Snapper",
+      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isco",
+      "Ideal para grupos até 6 pessoas",
+      "Todo o equipamento de pesca incluído (canas, isco, rapalas)",
+      "Capitão experiente nas melhores zonas de pesca do Índico",
+      "Saída ao amanhecer conforme a melhor maré do dia"
+    ],
+    "highlights_en": [
+      "Fishing for Wahoo, Marlin, Tuna, Dorado, Sailfish and Red Snapper",
+      "Techniques: Trolling, Vertical Jigging, Spinning, Bottom Fishing and Live Bait Drifting",
+      "Ideal for groups of up to 6 people",
+      "All fishing equipment included (rods, bait, lures)",
+      "Experienced captain in the best fishing spots of the Indian Ocean",
+      "Sunrise departure according to the best tide of the day"
+    ],
+    "included": [
+      "Embarcação com capitão",
+      "Canas de pesca",
+      "Isco e rapalas",
+      "Equipamento completo de pesca",
+      "Combustível",
+      "Água a bordo"
+    ],
+    "included_en": [
+      "Boat with captain",
+      "Fishing rods",
+      "Bait and lures",
+      "Full fishing equipment",
+      "Fuel",
+      "Water on board"
+    ],
+    "excluded": [
+      "Taxa da Marina: 100 MZN por pessoa",
+      "Taxa da Reserva de Inhaca: 100 MZN (nacionais) / 200 MZN (estrangeiros)",
+      "Estacionamento: 250 MZN por viatura",
+      "Refeições e bebidas",
+      "Transporte até à marina"
+    ],
+    "excluded_en": [
+      "Marina fee: 100 MZN per person",
+      "Inhaca Reserve fee: 100 MZN (nationals) / 200 MZN (foreigners)",
+      "Parking: 250 MZN per vehicle",
+      "Meals and drinks",
+      "Transport to the marina"
+    ],
+    "images": [
+      "../assets/images/tours/sea-activities/fishing-2.webp",
+      "../assets/images/tours/sea-activities/fishing-1.webp",
+      "../assets/images/tours/sea-activities/fishing-3.webp",
+      "../assets/images/tours/sea-activities/fishing-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "05:30–07:00",
+        "title": "Partida — Marina de Maputo",
+        "title_en": "Departure — Maputo Marina",
+        "description": "Embarque na Escola Náutica / Marina de Maputo. Hora de partida definida conforme a maré do dia. Distribuição de equipamento e briefing com o capitão.",
+        "description_en": "Boarding at Escola Náutica / Maputo Marina. Departure time set according to the day's tide. Equipment distribution and briefing with the captain."
+      },
+      {
+        "time": "07:00",
+        "title": "Rumo ao Alto Mar",
+        "title_en": "Heading to Deep Waters",
+        "description": "Navegação em direção às melhores zonas de pesca do Oceano Índico. O capitão seleciona os pontos com base nas condições do mar e movimentação de peixes.",
+        "description_en": "Navigation towards the best fishing spots in the Indian Ocean. The captain selects points based on sea conditions and fish movement."
+      },
+      {
+        "time": "07:30–13:00",
+        "title": "Pesca Ativa",
+        "title_en": "Active Fishing",
+        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isco para Dorado.",
+        "description_en": "Fishing session with all techniques: trolling for Wahoo and Marlin, vertical jigging for Amberjack, spinning and bottom fishing for Snapper and Tuna, live bait drifting for Dorado."
+      },
+      {
+        "time": "13:00",
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Início do regresso à marina com as capturas do dia e memórias inesquecíveis.",
+        "description_en": "Start of return to the marina with the day's catch and unforgettable memories."
+      },
+      {
+        "time": "14:00–15:00",
+        "title": "Chegada à Marina",
+        "title_en": "Arrival at the Marina",
+        "description": "Desembarque, fotografia com as capturas e fim da excursão.",
+        "description_en": "Disembarkation, photo with the catch and end of excursion."
+      }
+    ],
+    "meeting_point": {
+      "name": "Marina de Maputo / Escola Náutica",
+      "address": "Av. 25 de Setembro, Maputo"
+    },
+    "contact": {
+      "phone": "+258 84 712 1666",
+      "email": "maputoblue.info@gmail.com",
+      "whatsapp": "+258847121666"
+    },
+    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "important_info": [
+      "Lancha Rápida Intermédia: 58.000 MZN / 900 USD — até 6 passageiros",
+      "Taxa da marina não incluída: 100 MZN por pessoa",
+      "Hora de saída varia conforme a maré (05:30 – 07:00)",
+      "Regresso previsto: 14:00 – 15:00",
+      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
+    ],
+    "important_info_en": [
+      "Medium Speed Boat: 58,000 MZN / 900 USD — up to 6 passengers",
+      "Marina fee not included: 100 MZN per person",
+      "Departure time varies according to tide (05:30 – 07:00)",
+      "Expected return: 14:00 – 15:00",
+      "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
+    ],
+    "reviews": []
+  },
+
+  {
+    "id": "pesca-alto-mar-maior",
+    "category": "fishing-charters",
+    "title": "Pesca de Alto Mar — Lancha Maior",
+    "title_en": "Deep Sea Fishing — Large Boat",
+    "location": "Baía de Maputo / Oceano Índico",
+    "duration": "Dia Inteiro (06:00 – 15:00)",
+    "duration_en": "Full Day (06:00 – 15:00)",
+    "group_size": "até 8-9 pessoas",
+    "group_size_en": "up to 8-9 people",
+    "languages": ["Português", "English"],
+    "price_from": 84000,
+    "price_unit": "/barco",
+    "price_unit_en": "/boat",
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Fishing Charters",
+    "description": "A Lancha Rápida Maior acomoda até 8-9 pescadores com todo o conforto e estabilidade para uma jornada épica de pesca de alto mar no Oceano Índico. Espaço para toda a equipa sem abdicar da velocidade — Wahoo, Marlin, Atum, Dourado e Sailfish à espera.",
+    "description_en": "The Large Speed Boat accommodates up to 8-9 anglers with all the comfort and stability for an epic deep sea fishing journey in the Indian Ocean. Space for the whole team without sacrificing speed — Wahoo, Marlin, Tuna, Dorado and Sailfish awaiting.",
+    "highlights": [
+      "Pesca de Wahoo, Marlin, Atum, Dourado, Sailfish e Red Snapper",
+      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isco",
+      "Ideal para grupos até 8-9 pessoas",
+      "Todo o equipamento de pesca incluído (canas, isco, rapalas)",
+      "Capitão experiente nas melhores zonas de pesca do Índico",
+      "Saída ao amanhecer conforme a melhor maré do dia"
+    ],
+    "highlights_en": [
+      "Fishing for Wahoo, Marlin, Tuna, Dorado, Sailfish and Red Snapper",
+      "Techniques: Trolling, Vertical Jigging, Spinning, Bottom Fishing and Live Bait Drifting",
+      "Ideal for groups of up to 8-9 people",
+      "All fishing equipment included (rods, bait, lures)",
+      "Experienced captain in the best fishing spots of the Indian Ocean",
+      "Sunrise departure according to the best tide of the day"
+    ],
+    "included": [
+      "Embarcação com capitão",
+      "Canas de pesca",
+      "Isco e rapalas",
+      "Equipamento completo de pesca",
+      "Combustível",
+      "Água a bordo"
+    ],
+    "included_en": [
+      "Boat with captain",
+      "Fishing rods",
+      "Bait and lures",
+      "Full fishing equipment",
+      "Fuel",
+      "Water on board"
+    ],
+    "excluded": [
+      "Taxa da Marina: 100 MZN por pessoa",
+      "Taxa da Reserva de Inhaca: 100 MZN (nacionais) / 200 MZN (estrangeiros)",
+      "Estacionamento: 250 MZN por viatura",
+      "Refeições e bebidas",
+      "Transporte até à marina"
+    ],
+    "excluded_en": [
+      "Marina fee: 100 MZN per person",
+      "Inhaca Reserve fee: 100 MZN (nationals) / 200 MZN (foreigners)",
+      "Parking: 250 MZN per vehicle",
+      "Meals and drinks",
+      "Transport to the marina"
+    ],
+    "images": [
+      "../assets/images/tours/sea-activities/fishing-3.webp",
+      "../assets/images/tours/sea-activities/fishing-1.webp",
+      "../assets/images/tours/sea-activities/fishing-2.webp",
+      "../assets/images/tours/sea-activities/fishing-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "05:30–07:00",
+        "title": "Partida — Marina de Maputo",
+        "title_en": "Departure — Maputo Marina",
+        "description": "Embarque na Escola Náutica / Marina de Maputo. Hora de partida definida conforme a maré do dia. Distribuição de equipamento e briefing com o capitão.",
+        "description_en": "Boarding at Escola Náutica / Maputo Marina. Departure time set according to the day's tide. Equipment distribution and briefing with the captain."
+      },
+      {
+        "time": "07:00",
+        "title": "Rumo ao Alto Mar",
+        "title_en": "Heading to Deep Waters",
+        "description": "Navegação em direção às melhores zonas de pesca do Oceano Índico. O capitão seleciona os pontos com base nas condições do mar e movimentação de peixes.",
+        "description_en": "Navigation towards the best fishing spots in the Indian Ocean. The captain selects points based on sea conditions and fish movement."
+      },
+      {
+        "time": "07:30–13:00",
+        "title": "Pesca Ativa",
+        "title_en": "Active Fishing",
+        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isco para Dorado.",
+        "description_en": "Fishing session with all techniques: trolling for Wahoo and Marlin, vertical jigging for Amberjack, spinning and bottom fishing for Snapper and Tuna, live bait drifting for Dorado."
+      },
+      {
+        "time": "13:00",
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Início do regresso à marina com as capturas do dia e memórias inesquecíveis.",
+        "description_en": "Start of return to the marina with the day's catch and unforgettable memories."
+      },
+      {
+        "time": "14:00–15:00",
+        "title": "Chegada à Marina",
+        "title_en": "Arrival at the Marina",
+        "description": "Desembarque, fotografia com as capturas e fim da excursão.",
+        "description_en": "Disembarkation, photo with the catch and end of excursion."
+      }
+    ],
+    "meeting_point": {
+      "name": "Marina de Maputo / Escola Náutica",
+      "address": "Av. 25 de Setembro, Maputo"
+    },
+    "contact": {
+      "phone": "+258 84 712 1666",
+      "email": "maputoblue.info@gmail.com",
+      "whatsapp": "+258847121666"
+    },
+    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "important_info": [
+      "Lancha Rápida Maior: 84.000 MZN — até 8-9 passageiros",
+      "Taxa da marina não incluída: 100 MZN por pessoa",
+      "Hora de saída varia conforme a maré (05:30 – 07:00)",
+      "Regresso previsto: 14:00 – 15:00",
+      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
+    ],
+    "important_info_en": [
+      "Large Speed Boat: 84,000 MZN — up to 8-9 passengers",
+      "Marina fee not included: 100 MZN per person",
+      "Departure time varies according to tide (05:30 – 07:00)",
+      "Expected return: 14:00 – 15:00",
+      "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
+    ],
+    "reviews": []
+  },
+
+  {
+    "id": "pesca-alto-mar-catamarao",
+    "category": "fishing-charters",
+    "title": "Pesca de Alto Mar — Catamarã Patron",
+    "title_en": "Deep Sea Fishing — Patron Catamaran",
+    "location": "Baía de Maputo / Oceano Índico",
+    "duration": "Dia Inteiro (06:00 – 15:00)",
+    "duration_en": "Full Day (06:00 – 15:00)",
+    "group_size": "até 15-20 pessoas",
+    "group_size_en": "up to 15-20 people",
+    "languages": ["Português", "English"],
+    "price_from": 100000,
+    "price_unit": "/barco",
+    "price_unit_en": "/boat",
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Fishing Charters",
+    "description": "O Catamarã Patron é a escolha definitiva para grandes grupos até 20 pessoas. Espaçoso, estável e equipado para uma experiência de pesca de alto mar premium no Oceano Índico — ideal para eventos corporativos, despedidas de solteiro ou simplesmente uma grande aventura em grupo.",
+    "description_en": "The Patron Catamaran is the ultimate choice for large groups of up to 20 people. Spacious, stable and equipped for a premium deep sea fishing experience in the Indian Ocean — ideal for corporate events, bachelor parties or simply a big group adventure.",
+    "highlights": [
+      "Pesca de Wahoo, Marlin, Atum, Dourado, Sailfish e Red Snapper",
+      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isco",
+      "Ideal para grandes grupos até 15-20 pessoas",
+      "Todo o equipamento de pesca incluído (canas, isco, rapalas)",
+      "Capitão experiente nas melhores zonas de pesca do Índico",
+      "Saída ao amanhecer conforme a melhor maré do dia"
+    ],
+    "highlights_en": [
+      "Fishing for Wahoo, Marlin, Tuna, Dorado, Sailfish and Red Snapper",
+      "Techniques: Trolling, Vertical Jigging, Spinning, Bottom Fishing and Live Bait Drifting",
+      "Ideal for large groups of up to 15-20 people",
+      "All fishing equipment included (rods, bait, lures)",
+      "Experienced captain in the best fishing spots of the Indian Ocean",
+      "Sunrise departure according to the best tide of the day"
+    ],
+    "included": [
+      "Embarcação com capitão",
+      "Canas de pesca",
+      "Isco e rapalas",
+      "Equipamento completo de pesca",
+      "Combustível",
+      "Água a bordo"
+    ],
+    "included_en": [
+      "Boat with captain",
+      "Fishing rods",
+      "Bait and lures",
+      "Full fishing equipment",
+      "Fuel",
+      "Water on board"
+    ],
+    "excluded": [
+      "Taxa da Marina: 100 MZN por pessoa",
+      "Taxa da Reserva de Inhaca: 100 MZN (nacionais) / 200 MZN (estrangeiros)",
+      "Estacionamento: 250 MZN por viatura",
+      "Refeições e bebidas",
+      "Transporte até à marina"
+    ],
+    "excluded_en": [
+      "Marina fee: 100 MZN per person",
+      "Inhaca Reserve fee: 100 MZN (nationals) / 200 MZN (foreigners)",
+      "Parking: 250 MZN per vehicle",
+      "Meals and drinks",
+      "Transport to the marina"
+    ],
+    "images": [
+      "../assets/images/tours/sea-activities/fishing-4.webp",
+      "../assets/images/tours/sea-activities/fishing-1.webp",
+      "../assets/images/tours/sea-activities/fishing-2.webp",
+      "../assets/images/tours/sea-activities/fishing-3.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "05:30–07:00",
+        "title": "Partida — Marina de Maputo",
+        "title_en": "Departure — Maputo Marina",
+        "description": "Embarque na Escola Náutica / Marina de Maputo. Hora de partida definida conforme a maré do dia. Distribuição de equipamento e briefing com o capitão.",
+        "description_en": "Boarding at Escola Náutica / Maputo Marina. Departure time set according to the day's tide. Equipment distribution and briefing with the captain."
+      },
+      {
+        "time": "07:00",
+        "title": "Rumo ao Alto Mar",
+        "title_en": "Heading to Deep Waters",
+        "description": "Navegação em direção às melhores zonas de pesca do Oceano Índico. O capitão seleciona os pontos com base nas condições do mar e movimentação de peixes.",
+        "description_en": "Navigation towards the best fishing spots in the Indian Ocean. The captain selects points based on sea conditions and fish movement."
+      },
+      {
+        "time": "07:30–13:00",
+        "title": "Pesca Ativa",
+        "title_en": "Active Fishing",
+        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isco para Dorado.",
+        "description_en": "Fishing session with all techniques: trolling for Wahoo and Marlin, vertical jigging for Amberjack, spinning and bottom fishing for Snapper and Tuna, live bait drifting for Dorado."
+      },
+      {
+        "time": "13:00",
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Início do regresso à marina com as capturas do dia e memórias inesquecíveis.",
+        "description_en": "Start of return to the marina with the day's catch and unforgettable memories."
+      },
+      {
+        "time": "14:00–15:00",
+        "title": "Chegada à Marina",
+        "title_en": "Arrival at the Marina",
+        "description": "Desembarque, fotografia com as capturas e fim da excursão.",
+        "description_en": "Disembarkation, photo with the catch and end of excursion."
+      }
+    ],
+    "meeting_point": {
+      "name": "Marina de Maputo / Escola Náutica",
+      "address": "Av. 25 de Setembro, Maputo"
+    },
+    "contact": {
+      "phone": "+258 84 712 1666",
+      "email": "maputoblue.info@gmail.com",
+      "whatsapp": "+258847121666"
+    },
+    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "important_info": [
+      "Catamarã Patron: 100.000 MZN — até 15-20 passageiros",
+      "Taxa da marina não incluída: 100 MZN por pessoa",
+      "Hora de saída varia conforme a maré (05:30 – 07:00)",
+      "Regresso previsto: 14:00 – 15:00",
+      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
+    ],
+    "important_info_en": [
+      "Patron Catamaran: 100,000 MZN — up to 15-20 passengers",
       "Marina fee not included: 100 MZN per person",
       "Departure time varies according to tide (05:30 – 07:00)",
       "Expected return: 14:00 – 15:00",

@@ -659,10 +659,10 @@ main.tours-main { z-index: auto; }
   inset: 0;
   z-index: 1;
   background: linear-gradient(
-    135deg,
-    rgba(3, 13, 22, 0) 0%,
-    rgba(6, 22, 37, 0) 50%,
-    rgba(3, 10, 17, 0) 100%
+    to bottom,
+    rgba(3, 13, 22, 0.15) 0%,
+    rgba(3, 13, 22, 0.50) 55%,
+    rgba(3, 13, 22, 0.70) 100%
   );
 }
 .hero-content {
@@ -705,6 +705,7 @@ main.tours-main { z-index: auto; }
   line-height: 1.12;
   letter-spacing: -0.03em;
   margin-bottom: 18px;
+  text-shadow: 0 2px 16px rgba(0,0,0,.55), 0 1px 4px rgba(0,0,0,.4);
   opacity: 0;
   transform: translateY(24px);
 }
@@ -718,6 +719,7 @@ main.tours-main { z-index: auto; }
   line-height: 1.7;
   margin-bottom: 32px;
   max-width: 520px;
+  text-shadow: 0 1px 8px rgba(0,0,0,.5);
   opacity: 0;
   transform: translateY(24px);
 }
