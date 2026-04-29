@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Car Hire | Maputo Blue</title>
+  <meta name="description" content="Book your private car with driver. Choose your destination, see the price and confirm via WhatsApp.">
+  <meta name="author" content="Maputo Blue">
+  <meta name="robots" content="noindex">
+  <link rel="alternate" hreflang="pt" href="https://www.maputoblue.com/pages/car-booking.html">
+  <link rel="alternate" hreflang="en" href="https://www.maputoblue.com/en/car-booking.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="icon" type="image/png" href="../logo.webp">
+  <style>
+    .cr-group { margin-bottom: 24px; }
+    .cr-group-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .75rem; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 10px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .cr-group-label i { font-size: 1rem; color: var(--sea-green); }
+    .cr-dest-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: border-color .18s, background .18s;
+      background: var(--white);
+      margin-bottom: 8px; position: relative;
+    }
+    .cr-dest-item:last-child { margin-bottom: 0; }
+    .cr-dest-item:hover { border-color: var(--sea-green); background: #f0faf8; }
+    .cr-dest-item.selected { border-color: var(--sea-green); background: #e8f7f3; }
+    .cr-dest-item input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+    .cr-radio {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid var(--border-light); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .18s, background .18s;
+    }
+    .cr-dest-item.selected .cr-radio { border-color: var(--sea-green); background: var(--sea-green); }
+    .cr-radio::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--white); opacity: 0; transition: opacity .15s; }
+    .cr-dest-item.selected .cr-radio::after { opacity: 1; }
+    .cr-dest-info { flex: 1; min-width: 0; }
+    .cr-dest-name { font-size: .9375rem; font-weight: 600; color: var(--text-dark); line-height: 1.3; }
+    .cr-dest-meta { font-size: .8rem; color: var(--text-muted); margin-top: 2px; }
+    .cr-dest-price-col { text-align: right; flex-shrink: 0; }
+    .cr-dest-price-val { font-size: .9375rem; font-weight: 700; color: var(--primary); white-space: nowrap; }
+    .cr-dest-price-unit { font-size: .75rem; color: var(--text-muted); white-space: nowrap; }
+    #cr-date.cr-date-error { border-color: #e53935 !important; box-shadow: 0 0 0 3px rgba(229,57,53,.15); }
+    #cr-hint.cr-hint-error { color: #e53935 !important; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <div id="preloader" aria-hidden="true">
+    <lottie-player src="../assets/preloader/boat steering.json" background="transparent" speed="1" loop autoplay></lottie-player>
+  </div>
+  <script>(function(){var t=Date.now();function hide(){document.getElementById('preloader').classList.add('hidden');}window.addEventListener('load',function(){var elapsed=Date.now()-t;var remaining=3000-elapsed;if(remaining<=0){hide();}else{setTimeout(hide,remaining);}});})();</script>
+
+  <div id="navbar-placeholder"></div>
+
+  <!-- Lightbox -->
+  <div class="pkg-lightbox" id="pkg-lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery">
+    <div class="pkg-lightbox__backdrop" id="lightbox-backdrop"></div>
+    <button class="pkg-lightbox__close" id="lightbox-close" aria-label="Close gallery"><i class='bx bx-x'></i></button>
+    <button class="pkg-lightbox__nav pkg-lightbox__nav--prev" id="lightbox-prev" aria-label="Previous photo"><i class='bx bx-chevron-left'></i></button>
+    <button class="pkg-lightbox__nav pkg-lightbox__nav--next" id="lightbox-next" aria-label="Next photo"><i class='bx bx-chevron-right'></i></button>
+    <div class="pkg-lightbox__inner">
+      <img class="pkg-lightbox__main-img" id="lightbox-img" src="" alt="">
+      <div class="pkg-lightbox__caption" id="lightbox-caption"></div>
+      <div class="pkg-lightbox__thumbs" id="lightbox-thumbs"></div>
+    </div>
+  </div>
+
+  <main>
+
+    <div style="background:var(--white);border-bottom:1px solid var(--border-light);padding:14px 0;">
+      <div class="mb-container">
+        <nav style="display:flex;align-items:center;gap:4px;font-size:.875rem;flex-wrap:wrap;" aria-label="Breadcrumb">
+          <a href="../en/index.html" style="color:var(--sea-green);text-decoration:none;">Home</a>
+          <span style="color:var(--border-light);margin:0 4px;">/</span>
+          <a href="services.html" style="color:var(--sea-green);text-decoration:none;">Services</a>
+          <span style="color:var(--border-light);margin:0 4px;">/</span>
+          <span style="color:var(--text-body);">Private Car</span>
+        </nav>
+      </div>
+    </div>
+
+    <div style="background:var(--white);padding:24px 0 0;">
+      <div class="mb-container">
+        <div class="pkg-gallery" id="pkg-gallery" aria-label="Photo gallery">
+          <div class="pkg-gallery__main" id="gallery-slot-main">
+            <img src="../assets/images/transfers/car/car-transfer-1.webp" alt="Private car with driver">
+          </div>
+          <div class="pkg-gallery__side" id="gallery-slot-side1">
+            <img src="../assets/images/tours/city-tours/maputo-city-tour-1.webp" alt="Maputo City Tour">
+          </div>
+          <div class="pkg-gallery__side" id="gallery-slot-side2">
+            <img src="../assets/images/tours/safari/hlane/hlane-1.webp" alt="Hlane Royal Park Safari">
+          </div>
+          <span class="pkg-gallery__counter">8 photos</span>
+          <button class="pkg-gallery__all-btn" id="gallery-all-btn" aria-label="View all photos">
+            <i class='bx bx-grid-alt'></i>View all photos
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section style="background:var(--light-bg);padding:36px 0 80px;">
+      <div class="mb-container">
+        <div class="row g-5">
+
+          <div class="col-lg-8">
+
+            <div style="margin-bottom:24px;">
+              <h1 style="font-size:clamp(1.5rem,3vw,2.125rem);font-weight:800;color:var(--primary);margin-bottom:10px;">Private Car with Driver</h1>
+              <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                <span style="display:flex;align-items:center;gap:5px;font-size:.875rem;color:var(--text-muted);">
+                  <i class='bx bx-map-pin' style="color:var(--sea-green);"></i><span>Maputo, Mozambique</span>
+                </span>
+                <div class="star-rating"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
+              </div>
+            </div>
+
+            <div class="pkg-overview-bar">
+              <div class="pkg-overview-item"><i class='bx bx-group'></i><span class="pkg-overview-item__label">Seats</span><span class="pkg-overview-item__value">Up to 6 pax</span></div>
+              <div class="pkg-overview-item"><i class='bx bx-map'></i><span class="pkg-overview-item__label">Destinations</span><span class="pkg-overview-item__value">12 routes</span></div>
+              <div class="pkg-overview-item"><i class='bx bx-time-five'></i><span class="pkg-overview-item__label">Duration</span><span class="pkg-overview-item__value">As per route</span></div>
+              <div class="pkg-overview-item"><i class='bx bx-walk'></i><span class="pkg-overview-item__label">Level</span><span class="pkg-overview-item__value">Easy</span></div>
+            </div>
+
+            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:14px;">About this Service</h2>
+              <p style="color:var(--text-muted);line-height:1.8;font-size:.9375rem;margin:0;">
+                Enjoy comfortable and safe private transport with an exclusive driver to any destination — from airport transfers to safaris in Eswatini. The car is fully equipped for a pleasant and convenient journey.
+              </p>
+            </div>
+
+            <!-- ── DESTINATION SELECTOR ── -->
+            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:4px;">
+                <i class='bx bx-map' style="color:var(--sea-green);margin-right:6px;"></i>Choose Your Destination
+              </h2>
+              <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:20px;">Select a destination to calculate the total price automatically.</p>
+
+              <div id="cr-pax-section" style="display:none;margin-bottom:20px;padding:16px;background:var(--light-bg);border-radius:var(--radius-md);border:1px solid var(--border-light);">
+                <label style="font-size:.875rem;font-weight:600;color:var(--text-dark);display:block;margin-bottom:12px;">
+                  <i class='bx bx-group' style="color:var(--sea-green);margin-right:4px;"></i>Number of People <span style="font-weight:400;color:var(--text-muted);">(minimum 2)</span>
+                </label>
+                <div style="display:flex;align-items:center;gap:14px;">
+                  <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);overflow:hidden;display:inline-flex;align-items:center;background:var(--white);">
+                    <button class="stepper-btn" id="cr-pax-minus" type="button" style="width:42px;height:42px;" aria-label="Decrease">−</button>
+                    <span id="cr-pax-count" style="min-width:46px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-size:.9375rem;font-weight:700;color:var(--primary);border-left:1.5px solid var(--border-light);border-right:1.5px solid var(--border-light);">2</span>
+                    <button class="stepper-btn" id="cr-pax-plus" type="button" style="width:42px;height:42px;" aria-label="Increase">+</button>
+                  </div>
+                  <span id="cr-pax-total-preview" style="font-size:.875rem;color:var(--text-muted);"></span>
+                </div>
+              </div>
+
+              <!-- City & Transfers -->
+              <div class="cr-group">
+                <div class="cr-group-label"><i class='bx bx-car'></i> City & Transfers <span style="margin-left:auto;font-size:.7rem;background:var(--light-bg);padding:2px 8px;border-radius:20px;">price per person · min. 2</span></div>
+
+                <label class="cr-dest-item" data-id="airport-hotel" data-price="1250" data-per-person="true">
+                  <input type="radio" name="cr-dest" value="airport-hotel">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Airport / Hotel / Marina</div>
+                    <div class="cr-dest-meta">Private door-to-door transfer in Maputo</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">1,250 MZN</div>
+                    <div class="cr-dest-price-unit">/ person</div>
+                  </div>
+                </label>
+
+                <label class="cr-dest-item" data-id="maputo-city-tour" data-price="2500" data-per-person="true">
+                  <input type="radio" name="cr-dest" value="maputo-city-tour">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Maputo City Tour</div>
+                    <div class="cr-dest-meta">Guided tour of Maputo's key sights · 3 hours</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">2,500 MZN</div>
+                    <div class="cr-dest-price-unit">/ person</div>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Beaches & Nature -->
+              <div class="cr-group">
+                <div class="cr-group-label"><i class='bx bx-water'></i> Beaches & Nature <span style="margin-left:auto;font-size:.7rem;background:var(--light-bg);padding:2px 8px;border-radius:20px;">price per car</span></div>
+
+                <label class="cr-dest-item" data-id="macaneta" data-price="10000" data-per-person="false">
+                  <input type="radio" name="cr-dest" value="macaneta">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Macaneta</div>
+                    <div class="cr-dest-meta">White-sand beach north of Maputo</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">10,000 MZN</div>
+                    <div class="cr-dest-price-unit">/ car</div>
+                  </div>
+                </label>
+
+                <label class="cr-dest-item" data-id="namaacha" data-price="14000" data-per-person="false">
+                  <input type="radio" name="cr-dest" value="namaacha">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Namaacha Waterfalls</div>
+                    <div class="cr-dest-meta">Natural waterfalls on the Eswatini border</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">14,000 MZN</div>
+                    <div class="cr-dest-price-unit">/ car</div>
+                  </div>
+                </label>
+
+                <label class="cr-dest-item" data-id="maputo-reserve" data-price="15000" data-per-person="false">
+                  <input type="radio" name="cr-dest" value="maputo-reserve">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Maputo Special Reserve</div>
+                    <div class="cr-dest-meta">Transport to the reserve — elephants, giraffes and hippos</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">15,000 MZN</div>
+                    <div class="cr-dest-price-unit">/ car</div>
+                  </div>
+                </label>
+
+                <label class="cr-dest-item" data-id="ponta-ouro" data-price="18000" data-per-person="false">
+                  <input type="radio" name="cr-dest" value="ponta-ouro">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Ponta do Ouro</div>
+                    <div class="cr-dest-meta">Coastal destination famous for dolphins and diving</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">18,000 MZN</div>
+                    <div class="cr-dest-price-unit">/ car</div>
+                  </div>
+                </label>
+
+                <label class="cr-dest-item" data-id="bilene" data-price="25000" data-per-person="false">
+                  <input type="radio" name="cr-dest" value="bilene">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Bilene</div>
+                    <div class="cr-dest-meta">Turquoise lagoon north of Maputo</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">25,000 MZN</div>
+                    <div class="cr-dest-price-unit">/ car</div>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Safaris -->
+              <div class="cr-group">
+                <div class="cr-group-label"><i class='bx bx-landscape'></i> Safaris <span style="margin-left:auto;font-size:.7rem;background:var(--light-bg);padding:2px 8px;border-radius:20px;">price per person · min. 2</span></div>
+
+                <label class="cr-dest-item" data-id="kruger" data-price="13500" data-per-person="true">
+                  <input type="radio" name="cr-dest" value="kruger">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Safari — Kruger National Park</div>
+                    <div class="cr-dest-meta">South Africa · Big Five · Full day</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">13,500 MZN</div>
+                    <div class="cr-dest-price-unit">/ person</div>
+                  </div>
+                </label>
+
+                <label class="cr-dest-item" data-id="hlane" data-price="13500" data-per-person="true">
+                  <input type="radio" name="cr-dest" value="hlane">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Safari — Hlane Royal National Park</div>
+                    <div class="cr-dest-meta">Eswatini · Rhinos, lions and elephants · Full day</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">13,500 MZN</div>
+                    <div class="cr-dest-price-unit">/ person</div>
+                  </div>
+                </label>
+
+                <label class="cr-dest-item" data-id="mantenga" data-price="16500" data-per-person="true">
+                  <input type="radio" name="cr-dest" value="mantenga">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Mantenga Cultural Village</div>
+                    <div class="cr-dest-meta">Eswatini · Local culture, waterfalls and candle factory</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">16,500 MZN</div>
+                    <div class="cr-dest-price-unit">/ person</div>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Long Distance -->
+              <div class="cr-group" style="margin-bottom:0;">
+                <div class="cr-group-label"><i class='bx bx-trip'></i> Long Distance <span style="margin-left:auto;font-size:.7rem;background:var(--light-bg);padding:2px 8px;border-radius:20px;">price per car</span></div>
+
+                <label class="cr-dest-item" data-id="mlilwane" data-price="35000" data-per-person="false">
+                  <input type="radio" name="cr-dest" value="mlilwane">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Mlilwane Wildlife Sanctuary</div>
+                    <div class="cr-dest-meta">Eswatini · Return trip the following day</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">35,000 MZN</div>
+                    <div class="cr-dest-price-unit">/ car</div>
+                  </div>
+                </label>
+
+                <label class="cr-dest-item" data-id="inhambane-tofo" data-price="38000" data-per-person="false">
+                  <input type="radio" name="cr-dest" value="inhambane-tofo">
+                  <span class="cr-radio"></span>
+                  <div class="cr-dest-info">
+                    <div class="cr-dest-name">Inhambane / Tofo</div>
+                    <div class="cr-dest-meta">Private transfer · Tofo Beach and Inhambane city</div>
+                  </div>
+                  <div class="cr-dest-price-col">
+                    <div class="cr-dest-price-val">38,000 MZN</div>
+                    <div class="cr-dest-price-unit">/ car</div>
+                  </div>
+                </label>
+              </div>
+
+            </div><!-- /destination selector -->
+
+            <!-- Car Equipment -->
+            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:16px;">
+                <i class='bx bx-check-circle' style="color:var(--sea-green);margin-right:6px;"></i>Car Comes Equipped With
+              </h2>
+              <div class="row g-2">
+                <div class="col-sm-6">
+                  <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Driver</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Umbrellas</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Neck pillows</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>6 seats (2 reclining for sleeping)</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Air conditioning</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Ambient lighting</li>
+                  </ul>
+                </div>
+                <div class="col-sm-6">
+                  <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>First aid kit</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Universal phone charger</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Bluetooth surround sound</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Torches</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Cool box</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-check' style="color:var(--sea-green);font-size:1.1rem;flex-shrink:0;"></i>Binoculars (for safari)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /col-lg-8 -->
+
+          <div class="col-lg-4">
+            <div class="pkg-sidebar-sticky">
+
+              <div class="booking-card" aria-label="Booking summary">
+                <div class="booking-card__price-row">
+                  <div>
+                    <span class="booking-card__price-from">From</span>
+                    <div style="display:flex;align-items:baseline;gap:6px;">
+                      <span class="booking-card__price-value">1,250 MZN</span>
+                    </div>
+                    <span class="booking-card__price-unit">/ per person</span>
+                  </div>
+                  <div class="booking-card__rating">
+                    <div class="star-rating"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
+                  </div>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                  <label for="cr-date" class="booking-input-label">Date</label>
+                  <input type="date" id="cr-date" class="booking-input" aria-label="Select date">
+                </div>
+
+                <div id="cr-card-dest-row" style="display:none;padding:12px 14px;background:var(--light-bg);border-radius:var(--radius-md);border:1px solid var(--border-light);margin-bottom:12px;font-size:.875rem;">
+                  <div style="color:var(--text-muted);margin-bottom:6px;">Selected destination</div>
+                  <div style="font-weight:600;color:var(--primary);margin-bottom:4px;" id="cr-card-dest-name"></div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span id="cr-card-dest-breakdown" style="font-size:.8rem;color:var(--text-muted);"></span>
+                    <span id="cr-card-dest-price" style="font-weight:700;color:var(--primary);white-space:nowrap;"></span>
+                  </div>
+                </div>
+
+                <div class="booking-total-row" style="margin-bottom:16px;">
+                  <span class="booking-total-label">Estimated total</span>
+                  <span class="booking-total-value" id="cr-total">— MZN</span>
+                </div>
+
+                <div style="position:relative;">
+                  <button id="cr-whatsapp-btn" type="button" class="btn-primary-mb"
+                    style="width:100%;justify-content:center;font-size:1rem;padding:15px;border-radius:var(--radius-md);display:flex;align-items:center;gap:8px;opacity:.5;cursor:not-allowed;"
+                    disabled aria-label="Confirm booking via WhatsApp">
+                    <i class='bx bxl-whatsapp'></i>Confirm via WhatsApp
+                  </button>
+                  <div id="cr-btn-guard" style="position:absolute;inset:0;cursor:pointer;z-index:1;" aria-hidden="true"></div>
+                </div>
+                <p id="cr-hint" style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:8px;margin-bottom:0;">Select a destination and date to activate</p>
+
+                <div class="booking-trust" style="margin-top:16px;">
+                  <div class="booking-trust-item"><i class='bx bx-shield-check'></i>100% secure booking</div>
+                  <div class="booking-trust-item"><i class='bx bx-support'></i>24/7 support</div>
+                  <div class="booking-trust-item"><i class='bx bx-refresh'></i>Flexible cancellation</div>
+                </div>
+              </div>
+
+              <div class="host-card">
+                <div class="host-card__profile">
+                  <div class="host-card__avatar">MB</div>
+                  <div><div class="host-card__name">Maputo Blue</div><div class="host-card__label">Verified operator</div></div>
+                </div>
+                <div class="host-card__response-rate"><i class='bx bx-time'></i>Responds immediately</div>
+                <a href="https://wa.me/258847121666?text=Hello%2C+I+have+a+question+about+the+private+car+hire."
+                   class="btn-outline-mb" target="_blank" rel="noopener"
+                   style="width:100%;justify-content:center;display:flex;align-items:center;gap:8px;">
+                  <i class='bx bxl-whatsapp'></i>Ask a Question
+                </a>
+              </div>
+
+              <div class="pkg-share-card">
+                <p class="pkg-share-title">Share this page</p>
+                <div class="pkg-share-buttons" role="list">
+                  <button class="share-btn share-btn--whatsapp" id="share-whatsapp" data-tooltip="WhatsApp"    type="button"><i class='bx bxl-whatsapp'></i></button>
+                  <button class="share-btn share-btn--facebook" id="share-facebook" data-tooltip="Facebook"    type="button"><i class='bx bxl-facebook'></i></button>
+                  <button class="share-btn share-btn--twitter"  id="share-twitter"  data-tooltip="X / Twitter" type="button"><i class='bx bxl-twitter'></i></button>
+                  <button class="share-btn share-btn--copy"     id="share-copy"     data-tooltip="Copy link"   type="button"><i class='bx bx-link'></i></button>
+                </div>
+                <p class="pkg-share-feedback" id="pkg-share-feedback" aria-live="polite"></p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="mobile-booking-bar" id="mobile-booking-bar">
+    <div>
+      <div class="mobile-booking-bar__value" id="cr-mobile-price">— MZN</div>
+      <div class="mobile-booking-bar__label">selected destination</div>
+    </div>
+    <div style="position:relative;flex-shrink:0;">
+      <button id="cr-mobile-btn" type="button" class="btn-primary-mb"
+        style="padding:12px 28px;white-space:nowrap;" disabled>
+        <i class='bx bxl-whatsapp'></i>Book
+      </button>
+      <div id="cr-mobile-guard" style="position:absolute;inset:0;cursor:pointer;z-index:1;" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+  <button class="scroll-to-top" aria-label="Back to top"><i class='bx bx-chevron-up'></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var selectedDest = null;
+    var paxCount = 2;
+
+    function fmt(n) { return n.toLocaleString('en-MZ') + ' MZN'; }
+
+    function updateSummary() {
+      if (!selectedDest) return;
+      var price = parseInt(selectedDest.dataset.price, 10);
+      var perPerson = selectedDest.dataset.perPerson === 'true';
+      var total = perPerson ? price * paxCount : price;
+      var breakdown = perPerson
+        ? fmt(price) + ' × ' + paxCount + ' person' + (paxCount > 1 ? 's' : '')
+        : fmt(price);
+      var name = selectedDest.querySelector('.cr-dest-name').textContent;
+
+      document.getElementById('cr-card-dest-row').style.display = 'block';
+      document.getElementById('cr-card-dest-name').textContent = name;
+      document.getElementById('cr-card-dest-breakdown').textContent = breakdown;
+      document.getElementById('cr-card-dest-price').textContent = fmt(total);
+      document.getElementById('cr-total').textContent = fmt(total);
+      document.getElementById('cr-mobile-price').textContent = fmt(total);
+      if (perPerson) document.getElementById('cr-pax-total-preview').textContent = '= ' + fmt(total) + ' total';
+
+      enableBtn(!!document.getElementById('cr-date').value, total, name, perPerson);
+    }
+
+    function enableBtn(active, total, name, perPerson) {
+      var btn    = document.getElementById('cr-whatsapp-btn');
+      var mBtn   = document.getElementById('cr-mobile-btn');
+      var hint   = document.getElementById('cr-hint');
+      var guard  = document.getElementById('cr-btn-guard');
+      var mGuard = document.getElementById('cr-mobile-guard');
+      hint.classList.remove('cr-hint-error');
+      document.getElementById('cr-date').classList.remove('cr-date-error');
+      if (active && selectedDest) {
+        var date = document.getElementById('cr-date').value;
+        var msg = 'Hello, I would like to book a private car.\nDestination: ' + name + '\n' +
+                  (perPerson ? 'No. of people: ' + paxCount + '\n' : '') +
+                  'Date: ' + date + '\nEstimated total: ' + fmt(total);
+        var url = 'https://wa.me/258847121666?text=' + encodeURIComponent(msg);
+        btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.disabled = false;
+        btn.onclick = function () { window.open(url, '_blank'); };
+        mBtn.disabled = false; mBtn.onclick = function () { window.open(url, '_blank'); };
+        guard.style.display  = 'none';
+        mGuard.style.display = 'none';
+        hint.textContent = '';
+      } else {
+        btn.style.opacity = '.5'; btn.style.cursor = 'not-allowed'; btn.disabled = true;
+        mBtn.disabled = true;
+        guard.style.display  = '';
+        mGuard.style.display = '';
+        hint.textContent = selectedDest ? 'Select a date to activate' : 'Select a destination and date to activate';
+      }
+    }
+
+    /* ── Validation feedback ── */
+    function showValidationError() {
+      var hint      = document.getElementById('cr-hint');
+      var dateInput = document.getElementById('cr-date');
+      if (!selectedDest) {
+        hint.textContent = 'Please select a destination first';
+        hint.classList.add('cr-hint-error');
+      } else {
+        hint.textContent = 'Please select a date to continue';
+        hint.classList.add('cr-hint-error');
+        dateInput.classList.add('cr-date-error');
+        dateInput.focus();
+      }
+    }
+    document.getElementById('cr-btn-guard').addEventListener('click', showValidationError);
+    document.getElementById('cr-mobile-guard').addEventListener('click', function () {
+      showValidationError();
+      document.getElementById('cr-date').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    document.querySelectorAll('.cr-dest-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        document.querySelectorAll('.cr-dest-item').forEach(function (el) { el.classList.remove('selected'); });
+        item.classList.add('selected');
+        item.querySelector('input[type="radio"]').checked = true;
+        selectedDest = item;
+        document.getElementById('cr-pax-section').style.display = item.dataset.perPerson === 'true' ? 'block' : 'none';
+        updateSummary();
+      });
+    });
+
+    document.getElementById('cr-pax-minus').addEventListener('click', function () {
+      if (paxCount > 2) { paxCount--; document.getElementById('cr-pax-count').textContent = paxCount; updateSummary(); }
+    });
+    document.getElementById('cr-pax-plus').addEventListener('click', function () {
+      paxCount++; document.getElementById('cr-pax-count').textContent = paxCount; updateSummary();
+    });
+
+    document.getElementById('cr-date').addEventListener('change', function () {
+      this.classList.remove('cr-date-error');
+      document.getElementById('cr-hint').classList.remove('cr-hint-error');
+      if (selectedDest) {
+        var price = parseInt(selectedDest.dataset.price, 10);
+        var perPerson = selectedDest.dataset.perPerson === 'true';
+        var total = perPerson ? price * paxCount : price;
+        var name = selectedDest.querySelector('.cr-dest-name').textContent;
+        enableBtn(!!this.value, total, name, perPerson);
+      }
+    });
+    document.getElementById('cr-date').min = new Date().toISOString().split('T')[0];
+
+    var shareUrl = window.location.href;
+    document.getElementById('share-whatsapp').addEventListener('click', function () { window.open('https://wa.me/?text=' + encodeURIComponent('Book your private car with Maputo Blue! ' + shareUrl), '_blank'); });
+    document.getElementById('share-facebook').addEventListener('click', function () { window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl), '_blank'); });
+    document.getElementById('share-twitter').addEventListener('click', function () { window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent('Book your private car with Maputo Blue!') + '&url=' + encodeURIComponent(shareUrl), '_blank'); });
+    document.getElementById('share-copy').addEventListener('click', function () {
+      navigator.clipboard.writeText(shareUrl).then(function () {
+        var fb = document.getElementById('pkg-share-feedback'); fb.textContent = 'Link copied!';
+        setTimeout(function () { fb.textContent = ''; }, 2000);
+      });
+    });
+  }());
+  </script>
+
+  <script>
+  (function () {
+    var IMGS = [
+      '../assets/images/transfers/car/car-transfer-1.webp',
+      '../assets/images/tours/city-tours/maputo-city-tour-1.webp',
+      '../assets/images/tours/safari/hlane/hlane-1.webp',
+      '../assets/images/tours/city-tours/maputo-city-tour-2.webp',
+      '../assets/images/tours/safari/hlane/hlane-3.webp',
+      '../assets/images/tours/city-tours/maputo-city-tour-3.webp',
+      '../assets/images/tours/safari/hlane/hlane-2.webp',
+      '../assets/images/transfers/car/car-transfer-2.webp'
+    ];
+    var lb       = document.getElementById('pkg-lightbox');
+    var lbImg    = document.getElementById('lightbox-img');
+    var lbCap    = document.getElementById('lightbox-caption');
+    var lbThumbs = document.getElementById('lightbox-thumbs');
+    var _idx = 0;
+
+    function openLightbox(idx) {
+      _idx = ((idx % IMGS.length) + IMGS.length) % IMGS.length;
+      lbImg.src = IMGS[_idx];
+      lbCap.textContent = (_idx + 1) + ' / ' + IMGS.length;
+      lbThumbs.querySelectorAll('.pkg-lightbox__thumb').forEach(function (t, i) {
+        t.classList.toggle('active', i === _idx);
+      });
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-backdrop').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-prev').addEventListener('click', function () { openLightbox(_idx - 1); });
+    document.getElementById('lightbox-next').addEventListener('click', function () { openLightbox(_idx + 1); });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'ArrowLeft') openLightbox(_idx - 1);
+      else if (e.key === 'ArrowRight') openLightbox(_idx + 1);
+      else if (e.key === 'Escape') closeLightbox();
+    });
+
+    lbThumbs.innerHTML = IMGS.map(function (src, i) {
+      return '<div class="pkg-lightbox__thumb' + (i === 0 ? ' active' : '') + '" data-index="' + i + '">' +
+             '<img src="' + src + '" alt="Photo ' + (i + 1) + '" loading="lazy"></div>';
+    }).join('');
+    lbThumbs.querySelectorAll('.pkg-lightbox__thumb').forEach(function (t) {
+      t.addEventListener('click', function () { openLightbox(parseInt(t.dataset.index)); });
+    });
+
+    document.getElementById('gallery-slot-main').addEventListener('click',  function () { openLightbox(0); });
+    document.getElementById('gallery-slot-side1').addEventListener('click', function () { openLightbox(1); });
+    document.getElementById('gallery-slot-side2').addEventListener('click', function () { openLightbox(2); });
+    document.getElementById('gallery-all-btn').addEventListener('click', function (e) { e.stopPropagation(); openLightbox(0); });
+  }());
+  </script>
+
+</body>
+</html>

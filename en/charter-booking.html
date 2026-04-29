@@ -16,6 +16,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="icon" type="image/png" href="../logo.webp">
+  <style>
+    #cb-hint.cb-hint-error { color: #e53935 !important; font-weight: 600; }
+  </style>
 </head>
 <body>
 
@@ -260,14 +263,17 @@
                 </div>
 
                 <!-- CTA -->
-                <button id="cb-whatsapp-btn"
-                  type="button"
-                  class="btn-primary-mb"
-                  style="width:100%;justify-content:center;font-size:1rem;padding:15px;border-radius:var(--radius-md);display:flex;align-items:center;gap:8px;opacity:.5;cursor:not-allowed;"
-                  disabled
-                  aria-label="Confirm booking via WhatsApp">
-                  <i class='bx bxl-whatsapp'></i>Confirm via WhatsApp
-                </button>
+                <div style="position:relative;">
+                  <button id="cb-whatsapp-btn"
+                    type="button"
+                    class="btn-primary-mb"
+                    style="width:100%;justify-content:center;font-size:1rem;padding:15px;border-radius:var(--radius-md);display:flex;align-items:center;gap:8px;opacity:.5;cursor:not-allowed;"
+                    disabled
+                    aria-label="Confirm booking via WhatsApp">
+                    <i class='bx bxl-whatsapp'></i>Confirm via WhatsApp
+                  </button>
+                  <div id="cb-btn-guard" style="position:absolute;inset:0;cursor:pointer;z-index:1;" aria-hidden="true"></div>
+                </div>
                 <p id="cb-hint" style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:8px;margin-bottom:0;">Select a destination to activate</p>
 
                 <!-- Trust -->
@@ -326,10 +332,13 @@
       <div class="mobile-booking-bar__value" id="cb-mobile-price">— MZN</div>
       <div class="mobile-booking-bar__label" id="cb-mobile-label">from / per boat</div>
     </div>
-    <button id="cb-mobile-btn" type="button" class="btn-primary-mb"
-      style="padding:12px 28px;white-space:nowrap;flex-shrink:0;" disabled>
-      <i class='bx bxl-whatsapp'></i>Book
-    </button>
+    <div style="position:relative;flex-shrink:0;">
+      <button id="cb-mobile-btn" type="button" class="btn-primary-mb"
+        style="padding:12px 28px;white-space:nowrap;" disabled>
+        <i class='bx bxl-whatsapp'></i>Book
+      </button>
+      <div id="cb-mobile-guard" style="position:absolute;inset:0;cursor:pointer;z-index:1;" aria-hidden="true"></div>
+    </div>
   </div>
 
   <div id="footer-placeholder"></div>
@@ -629,14 +638,17 @@
       document.getElementById('cb-total').textContent        = fmt(total);
       document.getElementById('cb-mobile-price').textContent = state.destId ? fmt(total) : fmt(boat.startingPrice);
       var btn=document.getElementById('cb-whatsapp-btn'), mobileBtn=document.getElementById('cb-mobile-btn'), hint=document.getElementById('cb-hint');
+      var guard=document.getElementById('cb-btn-guard'), mGuard=document.getElementById('cb-mobile-guard');
       if(state.destId){
         btn.disabled=false; mobileBtn.disabled=false; btn.style.opacity='1'; btn.style.cursor='pointer';
-        if(hint) hint.style.display='none';
+        if(hint){ hint.style.display='none'; hint.classList.remove('cb-hint-error'); }
+        guard.style.display='none'; mGuard.style.display='none';
         var url = buildWhatsAppUrl(boat, dest, total);
         btn.onclick=function(){ window.open(url,'_blank'); };
         mobileBtn.onclick=function(){ window.open(url,'_blank'); };
       } else {
         btn.disabled=true; mobileBtn.disabled=true; btn.style.opacity='.5'; btn.style.cursor='not-allowed';
+        guard.style.display=''; mGuard.style.display='';
         if(hint) hint.style.display='block';
       }
     }
@@ -709,6 +721,22 @@
     }
 
     document.addEventListener('DOMContentLoaded', init);
+
+    /* ── Validation feedback ── */
+    document.getElementById('cb-btn-guard').addEventListener('click', function () {
+      var hint = document.getElementById('cb-hint');
+      hint.textContent = 'Please select a destination first to continue';
+      hint.classList.add('cb-hint-error');
+      hint.style.display = 'block';
+    });
+    document.getElementById('cb-mobile-guard').addEventListener('click', function () {
+      var hint = document.getElementById('cb-hint');
+      hint.textContent = 'Please select a destination first to continue';
+      hint.classList.add('cb-hint-error');
+      hint.style.display = 'block';
+      document.querySelector('.charter-dest-option, #cb-dest-options').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
   })();
   </script>
 
