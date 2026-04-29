@@ -2847,6 +2847,7 @@ main.tours-main { z-index: auto; }
 
 /* ── Boat card ── */
 .boat-card {
+  position: relative;
   background: var(--white);
   border-radius: var(--radius-lg);
   overflow: hidden;
