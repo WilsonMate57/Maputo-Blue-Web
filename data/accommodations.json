@@ -102,40 +102,72 @@
       "time": "08:00",
       "title": "Partida de Maputo",
       "title_en": "Departure from Maputo",
-      "description": "Saída de speedboat da Maputo Marina para a Ilha de Inhaca.",
-      "description_en": "Speedboat departure from Maputo Marina heading to Inhaca Island."
+      "description": "Partida da Maputo Marina / Escola Náutica em speedboat em direção à Ilha de Inhaca.",
+      "description_en": "Speedboat departure from Maputo Marina / Escola Náutica heading to Inhaca Island."
     },
     {
       "day": 1,
       "time": "09:00",
       "title": "Chegada à Inhaca",
       "title_en": "Arrival at Inhaca",
-      "description": "Check-in no lodge e tempo livre para explorar a ilha.",
-      "description_en": "Lodge check-in and free time to explore the island."
+      "description": "Chegada à Ilha de Inhaca. Check-in no lodge e tempo livre para relaxar na piscina ou na praia.",
+      "description_en": "Arrival at Inhaca Island. Lodge check-in and free time to relax by the pool or on the beach."
+    },
+    {
+      "day": 1,
+      "time": "11:30",
+      "title": "Passeio opcional",
+      "title_en": "Optional Trip",
+      "description": "Passeio offroad até à Praia de Santa Maria ou Ponta Torres para snorkeling (extra/opcional).",
+      "description_en": "Off-road trip to Santa Maria Beach or Ponta Torres for snorkelling (extra/optional)."
+    },
+    {
+      "day": 1,
+      "time": "16:00",
+      "title": "Pôr-do-sol no Farol",
+      "title_en": "Sunset at the Lighthouse",
+      "description": "Passeio offroad até ao Farol de Inhaca para assistir ao pôr-do-sol com vistas panorâmicas da ilha (opcional).",
+      "description_en": "Optional off-road trip to Inhaca Lighthouse to watch the sunset with panoramic island views."
     },
     {
       "day": 1,
       "time": "19:00",
       "title": "Jantar",
       "title_en": "Dinner",
-      "description": "Jantar incluído no lodge.",
-      "description_en": "Included dinner at the lodge."
+      "description": "Jantar incluído no lodge, com vista para o oceano.",
+      "description_en": "Included dinner at the lodge, with ocean views."
     },
     {
       "day": 2,
       "time": "08:30",
       "title": "Pequeno almoço",
       "title_en": "Breakfast",
-      "description": "Pequeno almoço no lodge.",
-      "description_en": "Breakfast at the lodge."
+      "description": "Pequeno almoço incluído no lodge antes do check-out.",
+      "description_en": "Included breakfast at the lodge before check-out."
+    },
+    {
+      "day": 2,
+      "time": "11:00",
+      "title": "Passeio opcional",
+      "title_en": "Optional Excursion",
+      "description": "Passeio de barco à Ilha dos Portugueses para snorkeling e mergulho (extra/opcional).",
+      "description_en": "Boat excursion to Portuguese Island for snorkelling and diving (extra/optional)."
     },
     {
       "day": 2,
       "time": "14:00",
       "title": "Regresso a Maputo",
       "title_en": "Return to Maputo",
-      "description": "Transfer de barco de volta à Maputo Marina.",
-      "description_en": "Speedboat transfer back to Maputo Marina."
+      "description": "Check-out do lodge e partida de speedboat da Ilha de Inhaca em direção à Maputo Marina.",
+      "description_en": "Lodge check-out and speedboat departure from Inhaca Island back to Maputo Marina."
+    },
+    {
+      "day": 2,
+      "time": "15:30",
+      "title": "Chegada a Maputo",
+      "title_en": "Arrival in Maputo",
+      "description": "Chegada à Maputo Marina. Fim da experiência.",
+      "description_en": "Arrival at Maputo Marina. End of the experience."
     }
   ],
 
