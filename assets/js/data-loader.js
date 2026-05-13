@@ -122,6 +122,13 @@
   }
 
   /* ── Tour Card ───────────────────────────────────────────── */
+  function _currentDayPrice(item) {
+    if (!item.price_weekday) return item.price_from || item.price_per_night || 0;
+    const day = new Date().getDay();
+    const isWeekend = day === 0 || day === 5 || day === 6;
+    return isWeekend ? item.price_from : item.price_weekday;
+  }
+
   function buildTourCard(tour) {
     const title   = tf(tour, 'title');
     const desc    = tf(tour, 'description');
@@ -129,6 +136,7 @@
     const imgTag  = imgSrc ? `<img src="${imgSrc}" alt="${title}" loading="lazy">` : '';
     const badge   = tour.badge ? `<span class="tour-badge ${badgeClass(tour.badge)}">${tour.badge}</span>` : '';
     const detailUrl = `${PAGES_PREFIX}package.html?id=${tour.id}`;
+    const cardPrice = _currentDayPrice(tour);
 
     return `
 <article class="tour-card" data-category="${tour.category}" data-id="${tour.id}" onclick="location.href='${detailUrl}'" style="cursor:pointer">
@@ -147,7 +155,7 @@
     <div class="tour-card-footer">
       <div class="tour-card-price">
         <span class="price-from">${t('from')}</span>
-        <span class="price-value">${tour.currency} ${tour.price_from}<span>${(LANG === 'en' ? tour.price_unit_en : tour.price_unit) || t('per_person')}</span></span>
+        <span class="price-value">${tour.currency} ${cardPrice}<span>${(LANG === 'en' ? tour.price_unit_en : tour.price_unit) || t('per_person')}</span></span>
         <div class="star-rating">
           ${starHTML(tour.rating)}
           <span class="rating-value">${tour.rating}</span>
