@@ -1391,6 +1391,10 @@
 
   "price_from": 3500,
   "price_weekday": 5000,
+  "child_price": 1600,
+  "child_price_weekday": 3500,
+  "child_age_note": "Crianças 4–10 anos",
+  "child_age_note_en": "Children ages 4–10",
   "currency": "MZN",
 
   "rating": 4.8,

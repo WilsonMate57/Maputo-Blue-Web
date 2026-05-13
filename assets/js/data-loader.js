@@ -504,8 +504,43 @@
 
   function renderPackageDetail(item, type) {
     const title    = tf(item, 'title') || item.name || '';
-    const price    = item.price_from || item.price_per_night || 0;
     const currency = item.currency || 'USD';
+
+    function _dayPrice(d) {
+      if (!item.price_weekday) {
+        return { adult: item.price_from || item.price_per_night || 0, child: null };
+      }
+      const day = d.getDay(); // 0=Sun, 5=Fri, 6=Sat → weekend
+      const isWeekend = day === 0 || day === 5 || day === 6;
+      return {
+        adult: isWeekend ? item.price_from : item.price_weekday,
+        child: isWeekend ? item.child_price : item.child_price_weekday
+      };
+    }
+
+    function applyPrice(d) {
+      const dp     = _dayPrice(d);
+      const adultP = dp.adult;
+      let childP;
+      if (item.price_weekday) {
+        childP = dp.child;
+      } else if (item.child_price === 'consulta') {
+        childP = 'consulta';
+      } else if (typeof item.child_price === 'number') {
+        childP = item.child_price;
+      } else if (item.pricing) {
+        if (typeof item.pricing.children === 'number') {
+          childP = item.pricing.children;
+        } else if (item.pricing.regular_vehicle && typeof item.pricing.regular_vehicle.children === 'number') {
+          childP = item.pricing.regular_vehicle.children;
+        }
+      }
+      const priceEl = document.querySelector('#package-price');
+      if (priceEl) priceEl.textContent = `${currency} ${adultP}`;
+      const mobilePriceEl = document.querySelector('#mobile-price');
+      if (mobilePriceEl) mobilePriceEl.textContent = `${currency} ${adultP}`;
+      if (window._pkgSetPrice) window._pkgSetPrice(adultP, currency, childP);
+    }
 
     document.title = `${title} — Maputo Blue`;
 
@@ -518,19 +553,27 @@
     const locationEl = document.querySelector('#package-location');
     if (locationEl) locationEl.textContent = item.location;
 
-    const priceEl = document.querySelector('#package-price');
-    if (priceEl) priceEl.textContent = `${currency} ${price}`;
-
-    const mobilePriceEl = document.querySelector('#mobile-price');
-    if (mobilePriceEl) mobilePriceEl.textContent = `${currency} ${price}`;
+    applyPrice(new Date());
+    const dateInput = document.querySelector('#booking-date');
+    if (dateInput) {
+      dateInput.addEventListener('change', function () {
+        const d = this.value ? new Date(this.value + 'T12:00:00') : new Date();
+        applyPrice(d);
+      });
+    }
 
     const priceNoteEl = document.querySelector('#price-schedule-note');
     if (priceNoteEl && item.price_weekday) {
       const weekendDays = LANG === 'en' ? 'Fri, Sat &amp; Sun' : 'Sex, Sáb e Dom';
       const weekdayDays = LANG === 'en' ? 'Mon – Thu' : 'Seg – Qui';
+      const adultLabel  = LANG === 'en' ? 'adult' : 'adulto';
+      const childLabel  = LANG === 'en' ? 'child' : 'criança';
+      const hasChildWD  = typeof item.child_price_weekday === 'number' && typeof item.child_price === 'number';
+      const weekendChild = hasChildWD ? ` / ${currency} ${item.child_price} ${childLabel}` : '';
+      const weekdayChild = hasChildWD ? ` / ${currency} ${item.child_price_weekday} ${childLabel}` : '';
       priceNoteEl.innerHTML =
-        `<span>${currency} ${item.price_from} &mdash; <strong>${weekendDays}</strong></span><br>` +
-        `<span>${currency} ${item.price_weekday} &mdash; <strong>${weekdayDays}</strong></span>`;
+        `<span>${currency} ${item.price_from} ${adultLabel}${weekendChild} &mdash; <strong>${weekendDays}</strong></span><br>` +
+        `<span>${currency} ${item.price_weekday} ${adultLabel}${weekdayChild} &mdash; <strong>${weekdayDays}</strong></span>`;
       priceNoteEl.style.display = '';
       const priceFromEl = document.querySelector('.booking-card__price-from');
       if (priceFromEl) priceFromEl.textContent = LANG === 'en' ? 'Pricing' : 'Preços';
@@ -547,19 +590,12 @@
       el.textContent = `(${reviewsCount} ${t('reviews')})`;
     });
 
-    let childPrice = null;
-    if (item.child_price === 'consulta') {
-      childPrice = 'consulta';
-    } else if (typeof item.child_price === 'number') {
-      childPrice = item.child_price;
-    } else if (item.pricing) {
-      if (typeof item.pricing.children === 'number') {
-        childPrice = item.pricing.children;
-      } else if (item.pricing.regular_vehicle && typeof item.pricing.regular_vehicle.children === 'number') {
-        childPrice = item.pricing.regular_vehicle.children;
-      }
+
+    const childAgeNote = LANG === 'en' ? item.child_age_note_en : item.child_age_note;
+    if (childAgeNote) {
+      const childUnitEl = document.querySelector('#child-price-row .booking-card__price-unit');
+      if (childUnitEl) childUnitEl.textContent = '/ ' + childAgeNote;
     }
-    if (window._pkgSetPrice) window._pkgSetPrice(price, currency, childPrice);
 
     // WhatsApp messages
     const waBookMsg  = LANG === 'en'
