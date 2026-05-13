@@ -68,6 +68,11 @@
         <path d="M28 0 L42 -10 L42 10 Z" stroke="#0A2540" stroke-width="1.5" fill="none"/>
         <circle cx="-8" cy="-3" r="2" fill="#0A2540"/>
       </g>
+      <g transform="translate(1200, 520) scale(.8)">
+        <ellipse cx="0" cy="0" rx="28" ry="12" stroke="#1EA896" stroke-width="1.5" fill="none"/>
+        <path d="M-28 0 L-42 -10 L-42 10 Z" stroke="#1EA896" stroke-width="1.5" fill="none"/>
+        <circle cx="8" cy="-3" r="2" fill="#1EA896"/>
+      </g>
       <g transform="translate(500, 680)">
         <line x1="0" y1="0" x2="0" y2="-40" stroke="#F26419" stroke-width="2"/>
         <line x1="-12" y1="-20" x2="-22" y2="-32" stroke="#F26419" stroke-width="2"/>
@@ -75,6 +80,17 @@
         <circle cx="0" cy="-40" r="3" fill="#F26419"/>
         <circle cx="-22" cy="-32" r="3" fill="#F26419"/>
         <circle cx="22" cy="-32" r="3" fill="#F26419"/>
+      </g>
+      <g transform="translate(1100, 300) scale(.7)">
+        <line x1="0" y1="0" x2="0" y2="-40" stroke="#0A2540" stroke-width="2"/>
+        <line x1="-12" y1="-20" x2="-22" y2="-32" stroke="#0A2540" stroke-width="2"/>
+        <line x1="12" y1="-20" x2="22" y2="-32" stroke="#0A2540" stroke-width="2"/>
+        <circle cx="0" cy="-40" r="3" fill="#0A2540"/>
+        <circle cx="-22" cy="-32" r="3" fill="#0A2540"/>
+        <circle cx="22" cy="-32" r="3" fill="#0A2540"/>
+      </g>
+      <g transform="translate(320, 700)">
+        <path d="M0,-18 L4,-6 L17,-6 L7,2 L11,14 L0,7 L-11,14 L-7,2 L-17,-6 L-4,-6 Z" stroke="#1EA896" stroke-width="1.5" fill="none"/>
       </g>
     </svg>
   </div>
@@ -87,12 +103,18 @@
          HERO SECTION
     ══════════════════════════════════════════════════════ -->
     <section class="hero-section" aria-label="Hero">
-      <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="6000">
+      <div id="heroCarousel" class="carousel carousel-fade hero-carousel" data-bs-ride="carousel" data-bs-interval="6000">
 
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="8" aria-label="Slide 9"></button>
         </div>
 
         <div class="carousel-inner">
@@ -102,74 +124,131 @@
             <div class="hero-slide hero-slide-1" role="img" aria-label="Inhaca Island at sunset">
               <div class="hero-overlay"></div>
               <div class="mb-container w-100">
-                <div class="hero-content">
-                  <span class="hero-eyebrow"><i class='bx bx-anchor'></i>Island DayTrips</span>
+                <div class="hero-content hero-content--centered">
                   <h1 class="hero-title">
                     Inhaca Island<br>
                     <span>is waiting for you</span>
                   </h1>
-                  <p class="hero-description">
-                    Vibrant coral, white sands and the infinite blue of the Indian Ocean —
-                    just 30km from Maputo.
-                  </p>
-                  <div class="hero-actions">
-                    <a href="tours.html?category=island-daytrips" class="hero-btn-primary">
-                      <i class='bx bx-compass'></i>Explore Tours
-                    </a>
-                    <a href="tours.html" class="hero-btn-secondary">See All Tours</a>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Slide 2: Machangulo Beach -->
+          <!-- Slide 2: Inhaca Village -->
           <div class="carousel-item">
-            <div class="hero-slide hero-slide-2" role="img" aria-label="Machangulo Beach">
+            <div class="hero-slide hero-slide-2" role="img" aria-label="Inhaca Village">
               <div class="hero-overlay"></div>
               <div class="mb-container w-100">
-                <div class="hero-content">
-                  <span class="hero-eyebrow"><i class='bx bx-sun'></i>Sunset Cruises</span>
+                <div class="hero-content hero-content--centered">
                   <h1 class="hero-title">
-                    Machangulo —<br>
-                    <span>Southern Paradise</span>
+                    Inhaca<br>
+                    <span>Village</span>
                   </h1>
-                  <p class="hero-description">
-                    Miles of pristine white sand and crystal-clear turquoise waters
-                    on the Machangulo Peninsula.
-                  </p>
-                  <div class="hero-actions">
-                    <a href="tours.html?category=beach-daytrips" class="hero-btn-primary">
-                      <i class='bx bx-compass'></i>Explore Tours
-                    </a>
-                    <a href="../pages/destinations.html" class="hero-btn-secondary">Discover Destinations</a>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Slide 3: Safari -->
+          <!-- Slide 3: Ponta Torres - Santa Maria -->
           <div class="carousel-item">
-            <div class="hero-slide hero-slide-3" role="img" aria-label="Elephant Reserve Safari">
+            <div class="hero-slide hero-slide-3" role="img" aria-label="Ponta Torres - Santa Maria">
               <div class="hero-overlay"></div>
               <div class="mb-container w-100">
-                <div class="hero-content">
-                  <span class="hero-eyebrow"><i class='bx bx-landscape'></i>Safaris</span>
+                <div class="hero-content hero-content--centered">
                   <h1 class="hero-title">
-                    Wild Africa —<br>
-                    <span>Within Reach</span>
+                    Ponta Torres —<br>
+                    <span>Santa Maria</span>
                   </h1>
-                  <p class="hero-description">
-                    Elephants, lions, leopards — experience the magic of an African safari
-                    in the reserves near Maputo.
-                  </p>
-                  <div class="hero-actions">
-                    <a href="tours.html?category=safaris" class="hero-btn-primary">
-                      <i class='bx bx-compass'></i>Explore Safaris
-                    </a>
-                    <a href="tours.html" class="hero-btn-secondary">See All Tours</a>
-                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 4: Manhangulo Beach Lodge -->
+          <div class="carousel-item">
+            <div class="hero-slide hero-slide-4" role="img" aria-label="Manhangulo Beach Lodge">
+              <div class="hero-overlay"></div>
+              <div class="mb-container w-100">
+                <div class="hero-content hero-content--centered">
+                  <h1 class="hero-title">
+                    Manhangulo<br>
+                    <span>Beach Lodge</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 5: Safari - Kruger National Park -->
+          <div class="carousel-item">
+            <div class="hero-slide hero-slide-5" role="img" aria-label="Safari - Kruger National Park">
+              <div class="hero-overlay"></div>
+              <div class="mb-container w-100">
+                <div class="hero-content hero-content--centered">
+                  <h1 class="hero-title">
+                    Safari —<br>
+                    <span>Kruger National Park</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 6: Whale Watching -->
+          <div class="carousel-item">
+            <div class="hero-slide hero-slide-6" role="img" aria-label="Whale Watching">
+              <div class="hero-overlay"></div>
+              <div class="mb-container w-100">
+                <div class="hero-content hero-content--centered">
+                  <h1 class="hero-title">
+                    Whale<br>
+                    <span>Watching</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 7: Portuguese Island -->
+          <div class="carousel-item">
+            <div class="hero-slide hero-slide-7" role="img" aria-label="Portuguese Island">
+              <div class="hero-overlay"></div>
+              <div class="mb-container w-100">
+                <div class="hero-content hero-content--centered">
+                  <h1 class="hero-title">
+                    Portuguese<br>
+                    <span>Island</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 8: Private Boat Charter -->
+          <div class="carousel-item">
+            <div class="hero-slide hero-slide-8" role="img" aria-label="Private Boat Charter">
+              <div class="hero-overlay"></div>
+              <div class="mb-container w-100">
+                <div class="hero-content hero-content--centered">
+                  <h1 class="hero-title">
+                    Private Boat<br>
+                    <span>Charter</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 9: Deep Sea Fishing -->
+          <div class="carousel-item">
+            <div class="hero-slide hero-slide-9" role="img" aria-label="Deep Sea Fishing">
+              <div class="hero-overlay"></div>
+              <div class="mb-container w-100">
+                <div class="hero-content hero-content--centered">
+                  <h1 class="hero-title">
+                    Deep Sea<br>
+                    <span>Fishing</span>
+                  </h1>
                 </div>
               </div>
             </div>
@@ -421,6 +500,8 @@
             <div class="team-track" id="team-track">
               <div class="team-card"><div class="skeleton" style="width:90px;height:90px;border-radius:50%;margin:0 auto 16px;"></div><div class="skeleton" style="height:16px;width:70%;margin:0 auto 8px;border-radius:4px;"></div><div class="skeleton" style="height:13px;width:50%;margin:0 auto;border-radius:4px;"></div></div>
               <div class="team-card"><div class="skeleton" style="width:90px;height:90px;border-radius:50%;margin:0 auto 16px;"></div><div class="skeleton" style="height:16px;width:70%;margin:0 auto 8px;border-radius:4px;"></div><div class="skeleton" style="height:13px;width:50%;margin:0 auto;border-radius:4px;"></div></div>
+              <div class="team-card"><div class="skeleton" style="width:90px;height:90px;border-radius:50%;margin:0 auto 16px;"></div><div class="skeleton" style="height:16px;width:70%;margin:0 auto 8px;border-radius:4px;"></div><div class="skeleton" style="height:13px;width:50%;margin:0 auto;border-radius:4px;"></div></div>
+              <div class="team-card"><div class="skeleton" style="width:90px;height:90px;border-radius:50%;margin:0 auto 16px;"></div><div class="skeleton" style="height:16px;width:70%;margin:0 auto 8px;border-radius:4px;"></div><div class="skeleton" style="height:13px;width:50%;margin:0 auto;border-radius:4px;"></div></div>
             </div>
           </div>
 
@@ -490,7 +571,7 @@
                   <div class="contact-detail-icon"><i class='bx bx-time'></i></div>
                   <div class="contact-detail-text">
                     <strong>Opening Hours</strong>
-                    <p>Mon – Fri: 08:00 – 18:00<br>Sat – Sun: 08:00 – 14:00</p>
+                    <p>Every day: 07:00 – 17:30</p>
                   </div>
                 </div>
               </div>

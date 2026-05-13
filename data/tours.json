@@ -2,22 +2,22 @@
   {
   "id": "santa-maria-inhaca-portugueses",
   "category": "island-daytrips",
-  "title": "Passeio de Barco: Santa Maria, Inhaca & Ilha dos Portugueses",
-  "title_en": "Boat Trip: Santa Maria, Inhaca & Ilha dos Portugueses",
+  "title": "Santa Maria, Inhaca & Ilha dos Portugueses",
+  "title_en": "Santa Maria, Inhaca & Portuguese Island",
   "location": "Baía de Maputo",
   "duration": "Dia Inteiro (08:00 – 17:00)",
   "duration_en": "Full Day (08:00 – 17:00)",
   "group_size": "Sob consulta",
   "group_size_en": "On request",
   "languages": ["Português", "English"],
-  "price_from": 5500,
-  "child_price": 4500,
+  "price_from": 6000,
+  "child_price": 5000,
   "currency": "MZN",
   "rating": 4.9,
   "reviews_count": 0,
   "badge": "Island Daytrips",
   "description": "Explore três dos destinos mais paradisíacos da Baía de Maputo num único passeio. Este passeio de barco leva os visitantes às praias cristalinas de Santa Maria, à famosa Ilha da Inhaca e à tranquila Ilha dos Portugueses. Ideal para nadar, relaxar na praia e desfrutar de atividades aquáticas num ambiente tropical único.",
-  "description_en": "Explore three of the most paradisiacal destinations in Maputo Bay in a single trip. This boat trip takes visitors to the crystal-clear beaches of Santa Maria, the famous Inhaca Island and the tranquil Ilha dos Portugueses. Ideal for swimming, relaxing on the beach and enjoying water activities in a unique tropical setting.",
+  "description_en": "Explore three of the most paradisiacal destinations in Maputo Bay in a single trip. This boat trip takes visitors to the crystal-clear beaches of Santa Maria, the famous Inhaca Island and the tranquil Portuguese Island. Ideal for swimming, relaxing on the beach and enjoying water activities in a unique tropical setting.",
 
   "highlights": [
     "Visita a três ilhas num único passeio",
@@ -31,7 +31,7 @@
     "Crystal-clear waters ideal for snorkelling",
     "Relaxation on Santa Maria beaches",
     "Exploration of Inhaca Island",
-    "Paradisiacal scenery at Ilha dos Portugueses"
+    "Paradisiacal scenery at Portuguese Island"
   ],
 
   "included": [
@@ -114,9 +114,9 @@
     {
       "time": "14:30",
       "title": "Partida para Ilha dos Portugueses",
-      "title_en": "Departure to Ilha dos Portugueses",
+      "title_en": "Departure to Portuguese Island",
       "description": "Viagem de barco para a Ilha dos Portugueses para desfrutar da praia.",
-      "description_en": "Boat trip to Ilha dos Portugueses to enjoy the beach."
+      "description_en": "Boat trip to Portuguese Island to enjoy the beach."
     },
     {
       "time": "16:00",
@@ -163,8 +163,8 @@
   "group_size": "Sob consulta",
   "group_size_en": "On request",
   "languages": ["Português", "English"],
-  "price_from": 4500,
-  "child_price": 3500,
+  "price_from": 5000,
+  "child_price": 4000,
   "currency": "MZN",
   "rating": 4.9,
   "reviews_count": 0,
@@ -287,16 +287,16 @@
   {
   "id": "farol-inhaca-tour",
   "category": "island-daytrips",
-  "title": "Praia do Farol - Inhaca e Ilha dos Portugueses",
-  "title_en": "Farol Beach — Inhaca & Ilha dos Portugueses",
+  "title": "Praia do Farol - Vila da Inhaca e Ilha dos Portugueses",
+  "title_en": "Lighthouse Beach — Inhaca Village & Portuguese Island",
   "location": "Ilha da Inhaca, Maputo",
   "duration": "Dia Inteiro (08:00 – 17:00)",
   "duration_en": "Full Day (08:00 – 17:00)",
   "group_size": "Sob consulta",
   "group_size_en": "On request",
   "languages": ["Português", "English"],
-  "price_from": 5500,
-  "child_price": 5500,
+  "price_from": 6000,
+  "child_price": 5000,
   "currency": "MZN",
   "rating": 4.9,
   "reviews_count": 0,
@@ -318,7 +318,7 @@
     "Walk through the coconut village",
     "Lunch in Inhaca village",
     "Visit to the natural pools",
-    "Relaxation at Farol Beach"
+    "Relaxation at Lighthouse Beach"
   ],
 
   "included": [
@@ -386,9 +386,9 @@
     {
       "time": "15:00",
       "title": "Ilha dos Portugueses",
-      "title_en": "Ilha dos Portugueses",
+      "title_en": "Portuguese Island",
       "description": "Paragem na tranquila Ilha dos Portugueses para relaxar na praia, nadar em águas cristalinas e desfrutar das paisagens paradisíacas.",
-      "description_en": "Stop at the tranquil Ilha dos Portugueses to relax on the beach, swim in crystal-clear waters and enjoy the paradisiacal scenery."
+      "description_en": "Stop at the tranquil Portuguese Island to relax on the beach, swim in crystal-clear waters and enjoy the paradisiacal scenery."
     },
     {
       "time": "17:00",
@@ -1261,7 +1261,7 @@
   "group_size": "1 – 12 pessoas",
   "group_size_en": "1 – 12 people",
   "languages": ["Português", "English"],
-  "price_from": 2100,
+  "price_from": 2500,
   "currency": "MZN",
   "rating": 4.8,
   "reviews_count": 0,
@@ -1389,7 +1389,8 @@
 
   "languages": ["Português", "English"],
 
-  "price_from": 3200,
+  "price_from": 3500,
+  "price_weekday": 5000,
   "currency": "MZN",
 
   "rating": 4.8,
@@ -1682,14 +1683,14 @@
     "group_size": "Temporada: Jul – Nov",
     "group_size_en": "Season: Jul – Nov",
     "languages": ["Português", "English"],
-    "price_from": 7500,
-    "child_price": 5500,
+    "price_from": 8000,
+    "child_price": 6000,
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
     "badge": "Whale Watching",
     "description": "Viva a emoção de observar baleias em liberdade nas águas da Baía de Maputo. Esta excursão única combina o avistamento de baleias jubarte com uma paragem nas praias paradisíacas da Ilha da Inhaca ou da Ilha dos Portugueses — uma experiência inesquecível para toda a família.",
-    "description_en": "Experience the thrill of watching whales in the wild waters of Maputo Bay. This unique excursion combines humpback whale sightings with a stop at the paradisiacal beaches of Inhaca Island or Ilha dos Portugueses — an unforgettable experience for the whole family.",
+    "description_en": "Experience the thrill of watching whales in the wild waters of Maputo Bay. This unique excursion combines humpback whale sightings with a stop at the paradisiacal beaches of Inhaca Island or Portuguese Island — an unforgettable experience for the whole family.",
     "highlights": [
       "Avistamento de baleias jubarte em habitat natural",
       "Pit stop na Ilha da Inhaca ou Ilha dos Portugueses",
@@ -1699,7 +1700,7 @@
     ],
     "highlights_en": [
       "Humpback whale sighting in natural habitat",
-      "Pit stop at Inhaca Island or Ilha dos Portugueses",
+      "Pit stop at Inhaca Island or Portuguese Island",
       "Lunch and fruit on board included",
       "Spectacular views of Maputo Bay",
       "Suitable for the whole family, including children"
@@ -1756,9 +1757,9 @@
       {
         "time": "11:30",
         "title": "Pit Stop — Ilha dos Portugueses",
-        "title_en": "Pit Stop — Ilha dos Portugueses",
+        "title_en": "Pit Stop — Portuguese Island",
         "description": "Paragem na tranquila Ilha dos Portugueses para relaxar na praia e desfrutar das águas cristalinas.",
-        "description_en": "Stop at the tranquil Ilha dos Portugueses to relax on the beach and enjoy the crystal-clear waters."
+        "description_en": "Stop at the tranquil Portuguese Island to relax on the beach and enjoy the crystal-clear waters."
       },
       {
         "time": "12:30",
@@ -1811,7 +1812,7 @@
     "group_size": "até 3 pessoas",
     "group_size_en": "up to 3 people",
     "languages": ["Português", "English"],
-    "price_from": 38500,
+    "price_from": 40000,
     "price_unit": "/barco",
     "price_unit_en": "/boat",
     "currency": "MZN",
@@ -1947,7 +1948,7 @@
     "group_size": "até 6 pessoas",
     "group_size_en": "up to 6 people",
     "languages": ["Português", "English"],
-    "price_from": 58000,
+    "price_from": 60000,
     "price_unit": "/barco",
     "price_unit_en": "/boat",
     "currency": "MZN",
@@ -2083,7 +2084,7 @@
     "group_size": "até 15-20 pessoas",
     "group_size_en": "up to 15-20 people",
     "languages": ["Português", "English"],
-    "price_from": 100000,
+    "price_from": 104000,
     "price_unit": "/barco",
     "price_unit_en": "/boat",
     "currency": "MZN",

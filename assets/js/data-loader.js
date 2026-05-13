@@ -524,6 +524,18 @@
     const mobilePriceEl = document.querySelector('#mobile-price');
     if (mobilePriceEl) mobilePriceEl.textContent = `${currency} ${price}`;
 
+    const priceNoteEl = document.querySelector('#price-schedule-note');
+    if (priceNoteEl && item.price_weekday) {
+      const weekendDays = LANG === 'en' ? 'Fri, Sat &amp; Sun' : 'Sex, Sáb e Dom';
+      const weekdayDays = LANG === 'en' ? 'Mon – Thu' : 'Seg – Qui';
+      priceNoteEl.innerHTML =
+        `<span>${currency} ${item.price_from} &mdash; <strong>${weekendDays}</strong></span><br>` +
+        `<span>${currency} ${item.price_weekday} &mdash; <strong>${weekdayDays}</strong></span>`;
+      priceNoteEl.style.display = '';
+      const priceFromEl = document.querySelector('.booking-card__price-from');
+      if (priceFromEl) priceFromEl.textContent = LANG === 'en' ? 'Pricing' : 'Preços';
+    }
+
     const ratingEl = document.querySelector('#package-rating');
     if (ratingEl) ratingEl.innerHTML = starHTML(item.rating);
 

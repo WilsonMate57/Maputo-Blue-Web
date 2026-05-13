@@ -151,7 +151,7 @@
     const btn = document.querySelector('.whatsapp-btn');
     if (!btn) return;
     if (!btn.getAttribute('href') || btn.getAttribute('href') === '#') {
-      btn.setAttribute('href', 'https://wa.me/258840000000?text=Olá%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20tours.');
+      btn.setAttribute('href', 'https://wa.me/258847121666?text=Olá%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20tours.');
       btn.setAttribute('target', '_blank');
       btn.setAttribute('rel', 'noopener noreferrer');
     }

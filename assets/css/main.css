@@ -202,6 +202,7 @@ ul { list-style: none; }
   outline: 3px solid var(--sea-green);
   outline-offset: 3px;
 }
+.btn-sea-green.stretched-link:hover { transform: none; }
 
 /* ── Star Rating ── */
 .star-rating {
@@ -658,12 +659,7 @@ main.tours-main { z-index: auto; }
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    to bottom,
-    rgba(3, 13, 22, 0.15) 0%,
-    rgba(3, 13, 22, 0.50) 55%,
-    rgba(3, 13, 22, 0.70) 100%
-  );
+  background: rgba(3, 13, 22, 0.15);
 }
 .hero-content {
   position: relative;
