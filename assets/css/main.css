@@ -659,7 +659,7 @@ main.tours-main { z-index: auto; }
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: rgba(3, 13, 22, 0.15);
+  background: rgba(3, 13, 22, 0.05);
 }
 .hero-content {
   position: relative;
