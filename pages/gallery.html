@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeria | Maputo Blue</title>
+  <meta name="description" content="Explore momentos reais das experiências Maputo Blue — passeios de ilha, safaris, alojamentos e muito mais.">
+  <meta name="author" content="Maputo Blue">
+  <link rel="alternate" hreflang="pt" href="https://www.maputoblue.com/pages/gallery.html">
+  <link rel="alternate" hreflang="en" href="https://www.maputoblue.com/en/gallery.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="icon" type="image/png" href="../logo.webp">
+  <style>
+    /* ── Hero ── */
+    .gal-hero {
+      position: relative;
+      height: 340px;
+      display: flex;
+      align-items: flex-end;
+      background-image: url('../assets/images/hero/hero-4.webp');
+      background-size: cover;
+      background-position: center 30%;
+      overflow: hidden;
+    }
+    .gal-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(3,13,22,.82) 0%, rgba(3,13,22,.4) 55%, rgba(3,13,22,.18) 100%);
+    }
+    .gal-hero-inner {
+      position: relative;
+      z-index: 1;
+      padding-bottom: 40px;
+    }
+    .gal-bc {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .8125rem;
+      color: rgba(255,255,255,.65);
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .gal-bc a { color: var(--sea-green); text-decoration: none; }
+    .gal-bc a:hover { text-decoration: underline; }
+    .gal-bc span { color: rgba(255,255,255,.35); }
+    .gal-hero h1 {
+      font-size: clamp(2.25rem, 5vw, 3.25rem);
+      font-weight: 800;
+      color: var(--white);
+      margin: 0 0 10px;
+      line-height: 1.1;
+    }
+    .gal-hero h1 span { color: var(--sea-green); }
+    .gal-hero p {
+      color: rgba(255,255,255,.78);
+      font-size: 1.0625rem;
+      margin: 0;
+    }
+
+    /* ── Filter Bar ── */
+    .gal-filter-bar {
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 8px rgba(3,13,22,.04);
+    }
+    .gal-filter-scroll {
+      display: flex;
+      gap: 8px;
+      padding: 12px 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .gal-filter-scroll::-webkit-scrollbar { display: none; }
+    .gal-filter-btn {
+      flex-shrink: 0;
+      padding: 7px 18px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border-light);
+      background: var(--white);
+      color: var(--text-body);
+      font-size: .8125rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .18s, border-color .18s, color .18s;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .gal-filter-btn:hover { border-color: var(--sea-green); color: var(--sea-green); }
+    .gal-filter-btn.active {
+      background: var(--sea-green);
+      border-color: var(--sea-green);
+      color: var(--white);
+    }
+
+    /* ── Gallery Section ── */
+    .gal-section { background: var(--light-bg); padding: 36px 0 80px; }
+    .gal-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .gal-count { font-size: .875rem; color: var(--text-muted); margin: 0; }
+    .gal-count strong { color: var(--primary); font-weight: 700; }
+
+    /* ── Grid ── */
+    .gal-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 1199px) { .gal-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 767px)  { .gal-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+    @media (max-width: 479px)  { .gal-grid { grid-template-columns: 1fr; } }
+
+    /* ── Card ── */
+    .gal-item {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+      background: var(--border-light);
+      display: block;
+    }
+    .gal-item.gal-hidden { display: none; }
+    .gal-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .45s ease;
+      display: block;
+    }
+    .gal-item:hover img,
+    .gal-item:focus-visible img { transform: scale(1.07); }
+    .gal-item:focus-visible { outline: 2px solid var(--sea-green); outline-offset: 2px; }
+    .gal-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(3,13,22,.76) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity .28s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 14px;
+      pointer-events: none;
+    }
+    .gal-item:hover .gal-item-overlay,
+    .gal-item:focus-visible .gal-item-overlay { opacity: 1; }
+    .gal-item-cat {
+      font-size: .6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--sea-green);
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.16);
+      padding: 2px 9px;
+      border-radius: 20px;
+      align-self: flex-start;
+      margin-bottom: 6px;
+    }
+    .gal-item-title {
+      font-size: .8125rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.3;
+    }
+
+    /* ── Empty State ── */
+    .gal-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 20px;
+      color: var(--text-muted);
+    }
+    .gal-empty i { font-size: 2.75rem; display: block; margin-bottom: 14px; color: var(--border-light); }
+    .gal-empty p { font-size: 1rem; margin: 0; }
+
+    /* ── Lightbox ── */
+    .gal-lb {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s;
+    }
+    .gal-lb.open { opacity: 1; pointer-events: all; }
+    .gal-lb-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(3,13,22,.94);
+      cursor: pointer;
+    }
+    .gal-lb-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: min(90vw, 1080px);
+      padding: 0 60px;
+    }
+    #gal-lb-img {
+      width: 100%;
+      max-height: 74vh;
+      object-fit: contain;
+      border-radius: var(--radius-lg);
+      display: block;
+    }
+    .gal-lb-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+      width: 100%;
+    }
+    .gal-lb-cat {
+      font-size: .6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--sea-green);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 3px 10px;
+      border-radius: 20px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .gal-lb-title {
+      font-size: .9375rem;
+      font-weight: 600;
+      color: var(--white);
+      text-align: center;
+      flex: 1;
+      line-height: 1.3;
+    }
+    .gal-lb-counter {
+      font-size: .8125rem;
+      color: rgba(255,255,255,.45);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .gal-lb-close {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--white);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      transition: background .18s;
+    }
+    .gal-lb-close:hover { background: rgba(255,255,255,.2); }
+    .gal-lb-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--white);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      transition: background .18s;
+    }
+    .gal-lb-nav:hover { background: rgba(255,255,255,.2); }
+    #gal-lb-prev { left: 14px; }
+    #gal-lb-next { right: 14px; }
+
+    @media (max-width: 767px) {
+      .gal-hero { height: 260px; }
+      .gal-lb-inner { padding: 0 46px; }
+      .gal-lb-nav { width: 38px; height: 38px; font-size: 1.2rem; }
+      #gal-lb-prev { left: 6px; }
+      #gal-lb-next { right: 6px; }
+      .gal-lb-info { flex-direction: column; gap: 6px; text-align: center; }
+      .gal-lb-cat, .gal-lb-counter { align-self: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <div id="preloader" aria-hidden="true">
+    <lottie-player src="../assets/preloader/boat steering.json" background="transparent" speed="1" loop autoplay></lottie-player>
+  </div>
+  <script>(function(){var t=Date.now();function hide(){document.getElementById('preloader').classList.add('hidden');}window.addEventListener('load',function(){var elapsed=Date.now()-t;var remaining=3000-elapsed;if(remaining<=0){hide();}else{setTimeout(hide,remaining);}});})();</script>
+
+  <div id="navbar-placeholder"></div>
+
+  <main>
+
+    <!-- Hero Banner -->
+    <section class="gal-hero" aria-label="Galeria Maputo Blue">
+      <div class="gal-hero-inner mb-container">
+        <nav class="gal-bc" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span>/</span>
+          <span style="color:rgba(255,255,255,.85);">Galeria</span>
+        </nav>
+        <h1>Gale<span>ria</span></h1>
+        <p>Explore momentos reais das experiências Maputo Blue</p>
+      </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="gal-filter-bar" role="navigation" aria-label="Filtrar por categoria">
+      <div class="mb-container">
+        <div class="gal-filter-scroll">
+          <button class="gal-filter-btn active" data-cat="all">Todos</button>
+          <button class="gal-filter-btn" data-cat="island-tours">Passeios de Ilha</button>
+          <button class="gal-filter-btn" data-cat="sunset-cruises">Sunset Cruises</button>
+          <button class="gal-filter-btn" data-cat="safaris">Safaris</button>
+          <button class="gal-filter-btn" data-cat="sea-activities">Pesca &amp; Baleias</button>
+          <button class="gal-filter-btn" data-cat="city-tours">City Tour</button>
+          <button class="gal-filter-btn" data-cat="accommodations">Alojamentos</button>
+          <button class="gal-filter-btn" data-cat="charters">Barcos Privados</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery Grid -->
+    <section class="gal-section">
+      <div class="mb-container">
+        <div class="gal-meta">
+          <p class="gal-count" id="gal-count" aria-live="polite"></p>
+        </div>
+        <div class="gal-grid" id="gal-grid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Lightbox -->
+  <div id="gal-lb" class="gal-lb" role="dialog" aria-modal="true" aria-label="Visualizador de fotos">
+    <div class="gal-lb-backdrop" id="gal-lb-backdrop"></div>
+    <button class="gal-lb-close" id="gal-lb-close" aria-label="Fechar galeria"><i class='bx bx-x'></i></button>
+    <button class="gal-lb-nav" id="gal-lb-prev" aria-label="Foto anterior"><i class='bx bx-chevron-left'></i></button>
+    <button class="gal-lb-nav" id="gal-lb-next" aria-label="Próxima foto"><i class='bx bx-chevron-right'></i></button>
+    <div class="gal-lb-inner">
+      <img id="gal-lb-img" src="" alt="" loading="eager">
+      <div class="gal-lb-info">
+        <span class="gal-lb-cat" id="gal-lb-cat"></span>
+        <span class="gal-lb-title" id="gal-lb-title"></span>
+        <span class="gal-lb-counter" id="gal-lb-counter"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+  <button class="scroll-to-top" aria-label="Voltar ao topo"><i class='bx bx-chevron-up'></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var LANG = 'pt';
+    var CAT_LABELS = {
+      'island-tours':   'Passeios de Ilha',
+      'sunset-cruises': 'Sunset Cruises',
+      'safaris':        'Safaris',
+      'sea-activities': 'Pesca & Baleias',
+      'city-tours':     'City Tour',
+      'accommodations': 'Alojamentos',
+      'charters':       'Barcos Privados'
+    };
+
+    var grid      = document.getElementById('gal-grid');
+    var countEl   = document.getElementById('gal-count');
+    var lb        = document.getElementById('gal-lb');
+    var lbImg     = document.getElementById('gal-lb-img');
+    var lbCatEl   = document.getElementById('gal-lb-cat');
+    var lbTitleEl = document.getElementById('gal-lb-title');
+    var lbCountEl = document.getElementById('gal-lb-counter');
+
+    var lbItems = [];
+    var lbIdx   = 0;
+    var activeCat = 'all';
+
+    /* ── Lightbox ── */
+    function openLb(clickedEl) {
+      var visible = Array.from(grid.querySelectorAll('.gal-item:not(.gal-hidden)'));
+      lbItems = visible.map(function (el) {
+        return { src: el.dataset.src, title: el.dataset.title, catLabel: el.dataset.catLabel };
+      });
+      lbIdx = visible.indexOf(clickedEl);
+      if (lbIdx < 0) lbIdx = 0;
+      showLb();
+    }
+
+    function showLb() {
+      var item = lbItems[lbIdx];
+      if (!item) return;
+      lbImg.src           = item.src;
+      lbImg.alt           = item.title;
+      lbCatEl.textContent   = item.catLabel;
+      lbTitleEl.textContent = item.title;
+      lbCountEl.textContent = (lbIdx + 1) + ' / ' + lbItems.length;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLb() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(function () { lbImg.src = ''; }, 250);
+    }
+
+    function prevLb() { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; showLb(); }
+    function nextLb() { lbIdx = (lbIdx + 1) % lbItems.length; showLb(); }
+
+    document.getElementById('gal-lb-close').addEventListener('click', closeLb);
+    document.getElementById('gal-lb-backdrop').addEventListener('click', closeLb);
+    document.getElementById('gal-lb-prev').addEventListener('click', prevLb);
+    document.getElementById('gal-lb-next').addEventListener('click', nextLb);
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLb();
+      if (e.key === 'ArrowLeft')  prevLb();
+      if (e.key === 'ArrowRight') nextLb();
+    });
+
+    /* ── Filter ── */
+    document.querySelectorAll('.gal-filter-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.gal-filter-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        activeCat = btn.dataset.cat;
+        applyFilter();
+      });
+    });
+
+    function applyFilter() {
+      var items = grid.querySelectorAll('.gal-item');
+      var visible = 0;
+      items.forEach(function (item) {
+        var show = activeCat === 'all' || item.dataset.category === activeCat;
+        item.classList.toggle('gal-hidden', !show);
+        if (show) visible++;
+      });
+      countEl.innerHTML = '<strong>' + visible + '</strong> foto' + (visible !== 1 ? 's' : '');
+    }
+
+    /* ── Build card ── */
+    function buildItem(src, title, catLabel, category) {
+      var el = document.createElement('div');
+      el.className = 'gal-item';
+      el.dataset.src      = src;
+      el.dataset.title    = title;
+      el.dataset.catLabel = catLabel;
+      el.dataset.category = category;
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('aria-label', 'Ver foto: ' + title);
+      el.innerHTML =
+        '<img src="' + src + '" alt="' + title.replace(/"/g, '&quot;') + '" loading="lazy">' +
+        '<div class="gal-item-overlay" aria-hidden="true">' +
+          '<span class="gal-item-cat">' + catLabel + '</span>' +
+          '<span class="gal-item-title">' + title + '</span>' +
+        '</div>';
+      el.addEventListener('click', function () { openLb(el); });
+      el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(el); } });
+      return el;
+    }
+
+    /* ── Render ── */
+    function renderGallery(data) {
+      var frag = document.createDocumentFragment();
+      data.forEach(function (group) {
+        var title    = LANG === 'en' ? (group.title_en || group.title) : group.title;
+        var catLabel = CAT_LABELS[group.category] || group.category;
+        (group.images || []).forEach(function (src) {
+          frag.appendChild(buildItem(src, title, catLabel, group.category));
+        });
+      });
+      grid.appendChild(frag);
+      applyFilter();
+    }
+
+    /* ── Load ── */
+    fetch('../data/gallery.json')
+      .then(function (r) { return r.json(); })
+      .then(renderGallery)
+      .catch(function () {
+        grid.innerHTML = '<div class="gal-empty"><i class="bx bx-image-alt"></i><p>Não foi possível carregar a galeria. Tente novamente.</p></div>';
+      });
+
+  }());
+  </script>
+
+</body>
+</html>

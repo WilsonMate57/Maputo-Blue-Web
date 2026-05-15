@@ -69,7 +69,7 @@
   ],
 
   "images": [
-    "../assets/images/tours/passeio-barco/passeio-barco-1.webp",
+    "../assets/images/tours/passeio-barco/passeio-barco-1.jpeg",
     "../assets/images/tours/passeio-barco/passeio-barco-2.webp",
     "../assets/images/tours/passeio-barco/passeio-barco-3.webp",
     "../assets/images/tours/passeio-barco/passeio-barco-4.webp"
@@ -227,10 +227,9 @@
   },
 
   "images": [
-    "../assets/images/tours/dia-praia-1.webp",
-    "../assets/images/tours/dia-praia-4.webp",
-    "../assets/images/tours/dia-praia-3.webp",
-    "../assets/images/tours/dia-praia-2.webp"
+    "../assets/images/tours/beach-day/dia-praia-4.webp",
+    "../assets/images/tours/beach-day/dia-praia-3.webp",
+    "../assets/images/tours/beach-day/dia-praia-2.webp"
   ],
 
   "itinerary": [
@@ -348,7 +347,7 @@
   ],
 
   "images": [
-    "../assets/images/tours/farol-inhaca/farol-inhaca-1.webp",
+    "../assets/images/tours/farol-inhaca/farol-inhaca-1.jpeg",
     "../assets/images/tours/farol-inhaca/farol-inhaca-2.webp",
     "../assets/images/tours/farol-inhaca/farol-inhaca-3.webp",
     "../assets/images/tours/farol-inhaca/farol-inhaca-4.webp"
@@ -766,10 +765,10 @@
   ],
 
   "images": [
-    "../assets/images/tours/safari/safari-maputo-reserve-1.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve-2.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve-3.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve-4.webp"
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-1.jpeg",
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-2.webp",
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-3.jpeg",
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-4.jpeg"
   ],
 
   "itinerary": [
@@ -1391,7 +1390,7 @@
 
   "price_from": 3500,
   "price_weekday": 5000,
-  "child_price": 1600,
+  "child_price": 1750,
   "child_price_weekday": 3500,
   "child_age_note": "Crianças 4–10 anos",
   "child_age_note_en": "Children ages 4–10",

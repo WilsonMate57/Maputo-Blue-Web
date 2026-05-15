@@ -50,18 +50,5 @@
       "linkedin": "#",
       "instagram": "#"
     }
-  },
-  {
-    "id": 5,
-    "name": "Ian Uiliamo",
-    "position": "Guia Turístico e Recepcionista",
-    "position_en": "Tour Guide & Receptionist",
-    "photo": "../assets/images/team/team-6.jpg",
-    "bio": "Isabel cuida de todos os alojamentos parceiros, garantindo os mais altos padrões de qualidade e conforto para os nossos hóspedes.",
-    "bio_en": "Ian is part of the Maputo Blue team, supporting guests and ensuring the highest standards of quality and comfort throughout every experience.",
-    "social": {
-      "linkedin": "#",
-      "instagram": "#"
-    }
   }
 ]
