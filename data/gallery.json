@@ -1,193 +1,212 @@
 [
   {
-    "id": "passeio-barco",
+    "id": "santa-maria-inhaca-portuguesa",
     "category": "island-tours",
     "title": "Santa Maria, Inhaca & Ilha Portuguesa",
     "title_en": "Santa Maria, Inhaca & Portuguese Island",
     "images": [
-      "../assets/images/tours/passeio-barco/passeio-barco-1.jpeg",
-      "../assets/images/tours/passeio-barco/passeio-barco-2.webp",
-      "../assets/images/tours/passeio-barco/passeio-barco-3.webp",
-      "../assets/images/tours/passeio-barco/passeio-barco-4.webp"
+      "../assets/images/gallery/santa-maria.webp",
+      "../assets/images/gallery/santa-maria-1.webp",
+      "../assets/images/gallery/santa-maria-3.webp",
+      "../assets/images/gallery/santa-maria-4.webp",
+      "../assets/images/gallery/santa-maria-5.webp",
+      "../assets/images/gallery/santa-maria-8.webp",
+      "../assets/images/gallery/santa-maria-9.webp",
+      "../assets/images/gallery/santa-maria-10.webp",
+      "../assets/images/gallery/portugueses-island.webp",
+      "../assets/images/gallery/portugueses-island-1.webp",
+      "../assets/images/gallery/portugueses-island-2.webp",
+      "../assets/images/gallery/portugueses-island-3.webp",
+      "../assets/images/gallery/portugueses-island-4.webp",
+      "../assets/images/gallery/portugueses-island-5.webp",
+      "../assets/images/gallery/portugueses-island-6.webp",
+      "../assets/images/gallery/portugueses-island-7.webp",
+      "../assets/images/gallery/portugueses-island-8.webp",
+      "../assets/images/gallery/portugueses-island-9.webp"
     ]
   },
   {
-    "id": "farol-inhaca",
+    "id": "inhaca-village",
     "category": "island-tours",
-    "title": "Farol da Inhaca — Vila da Inhaca & Ilha Portuguesa",
-    "title_en": "Lighthouse Beach — Inhaca Village & Portuguese Island",
+    "title": "Vila da Inhaca",
+    "title_en": "Inhaca Village",
     "images": [
-      "../assets/images/tours/farol-inhaca/farol-inhaca-1.jpeg",
-      "../assets/images/tours/farol-inhaca/farol-inhaca-2.webp",
-      "../assets/images/tours/farol-inhaca/farol-inhaca-3.webp",
-      "../assets/images/tours/farol-inhaca/farol-inhaca-4.webp"
+      "../assets/images/gallery/inhaca-village.webp",
+      "../assets/images/gallery/inhaca-village-1.webp",
+      "../assets/images/gallery/inhaca-village-3.webp",
+      "../assets/images/gallery/inhaca-village-4.webp",
+      "../assets/images/gallery/inhaca-village-5.webp",
+      "../assets/images/gallery/inhaca-village-6.webp",
+      "../assets/images/gallery/inhaca-village-7.webp",
+      "../assets/images/gallery/inhaca-village-8.webp",
+      "../assets/images/gallery/inhaca-village-9.webp",
+      "../assets/images/gallery/inhaca-village-10.webp",
+      "../assets/images/gallery/inhaca-village-11.webp",
+      "../assets/images/gallery/inhaca-village-12.webp",
+      "../assets/images/gallery/inhaca-village-13.webp",
+      "../assets/images/gallery/inhaca-village-14.webp",
+      "../assets/images/gallery/inhaca-village-15.webp",
+      "../assets/images/gallery/inhaca-village-16.webp",
+      "../assets/images/gallery/inhaca-village-17.webp",
+      "../assets/images/gallery/inhaca-village-18.webp"
+    ]
+  },
+  {
+    "id": "praia-do-farol",
+    "category": "island-tours",
+    "title": "Praia do Farol",
+    "title_en": "Lighthouse Beach",
+    "images": [
+      "../assets/images/gallery/praia-do-farol.webp",
+      "../assets/images/gallery/praia-do-farol-2.webp",
+      "../assets/images/gallery/praia-do-farol-3.webp",
+      "../assets/images/gallery/praia-do-farol-4.webp",
+      "../assets/images/gallery/praia-do-farol-5.webp"
     ]
   },
   {
     "id": "beach-day",
     "category": "island-tours",
-    "title": "Dia de Praia — Santa Maria & Machangulo",
-    "title_en": "Beach Day — Santa Maria & Machangulo",
+    "title": "Dia de Praia - Santa Maria & Machangulo",
+    "title_en": "Beach Day - Santa Maria & Machangulo",
     "images": [
-      "../assets/images/tours/beach-day/dia-praia-2.webp",
-      "../assets/images/tours/beach-day/dia-praia-3.webp",
-      "../assets/images/tours/beach-day/dia-praia-4.webp"
+      "../assets/images/gallery/beach-day.webp",
+      "../assets/images/gallery/beach-day-2.webp",
+      "../assets/images/gallery/beach-day-3.webp",
+      "../assets/images/gallery/beach-day-4.webp"
     ]
   },
   {
-    "id": "boat-transfer-inhaca",
+    "id": "boat-transfer",
     "category": "island-tours",
-    "title": "Transfer de Barco — Inhaca",
-    "title_en": "Boat Transfer — Inhaca",
+    "title": "Transfer de Barco",
+    "title_en": "Boat Transfer",
     "images": [
-      "../assets/images/transfers/boat/boat-transfer-1.webp",
-      "../assets/images/transfers/boat/boat-transfer-2.webp",
-      "../assets/images/transfers/boat/boat-transfer-3.webp",
-      "../assets/images/transfers/boat/boat-transfer-4.webp"
-    ]
-  },
-  {
-    "id": "boat-transfer-machangulo",
-    "category": "island-tours",
-    "title": "Transfer de Barco — Machangulo",
-    "title_en": "Boat Transfer — Machangulo",
-    "images": [
-      "../assets/images/transfers/boat/machangulo-transfer-1.webp",
-      "../assets/images/transfers/boat/machangulo-transfer-2.webp",
-      "../assets/images/transfers/boat/machangulo-transfer-3.webp",
-      "../assets/images/transfers/boat/machangulo-transfer-4.webp"
+      "../assets/images/gallery/boat-trasnfer-1.webp",
+      "../assets/images/gallery/hotel-marina-transfer.webp",
+      "../assets/images/gallery/hotel-marina-transfer-2.webp"
     ]
   },
   {
     "id": "sunset-cruise",
     "category": "sunset-cruises",
-    "title": "Cruzeiro ao Pôr do Sol",
+    "title": "Cruzeiro ao Por do Sol",
     "title_en": "Sunset Cruise",
     "images": [
-      "../assets/images/tours/sunset-cruise/sunset-cruise-1.webp",
-      "../assets/images/tours/sunset-cruise/sunset-cruise-2.webp",
-      "../assets/images/tours/sunset-cruise/sunset-cruise-3.webp",
-      "../assets/images/tours/sunset-cruise/sunset-cruise-4.webp"
+      "../assets/images/gallery/sunset-cruise.webp",
+      "../assets/images/gallery/sunset-cruise-1.webp",
+      "../assets/images/gallery/sunset-cruise-3.webp",
+      "../assets/images/gallery/sunset-cruise-4.webp",
+      "../assets/images/gallery/sunset-cruise-5.webp",
+      "../assets/images/gallery/sunset-cruise-6.webp",
+      "../assets/images/gallery/sunset-cruise-7.webp",
+      "../assets/images/gallery/sunset-cruise-8.webp",
+      "../assets/images/gallery/sunset-cruise-9.webp",
+      "../assets/images/gallery/sunset-cruise-10.webp",
+      "../assets/images/gallery/sunset-cruise-11.webp",
+      "../assets/images/gallery/sunset-cruise-12.webp",
+      "../assets/images/gallery/sunset-cruise-13.webp",
+      "../assets/images/gallery/sunset-cruise-14.webp",
+      "../assets/images/gallery/sunset-cruise-15.webp"
     ]
   },
   {
-    "id": "safari-kruger",
+    "id": "maputo-reserve",
     "category": "safaris",
-    "title": "Safari — Parque Nacional do Kruger",
-    "title_en": "Safari — Kruger National Park",
+    "title": "Safari - Reserva Especial de Maputo",
+    "title_en": "Safari - Maputo Special Reserve",
     "images": [
-      "../assets/images/tours/safari/safari-kruger-1.webp",
-      "../assets/images/tours/safari/safari-kruger-2.webp",
-      "../assets/images/tours/safari/safari-kruger-3.webp",
-      "../assets/images/tours/safari/safari-kruger-4.webp"
+      "../assets/images/gallery/maputo-reserve.webp",
+      "../assets/images/gallery/maputo-reserve-1.webp",
+      "../assets/images/gallery/maputo-reserve-2.webp",
+      "../assets/images/gallery/maputo-reserve-3.webp",
+      "../assets/images/gallery/maputo-reserve-4.webp"
     ]
   },
   {
-    "id": "safari-maputo-reserve",
+    "id": "eswatini-safari",
     "category": "safaris",
-    "title": "Safari — Reserva Especial de Maputo",
-    "title_en": "Safari — Maputo Special Reserve",
+    "title": "Safari - Eswatini",
+    "title_en": "Safari - Eswatini",
     "images": [
-      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-1.jpeg",
-      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-2.webp",
-      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-3.jpeg",
-      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-4.jpeg"
-    ]
-  },
-  {
-    "id": "hlane",
-    "category": "safaris",
-    "title": "Safari — Parque Real de Hlane",
-    "title_en": "Safari — Hlane Royal National Park",
-    "images": [
-      "../assets/images/tours/safari/hlane/hlane-1.webp",
-      "../assets/images/tours/safari/hlane/hlane-2.webp",
-      "../assets/images/tours/safari/hlane/hlane-3.webp",
-      "../assets/images/tours/safari/hlane/hlane-4.webp"
-    ]
-  },
-  {
-    "id": "eswatini-mantenga",
-    "category": "safaris",
-    "title": "Villa Cultural de Mantenga — Eswatini",
-    "title_en": "Mantenga Cultural Village — Eswatini",
-    "images": [
-      "../assets/images/tours/safari/eswatini-tour-1.webp",
-      "../assets/images/tours/safari/eswatini-tour-2.webp",
-      "../assets/images/tours/safari/eswatini-tour-3.webp",
-      "../assets/images/tours/safari/eswatini-tour-4.webp"
+      "../assets/images/gallery/eswatini-safari.webp",
+      "../assets/images/gallery/eswatini-safari-1.webp",
+      "../assets/images/gallery/eswatini-safari-2.webp",
+      "../assets/images/gallery/eswatini-safari-3.webp",
+      "../assets/images/gallery/eswatini-safari-4.webp",
+      "../assets/images/gallery/eswatini-safari-5.webp",
+      "../assets/images/gallery/eswatini-safari-6.webp",
+      "../assets/images/gallery/eswatini-safari-7.webp",
+      "../assets/images/gallery/eswatini-safari-8.webp",
+      "../assets/images/gallery/eswatini-safari-9.webp",
+      "../assets/images/gallery/eswatini-safari-10.webp",
+      "../assets/images/gallery/eswatini-safari-11.webp",
+      "../assets/images/gallery/eswatini-safari-12.webp",
+      "../assets/images/gallery/eswatini-safari-13.webp",
+      "../assets/images/gallery/eswatini-safari-14.webp",
+      "../assets/images/gallery/eswatini-safari-15.webp",
+      "../assets/images/gallery/eswatini-safari-16.webp",
+      "../assets/images/gallery/eswatini-safari-17.webp",
+      "../assets/images/gallery/eswatini-safari-18.webp"
     ]
   },
   {
     "id": "whale-watching",
-    "category": "sea-activities",
+    "category": "whale-watching",
     "title": "Avistamento de Baleias",
     "title_en": "Whale Watching",
     "images": [
-      "../assets/images/tours/sea-activities/whale-watching-1.webp",
-      "../assets/images/tours/sea-activities/whale-watching-2.webp",
-      "../assets/images/tours/sea-activities/whale-watching-3.webp",
-      "../assets/images/tours/sea-activities/whale-watching-4.webp"
+      "../assets/images/gallery/whale-watching.webp",
+      "../assets/images/gallery/whale-watching-2.webp",
+      "../assets/images/gallery/whale-watching-3.webp",
+      "../assets/images/gallery/whale-watching-4.webp",
+      "../assets/images/gallery/whale-watching-5.webp",
+      "../assets/images/gallery/whale-watching-6.webp",
+      "../assets/images/gallery/whale-watching-7.webp",
+      "../assets/images/gallery/whale-watching-8.webp"
     ]
   },
   {
-    "id": "fishing-small-boat",
-    "category": "sea-activities",
-    "title": "Pesca — Barco Pequeno",
-    "title_en": "Fishing — Small Boat",
+    "id": "fishing-charter",
+    "category": "fishing-charter",
+    "title": "Pesca de Alto Mar",
+    "title_en": "Deep Sea Fishing",
     "images": [
-      "../assets/images/tours/sea-activities/small-boat/small-boat-1.webp",
-      "../assets/images/tours/sea-activities/small-boat/small-boat-2.webp",
-      "../assets/images/tours/sea-activities/small-boat/small-boat-3.webp",
-      "../assets/images/tours/sea-activities/small-boat/small-boat-4.webp"
-    ]
-  },
-  {
-    "id": "fishing-big-boat",
-    "category": "sea-activities",
-    "title": "Pesca — Barco Grande",
-    "title_en": "Fishing — Big Boat",
-    "images": [
-      "../assets/images/tours/sea-activities/big-boat/big-boat-1.webp",
-      "../assets/images/tours/sea-activities/big-boat/big-boat-2.webp",
-      "../assets/images/tours/sea-activities/big-boat/big-boat-3.webp",
-      "../assets/images/tours/sea-activities/big-boat/big-boat-4.webp"
-    ]
-  },
-  {
-    "id": "fishing-catamaran",
-    "category": "sea-activities",
-    "title": "Pesca — Catamarã",
-    "title_en": "Fishing — Catamaran",
-    "images": [
-      "../assets/images/tours/sea-activities/catamaran/catamaran-1.webp",
-      "../assets/images/tours/sea-activities/catamaran/catamaran-2.webp",
-      "../assets/images/tours/sea-activities/catamaran/catamaran-3.webp",
-      "../assets/images/tours/sea-activities/catamaran/catamaran-4.webp"
+      "../assets/images/gallery/fishing-charter.webp",
+      "../assets/images/gallery/fishing-charter-1.webp",
+      "../assets/images/gallery/fishing-charter-3.webp",
+      "../assets/images/gallery/fishing-charter-4.webp",
+      "../assets/images/gallery/fishing-charter-5.webp",
+      "../assets/images/gallery/fishing-charter-6.webp",
+      "../assets/images/gallery/fishing-charter-7.webp",
+      "../assets/images/gallery/mad-marlin.webp",
+      "../assets/images/gallery/mad-marlin-1.webp",
+      "../assets/images/gallery/mad-marlin-2.webp",
+      "../assets/images/gallery/mad-marlin-3.webp",
+      "../assets/images/gallery/mad-marlin-4.webp"
     ]
   },
   {
     "id": "maputo-city-tour",
     "category": "city-tours",
-    "title": "City Tour — Maputo",
-    "title_en": "City Tour — Maputo",
+    "title": "City Tour - Maputo",
+    "title_en": "City Tour - Maputo",
     "images": [
-      "../assets/images/tours/city-tours/maputo-city-tour-1.webp",
-      "../assets/images/tours/city-tours/maputo-city-tour-2.webp",
-      "../assets/images/tours/city-tours/maputo-city-tour-3.webp",
-      "../assets/images/tours/city-tours/maputo-city-tour-4.webp"
+      "../assets/images/gallery/maputo-city-tour.webp",
+      "../assets/images/gallery/maputo-city-tour-2.webp",
+      "../assets/images/gallery/maputo-city-tour-3.webp",
+      "../assets/images/gallery/maputo-city-tour-6.webp",
+      "../assets/images/gallery/maputo-city-tour-7.webp"
     ]
   },
   {
-    "id": "inhaca-package",
+    "id": "island-accommodation",
     "category": "accommodations",
-    "title": "Pacote Inhaca",
-    "title_en": "Inhaca Package",
+    "title": "Alojamento na Ilha",
+    "title_en": "Island Accommodation",
     "images": [
-      "../assets/images/accommodations/inhaca-package/inhaca-1.webp",
-      "../assets/images/accommodations/inhaca-package/inhaca-2.webp",
-      "../assets/images/accommodations/inhaca-package/inhaca-3.webp",
-      "../assets/images/accommodations/inhaca-package/inhaca-4.webp"
+      "../assets/images/gallery/island-accommodation-1.webp",
+      "../assets/images/gallery/island-accommodation-2.webp"
     ]
   },
   {
@@ -196,10 +215,8 @@
     "title": "Machangulo Beach Lodge",
     "title_en": "Machangulo Beach Lodge",
     "images": [
-      "../assets/images/accommodations/machangulo/machangulo-beach-lodge-1.webp",
-      "../assets/images/accommodations/machangulo/machangulo-beach-lodge-2.webp",
-      "../assets/images/accommodations/machangulo/machangulo-beach-lodge-3.webp",
-      "../assets/images/accommodations/machangulo/machangulo-beach-lodge-4.webp"
+      "../assets/images/gallery/machangulo-beach-lodge.webp",
+      "../assets/images/gallery/machangulo-beach-lodge-1.webp"
     ]
   },
   {
@@ -208,81 +225,7 @@
     "title": "Manico Camp",
     "title_en": "Manico Camp",
     "images": [
-      "../assets/images/accommodations/manico-camp/manico-camp-1.webp",
-      "../assets/images/accommodations/manico-camp/manico-camp-2.webp",
-      "../assets/images/accommodations/manico-camp/manico-camp-3.webp",
-      "../assets/images/accommodations/manico-camp/manico-camp-4.webp"
-    ]
-  },
-  {
-    "id": "villa-martins",
-    "category": "accommodations",
-    "title": "Villa Martins",
-    "title_en": "Villa Martins",
-    "images": [
-      "../assets/images/accommodations/villa-martins/villa-martins-1.webp",
-      "../assets/images/accommodations/villa-martins/villa-martins-2.webp",
-      "../assets/images/accommodations/villa-martins/villa-martins-3.webp",
-      "../assets/images/accommodations/villa-martins/villa-martins-4.webp"
-    ]
-  },
-  {
-    "id": "charter-5",
-    "category": "charters",
-    "title": "Barco Privado — 5 Pessoas",
-    "title_en": "Private Boat — 5 Seater",
-    "images": [
-      "../assets/images/private-charter/5-seater-1.webp",
-      "../assets/images/private-charter/5-seater-2.webp",
-      "../assets/images/private-charter/5-seater-3.webp",
-      "../assets/images/private-charter/5-seater-4.webp"
-    ]
-  },
-  {
-    "id": "charter-11",
-    "category": "charters",
-    "title": "Barco Privado — 11 Pessoas",
-    "title_en": "Private Boat — 11 Seater",
-    "images": [
-      "../assets/images/private-charter/11-seater-1.webp",
-      "../assets/images/private-charter/11-seater-2.webp",
-      "../assets/images/private-charter/11-seater-3.webp",
-      "../assets/images/private-charter/11-seater-4.webp"
-    ]
-  },
-  {
-    "id": "charter-13",
-    "category": "charters",
-    "title": "Barco Privado — 13 Pessoas",
-    "title_en": "Private Boat — 13 Seater",
-    "images": [
-      "../assets/images/private-charter/13-seater-1.webp",
-      "../assets/images/private-charter/13-seater-2.webp",
-      "../assets/images/private-charter/13-seater-3.webp",
-      "../assets/images/private-charter/13-seater-4.webp"
-    ]
-  },
-  {
-    "id": "charter-16",
-    "category": "charters",
-    "title": "Barco Privado — 16 Pessoas",
-    "title_en": "Private Boat — 16 Seater",
-    "images": [
-      "../assets/images/private-charter/16-seater-2.webp",
-      "../assets/images/private-charter/16-seater-3.webp",
-      "../assets/images/private-charter/16-seater-4.webp"
-    ]
-  },
-  {
-    "id": "charter-catamaran",
-    "category": "charters",
-    "title": "Catamarã Privado",
-    "title_en": "Private Catamaran",
-    "images": [
-      "../assets/images/private-charter/catamaran-1.webp",
-      "../assets/images/private-charter/catamaran-2.webp",
-      "../assets/images/private-charter/catamaran-3.webp",
-      "../assets/images/private-charter/catamaran-4.webp"
+      "../assets/images/gallery/manico-camp-1.webp"
     ]
   }
 ]

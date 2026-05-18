@@ -69,7 +69,7 @@
   ],
 
   "images": [
-    "../assets/images/tours/passeio-barco/passeio-barco-1.jpeg",
+    "../assets/images/tours/passeio-barco/passeio-barco-1.webp",
     "../assets/images/tours/passeio-barco/passeio-barco-2.webp",
     "../assets/images/tours/passeio-barco/passeio-barco-3.webp",
     "../assets/images/tours/passeio-barco/passeio-barco-4.webp"
@@ -347,7 +347,7 @@
   ],
 
   "images": [
-    "../assets/images/tours/farol-inhaca/farol-inhaca-1.jpeg",
+    "../assets/images/tours/farol-inhaca/farol-inhaca-1.webp",
     "../assets/images/tours/farol-inhaca/farol-inhaca-2.webp",
     "../assets/images/tours/farol-inhaca/farol-inhaca-3.webp",
     "../assets/images/tours/farol-inhaca/farol-inhaca-4.webp"
@@ -765,10 +765,10 @@
   ],
 
   "images": [
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-1.jpeg",
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-1.webp",
     "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-2.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-3.jpeg",
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-4.jpeg"
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-3.webp",
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-4.webp"
   ],
 
   "itinerary": [
