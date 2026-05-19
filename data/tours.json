@@ -300,6 +300,7 @@
   "rating": 4.9,
   "reviews_count": 0,
   "badge": "Natureza",
+  "badge_en": "Nature",
   "description": "Descubra a beleza natural da Ilha da Inhaca com uma visita ao icónico Farol de Inhaca e às famosas piscinas naturais. Este passeio combina aventura, natureza e relaxamento, incluindo um safari pela ilha, visita à vila dos coqueiros e almoço local.",
   "description_en": "Discover the natural beauty of Inhaca Island with a visit to the iconic Inhaca Lighthouse and the famous natural pools. This tour combines adventure, nature and relaxation, including an island safari, a visit to the coconut village and a local lunch.",
 
@@ -1261,6 +1262,7 @@
   "group_size_en": "1 – 12 people",
   "languages": ["Português", "English"],
   "price_from": 2500,
+  "child_price": 1250,
   "currency": "MZN",
   "rating": 4.8,
   "reviews_count": 0,
@@ -1294,12 +1296,14 @@
 
   "excluded": [
     "Taxa de estacionamento (250 MZN por carro)",
-    "Taxa de reserva de Inhaca (100 MZN por pessoa nacional, 200 MZN por pessoa estrangeira)",
+    "Taxa de reserva da Ilha da Inhaca 100 MZN/pessoa para locais",
+    "Taxa de reserva da Ilha da Inhaca 200 MZN/pessoa para estrangeiros",
     "Despesas pessoais"
   ],
   "excluded_en": [
     "Parking fee (250 MZN per car)",
-    "Inhaca reserve fee",
+    "Inhaca Island reserve fee: 100 MZN/person for locals",
+    "Inhaca Island reserve fee: 200 MZN/person for foreigners",
     "Personal expenses"
   ],
 
@@ -1319,6 +1323,7 @@
   "itinerary": [
     {
       "time": "Hora combinada",
+      "time_en": "Agreed time",
       "title": "Check-in na Marina",
       "title_en": "Check-in at the Marina",
       "description": "Encontro na Escola Náutica para embarque.",
@@ -1326,6 +1331,7 @@
     },
     {
       "time": "En route",
+      "time_en": "En route",
       "title": "Transfer de barco",
       "title_en": "Boat transfer",
       "description": "Viagem pela Baía de Maputo em direção à Ilha de Inhaca ou Machangulo.",
@@ -1333,6 +1339,7 @@
     },
     {
       "time": "Chegada",
+      "time_en": "Arrival",
       "title": "Drop-off",
       "title_en": "Drop-off",
       "description": "Desembarque no lodge ou ponto acordado.",
@@ -1389,9 +1396,9 @@
   "languages": ["Português", "English"],
 
   "price_from": 3500,
-  "price_weekday": 5000,
+  "price_weekday": 5500,
   "child_price": 1750,
-  "child_price_weekday": 3500,
+  "child_price_weekday": 2750,
   "child_age_note": "Crianças 4–10 anos",
   "child_age_note_en": "Children ages 4–10",
   "currency": "MZN",

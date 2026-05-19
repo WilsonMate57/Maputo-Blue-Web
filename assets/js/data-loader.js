@@ -134,7 +134,8 @@
     const desc    = tf(tour, 'description');
     const imgSrc  = (tour.images && tour.images[0]) || '';
     const imgTag  = imgSrc ? `<img src="${imgSrc}" alt="${title}" loading="lazy">` : '';
-    const badge   = tour.badge ? `<span class="tour-badge ${badgeClass(tour.badge)}">${tour.badge}</span>` : '';
+    const badgeText = tf(tour, 'badge');
+    const badge   = badgeText ? `<span class="tour-badge ${badgeClass(badgeText)}">${badgeText}</span>` : '';
     const detailUrl = `${PAGES_PREFIX}package.html?id=${tour.id}`;
     const cardPrice = _currentDayPrice(tour);
 
@@ -185,7 +186,7 @@
   <div class="accommodation-card-body">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
       <h3 class="accommodation-card-name">${name}</h3>
-      ${acc.badge ? `<span class="tour-badge ${badgeClass(acc.badge)}">${acc.badge}</span>` : ''}
+      ${tf(acc, 'badge') ? `<span class="tour-badge ${badgeClass(tf(acc, 'badge'))}">${tf(acc, 'badge')}</span>` : ''}
     </div>
     <div class="tour-meta-item" style="margin-bottom:6px;"><i class='bx bx-map-pin'></i>${acc.location}</div>
     <div class="star-rating" style="margin-bottom:10px;">
@@ -678,7 +679,7 @@
         <div class="itin-item">
           <button class="itin-trigger" aria-expanded="${idx === 0 ? 'true' : 'false'}">
             <div class="itin-step-badge">${idx + 1}</div>
-            <span class="itin-trigger__time">${step.time}</span>
+            <span class="itin-trigger__time">${LANG === 'en' ? (step.time_en || step.time) : step.time}</span>
             <span class="itin-trigger__title">${LANG === 'en' ? (step.title_en || step.title) : step.title}</span>
             <i class='bx bx-chevron-down itin-trigger__chevron'></i>
           </button>

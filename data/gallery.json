@@ -1,5 +1,16 @@
 [
   {
+    "id": "office-maputo-port",
+    "category": "company-office",
+    "title": "Escritório no Porto de Pesca de Maputo",
+    "title_en": "Office at Maputo Fishing Port",
+    "images": [
+      "../assets/images/gallery/office-maputo-port.webp",
+      "../assets/images/gallery/office-maputo-port-2.webp",
+      "../assets/images/gallery/office-maputo-port-3.webp"
+    ]
+  },
+  {
     "id": "santa-maria",
     "category": "island-tours",
     "title": "Santa Maria",
@@ -64,7 +75,8 @@
       "../assets/images/gallery/inhaca-village-18.webp",
       "../assets/images/gallery/inhaca-village-19.webp",
       "../assets/images/gallery/inhaca-village-20.webp",
-      "../assets/images/gallery/inhaca-village-21.webp"
+      "../assets/images/gallery/inhaca-village-21.webp",
+      "../assets/images/gallery/inhaca-village-22.webp"
     ]
   },
   {
@@ -105,7 +117,15 @@
       "../assets/images/gallery/boat-trasnfer-1.webp",
       "../assets/images/gallery/boat-transfer-2.webp",
       "../assets/images/gallery/boat-transfer-2 (2).webp",
-      "../assets/images/gallery/boat-transfer-3.webp",
+      "../assets/images/gallery/boat-transfer-3.webp"
+    ]
+  },
+  {
+    "id": "car-transfer",
+    "category": "car-transfer",
+    "title": "Transfer de Carro",
+    "title_en": "Car Transfer",
+    "images": [
       "../assets/images/gallery/hotel-marina-transfer.webp",
       "../assets/images/gallery/hotel-marina-transfer-4.webp"
     ]
@@ -144,7 +164,8 @@
       "../assets/images/gallery/maputo-reserve-1.webp",
       "../assets/images/gallery/maputo-reserve-2.webp",
       "../assets/images/gallery/maputo-reserve-3.webp",
-      "../assets/images/gallery/maputo-reserve-4.webp"
+      "../assets/images/gallery/maputo-reserve-4.webp",
+      "../assets/images/gallery/safari-maputo-reserve.webp"
     ]
   },
   {
@@ -205,7 +226,8 @@
       "../assets/images/gallery/fishing-charter-6.webp",
       "../assets/images/gallery/fishing-charter-7.webp",
       "../assets/images/gallery/fishing-charter-8.webp",
-      "../assets/images/gallery/fishing-charter-9.webp"
+      "../assets/images/gallery/fishing-charter-9.webp",
+      "../assets/images/gallery/fishing-charter-10.webp"
     ]
   },
   {
