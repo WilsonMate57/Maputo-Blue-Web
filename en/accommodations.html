@@ -152,7 +152,42 @@
       });
       observer.observe(origGrid, { childList: true });
 
+      const CATEGORY_COPY = {
+        all: {
+          crumb: 'Accommodation',
+          title: 'Accommodation',
+          subtitle: 'The best lodges and resorts in Inhaca and Machangulo',
+          docTitle: 'Accommodation | Maputo Blue — Inhaca & Machangulo'
+        },
+        inhaca: {
+          crumb: 'Accommodation in Inhaca',
+          title: 'Accommodation in Inhaca',
+          subtitle: 'Lodges and stay packages on Inhaca Island',
+          docTitle: 'Accommodation in Inhaca | Maputo Blue'
+        },
+        machangulo: {
+          crumb: 'Accommodation in Machangulo',
+          title: 'Accommodation in Machangulo',
+          subtitle: 'Lodges and escapes on the Machangulo Peninsula',
+          docTitle: 'Accommodation in Machangulo | Maputo Blue'
+        }
+      };
+      function syncHero(cat) {
+        const copy = CATEGORY_COPY[cat] || CATEGORY_COPY.all;
+        const crumb = document.querySelector('.breadcrumb-mb span:last-child');
+        const title = document.getElementById('acc-title');
+        const subtitle = document.querySelector('.page-hero-subtitle');
+        if (crumb) crumb.textContent = copy.crumb;
+        if (title) title.textContent = copy.title;
+        if (subtitle) subtitle.textContent = copy.subtitle;
+        document.title = copy.docTitle;
+      }
+      document.querySelectorAll('.filter-chip[data-category]').forEach(chip => {
+        chip.addEventListener('click', () => syncHero(chip.dataset.category));
+      });
+
       const cat = new URLSearchParams(window.location.search).get('category');
+      syncHero(cat || 'all');
       if (cat) {
         setTimeout(() => {
           const chip = document.querySelector(`.filter-chip[data-category="${cat}"]`);

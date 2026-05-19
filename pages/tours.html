@@ -128,8 +128,72 @@
   <!-- Auto-apply category filter from URL param -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      const CATEGORY_COPY = {
+        all: {
+          crumb: 'DayTours',
+          title: 'Todos os DayTours',
+          subtitle: 'Escolha a experiência perfeita para si — ilhas, praias, safaris e muito mais',
+          docTitle: 'DayTours | Maputo Blue — Experiências em Moçambique'
+        },
+        'island-daytrips': {
+          crumb: 'Island DayTrips',
+          title: 'Island DayTrips',
+          subtitle: 'Passeios pelas ilhas de Inhaca, Santa Maria e Ilha dos Portugueses',
+          docTitle: 'Island DayTrips | Maputo Blue'
+        },
+        'beach-daytrips': {
+          crumb: 'Sunset Cruises',
+          title: 'Sunset Cruises',
+          subtitle: 'Cruzeiros ao pôr do sol na Baía de Maputo',
+          docTitle: 'Sunset Cruises | Maputo Blue'
+        },
+        safaris: {
+          crumb: 'Safaris',
+          title: 'Safaris',
+          subtitle: 'Safaris e excursões de natureza a partir de Maputo',
+          docTitle: 'Safaris | Maputo Blue'
+        },
+        transfers: {
+          crumb: 'Transfers',
+          title: 'Transfers',
+          subtitle: 'Transfers de carro e barco com partida de Maputo',
+          docTitle: 'Transfers | Maputo Blue'
+        },
+        'maputo-city-tour': {
+          crumb: 'City Tours',
+          title: 'City Tours',
+          subtitle: 'Tours culturais e históricos pela cidade de Maputo',
+          docTitle: 'City Tours | Maputo Blue'
+        },
+        'whale-watching': {
+          crumb: 'Whale Watching',
+          title: 'Whale Watching',
+          subtitle: 'Experiências de observação de baleias na época certa',
+          docTitle: 'Whale Watching | Maputo Blue'
+        },
+        'fishing-charters': {
+          crumb: 'Fishing Charters',
+          title: 'Fishing Charters',
+          subtitle: 'Saídas de pesca privadas em alto mar',
+          docTitle: 'Fishing Charters | Maputo Blue'
+        }
+      };
+      function syncHero(cat) {
+        const copy = CATEGORY_COPY[cat] || CATEGORY_COPY.all;
+        const crumb = document.querySelector('.breadcrumb-mb span:last-child');
+        const title = document.getElementById('tours-page-title');
+        const subtitle = document.querySelector('.page-hero-subtitle');
+        if (crumb) crumb.textContent = copy.crumb;
+        if (title) title.textContent = copy.title;
+        if (subtitle) subtitle.textContent = copy.subtitle;
+        document.title = copy.docTitle;
+      }
+      document.querySelectorAll('.filter-chip[data-category]').forEach(chip => {
+        chip.addEventListener('click', () => syncHero(chip.dataset.category));
+      });
       const params = new URLSearchParams(window.location.search);
       const cat = params.get('category');
+      syncHero(cat || 'all');
       if (!cat) return;
       const chip = document.querySelector(`.filter-chip[data-category="${cat}"]`);
       if (chip) {
