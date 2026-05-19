@@ -154,43 +154,8 @@
       });
       observer.observe(origGrid, { childList: true });
 
-      const CATEGORY_COPY = {
-        all: {
-          crumb: 'Alojamentos',
-          title: 'Alojamentos',
-          subtitle: 'Os melhores lodges e resorts em Inhaca e Machangulo',
-          docTitle: 'Alojamentos | Maputo Blue — Inhaca & Machangulo'
-        },
-        inhaca: {
-          crumb: 'Alojamentos em Inhaca',
-          title: 'Alojamentos em Inhaca',
-          subtitle: 'Lodges e pacotes de estadia na Ilha da Inhaca',
-          docTitle: 'Alojamentos em Inhaca | Maputo Blue'
-        },
-        machangulo: {
-          crumb: 'Alojamentos em Machangulo',
-          title: 'Alojamentos em Machangulo',
-          subtitle: 'Lodges e escapadelas na Península de Machangulo',
-          docTitle: 'Alojamentos em Machangulo | Maputo Blue'
-        }
-      };
-      function syncHero(cat) {
-        const copy = CATEGORY_COPY[cat] || CATEGORY_COPY.all;
-        const crumb = document.querySelector('.breadcrumb-mb span:last-child');
-        const title = document.getElementById('acc-title');
-        const subtitle = document.querySelector('.page-hero-subtitle');
-        if (crumb) crumb.textContent = copy.crumb;
-        if (title) title.textContent = copy.title;
-        if (subtitle) subtitle.textContent = copy.subtitle;
-        document.title = copy.docTitle;
-      }
-      document.querySelectorAll('.filter-chip[data-category]').forEach(chip => {
-        chip.addEventListener('click', () => syncHero(chip.dataset.category));
-      });
-
       // Auto-apply category filter
       const cat = new URLSearchParams(window.location.search).get('category');
-      syncHero(cat || 'all');
       if (cat) {
         setTimeout(() => {
           const chip = document.querySelector(`.filter-chip[data-category="${cat}"]`);

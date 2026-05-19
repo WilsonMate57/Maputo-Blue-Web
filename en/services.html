@@ -262,39 +262,13 @@
     (function () {
       const tabs   = document.querySelectorAll('.service-tab');
       const panels = document.querySelectorAll('.service-panel');
-      const TAB_COPY = {
-        boats: {
-          crumb: 'Private Boat Charter',
-          title: 'Private Boat Charter',
-          subtitle: 'Choose the right vessel for your group and explore the islands at your own pace',
-          docTitle: 'Private Boat Charter | Maputo Blue'
-        },
-        cars: {
-          crumb: 'Shuttle Services & Safaris',
-          title: 'Shuttle Services & Safaris',
-          subtitle: 'Private transport, transfers and safaris with a dedicated driver',
-          docTitle: 'Shuttle Services & Safaris | Maputo Blue'
-        }
-      };
-      function syncHero(id) {
-        const copy = TAB_COPY[id] || TAB_COPY.boats;
-        const crumb = document.querySelector('.breadcrumb-mb span:last-child');
-        const title = document.getElementById('services-title');
-        const subtitle = document.querySelector('.page-hero-subtitle');
-        if (crumb) crumb.textContent = copy.crumb;
-        if (title) title.textContent = copy.title;
-        if (subtitle) subtitle.textContent = copy.subtitle;
-        document.title = copy.docTitle;
-      }
       function activateTab(id) {
-        if (!TAB_COPY[id]) id = 'boats';
         tabs.forEach(t   => t.classList.toggle('active', t.dataset.tab === id));
         panels.forEach(p => p.classList.toggle('hidden', p.id !== 'panel-' + id));
-        syncHero(id);
       }
       tabs.forEach(tab => tab.addEventListener('click', () => activateTab(tab.dataset.tab)));
       const param = new URLSearchParams(window.location.search).get('tab');
-      activateTab(param || 'boats');
+      if (param) activateTab(param);
     })();
   </script>
 
