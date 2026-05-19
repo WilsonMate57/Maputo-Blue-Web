@@ -1,18 +1,28 @@
 [
   {
-    "id": "santa-maria-inhaca-portuguesa",
+    "id": "santa-maria",
     "category": "island-tours",
-    "title": "Santa Maria, Inhaca & Ilha Portuguesa",
-    "title_en": "Santa Maria, Inhaca & Portuguese Island",
+    "title": "Santa Maria",
+    "title_en": "Santa Maria",
     "images": [
       "../assets/images/gallery/santa-maria.webp",
       "../assets/images/gallery/santa-maria-1.webp",
       "../assets/images/gallery/santa-maria-3.webp",
       "../assets/images/gallery/santa-maria-4.webp",
       "../assets/images/gallery/santa-maria-5.webp",
+      "../assets/images/gallery/santa-maria-7.webp",
       "../assets/images/gallery/santa-maria-8.webp",
       "../assets/images/gallery/santa-maria-9.webp",
       "../assets/images/gallery/santa-maria-10.webp",
+      "../assets/images/gallery/santa-maria-11.webp"
+    ]
+  },
+  {
+    "id": "portugueses-island",
+    "category": "island-tours",
+    "title": "Ilha dos Portugueses",
+    "title_en": "Portuguese Island",
+    "images": [
       "../assets/images/gallery/portugueses-island.webp",
       "../assets/images/gallery/portugueses-island-1.webp",
       "../assets/images/gallery/portugueses-island-2.webp",
@@ -22,7 +32,10 @@
       "../assets/images/gallery/portugueses-island-6.webp",
       "../assets/images/gallery/portugueses-island-7.webp",
       "../assets/images/gallery/portugueses-island-8.webp",
-      "../assets/images/gallery/portugueses-island-9.webp"
+      "../assets/images/gallery/portugueses-island-9.webp",
+      "../assets/images/gallery/portugueses-island-10.webp",
+      "../assets/images/gallery/portugueses-island-11.webp",
+      "../assets/images/gallery/portugueses-island-12.webp"
     ]
   },
   {
@@ -48,7 +61,10 @@
       "../assets/images/gallery/inhaca-village-15.webp",
       "../assets/images/gallery/inhaca-village-16.webp",
       "../assets/images/gallery/inhaca-village-17.webp",
-      "../assets/images/gallery/inhaca-village-18.webp"
+      "../assets/images/gallery/inhaca-village-18.webp",
+      "../assets/images/gallery/inhaca-village-19.webp",
+      "../assets/images/gallery/inhaca-village-20.webp",
+      "../assets/images/gallery/inhaca-village-21.webp"
     ]
   },
   {
@@ -61,19 +77,23 @@
       "../assets/images/gallery/praia-do-farol-2.webp",
       "../assets/images/gallery/praia-do-farol-3.webp",
       "../assets/images/gallery/praia-do-farol-4.webp",
-      "../assets/images/gallery/praia-do-farol-5.webp"
+      "../assets/images/gallery/praia-do-farol-5.webp",
+      "../assets/images/gallery/praia-do-farol-6.webp",
+      "../assets/images/gallery/praia-do-farol-7.webp",
+      "../assets/images/gallery/praia-do-farol-8.webp"
     ]
   },
   {
     "id": "beach-day",
     "category": "island-tours",
-    "title": "Dia de Praia - Santa Maria & Machangulo",
-    "title_en": "Beach Day - Santa Maria & Machangulo",
+    "title": "Dia de Praia",
+    "title_en": "Beach Day",
     "images": [
       "../assets/images/gallery/beach-day.webp",
       "../assets/images/gallery/beach-day-2.webp",
       "../assets/images/gallery/beach-day-3.webp",
-      "../assets/images/gallery/beach-day-4.webp"
+      "../assets/images/gallery/beach-day-4.webp",
+      "../assets/images/gallery/beach-day-5.webp"
     ]
   },
   {
@@ -83,8 +103,11 @@
     "title_en": "Boat Transfer",
     "images": [
       "../assets/images/gallery/boat-trasnfer-1.webp",
+      "../assets/images/gallery/boat-transfer-2.webp",
+      "../assets/images/gallery/boat-transfer-2 (2).webp",
+      "../assets/images/gallery/boat-transfer-3.webp",
       "../assets/images/gallery/hotel-marina-transfer.webp",
-      "../assets/images/gallery/hotel-marina-transfer-2.webp"
+      "../assets/images/gallery/hotel-marina-transfer-4.webp"
     ]
   },
   {
@@ -107,7 +130,8 @@
       "../assets/images/gallery/sunset-cruise-12.webp",
       "../assets/images/gallery/sunset-cruise-13.webp",
       "../assets/images/gallery/sunset-cruise-14.webp",
-      "../assets/images/gallery/sunset-cruise-15.webp"
+      "../assets/images/gallery/sunset-cruise-15.webp",
+      "../assets/images/gallery/sunset-cruise-16.webp"
     ]
   },
   {
@@ -147,7 +171,8 @@
       "../assets/images/gallery/eswatini-safari-15.webp",
       "../assets/images/gallery/eswatini-safari-16.webp",
       "../assets/images/gallery/eswatini-safari-17.webp",
-      "../assets/images/gallery/eswatini-safari-18.webp"
+      "../assets/images/gallery/eswatini-safari-18.webp",
+      "../assets/images/gallery/eswatini-safari-19.webp"
     ]
   },
   {
@@ -169,8 +194,8 @@
   {
     "id": "fishing-charter",
     "category": "fishing-charter",
-    "title": "Pesca de Alto Mar",
-    "title_en": "Deep Sea Fishing",
+    "title": "Fishing Charter",
+    "title_en": "Fishing Charter",
     "images": [
       "../assets/images/gallery/fishing-charter.webp",
       "../assets/images/gallery/fishing-charter-1.webp",
@@ -179,11 +204,8 @@
       "../assets/images/gallery/fishing-charter-5.webp",
       "../assets/images/gallery/fishing-charter-6.webp",
       "../assets/images/gallery/fishing-charter-7.webp",
-      "../assets/images/gallery/mad-marlin.webp",
-      "../assets/images/gallery/mad-marlin-1.webp",
-      "../assets/images/gallery/mad-marlin-2.webp",
-      "../assets/images/gallery/mad-marlin-3.webp",
-      "../assets/images/gallery/mad-marlin-4.webp"
+      "../assets/images/gallery/fishing-charter-8.webp",
+      "../assets/images/gallery/fishing-charter-9.webp"
     ]
   },
   {
@@ -196,7 +218,19 @@
       "../assets/images/gallery/maputo-city-tour-2.webp",
       "../assets/images/gallery/maputo-city-tour-3.webp",
       "../assets/images/gallery/maputo-city-tour-6.webp",
-      "../assets/images/gallery/maputo-city-tour-7.webp"
+      "../assets/images/gallery/maputo-city-tour-8.webp",
+      "../assets/images/gallery/maputo-city-tour-9.webp"
+    ]
+  },
+  {
+    "id": "mad-marlin",
+    "category": "accommodations",
+    "title": "Mad Marlin",
+    "title_en": "Mad Marlin",
+    "images": [
+      "../assets/images/gallery/mad-marlin.webp",
+      "../assets/images/gallery/mad-marlin-1.webp",
+      "../assets/images/gallery/mad-marlin-2.webp"
     ]
   },
   {
@@ -206,7 +240,10 @@
     "title_en": "Island Accommodation",
     "images": [
       "../assets/images/gallery/island-accommodation-1.webp",
-      "../assets/images/gallery/island-accommodation-2.webp"
+      "../assets/images/gallery/island-accommodation-2.webp",
+      "../assets/images/gallery/island-accommodation-3.webp",
+      "../assets/images/gallery/island-accommodation-4.webp",
+      "../assets/images/gallery/island-accommodation-5.webp"
     ]
   },
   {
