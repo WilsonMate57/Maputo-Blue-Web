@@ -148,7 +148,7 @@
   <div class="tour-card-body">
     <h3 class="tour-card-title">${title}</h3>
     <div class="tour-card-meta">
-      <span class="tour-meta-item"><i class='bx bx-map-pin'></i>${tour.location}</span>
+      <span class="tour-meta-item"><i class='bx bx-map-pin'></i>${tf(tour, 'location')}</span>
       <span class="tour-meta-item"><i class='bx bx-time-five'></i>${tf(tour, 'duration')}</span>
       <span class="tour-meta-item"><i class='bx bx-group'></i>${tf(tour, 'group_size')}</span>
     </div>
@@ -188,7 +188,7 @@
       <h3 class="accommodation-card-name">${name}</h3>
       ${tf(acc, 'badge') ? `<span class="tour-badge ${badgeClass(tf(acc, 'badge'))}">${tf(acc, 'badge')}</span>` : ''}
     </div>
-    <div class="tour-meta-item" style="margin-bottom:6px;"><i class='bx bx-map-pin'></i>${acc.location}</div>
+    <div class="tour-meta-item" style="margin-bottom:6px;"><i class='bx bx-map-pin'></i>${tf(acc, 'location')}</div>
     <div class="star-rating" style="margin-bottom:10px;">
       ${starHTML(acc.rating)}
       <span class="rating-value">${acc.rating}</span>
@@ -560,7 +560,7 @@
     if (titleEl) titleEl.textContent = title;
 
     const locationEl = document.querySelector('#package-location');
-    if (locationEl) locationEl.textContent = item.location;
+    if (locationEl) locationEl.textContent = tf(item, 'location');
 
     applyPrice(new Date());
     const dateInput = document.querySelector('#booking-date');
@@ -578,11 +578,14 @@
       const adultLabel  = LANG === 'en' ? 'adult' : 'adulto';
       const childLabel  = LANG === 'en' ? 'child' : 'criança';
       const hasChildWD  = typeof item.child_price_weekday === 'number' && typeof item.child_price === 'number';
-      const weekendChild = hasChildWD ? ` / ${currency} ${item.child_price} ${childLabel}` : '';
-      const weekdayChild = hasChildWD ? ` / ${currency} ${item.child_price_weekday} ${childLabel}` : '';
+      const fmtAmount = amount => `${Number(amount).toLocaleString('en-US')}${currency}`;
+      const liStyle = 'display:list-item;list-style:disc;';
+      const ulStyle = 'margin:0 0 2px 1.1em;padding-left:1.1em;list-style:disc;';
+      const weekendChild = hasChildWD ? `<li style="${liStyle}">${fmtAmount(item.child_price)}/${childLabel}</li>` : '';
+      const weekdayChild = hasChildWD ? `<li style="${liStyle}">${fmtAmount(item.child_price_weekday)}/${childLabel}</li>` : '';
       priceNoteEl.innerHTML =
-        `<span>${currency} ${item.price_from} ${adultLabel}${weekendChild} &mdash; <strong>${weekendDays}</strong></span><br>` +
-        `<span>${currency} ${item.price_weekday} ${adultLabel}${weekdayChild} &mdash; <strong>${weekdayDays}</strong></span>`;
+        `<div><ul style="${ulStyle}"><li style="${liStyle}">${fmtAmount(item.price_from)}/${adultLabel}</li>${weekendChild}</ul><strong>${weekendDays}</strong></div>` +
+        `<div style="margin-top:8px;"><ul style="${ulStyle}"><li style="${liStyle}">${fmtAmount(item.price_weekday)}/${adultLabel}</li>${weekdayChild}</ul><strong>${weekdayDays}</strong></div>`;
       priceNoteEl.style.display = '';
       const priceFromEl = document.querySelector('.booking-card__price-from');
       if (priceFromEl) priceFromEl.textContent = LANG === 'en' ? 'Pricing' : 'Preços';
