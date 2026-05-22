@@ -304,7 +304,7 @@
     function renderAccs(category) {
       const items = category === 'all' ? accs : accs.filter(a => a.category === category);
       grid.innerHTML = items.length
-        ? items.map(buildAccommodationCard).join('')
+        ? items.map(item => `<div class="col-lg-6">${buildAccommodationCard(item)}</div>`).join('')
         : `<p style="color:var(--text-muted);padding:24px 0;">${t('no_results')}</p>`;
     }
 

@@ -185,6 +185,15 @@
     "email": "maputoblue.info@gmail.com"
   },
 
+  "important_info": [
+    "Noites extras: 2.500 MZN por pessoa/noite, inclui jantar e pequeno almoço.",
+    "Crianças dos 4 aos 10 anos: 1.800 MZN por noite."
+  ],
+  "important_info_en": [
+    "Extra nights: 2,500 MZN per person/night, including dinner and breakfast.",
+    "Children ages 4-10: 1,800 MZN per night."
+  ],
+
   "map_location": {
     "lat": -25.9945,
     "lng": 32.9412,
@@ -351,6 +360,13 @@
     "phone": "+258847121666",
     "email": "maputoblue.info@gmail.com"
   },
+
+  "important_info": [
+    "Noites extras: 9.000 MZN por pessoa/noite, inclui pequeno almoço e jantar."
+  ],
+  "important_info_en": [
+    "Extra nights: 9,000 MZN per person/night, including breakfast and dinner."
+  ],
 
   "map_location": {
     "lat": -26.1567,
@@ -531,6 +547,15 @@
     "phone": "+258847121666",
     "email": "maputoblue.info@gmail.com"
   },
+
+  "important_info": [
+    "Noites extras: 5.000 MZN por pessoa/noite, inclui pequeno almoço.",
+    "Crianças dos 4 aos 10 anos: 2.500 MZN por noite."
+  ],
+  "important_info_en": [
+    "Extra nights: 5,000 MZN per person/night, including breakfast.",
+    "Children ages 4-10: 2,500 MZN per night."
+  ],
 
   "map_location": {
     "lat": null,
@@ -739,6 +764,15 @@
     "mpesa": "84 712 1666",
     "account_name": "Maputo Blue EI"
   },
+
+  "important_info": [
+    "Noites extras: 3.000 MZN por pessoa/noite, inclui pequeno almoço.",
+    "Crianças dos 4 aos 10 anos: 2.300 MZN por noite."
+  ],
+  "important_info_en": [
+    "Extra nights: 3,000 MZN per person/night, including breakfast.",
+    "Children ages 4-10: 2,300 MZN per night."
+  ],
 
   "policies": [
     "Cancelamentos com menos de 48 horas de antecedência não têm direito a reembolso.",

@@ -136,22 +136,6 @@
 
   <script>
     (function () {
-      const origGrid = document.getElementById('accommodations-grid');
-      if (!origGrid) return;
-
-      const observer = new MutationObserver(() => {
-        const cards = origGrid.querySelectorAll('.accommodation-card:not([data-wrapped])');
-        cards.forEach(card => {
-          if (card.parentElement.classList.contains('col-lg-6')) return;
-          const col = document.createElement('div');
-          col.className = 'col-lg-6';
-          card.setAttribute('data-wrapped', 'true');
-          card.parentNode.insertBefore(col, card);
-          col.appendChild(card);
-        });
-      });
-      observer.observe(origGrid, { childList: true });
-
       const cat = new URLSearchParams(window.location.search).get('category');
       if (cat) {
         setTimeout(() => {
