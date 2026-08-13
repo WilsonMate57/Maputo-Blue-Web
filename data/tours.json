@@ -428,8 +428,8 @@
   "group_size": "Sob consulta",
   "group_size_en": "On request",
   "languages": ["Português", "English"],
-  "price_from": 1600,
-  "child_price": 1000,
+  "price_from": 1800,
+  "child_price": 1200,
   "currency": "MZN",
   "rating": 4.9,
   "reviews_count": 0,
@@ -453,14 +453,12 @@
   ],
 
   "included": [
-    "Água e refrigerantes",
-    "Snacks",
-    "Taxas de embarque"
+    "3 horas de cruzeiro na Baía de Maputo",
+    "Taxas da Marina"
   ],
   "included_en": [
-    "Water and soft drinks",
-    "Snacks",
-    "Boarding fees"
+    "3 hours of cruise in Maputo Bay",
+    "Marina fees"
   ],
 
   "excluded": [
@@ -475,8 +473,8 @@
   ],
 
   "pricing": {
-    "adults": 2500,
-    "children": 1800
+    "adults": 1800,
+    "children": 1200
   },
 
   "images": [
@@ -827,6 +825,23 @@
     "email": "maputoblue.info@gmail.com"
   },
 
+  "important_info": [
+    "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
+    "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
+    "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
+    "Recomendamos trazer protetor solar, chapéu e roupa leve e confortável.",
+    "Os animais são selvagens — siga sempre as instruções do guia dentro do parque.",
+    "O avistamento de animais não é garantido, pois dependem do comportamento natural da vida selvagem."
+  ],
+  "important_info_en": [
+    "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
+    "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
+    "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
+    "We recommend bringing sunscreen, a hat and light, comfortable clothing.",
+    "Animals are wild — always follow the guide's instructions inside the park.",
+    "Animal sightings are not guaranteed as they depend on the natural behaviour of wildlife."
+  ],
+
   "reviews": []
 },
 {
@@ -1135,6 +1150,24 @@
     "phone": "+258847121666",
     "email": "maputoblue.info@gmail.com"
   },
+
+  "important_info": [
+    "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
+    "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
+    "É obrigatório possuir passaporte válido com pelo menos 6 meses de validade.",
+    "Verifique os requisitos de visto para a sua nacionalidade antes da viagem.",
+    "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
+    "Recomendamos trazer protetor solar, chapéu e roupa leve e confortável."
+  ],
+  "important_info_en": [
+    "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
+    "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
+    "A valid passport with at least 6 months validity is required.",
+    "Please check visa requirements for your nationality before travelling.",
+    "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
+    "We recommend bringing sunscreen, a hat and light, comfortable clothing."
+  ],
+
 
   "reviews": []
 },
@@ -1681,6 +1714,22 @@
     "label": "Maputo City Center"
   },
 
+  "important_info": [
+    "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
+    "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
+    "Por favor, respeite os horários de partida e os outros participantes.",
+    "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
+    "Pais e responsáveis devem supervisionar as crianças em todos os momentos."
+  ],
+  "important_info_en": [
+    "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
+    "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
+    "Please respect our departure times and fellow guests.",
+    "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
+    "Parents and guardians must closely supervise their children at all times."
+  ],
+
+
   "reviews": []
 },
 
@@ -1786,6 +1835,163 @@
         "title_en": "Return to Maputo",
         "description": "Viagem de regresso à Marina de Maputo. Fim da excursão.",
         "description_en": "Return journey to Maputo Marina. End of excursion."
+      }
+    ],
+    "meeting_point": {
+      "name": "Marina de Maputo / Escola Náutica",
+      "address": "Av. 25 de Setembro, Maputo"
+    },
+    "contact": {
+      "phone": "+258 84 712 1666",
+      "email": "maputoblue.info@gmail.com",
+      "whatsapp": "+258847121666"
+    },
+    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "important_info": [
+      "Temporada de baleias: Agosto a Outubro",
+      "Recomendado trazer protetor solar, chapéu e óculos de sol",
+      "Não recomendado para pessoas com enjoo de movimento sem medicação prévia",
+      "Atenção: as baleias são animais selvagens e os avistamentos nunca são garantidos a uma hora exata. Podemos encontrá-las em minutos ou demorar um pouco mais. De qualquer forma, a nossa equipa experiente estará constantemente a vigiar o oceano, fazendo tudo o que puder para as avistar e garantindo-lhe a maior probabilidade de um encontro inesquecível."
+    ],
+    "important_info_en": [
+      "Whale season: August to October",
+      "Recommended: sunscreen, hat and sunglasses",
+      "Not recommended for those prone to motion sickness without prior medication",
+      "Please note these are wild whales, so sightings are never guaranteed at a specific time. We might find them within minutes, or it might take a bit longer. Either way, our experienced crew will be constantly scanning the ocean and doing their best to spot them, giving you the highest chance of an unforgettable encounter."
+    ],
+    "reviews": []
+  },
+
+  {
+    "id": "observacao-baleias-barcos-privados",
+    "category": "whale-watching",
+    "title": "Observação de Baleias - Barcos Privados",
+    "title_en": "Whale Watching - Private Boats",
+    "location": "Baía de Maputo",
+    "duration": "Dia Inteiro (08:00 – 15:00)",
+    "duration_en": "Full Day (08:00 – 15:00)",
+    "group_size": "Barcos privados até 25 passageiros",
+    "group_size_en": "Private boats up to 25 passengers",
+    "languages": ["Português", "English"],
+    "price_from": 27000,
+    "price_unit": "/barco",
+    "price_unit_en": "/boat",
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Whale Watching",
+    "boat_options": [
+      {
+        "key": "barco-menor-3",
+        "name": "Barco Menor",
+        "name_en": "Small Boat",
+        "capacity": "Até max 3 Passageiros",
+        "capacity_en": "Up to max 3 passengers",
+        "price_mzn": 27000
+      },
+      {
+        "key": "barco-menor-8",
+        "name": "Barco Menor",
+        "name_en": "Small Boat",
+        "capacity": "Até max 8 Passageiros",
+        "capacity_en": "Up to max 8 passengers",
+        "price_mzn": 44000
+      },
+      {
+        "key": "patron",
+        "name": "Patron",
+        "name_en": "Patron",
+        "capacity": "Até max 25 Passageiros",
+        "capacity_en": "Up to max 25 passengers",
+        "price_mzn": 88000
+      }
+    ],
+    "description": "Privatize a sua experiência de observação de baleias na Baía de Maputo. Escolha entre três embarcações privadas consoante o tamanho do seu grupo e desfrute de uma excursão exclusiva, com avistamento de baleias jubarte (temporada Agosto a Outubro), a bordo de um barco só para si. Uma experiência única e personalizada nas águas da Baía de Maputo, com paragens de lazer na Ilha da Inhaca ou na Ilha dos Portugueses.",
+    "description_en": "Privatise your whale watching experience in Maputo Bay. Choose between three private vessels according to your group size and enjoy an exclusive excursion with humpback whale sightings (season August to October), aboard a boat all to yourselves. A unique, tailor-made experience in Maputo Bay waters, with leisure stops at Inhaca Island or Portuguese Island.",
+    "highlights": [
+      "Avistamento de baleias jubarte em habitat natural",
+      "Embarcação privada só para o seu grupo",
+      "Escolha da embarcação: até 3, até 8 ou até 25 passageiros",
+      "Piquenique e mergulho na Ilha dos Portugueses",
+      "Opção de almoço em restaurante na Inhaca"
+    ],
+    "highlights_en": [
+      "Humpback whale sighting in natural habitat",
+      "Private vessel just for your group",
+      "Vessel choice: up to 3, 8 or 25 passengers",
+      "Picnic and swim at Portuguese Island",
+      "Optional lunch at a restaurant in Inhaca"
+    ],
+    "included": [
+      "Piquenique e mergulho na Ilha dos Portugueses",
+      "Capitão e tripulação",
+      "Guia turístico especializado",
+      "Equipamento de segurança a bordo"
+    ],
+    "included_en": [
+      "Picnic and swim at Portuguese Island",
+      "Captain and crew",
+      "Specialist tour guide",
+      "Safety equipment on board"
+    ],
+
+    "excluded": [
+      "Taxa de entrada na Marina — 100 Mts por adulto",
+      "Taxa de entrada na reserva — 200 Mts (estrangeiros) / 100 Mts (nacionais e residentes)",
+      "Almoço em restaurante (opcional — não incluído)",
+      "Transporte até à marina",
+      "Bebidas alcoólicas",
+      "Despesas pessoais"
+    ],
+    "excluded_en": [
+      "Marina entrance fee — MZN 100 per adult",
+      "Reserve entrance fee — MZN 200 (foreigners) / MZN 100 (nationals and resident foreigners)",
+      "Restaurant lunch (optional — not included)",
+      "Transport to the marina",
+      "Alcoholic drinks",
+      "Personal expenses"
+    ],
+    "images": [
+      "../assets/images/tours/sea-activities/whale-watching-2.webp",
+      "../assets/images/tours/sea-activities/whale-watching-3.webp",
+      "../assets/images/tours/sea-activities/whale-watching-4.webp",
+      "../assets/images/tours/sea-activities/whale-watching-1.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "08:00",
+        "title": "Partida — Marina de Maputo",
+        "title_en": "Departure — Maputo Marina",
+        "description": "Saída de Maputo com direcção ao norte do Farol da Inhaca ou para outras áreas de concentração das baleias. Briefing de segurança e orientações a bordo.",
+        "description_en": "Departure from Maputo heading north of the Inhaca lighthouse or to other whale concentration areas. Safety briefing and guidelines on board."
+      },
+      {
+        "time": "09:30",
+        "title": "Avistamento de Baleias",
+        "title_en": "Whale Watching",
+        "description": "Navegação à procura de baleias jubarte em habitat natural, numa embarcação privada só para o seu grupo. O guia especializado partilha curiosidades sobre estes magníficos animais.",
+        "description_en": "Navigation in search of humpback whales in their natural habitat, on a private vessel just for your group. The specialist guide shares fascinating facts about these magnificent animals."
+      },
+      {
+        "time": "12:00",
+        "title": "Ilha dos Portugueses — Piquenique & Mergulho",
+        "title_en": "Portuguese Island — Picnic & Swim",
+        "description": "Passagem pela Ilha dos Portugueses para um piquenique e um mergulho em águas cristalinas.",
+        "description_en": "Stop at Portuguese Island for a picnic and a swim in crystal-clear waters."
+      },
+      {
+        "time": "14:00",
+        "title": "Almoço na Inhaca (opcional)",
+        "title_en": "Lunch in Inhaca (optional)",
+        "description": "Opcional: almoço num restaurante na Inhaca, ou visita a ambos os destinos. Almoço não incluído.",
+        "description_en": "Optional: lunch at a restaurant in Inhaca, or visit both destinations. Lunch is not included."
+      },
+      {
+        "time": "15:00",
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Por volta das 15h00/16h00, partida da Inhaca em direcção a Maputo. Fim da excursão.",
+        "description_en": "Around 15:00/16:00, depart Inhaca heading back to Maputo. End of excursion."
       }
     ],
     "meeting_point": {
@@ -1933,17 +2139,9 @@
     },
     "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
     "important_info": [
-      "Lancha Rápida Menor: 38.500 MZN / 600 USD — até 3 passageiros",
-      "Taxa da marina não incluída: 100 MZN por pessoa",
-      "Hora de saída varia conforme a maré (05:30 – 07:00)",
-      "Regresso previsto: 14:00 – 15:00",
       "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
     ],
     "important_info_en": [
-      "Small Speed Boat: 38,500 MZN / 600 USD — up to 3 passengers",
-      "Marina fee not included: 100 MZN per person",
-      "Departure time varies according to tide (05:30 – 07:00)",
-      "Expected return: 14:00 – 15:00",
       "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
     ],
     "reviews": []
@@ -2069,17 +2267,9 @@
     },
     "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
     "important_info": [
-      "Lancha Rápida Intermédia: 58.000 MZN / 900 USD — até 6 passageiros",
-      "Taxa da marina não incluída: 100 MZN por pessoa",
-      "Hora de saída varia conforme a maré (05:30 – 07:00)",
-      "Regresso previsto: 14:00 – 15:00",
       "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
     ],
     "important_info_en": [
-      "Medium Speed Boat: 58,000 MZN / 900 USD — up to 6 passengers",
-      "Marina fee not included: 100 MZN per person",
-      "Departure time varies according to tide (05:30 – 07:00)",
-      "Expected return: 14:00 – 15:00",
       "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
     ],
     "reviews": []
@@ -2205,17 +2395,9 @@
     },
     "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
     "important_info": [
-      "Catamarã Patron: 100.000 MZN — até 15-20 passageiros",
-      "Taxa da marina não incluída: 100 MZN por pessoa",
-      "Hora de saída varia conforme a maré (05:30 – 07:00)",
-      "Regresso previsto: 14:00 – 15:00",
       "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
     ],
     "important_info_en": [
-      "Patron Catamaran: 100,000 MZN — up to 15-20 passengers",
-      "Marina fee not included: 100 MZN per person",
-      "Departure time varies according to tide (05:30 – 07:00)",
-      "Expected return: 14:00 – 15:00",
       "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
     ],
     "reviews": []

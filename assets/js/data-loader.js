@@ -713,9 +713,25 @@
   /* ── Boat Selector (fishing-charters) ───────────────────── */
   function renderBoatSelector(item) {
     const wrap = document.getElementById('boat-selector-wrap');
-    if (!wrap || !item.boat_options || !item.boat_options.length) return;
-
     const isEn = LANG === 'en';
+
+    // Packages priced per boat (not per person) → pax steppers must not change the price
+    const perBoat = !!(item.price_unit && /boat|barco/i.test(`${item.price_unit} ${item.price_unit_en || ''}`));
+
+    // No vessel menu: for per-boat packages, disable the + / − steppers so the boat price stays fixed
+    if (!wrap || !item.boat_options || !item.boat_options.length) {
+      if (perBoat) {
+        ['adults-minus', 'adults-plus', 'children-minus', 'children-plus'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.disabled = true;
+        });
+        const childRow = document.getElementById('child-price-row');
+        if (childRow) childRow.style.display = 'none';
+        const priceUnit = document.querySelector('.booking-card__price-unit');
+        if (priceUnit) priceUnit.textContent = isEn ? '/ per boat' : '/ por barco';
+      }
+      return;
+    }
     const label = isEn ? 'Select Vessel' : 'Escolha a Embarcação';
     const waBase = 'https://wa.me/258847121666?text=';
     const title  = isEn ? (item.title_en || item.title) : item.title;
