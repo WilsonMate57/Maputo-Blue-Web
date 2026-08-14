@@ -765,9 +765,10 @@
 
   "images": [
     "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-1.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-2.webp",
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-5.jpg",
     "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-3.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-4.webp"
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-4.webp",
+    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-6.jpg"
   ],
 
   "itinerary": [
@@ -1294,7 +1295,7 @@
   "group_size": "1 – 12 pessoas",
   "group_size_en": "1 – 12 people",
   "languages": ["Português", "English"],
-  "price_from": 2500,
+  "price_from": 2600,
   "child_price": 1250,
   "child_age_note": "Crianças 4–10 anos",
   "child_age_note_en": "Children ages 4–10",
@@ -1430,7 +1431,7 @@
 
   "languages": ["Português", "English"],
 
-  "price_from": 3500,
+  "price_from": 3600,
   "price_weekday": 5500,
   "child_price": 1750,
   "child_price_weekday": 2750,
