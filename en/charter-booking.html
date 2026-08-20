@@ -156,10 +156,10 @@
                     <i class='bx bx-x-circle' style="color:#EF4444;margin-right:6px;"></i>Not Included
                   </h2>
                   <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Marina Tax — 100 MZN/person</li>
-                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Inhaca Reserve (nationals) — 100 MZN/person</li>
-                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Inhaca Reserve (foreigners) — 200 MZN/person</li>
-                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Snorkeling Fee — 200 MZN/person</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Marina Tax — 100 MZN per person</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Inhaca Reserve (nationals) — 100 MZN per person</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Inhaca Reserve (foreigners) — 200 MZN per person</li>
+                    <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Snorkeling Fee — 200 MZN per person</li>
                     <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Snorkeling Gear Rental — 350 MZN/kit</li>
                     <li style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-muted);"><i class='bx bx-x' style="color:#EF4444;font-size:1.1rem;flex-shrink:0;"></i>Parking — 250 MZN/vehicle</li>
                   </ul>
@@ -167,30 +167,7 @@
               </div>
             </div>
 
-            <!-- Destination Options -->
-            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
-              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:6px;">
-                <i class='bx bx-map' style="color:var(--sea-green);margin-right:6px;"></i>Choose Your Destination
-              </h2>
-              <p style="font-size:.875rem;color:var(--text-muted);margin-bottom:18px;">Select a destination to calculate the total price.</p>
-
-              <!-- Catamaran pax stepper -->
-              <div id="cb-pax-section" style="display:none;margin-bottom:20px;">
-                <label style="font-size:.875rem;font-weight:600;color:var(--text-dark);display:block;margin-bottom:10px;">
-                  <i class='bx bx-group' style="color:var(--sea-green);margin-right:4px;"></i>Number of People
-                </label>
-                <div style="display:flex;align-items:center;gap:14px;">
-                  <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);overflow:hidden;display:inline-flex;align-items:center;">
-                    <button class="stepper-btn" id="pax-minus" type="button" style="width:42px;height:42px;" aria-label="Decrease">−</button>
-                    <span id="pax-count" style="min-width:46px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-size:.9375rem;font-weight:700;color:var(--primary);border-left:1.5px solid var(--border-light);border-right:1.5px solid var(--border-light);">1</span>
-                    <button class="stepper-btn" id="pax-plus"  type="button" style="width:42px;height:42px;" aria-label="Increase">+</button>
-                  </div>
-                  <span id="cb-pax-note" style="font-size:.8125rem;color:var(--text-muted);"></span>
-                </div>
-              </div>
-
-              <div id="cb-dest-options" style="display:flex;flex-direction:column;gap:10px;"></div>
-            </div>
+            
 
 
 
@@ -223,6 +200,9 @@
                     <span style="font-size:.75rem;color:var(--text-muted);" id="booking-reviews-count"></span>
                   </div>
                 </div>
+
+                <!-- Destination selector — integrated into the booking card -->
+                <div id="cb-dest-selector" style="margin-bottom:16px;"></div>
 
                 <!-- Date -->
                 <div style="margin-bottom:16px;">
@@ -505,9 +485,9 @@
           'Premium experience for large groups and events'
         ],
         destinations: [
-          { id: 'sunset-cruise', label: 'Sunset Cruise',           schedule: '14:30 → 17:30', basePrice: 34000, extraPerPax: 1500 },
-          { id: 'xefina-day',    label: 'Xefina Day Trip',          schedule: '09:00 → 17:30', basePrice: 60000, extraPerPax: 2000 },
-          { id: 'inhaca-day',    label: 'Day Trip Inhaca / Portuguese Island',  schedule: '08:00 → 16:00', basePrice: 70000, extraPerPax: 3000 }
+          { id: 'sunset-cruise', label: 'Sunset Cruise',           schedule: '14:30 → 17:30', basePrice: 34000, extraPerPax: 1700 },
+          { id: 'xefina-day',    label: 'Xefina Day Trip',          schedule: '09:00 → 17:30', basePrice: 60000, extraPerPax: 3000 },
+          { id: 'inhaca-day',    label: 'Day Trip Inhaca / Portuguese Island',  schedule: '08:00 → 16:00', basePrice: 70000, extraPerPax: 3500 }
         ]
       }
     };
@@ -580,34 +560,49 @@
 
     /* ── Destinations ─────────────────────────────────── */
     function renderDestinations(boat) {
-      var container = document.getElementById('cb-dest-options');
+      var container = document.getElementById('cb-dest-selector');
+      if (!container) return;
+      if (!boat.destinations || !boat.destinations.length) { container.style.display = 'none'; return; }
+      container.style.display = 'block';
+
+      var wrapDiv = document.createElement('div');
+      wrapDiv.innerHTML = '<label class="booking-input-label" style="margin-bottom:10px;display:block;">Choose Destination</label><div class="boat-opts"></div>';
+      var opts = wrapDiv.querySelector('.boat-opts');
       container.innerHTML = '';
+      container.appendChild(wrapDiv);
+
       boat.destinations.forEach(function(dest) {
-        var div = document.createElement('div');
-        div.className = 'charter-dest-option';
-        div.setAttribute('data-dest-id', dest.id);
-        div.setAttribute('role','radio'); div.setAttribute('tabindex','0'); div.setAttribute('aria-checked','false');
         var priceStr = dest.basePrice !== undefined ? 'From '+fmt(dest.basePrice) : fmt(dest.price);
         var scheduleHtml = dest.schedule ? '<div style="font-size:.8rem;color:var(--text-muted);margin-top:2px;"><i class=\'bx bx-time\' style="vertical-align:middle;margin-right:3px;"></i>'+dest.schedule+'</div>' : '';
         var extraHtml = dest.extraPerPax ? '<div style="font-size:.8rem;color:var(--text-muted);margin-top:2px;">+'+dest.extraPerPax.toLocaleString('en')+' MZN/pax above 20</div>' : '';
-        div.innerHTML =
-          '<div style="width:20px;height:20px;border-radius:50%;border:2px solid var(--border-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s;" class="dest-radio-dot">'+
-          '<div style="width:10px;height:10px;border-radius:50%;background:var(--primary);display:none;" class="dest-radio-fill"></div></div>'+
-          '<div style="flex:1;"><div style="font-weight:600;font-size:.9375rem;color:var(--text-dark);">'+dest.label+'</div>'+scheduleHtml+extraHtml+'</div>'+
-          '<div style="font-weight:700;color:var(--primary);white-space:nowrap;font-size:.9375rem;text-align:right;">'+priceStr+'</div>';
-        div.addEventListener('click', function(){ selectDest(dest.id); });
-        div.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); selectDest(dest.id); } });
-        container.appendChild(div);
+
+        var card = document.createElement('label');
+        card.className = 'boat-opt-card cb-dest-card';
+        card.setAttribute('data-dest-id', dest.id);
+        card.setAttribute('role','radio'); card.setAttribute('tabindex','0'); card.setAttribute('aria-checked','false');
+        card.innerHTML =
+          '<input type="radio" name="cb-dest" value="'+dest.id+'" style="display:none;">'+
+          '<div class="boat-opt-card__top">'+
+            '<span class="boat-opt-card__name">'+dest.label+'</span>'+
+            '<i class="bx bx-check-circle boat-opt-card__check"></i>'+
+          '</div>'+
+          '<div class="boat-opt-card__meta" style="font-size:.8rem;color:var(--text-muted);line-height:1.5;margin-bottom:4px;">'+scheduleHtml+extraHtml+'</div>'+
+          '<div class="boat-opt-card__price">'+priceStr+'</div>';
+        card.addEventListener('click', function(){ selectDest(dest.id); });
+        card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); selectDest(dest.id); } });
+        opts.appendChild(card);
       });
     }
 
     function selectDest(destId) {
       state.destId = destId;
-      document.querySelectorAll('.charter-dest-option').forEach(function(el) {
+      document.querySelectorAll('.cb-dest-card').forEach(function(el) {
         var sel = el.getAttribute('data-dest-id') === destId;
         el.classList.toggle('selected', sel); el.setAttribute('aria-checked', sel?'true':'false');
-        el.querySelector('.dest-radio-dot').style.borderColor = sel ? 'var(--primary)' : 'var(--border-light)';
-        el.querySelector('.dest-radio-fill').style.display = sel ? 'block' : 'none';
+        var dot = el.querySelector('.dest-radio-dot');
+        if (dot) dot.style.borderColor = sel ? 'var(--primary)' : 'var(--border-light)';
+        var fill = el.querySelector('.dest-radio-fill');
+        if (fill) fill.style.display = sel ? 'block' : 'none';
       });
       updateSummary();
     }
@@ -615,14 +610,12 @@
     /* ── Pax stepper (catamaran) ──────────────────────── */
     function syncPax(val) {
       state.pax = val;
-      document.getElementById('pax-count').textContent      = val;
       document.getElementById('card-pax-count').textContent = val;
-      document.getElementById('pax-minus').disabled      = val <= 1;
-      document.getElementById('card-pax-minus').disabled = val <= 1;
+      document.getElementById('card-pax-minus').disabled    = val <= 1;
       updateSummary();
     }
-    ['pax-minus','card-pax-minus'].forEach(function(id){ document.getElementById(id).addEventListener('click', function(){ syncPax(Math.max(1,state.pax-1)); }); });
-    ['pax-plus','card-pax-plus'].forEach(function(id){ document.getElementById(id).addEventListener('click', function(){ var b=BOATS[state.boatKey]; syncPax(Math.min(b?b.maxPax:50,state.pax+1)); }); });
+    ['card-pax-minus'].forEach(function(id){ document.getElementById(id).addEventListener('click', function(){ syncPax(Math.max(1,state.pax-1)); }); });
+    ['card-pax-plus'].forEach(function(id){ document.getElementById(id).addEventListener('click', function(){ var b=BOATS[state.boatKey]; syncPax(Math.min(b?b.maxPax:50,state.pax+1)); }); });
 
     /* ── Update summary ───────────────────────────────── */
     function updateSummary() {
@@ -707,9 +700,8 @@
       });
       renderGallery(boat);
       if(boat.isCatamaran){
-        document.getElementById('cb-pax-section').style.display='block';
-        document.getElementById('cb-card-pax').style.display='block';
-        document.getElementById('cb-pax-note').textContent='Maximum '+boat.maxPax+' people';
+        document.getElementById('cb-card-pax').style.display   = 'block';
+        document.getElementById('cb-pax-max-note').textContent = 'Maximum '+boat.maxPax+' people';
       }
       renderDestinations(boat);
       updateSummary();
@@ -734,7 +726,7 @@
       hint.textContent = 'Please select a destination first to continue';
       hint.classList.add('cb-hint-error');
       hint.style.display = 'block';
-      document.querySelector('.charter-dest-option, #cb-dest-options').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.querySelector('#cb-dest-selector').scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
   })();

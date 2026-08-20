@@ -55,7 +55,7 @@
   const STR = {
     pt: {
       from:       'A partir de',
-      per_person: '/pessoa',
+      per_person: ' por pessoa',
       per_night:  '/noite',
       book:       'Reservar',
       details:    'Ver Detalhes',
@@ -66,7 +66,7 @@
     },
     en: {
       from:       'From',
-      per_person: '/person',
+      per_person: ' per person',
       per_night:  '/night',
       book:       'Book Now',
       details:    'View Details',
