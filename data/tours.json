@@ -1,1739 +1,1629 @@
 [
   {
-  "id": "santa-maria-inhaca-portugueses",
-  "category": "island-daytrips",
-  "title": "Santa Maria, Inhaca & Ilha dos Portugueses",
-  "title_en": "Santa Maria, Inhaca & Portuguese Island",
-  "location": "Baía de Maputo",
-  "duration": "Dia Inteiro (08:00 – 17:00)",
-  "duration_en": "Full Day (08:00 – 17:00)",
-  "group_size": "Sob consulta",
-  "group_size_en": "On request",
-  "languages": ["Português", "English"],
-  "price_from": 6000,
-  "child_price": 5000,
-  "currency": "MZN",
-  "rating": 4.9,
-  "reviews_count": 0,
-  "badge": "Island Daytrips",
-  "description": "Explore três dos destinos mais paradisíacos da Baía de Maputo num único passeio. Este passeio de barco leva os visitantes às praias cristalinas de Santa Maria, à famosa Ilha da Inhaca e à tranquila Ilha dos Portugueses. Ideal para nadar, relaxar na praia e desfrutar de atividades aquáticas num ambiente tropical único.",
-  "description_en": "Explore three of the most paradisiacal destinations in Maputo Bay in a single trip. This boat trip takes visitors to the crystal-clear beaches of Santa Maria, the famous Inhaca Island and the tranquil Portuguese Island. Ideal for swimming, relaxing on the beach and enjoying water activities in a unique tropical setting.",
-
-  "highlights": [
-    "Visita a três ilhas num único passeio",
-    "Águas cristalinas ideais para snorkeling",
-    "Relaxamento nas praias de Santa Maria",
-    "Exploração da Ilha da Inhaca",
-    "Paisagens paradisíacas da Ilha dos Portugueses"
-  ],
-  "highlights_en": [
-    "Visit to three islands in one trip",
-    "Crystal-clear waters ideal for snorkelling",
-    "Relaxation on Santa Maria beaches",
-    "Exploration of Inhaca Island",
-    "Paradisiacal scenery at Portuguese Island"
-  ],
-
-  "included": [
-    "Taxas da Marina e Inhaca",
-    "Guia turístico",
-    "Lanche, frutas e água",
-    "Almoço",
-    "Snorkeling",
-    "Canoagem",
-    "Sombras",
-    "Cadeiras de praia"
-  ],
-  "included_en": [
-    "Marina and Inhaca fees",
-    "Tour guide",
-    "Snacks, fruit and water",
-    "Lunch",
-    "Snorkelling",
-    "Kayaking",
-    "Shade",
-    "Beach chairs"
-  ],
-
-  "excluded": [
-    "Bebidas adicionais",
-    "Despesas pessoais",
-    "Transporte até à marina",
-    "Taxa de estacionamento — 250 MZN por carro/dia"
-  ],
-  "excluded_en": [
-    "Additional drinks",
-    "Personal expenses",
-    "Transport to the marina",
-    "Parking fee — 250 MZN per car/day"
-  ],
-
-  "images": [
-    "../assets/images/tours/passeio-barco/passeio-barco-1.webp",
-    "../assets/images/tours/passeio-barco/passeio-barco-2.webp",
-    "../assets/images/tours/passeio-barco/passeio-barco-3.webp",
-    "../assets/images/tours/passeio-barco/passeio-barco-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "07:45",
-      "title": "Concentração no Ponto de Encontro",
-      "title_en": "Meeting Point Check-in",
-      "description": "Chegue às 07:45 à Maputo Marina / Escola Náutica, ao lado do Waterfront, no fim da Av. 10 de Novembro. Estacionamento disponível no local a 250 MZN por carro/dia.",
-      "description_en": "Arrive by 07:45 at Maputo Marina / Escola Náutica, next to the Waterfront at the end of Av. 10 de Novembro. Parking available on site at 250 MZN per car/day."
-    },
-    {
-      "time": "08:00",
-      "title": "Partida de Maputo",
-      "title_en": "Departure from Maputo",
-      "description": "Saída em barco da Marina de Maputo em direção a Santa Maria.",
-      "description_en": "Boat departure from Maputo Marina towards Santa Maria."
-    },
-    {
-      "time": "09:00",
-      "title": "Chegada a Santa Maria",
-      "title_en": "Arrival at Santa Maria",
-      "description": "Tempo livre para snorkel, nadar, explorar os corais e o recife.",
-      "description_en": "Free time for snorkelling, swimming and exploring the corals and reef."
-    },
-    {
-      "time": "12:30",
-      "title": "Partida para Vila de Inhaca",
-      "title_en": "Departure to Vila de Inhaca",
-      "description": "Viagem de barco de Santa Maria para a Vila de Inhaca.",
-      "description_en": "Boat trip from Santa Maria to Vila de Inhaca."
-    },
-    {
-      "time": "13:00",
-      "title": "Chegada à Vila de Inhaca — Almoço",
-      "title_en": "Arrival at Vila de Inhaca — Lunch",
-      "description": "Almoço no Restaurante Lucas na Vila de Inhaca.",
-      "description_en": "Lunch at Restaurante Lucas in Vila de Inhaca."
-    },
-    {
-      "time": "14:30",
-      "title": "Partida para Ilha dos Portugueses",
-      "title_en": "Departure to Portuguese Island",
-      "description": "Viagem de barco para a Ilha dos Portugueses para desfrutar da praia.",
-      "description_en": "Boat trip to Portuguese Island to enjoy the beach."
-    },
-    {
-      "time": "16:00",
-      "title": "Partida de Volta a Maputo",
-      "title_en": "Departure Back to Maputo",
-      "description": "Início da viagem de regresso à Marina de Maputo.",
-      "description_en": "Start of the return journey to Maputo Marina."
-    },
-    {
-      "time": "17:00",
-      "title": "Chegada a Maputo",
-      "title_en": "Arrival in Maputo",
-      "description": "Chegada à Marina de Maputo. Fim do passeio.",
-      "description_en": "Arrival at Maputo Marina. End of the trip."
-    }
-  ],
-
-  "map_location": {
-    "lat": -26.033,
-    "lng": 32.964,
-    "label": "Santa Maria / Inhaca Islands"
-  },
-
-  "meeting_point": {
-    "name": "Maputo Marina / Escola Náutica",
-    "address": "Ao lado do Waterfront, no fim da Av. 10 de Novembro, Maputo"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "reviews": []
-},
-  {
-  "id": "dia-de-praia-santa-maria-machangulo",
-  "category": "island-daytrips",
-  "title": "Dia de Praia - Santa Maria e Machangulo",
-  "title_en": "Beach Day — Santa Maria & Machangulo",
-  "location": "Santa Maria & Machangulo",
-  "duration": "Dia Inteiro (8h – 17h)",
-  "duration_en": "Full Day (08:00 – 17:00)",
-  "group_size": "Sob consulta",
-  "group_size_en": "On request",
-  "languages": ["Português", "English"],
-  "price_from": 5000,
-  "child_price": 4000,
-  "currency": "MZN",
-  "rating": 4.9,
-  "reviews_count": 0,
-  "badge": "Beach Day",
-  "description": "Desfrute de um dia completo nas águas cristalinas de Santa Maria e Machangulo. Um passeio perfeito para relaxar, nadar e aproveitar o melhor das praias da Baía de Maputo. Os visitantes podem escolher entre levar o seu próprio piquenique ou almoçar num restaurante local em Machangulo.",
-  "description_en": "Enjoy a full day in the crystal-clear waters of Santa Maria and Machangulo. A perfect trip for relaxing, swimming and making the most of the best beaches in Maputo Bay. Visitors can choose to bring their own picnic or have lunch at a local restaurant in Machangulo.",
-
-  "highlights": [
-    "Dia completo em águas cristalinas",
-    "Snorkeling nas ilhas da baía",
-    "Passeio de canoa",
-    "Relaxamento com sombras e cadeiras de praia",
-    "Opção de almoço em Machangulo"
-  ],
-  "highlights_en": [
-    "Full day in crystal-clear waters",
-    "Snorkelling on the bay islands",
-    "Kayak trip",
-    "Relaxation with shade and beach chairs",
-    "Lunch option in Machangulo"
-  ],
-
-  "included": [
-    "Snorkeling",
-    "Canoagem",
-    "Cooler box com gelo",
-    "Taxas incluídas",
-    "Sombras e cadeiras de praia"
-  ],
-  "included_en": [
-    "Snorkelling",
-    "Kayaking",
-    "Cool box with ice",
-    "Fees included",
-    "Shade and beach chairs"
-  ],
-
-  "excluded": [
-    "Almoço (opcional)",
-    "Despesas pessoais",
-    "Transporte até ao ponto de embarque",
-    "Taxa de estacionamento — 250 MZN por carro/dia"
-  ],
-  "excluded_en": [
-    "Lunch (optional)",
-    "Personal expenses",
-    "Transport to the embarkation point",
-    "Parking fee — 250 MZN per car/day"
-  ],
-
-  "pricing": {
-    "adults": [
-      { "type": "Sem almoço", "price": 4500 },
-      { "type": "Com almoço", "price": 5500 }
+    "id": "santa-maria-inhaca-portugueses",
+    "category": "island-daytrips",
+    "title": "Santa Maria, Inhaca & Ilha dos Portugueses",
+    "title_en": "Santa Maria, Inhaca & Portuguese Island",
+    "location": "Baía de Maputo",
+    "duration": "Dia Inteiro (08:00 – 17:00)",
+    "duration_en": "Full Day (08:00 – 17:00)",
+    "group_size": "Sob consulta",
+    "group_size_en": "On request",
+    "languages": [
+      "Português",
+      "English"
     ],
-    "children": [
-      { "type": "Sem almoço", "price": 3500 },
-      { "type": "Com almoço", "price": 4500 }
-    ]
+    "price_from": 6000,
+    "child_price": 5000,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Island Daytrips",
+    "description": "Explore três dos destinos mais paradisíacos da Baía de Maputo num único passeio. Este passeio de barco leva os visitantes às praias cristalinas de Santa Maria, à famosa Ilha da Inhaca e à tranquila Ilha dos Portugueses. Ideal para nadar, relaxar na praia e desfrutar de atividades aquáticas num ambiente tropical único.",
+    "description_en": "Explore three of the most paradisiacal destinations in Maputo Bay in a single trip. This boat trip takes visitors to the crystal-clear beaches of Santa Maria, the famous Inhaca Island and the tranquil Portuguese Island. Ideal for swimming, relaxing on the beach and enjoying water activities in a unique tropical setting.",
+    "highlights": [
+      "Visita a três ilhas num único passeio",
+      "Águas cristalinas ideais para snorkeling",
+      "Relaxamento nas praias de Santa Maria",
+      "Exploração da Ilha da Inhaca",
+      "Paisagens paradisíacas da Ilha dos Portugueses"
+    ],
+    "highlights_en": [
+      "Visit to three islands in one trip",
+      "Crystal-clear waters ideal for snorkelling",
+      "Relaxation on Santa Maria beaches",
+      "Exploration of Inhaca Island",
+      "Paradisiacal scenery at Portuguese Island"
+    ],
+    "included": [
+      "Taxas da Marina e Inhaca",
+      "Guia turístico",
+      "Lanche, frutas e água",
+      "Almoço",
+      "Snorkeling",
+      "Canoagem",
+      "Sombras",
+      "Cadeiras de praia"
+    ],
+    "included_en": [
+      "Marina and Inhaca fees",
+      "Tour guide",
+      "Snacks, fruit and water",
+      "Lunch",
+      "Snorkelling",
+      "Kayaking",
+      "Shade",
+      "Beach chairs"
+    ],
+    "excluded": [
+      "Bebidas adicionais",
+      "Despesas pessoais",
+      "Transporte até à marina",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
+    ],
+    "excluded_en": [
+      "Additional drinks",
+      "Personal expenses",
+      "Transport to the marina",
+      "Parking fee — 250 MZN per car/day"
+    ],
+    "images": [
+      "../assets/images/tours/passeio-barco/passeio-barco-1.webp",
+      "../assets/images/tours/passeio-barco/passeio-barco-2.webp",
+      "../assets/images/tours/passeio-barco/passeio-barco-3.webp",
+      "../assets/images/tours/passeio-barco/passeio-barco-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "07:45",
+        "title": "Concentração no Ponto de Encontro",
+        "title_en": "Meeting Point Check-in",
+        "description": "Chegue às 07:45 à Maputo Marina / Escola Náutica, ao lado do Waterfront, no fim da Av. 10 de Novembro. Estacionamento disponível no local a 250 MZN por carro/dia.",
+        "description_en": "Arrive by 07:45 at Maputo Marina / Escola Náutica, next to the Waterfront at the end of Av. 10 de Novembro. Parking available on site at 250 MZN per car/day."
+      },
+      {
+        "time": "08:00",
+        "title": "Partida de Maputo",
+        "title_en": "Departure from Maputo",
+        "description": "Saída em barco da Marina de Maputo em direção a Santa Maria.",
+        "description_en": "Boat departure from Maputo Marina towards Santa Maria."
+      },
+      {
+        "time": "09:00",
+        "title": "Chegada a Santa Maria",
+        "title_en": "Arrival at Santa Maria",
+        "description": "Tempo livre para snorkel, nadar, explorar os corais e o recife.",
+        "description_en": "Free time for snorkelling, swimming and exploring the corals and reef."
+      },
+      {
+        "time": "12:30",
+        "title": "Partida para Vila de Inhaca",
+        "title_en": "Departure to Vila de Inhaca",
+        "description": "Viagem de barco de Santa Maria para a Vila de Inhaca.",
+        "description_en": "Boat trip from Santa Maria to Vila de Inhaca."
+      },
+      {
+        "time": "13:00",
+        "title": "Chegada à Vila de Inhaca — Almoço",
+        "title_en": "Arrival at Vila de Inhaca — Lunch",
+        "description": "Almoço no Restaurante Lucas na Vila de Inhaca.",
+        "description_en": "Lunch at Restaurante Lucas in Vila de Inhaca."
+      },
+      {
+        "time": "14:30",
+        "title": "Partida para Ilha dos Portugueses",
+        "title_en": "Departure to Portuguese Island",
+        "description": "Viagem de barco para a Ilha dos Portugueses para desfrutar da praia.",
+        "description_en": "Boat trip to Portuguese Island to enjoy the beach."
+      },
+      {
+        "time": "16:00",
+        "title": "Partida de Volta a Maputo",
+        "title_en": "Departure Back to Maputo",
+        "description": "Início da viagem de regresso à Marina de Maputo.",
+        "description_en": "Start of the return journey to Maputo Marina."
+      },
+      {
+        "time": "17:00",
+        "title": "Chegada a Maputo",
+        "title_en": "Arrival in Maputo",
+        "description": "Chegada à Marina de Maputo. Fim do passeio.",
+        "description_en": "Arrival at Maputo Marina. End of the trip."
+      }
+    ],
+    "map_location": {
+      "lat": -26.033,
+      "lng": 32.964,
+      "label": "Santa Maria / Inhaca Islands"
+    },
+    "meeting_point": {
+      "name": "Maputo Marina / Escola Náutica",
+      "address": "Ao lado do Waterfront, no fim da Av. 10 de Novembro, Maputo"
+    },
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
+    },
+    "reviews": []
   },
-
-  "images": [
-    "../assets/images/tours/beach-day/dia-praia-4.webp",
-    "../assets/images/tours/beach-day/dia-praia-3.webp",
-    "../assets/images/tours/beach-day/dia-praia-2.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "08:00",
-      "title": "Partida",
-      "title_en": "Departure",
-      "description": "Saída de barco em direção às praias de Santa Maria.",
-      "description_en": "Boat departure towards Santa Maria beaches."
-    },
-    {
-      "time": "09:00",
-      "title": "Chegada a Santa Maria",
-      "title_en": "Arrival at Santa Maria",
-      "description": "Tempo livre para nadar, snorkeling e atividades na praia.",
-      "description_en": "Free time for swimming, snorkelling and beach activities."
-    },
-    {
-      "time": "12:30",
-      "title": "Almoço opcional em Machangulo",
-      "title_en": "Optional lunch in Machangulo",
-      "description": "Os visitantes podem escolher almoçar no restaurante local ou desfrutar do seu próprio piquenique.",
-      "description_en": "Visitors can choose to lunch at the local restaurant or enjoy their own picnic."
-    },
-    {
-      "time": "15:30",
-      "title": "Tempo livre",
-      "title_en": "Free time",
-      "description": "Relaxar na praia ou aproveitar mais atividades aquáticas.",
-      "description_en": "Relax on the beach or enjoy more water activities."
-    },
-    {
-      "time": "17:00",
-      "title": "Regresso",
-      "title_en": "Return",
-      "description": "Regresso de barco a Maputo.",
-      "description_en": "Boat return to Maputo."
-    }
-  ],
-
-  "map_location": {
-    "lat": -26.033,
-    "lng": 32.964,
-    "label": "Santa Maria Beach"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "reviews": []
-},
   {
-  "id": "farol-inhaca-tour",
-  "category": "island-daytrips",
-  "title": "Praia do Farol - Vila da Inhaca e Ilha dos Portugueses",
-  "title_en": "Lighthouse Beach — Inhaca Village & Portuguese Island",
-  "location": "Ilha da Inhaca, Maputo",
-  "duration": "Dia Inteiro (08:00 – 17:00)",
-  "duration_en": "Full Day (08:00 – 17:00)",
-  "group_size": "Sob consulta",
-  "group_size_en": "On request",
-  "languages": ["Português", "English"],
-  "price_from": 6000,
-  "child_price": 5000,
-  "currency": "MZN",
-  "rating": 4.9,
-  "reviews_count": 0,
-  "badge": "Natureza",
-  "badge_en": "Nature",
-  "description": "Descubra a beleza natural da Ilha da Inhaca com uma visita ao icónico Farol de Inhaca e às famosas piscinas naturais. Este passeio combina aventura, natureza e relaxamento, incluindo um safari pela ilha, visita à vila dos coqueiros e almoço local.",
-  "description_en": "Discover the natural beauty of Inhaca Island with a visit to the iconic Inhaca Lighthouse and the famous natural pools. This tour combines adventure, nature and relaxation, including an island safari, a visit to the coconut village and a local lunch.",
-
-  "highlights": [
-    "Visita ao Farol de Inhaca",
-    "Island safari até ao farol",
-    "Passeio pela vila dos coqueiros",
-    "Almoço na vila de Inhaca",
-    "Visita às piscinas naturais",
-    "Relaxamento na Praia do Farol"
-  ],
-  "highlights_en": [
-    "Visit to the Inhaca Lighthouse",
-    "Island safari to the lighthouse",
-    "Walk through the coconut village",
-    "Lunch in Inhaca village",
-    "Visit to the natural pools",
-    "Relaxation at Lighthouse Beach"
-  ],
-
-  "included": [
-    "Transporte de barco ida e volta",
-    "Island safari na ilha",
-    "Guia local",
-    "Almoço",
-    "Tempo livre para explorar a praia"
-  ],
-  "included_en": [
-    "Return boat transport",
-    "Island safari",
-    "Local guide",
-    "Lunch",
-    "Free time to explore the beach"
-  ],
-
-  "excluded": [
-    "Bebidas adicionais",
-    "Despesas pessoais",
-    "Taxa de estacionamento — 250 MZN por carro/dia"
-  ],
-  "excluded_en": [
-    "Additional drinks",
-    "Personal expenses",
-    "Parking fee — 250 MZN per car/day"
-  ],
-
-  "images": [
-    "../assets/images/tours/farol-inhaca/farol-inhaca-1.webp",
-    "../assets/images/tours/farol-inhaca/farol-inhaca-2.webp",
-    "../assets/images/tours/farol-inhaca/farol-inhaca-3.webp",
-    "../assets/images/tours/farol-inhaca/farol-inhaca-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "08:00",
-      "title": "Partida de Maputo",
-      "title_en": "Departure from Maputo",
-      "description": "Saída da Maputo Marina em direção à Ilha da Inhaca.",
-      "description_en": "Boat departure from Maputo Marina towards Inhaca Island."
+    "id": "dia-de-praia-santa-maria-machangulo",
+    "category": "island-daytrips",
+    "title": "Dia de Praia - Santa Maria e Machangulo",
+    "title_en": "Beach Day — Santa Maria & Machangulo",
+    "location": "Santa Maria & Machangulo",
+    "duration": "Dia Inteiro (8h – 17h)",
+    "duration_en": "Full Day (08:00 – 17:00)",
+    "group_size": "Sob consulta",
+    "group_size_en": "On request",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 5000,
+    "child_price": 4000,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Beach Day",
+    "description": "Desfrute de um dia completo nas águas cristalinas de Santa Maria e Machangulo. Um passeio perfeito para relaxar, nadar e aproveitar o melhor das praias da Baía de Maputo. Os visitantes podem escolher entre levar o seu próprio piquenique ou almoçar num restaurante local em Machangulo.",
+    "description_en": "Enjoy a full day in the crystal-clear waters of Santa Maria and Machangulo. A perfect trip for relaxing, swimming and making the most of the best beaches in Maputo Bay. Visitors can choose to bring their own picnic or have lunch at a local restaurant in Machangulo.",
+    "highlights": [
+      "Dia completo em águas cristalinas",
+      "Snorkeling nas ilhas da baía",
+      "Passeio de canoa",
+      "Relaxamento com sombras e cadeiras de praia",
+      "Opção de almoço em Machangulo"
+    ],
+    "highlights_en": [
+      "Full day in crystal-clear waters",
+      "Snorkelling on the bay islands",
+      "Kayak trip",
+      "Relaxation with shade and beach chairs",
+      "Lunch option in Machangulo"
+    ],
+    "included": [
+      "Snorkeling",
+      "Canoagem",
+      "Cooler box com gelo",
+      "Taxas incluídas",
+      "Sombras e cadeiras de praia"
+    ],
+    "included_en": [
+      "Snorkelling",
+      "Kayaking",
+      "Cool box with ice",
+      "Fees included",
+      "Shade and beach chairs"
+    ],
+    "excluded": [
+      "Almoço (opcional)",
+      "Despesas pessoais",
+      "Transporte até ao ponto de embarque",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
+    ],
+    "excluded_en": [
+      "Lunch (optional)",
+      "Personal expenses",
+      "Transport to the embarkation point",
+      "Parking fee — 250 MZN per car/day"
+    ],
+    "pricing": {
+      "adults": [
+        {
+          "type": "Sem almoço",
+          "price": 4500
+        },
+        {
+          "type": "Com almoço",
+          "price": 5500
+        }
+      ],
+      "children": [
+        {
+          "type": "Sem almoço",
+          "price": 3500
+        },
+        {
+          "type": "Com almoço",
+          "price": 4500
+        }
+      ]
     },
-    {
-      "time": "09:30",
-      "title": "Chegada à Ilha da Inhaca",
-      "title_en": "Arrival at Inhaca Island",
-      "description": "Receção e início do island safari.",
-      "description_en": "Reception and start of the island safari."
+    "images": [
+      "../assets/images/tours/beach-day/dia-praia-4.webp",
+      "../assets/images/tours/beach-day/dia-praia-3.webp",
+      "../assets/images/tours/beach-day/dia-praia-2.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "08:00",
+        "title": "Partida",
+        "title_en": "Departure",
+        "description": "Saída de barco em direção às praias de Santa Maria.",
+        "description_en": "Boat departure towards Santa Maria beaches."
+      },
+      {
+        "time": "09:00",
+        "title": "Chegada a Santa Maria",
+        "title_en": "Arrival at Santa Maria",
+        "description": "Tempo livre para nadar, snorkeling e atividades na praia.",
+        "description_en": "Free time for swimming, snorkelling and beach activities."
+      },
+      {
+        "time": "12:30",
+        "title": "Almoço opcional em Machangulo",
+        "title_en": "Optional lunch in Machangulo",
+        "description": "Os visitantes podem escolher almoçar no restaurante local ou desfrutar do seu próprio piquenique.",
+        "description_en": "Visitors can choose to lunch at the local restaurant or enjoy their own picnic."
+      },
+      {
+        "time": "15:30",
+        "title": "Tempo livre",
+        "title_en": "Free time",
+        "description": "Relaxar na praia ou aproveitar mais atividades aquáticas.",
+        "description_en": "Relax on the beach or enjoy more water activities."
+      },
+      {
+        "time": "17:00",
+        "title": "Regresso",
+        "title_en": "Return",
+        "description": "Regresso de barco a Maputo.",
+        "description_en": "Boat return to Maputo."
+      }
+    ],
+    "map_location": {
+      "lat": -26.033,
+      "lng": 32.964,
+      "label": "Santa Maria Beach"
     },
-    {
-      "time": "11:00",
-      "title": "Visita ao Farol",
-      "title_en": "Visit to the Lighthouse",
-      "description": "Exploração da área do Farol de Inhaca e vistas panorâmicas.",
-      "description_en": "Exploration of the Inhaca Lighthouse area and panoramic views."
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
     },
-    {
-      "time": "13:00",
-      "title": "Almoço na Vila de Inhaca",
-      "title_en": "Lunch in Inhaca Village",
-      "description": "Almoço tradicional na vila.",
-      "description_en": "Traditional lunch in the village."
-    },
-    {
-      "time": "15:00",
-      "title": "Ilha dos Portugueses",
-      "title_en": "Portuguese Island",
-      "description": "Paragem na tranquila Ilha dos Portugueses para relaxar na praia, nadar em águas cristalinas e desfrutar das paisagens paradisíacas.",
-      "description_en": "Stop at the tranquil Portuguese Island to relax on the beach, swim in crystal-clear waters and enjoy the paradisiacal scenery."
-    },
-    {
-      "time": "17:00",
-      "title": "Regresso a Maputo",
-      "title_en": "Return to Maputo",
-      "description": "Viagem de regresso à Maputo Marina.",
-      "description_en": "Return journey to Maputo Marina."
-    }
-  ],
-
-  "map_location": {
-    "lat": -26.033,
-    "lng": 32.964,
-    "label": "Farol de Inhaca"
+    "reviews": []
   },
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "reviews": []
-},
   {
-  "id": "sunset-cruise-maputo-bay",
-  "category": "beach-daytrips",
-  "title": "Sunset Cruise",
-  "title_en": "Sunset Cruise",
-  "location": "Baía de Maputo",
-  "duration": "3 horas",
-  "duration_en": "3 hours",
-  "group_size": "Sob consulta",
-  "group_size_en": "On request",
-  "languages": ["Português", "English"],
-  "price_from": 1800,
-  "child_price": 1200,
-  "currency": "MZN",
-  "rating": 4.9,
-  "reviews_count": 0,
-  "badge": "Sunset",
-  "description": "Desfrute de um inesquecível passeio de catamarã ao pôr do sol na Baía de Maputo. Durante o cruzeiro, os visitantes podem relaxar a bordo enquanto apreciam vistas panorâmicas da cidade, da Ponte Maputo–Katembe e da costa da baía ao entardecer.",
-  "description_en": "Enjoy an unforgettable catamaran sunset cruise in Maputo Bay. During the cruise, visitors can relax on board while admiring panoramic views of the city, the Maputo–Katembe Bridge and the bay coastline at dusk.",
-
-  "highlights": [
-    "Cruzeiro ao pôr do sol na Baía de Maputo",
-    "Vistas panorâmicas da cidade de Maputo",
-    "Passagem pela Ponte Maputo–Katembe",
-    "Experiência relaxante em catamarã",
-    "Ideal para fotos ao pôr do sol"
-  ],
-  "highlights_en": [
-    "Sunset cruise in Maputo Bay",
-    "Panoramic views of Maputo city",
-    "Passage by the Maputo–Katembe Bridge",
-    "Relaxing catamaran experience",
-    "Perfect for sunset photos"
-  ],
-
-  "included": [
-    "3 horas de cruzeiro na Baía de Maputo",
-    "Taxas da Marina"
-  ],
-  "included_en": [
-    "3 hours of cruise in Maputo Bay",
-    "Marina fees"
-  ],
-
-  "excluded": [
-    "Bebidas alcoólicas",
-    "Despesas pessoais",
-    "Taxa de estacionamento — 250 MZN por carro/dia"
-  ],
-  "excluded_en": [
-    "Alcoholic drinks",
-    "Personal expenses",
-    "Parking fee — 250 MZN per car/day"
-  ],
-
-  "pricing": {
-    "adults": 1800,
-    "children": 1200
-  },
-
-  "images": [
-    "../assets/images/tours/sunset-cruise/sunset-cruise-1.webp",
-    "../assets/images/tours/sunset-cruise/sunset-cruise-2.webp",
-    "../assets/images/tours/sunset-cruise/sunset-cruise-3.webp",
-    "../assets/images/tours/sunset-cruise/sunset-cruise-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "15:45",
-      "title": "Embarque",
-      "title_en": "Boarding",
-      "description": "Check-in e embarque na Marina de Maputo.",
-      "description_en": "Check-in and boarding at Maputo Marina."
+    "id": "farol-inhaca-tour",
+    "category": "island-daytrips",
+    "title": "Praia do Farol - Vila da Inhaca e Ilha dos Portugueses",
+    "title_en": "Lighthouse Beach — Inhaca Village & Portuguese Island",
+    "location": "Ilha da Inhaca, Maputo",
+    "duration": "Dia Inteiro (08:00 – 17:00)",
+    "duration_en": "Full Day (08:00 – 17:00)",
+    "group_size": "Sob consulta",
+    "group_size_en": "On request",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 6000,
+    "child_price": 5000,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Natureza",
+    "badge_en": "Nature",
+    "description": "Descubra a beleza natural da Ilha da Inhaca com uma visita ao icónico Farol de Inhaca e às famosas piscinas naturais. Este passeio combina aventura, natureza e relaxamento, incluindo um safari pela ilha, visita à vila dos coqueiros e almoço local.",
+    "description_en": "Discover the natural beauty of Inhaca Island with a visit to the iconic Inhaca Lighthouse and the famous natural pools. This tour combines adventure, nature and relaxation, including an island safari, a visit to the coconut village and a local lunch.",
+    "highlights": [
+      "Visita ao Farol de Inhaca",
+      "Island safari até ao farol",
+      "Passeio pela vila dos coqueiros",
+      "Almoço na vila de Inhaca",
+      "Visita às piscinas naturais",
+      "Relaxamento na Praia do Farol"
+    ],
+    "highlights_en": [
+      "Visit to the Inhaca Lighthouse",
+      "Island safari to the lighthouse",
+      "Walk through the coconut village",
+      "Lunch in Inhaca village",
+      "Visit to the natural pools",
+      "Relaxation at Lighthouse Beach"
+    ],
+    "included": [
+      "Transporte de barco ida e volta",
+      "Island safari na ilha",
+      "Guia local",
+      "Almoço",
+      "Tempo livre para explorar a praia"
+    ],
+    "included_en": [
+      "Return boat transport",
+      "Island safari",
+      "Local guide",
+      "Lunch",
+      "Free time to explore the beach"
+    ],
+    "excluded": [
+      "Bebidas adicionais",
+      "Despesas pessoais",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
+    ],
+    "excluded_en": [
+      "Additional drinks",
+      "Personal expenses",
+      "Parking fee — 250 MZN per car/day"
+    ],
+    "images": [
+      "../assets/images/tours/farol-inhaca/farol-inhaca-1.webp",
+      "../assets/images/tours/farol-inhaca/farol-inhaca-2.webp",
+      "../assets/images/tours/farol-inhaca/farol-inhaca-3.webp",
+      "../assets/images/tours/farol-inhaca/farol-inhaca-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "08:00",
+        "title": "Partida de Maputo",
+        "title_en": "Departure from Maputo",
+        "description": "Saída da Maputo Marina em direção à Ilha da Inhaca.",
+        "description_en": "Boat departure from Maputo Marina towards Inhaca Island."
+      },
+      {
+        "time": "09:30",
+        "title": "Chegada à Ilha da Inhaca",
+        "title_en": "Arrival at Inhaca Island",
+        "description": "Receção e início do island safari.",
+        "description_en": "Reception and start of the island safari."
+      },
+      {
+        "time": "11:00",
+        "title": "Visita ao Farol",
+        "title_en": "Visit to the Lighthouse",
+        "description": "Exploração da área do Farol de Inhaca e vistas panorâmicas.",
+        "description_en": "Exploration of the Inhaca Lighthouse area and panoramic views."
+      },
+      {
+        "time": "13:00",
+        "title": "Almoço na Vila de Inhaca",
+        "title_en": "Lunch in Inhaca Village",
+        "description": "Almoço tradicional na vila.",
+        "description_en": "Traditional lunch in the village."
+      },
+      {
+        "time": "15:00",
+        "title": "Ilha dos Portugueses",
+        "title_en": "Portuguese Island",
+        "description": "Paragem na tranquila Ilha dos Portugueses para relaxar na praia, nadar em águas cristalinas e desfrutar das paisagens paradisíacas.",
+        "description_en": "Stop at the tranquil Portuguese Island to relax on the beach, swim in crystal-clear waters and enjoy the paradisiacal scenery."
+      },
+      {
+        "time": "17:00",
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Viagem de regresso à Maputo Marina.",
+        "description_en": "Return journey to Maputo Marina."
+      }
+    ],
+    "map_location": {
+      "lat": -26.033,
+      "lng": 32.964,
+      "label": "Farol de Inhaca"
     },
-    {
-      "time": "16:00",
-      "title": "Início do Cruzeiro",
-      "title_en": "Start of Cruise",
-      "description": "Início da navegação pela Baía de Maputo com vistas panorâmicas da cidade e da Ponte Maputo–Katembe.",
-      "description_en": "Start of the cruise through Maputo Bay with panoramic views of the city and the Maputo–Katembe Bridge."
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
     },
-    {
-      "time": "17:45 – 18:30",
-      "title": "Pôr do Sol",
-      "title_en": "Sunset",
-      "description": "O momento mais esperado do cruzeiro — hora exata varia consoante a época do ano. Momento ideal para fotografias do pôr do sol sobre a baía.",
-      "description_en": "The most anticipated moment of the cruise — exact time varies depending on the time of year. Perfect for sunset photos over the bay."
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
     },
-    {
-      "time": "19:00",
-      "title": "Regresso",
-      "title_en": "Return",
-      "description": "Regresso à Marina de Maputo. Fim do cruzeiro.",
-      "description_en": "Return to Maputo Marina. End of the cruise."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    "reviews": []
   },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "reviews": []
-},
   {
-  "id": "kruger-national-park-day-trip",
-  "category": "safaris",
-  "title": "Kruger National Park Day Trip",
-  "title_en": "Kruger National Park Day Trip",
-  "location": "Kruger National Park, South Africa",
-  "duration": "Dia Inteiro (05:00 – 18:00)",
-  "duration_en": "Full Day (05:00 – 18:00)",
-  "group_size": "Sob consulta",
-  "group_size_en": "On request",
-  "languages": ["Português", "English"],
-  "price_from": 13500,
-  "currency": "MZN",
-  "rating": 4.9,
-  "reviews_count": 0,
-  "badge": "Safari",
-  "child_price": 11000,
-  "description": "Explore o famoso Parque Nacional Kruger numa aventura de um dia saindo de Maputo. Este safari oferece a oportunidade de observar os lendários Big Five e uma grande variedade de vida selvagem africana. A experiência inclui transporte, guia turístico e almoço num restaurante dentro do parque com vista para o Rio Sabie.",
-  "description_en": "Explore the famous Kruger National Park on a day adventure from Maputo. This safari offers the opportunity to spot the legendary Big Five and a wide variety of African wildlife. The experience includes transport, a tour guide and lunch at a restaurant inside the park overlooking the Sabie River.",
-
-  "highlights": [
-    "Safari no famoso Parque Nacional Kruger",
-    "Possibilidade de avistar os Big Five",
-    "Paisagens naturais e vida selvagem africana",
-    "Almoço com vista para o Rio Sabie",
-    "Experiência guiada por especialista"
-  ],
-  "highlights_en": [
-    "Safari in the famous Kruger National Park",
-    "Opportunity to spot the Big Five",
-    "Natural landscapes and African wildlife",
-    "Lunch overlooking the Sabie River",
-    "Guided experience by a specialist"
-  ],
-
-  "included": [
-    "Transfer ida e volta de Maputo",
-    "Taxas de entrada no Parque Nacional Kruger",
-    "Safari de dia inteiro",
-    "Guia turístico",
-    "Almoço",
-    "Cooler Box (Caixa térmica) com gelo",
-    "Lanche, frutas e água",
-    "Binóculos para observação de vida selvagem"
-  ],
-  "included_en": [
-    "Return transfer from Maputo",
-    "Kruger National Park entrance fees",
-    "Full-day safari",
-    "Tour guide",
-    "Lunch",
-    "Cool box with ice",
-    "Snacks, fruit and water",
-    "Binoculars for wildlife viewing"
-  ],
-
-  "excluded": [
-    "Atividades extras dentro do parque",
-    "Bebidas alcoólicas",
-    "Despesas pessoais",
-    "Taxa de estacionamento — 250 MZN por carro/dia"
-  ],
-  "excluded_en": [
-    "Extra activities inside the park",
-    "Alcoholic drinks",
-    "Personal expenses",
-    "Parking fee — 250 MZN per car/day"
-  ],
-
-  "pricing": {
-    "regular_vehicle": { "adults": 13500, "children": 11000 },
-    "open_vehicle":    { "adults": 18500, "children": 9200 }
+    "id": "sunset-cruise-maputo-bay",
+    "category": "beach-daytrips",
+    "title": "Sunset Cruise",
+    "title_en": "Sunset Cruise",
+    "location": "Baía de Maputo",
+    "duration": "3 horas",
+    "duration_en": "3 hours",
+    "group_size": "Sob consulta",
+    "group_size_en": "On request",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 1800,
+    "child_price": 1200,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Sunset",
+    "description": "Desfrute de um inesquecível passeio de catamarã ao pôr do sol na Baía de Maputo. Durante o cruzeiro, os visitantes podem relaxar a bordo enquanto apreciam vistas panorâmicas da cidade, da Ponte Maputo–Katembe e da costa da baía ao entardecer.",
+    "description_en": "Enjoy an unforgettable catamaran sunset cruise in Maputo Bay. During the cruise, visitors can relax on board while admiring panoramic views of the city, the Maputo–Katembe Bridge and the bay coastline at dusk.",
+    "highlights": [
+      "Cruzeiro ao pôr do sol na Baía de Maputo",
+      "Vistas panorâmicas da cidade de Maputo",
+      "Passagem pela Ponte Maputo–Katembe",
+      "Experiência relaxante em catamarã",
+      "Ideal para fotos ao pôr do sol"
+    ],
+    "highlights_en": [
+      "Sunset cruise in Maputo Bay",
+      "Panoramic views of Maputo city",
+      "Passage by the Maputo–Katembe Bridge",
+      "Relaxing catamaran experience",
+      "Perfect for sunset photos"
+    ],
+    "included": [
+      "3 horas de cruzeiro na Baía de Maputo",
+      "Taxas da Marina"
+    ],
+    "included_en": [
+      "3 hours of cruise in Maputo Bay",
+      "Marina fees"
+    ],
+    "excluded": [
+      "Bebidas alcoólicas",
+      "Despesas pessoais",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
+    ],
+    "excluded_en": [
+      "Alcoholic drinks",
+      "Personal expenses",
+      "Parking fee — 250 MZN per car/day"
+    ],
+    "pricing": {
+      "adults": 1800,
+      "children": 1200
+    },
+    "images": [
+      "../assets/images/tours/sunset-cruise/sunset-cruise-1.webp",
+      "../assets/images/tours/sunset-cruise/sunset-cruise-2.webp",
+      "../assets/images/tours/sunset-cruise/sunset-cruise-3.webp",
+      "../assets/images/tours/sunset-cruise/sunset-cruise-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "15:45",
+        "title": "Embarque",
+        "title_en": "Boarding",
+        "description": "Check-in e embarque na Marina de Maputo.",
+        "description_en": "Check-in and boarding at Maputo Marina."
+      },
+      {
+        "time": "16:00",
+        "title": "Início do Cruzeiro",
+        "title_en": "Start of Cruise",
+        "description": "Início da navegação pela Baía de Maputo com vistas panorâmicas da cidade e da Ponte Maputo–Katembe.",
+        "description_en": "Start of the cruise through Maputo Bay with panoramic views of the city and the Maputo–Katembe Bridge."
+      },
+      {
+        "time": "17:45 – 18:30",
+        "title": "Pôr do Sol",
+        "title_en": "Sunset",
+        "description": "O momento mais esperado do cruzeiro — hora exata varia consoante a época do ano. Momento ideal para fotografias do pôr do sol sobre a baía.",
+        "description_en": "The most anticipated moment of the cruise — exact time varies depending on the time of year. Perfect for sunset photos over the bay."
+      },
+      {
+        "time": "19:00",
+        "title": "Regresso",
+        "title_en": "Return",
+        "description": "Regresso à Marina de Maputo. Fim do cruzeiro.",
+        "description_en": "Return to Maputo Marina. End of the cruise."
+      }
+    ],
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    },
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
+    },
+    "reviews": []
   },
-
-  "images": [
-    "../assets/images/tours/safari/safari-kruger-1.webp",
-    "../assets/images/tours/safari/safari-kruger-2.webp",
-    "../assets/images/tours/safari/safari-kruger-3.webp",
-    "../assets/images/tours/safari/safari-kruger-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "05:45",
-      "title": "Partida de Maputo",
-      "title_en": "Departure from Maputo",
-      "description": "Saída cedo de Maputo em direção à fronteira de Ressano Garcia.",
-      "description_en": "Early departure from Maputo towards Ressano Garcia border."
-    },
-    {
-      "time": "06:30",
-      "title": "Chegada à Fronteira",
-      "title_en": "Arrival at the Border",
-      "description": "Procedimentos de imigração e alfândega.",
-      "description_en": "Immigration and customs procedures."
-    },
-    {
-      "time": "07:00",
-      "title": "Continuação da viagem",
-      "title_en": "Continuing the journey",
-      "description": "Viagem em direção ao Parque Nacional Kruger.",
-      "description_en": "Journey towards Kruger National Park."
-    },
-    {
-      "time": "07:30",
-      "title": "Chegada ao Kruger",
-      "title_en": "Arrival at Kruger",
-      "description": "Entrada no parque e início do safari.",
-      "description_en": "Park entry and start of the safari."
-    },
-    {
-      "time": "12:30",
-      "title": "Almoço",
-      "title_en": "Lunch",
-      "description": "Almoço num restaurante dentro do parque com vista para o Rio Sabie.",
-      "description_en": "Lunch at a restaurant inside the park overlooking the Sabie River."
-    },
-    {
-      "time": "14:00",
-      "title": "Continuação do Safari",
-      "title_en": "Safari continues",
-      "description": "Busca pelos lendários Big Five.",
-      "description_en": "Searching for the legendary Big Five."
-    },
-    {
-      "time": "16:00",
-      "title": "Fim do Safari",
-      "title_en": "End of Safari",
-      "description": "Saída do parque e início do regresso.",
-      "description_en": "Park exit and start of return journey."
-    },
-    {
-      "time": "18:00",
-      "title": "Chegada a Maputo",
-      "title_en": "Arrival in Maputo",
-      "description": "Fim da excursão.",
-      "description_en": "End of excursion."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "important_info": [
-    "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
-    "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
-    "É obrigatório possuir passaporte válido com pelo menos 6 meses de validade para a entrada na África do Sul.",
-    "Verifique os requisitos de visto para a sua nacionalidade antes da viagem.",
-    "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
-    "Recomendamos trazer protector solar, chapéu e roupa leve e confortável.",
-    "Os animais são selvagens — siga sempre as instruções do guia dentro do parque.",
-    "O avistamento de animais não é garantido, pois dependem do comportamento natural da vida selvagem."
-  ],
-  "important_info_en": [
-    "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
-    "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
-    "A valid passport with at least 6 months validity is required for entry into South Africa.",
-    "Please check visa requirements for your nationality before travelling.",
-    "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
-    "We recommend bringing sunscreen, a hat and light, comfortable clothing.",
-    "Animals are wild — always follow the guide's instructions inside the park.",
-    "Animal sightings are not guaranteed as they depend on the natural behaviour of wildlife."
-  ],
-
-  "reviews": []
-},
-{
-  "id": "safari-maputo-special-reserve",
-  "category": "safaris",
-  "title": "Safari Maputo Special Reserve",
-  "title_en": "Maputo Special Reserve Safari",
-  "location": "Maputo Special Reserve, Mozambique",
-  "duration": "Dia Inteiro (05:00 – 17:00)",
-  "duration_en": "Full Day (05:00 – 17:00)",
-  "group_size": "Sob consulta",
-  "group_size_en": "On request",
-  "languages": ["Português", "English"],
-  "price_from": 11500,
-  "child_price": 9500,
-  "currency": "MZN",
-  "rating": 4.9,
-  "reviews_count": 0,
-  "badge": "Safari",
-  "description": "Explore a incrível Reserva Especial de Maputo numa aventura de safari de um dia. Esta experiência oferece a oportunidade de observar elefantes, girafas, hipopótamos e muitas outras espécies num dos parques naturais mais impressionantes de Moçambique. O passeio inclui transporte de Maputo, taxas de entrada, snacks e guia turístico.",
-  "description_en": "Explore the incredible Maputo Special Reserve on a day safari adventure. This experience offers the opportunity to observe elephants, giraffes, hippos and many other species in one of Mozambique's most impressive nature parks. The trip includes transport from Maputo, entrance fees, snacks and a tour guide.",
-
-  "highlights": [
-    "Safari na Reserva Especial de Maputo",
-    "Observação de elefantes, girafas e hipopótamos",
-    "Paisagens naturais e lagoas da reserva",
-    "Experiência guiada com especialista local",
-    "Ideal para amantes da natureza e fotografia"
-  ],
-  "highlights_en": [
-    "Safari in the Maputo Special Reserve",
-    "Sighting of elephants, giraffes and hippos",
-    "Natural landscapes and reserve lagoons",
-    "Guided experience with a local specialist",
-    "Ideal for nature and photography lovers"
-  ],
-
-  "included": [
-    "Transfer ida e volta a partir de Maputo",
-    "Taxas de entrada na reserva",
-    "Lanche, frutas e água",
-    "Binóculos para observação de vida selvagem",
-    "Guia turístico"
-  ],
-  "included_en": [
-    "Return transfer from Maputo",
-    "Reserve entrance fees",
-    "Snacks, fruit and water",
-    "Binoculars for wildlife viewing",
-    "Tour guide"
-  ],
-
-  "excluded": [
-    "Bebidas alcoólicas",
-    "Despesas pessoais",
-    "Atividades adicionais dentro da reserva",
-    "Taxa de estacionamento — 250 MZN por carro/dia"
-  ],
-  "excluded_en": [
-    "Alcoholic drinks",
-    "Personal expenses",
-    "Additional activities inside the reserve",
-    "Parking fee — 250 MZN per car/day"
-  ],
-
-  "images": [
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-1.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-5.jpg",
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-3.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-4.webp",
-    "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-6.jpg"
-  ],
-
-  "itinerary": [
-    {
-      "time": "06:15",
-      "title": "Partida de Maputo",
-      "title_en": "Departure from Maputo",
-      "description": "Saída cedo de Maputo em direção à Reserva Especial de Maputo.",
-      "description_en": "Early departure from Maputo towards the Maputo Special Reserve."
-    },
-    {
-      "time": "07:30",
-      "title": "Chegada à Reserva",
-      "title_en": "Arrival at the Reserve",
-      "description": "Entrada no parque e início do safari.",
-      "description_en": "Park entry and start of the safari."
-    },
-    {
-      "time": "10:30",
-      "title": "Exploração da Reserva",
-      "title_en": "Exploration of the Reserve",
-      "description": "Observação da fauna local e paisagens naturais.",
-      "description_en": "Observation of local fauna and natural landscapes."
-    },
-    {
-      "time": "13:00",
-      "title": "Pausa para almoço",
-      "title_en": "Lunch break",
-      "description": "Paragem para descanso e refeição durante o safari.",
-      "description_en": "Rest stop and meal during the safari."
-    },
-    {
-      "time": "14:30",
-      "title": "Continuação do Safari",
-      "title_en": "Safari continues",
-      "description": "Exploração de outras áreas da reserva.",
-      "description_en": "Exploration of other areas of the reserve."
-    },
-    {
-      "time": "17:00",
-      "title": "Regresso a Maputo",
-      "title_en": "Return to Maputo",
-      "description": "Fim da excursão.",
-      "description_en": "End of excursion."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "important_info": [
-    "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
-    "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
-    "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
-    "Recomendamos trazer protetor solar, chapéu e roupa leve e confortável.",
-    "Os animais são selvagens — siga sempre as instruções do guia dentro do parque.",
-    "O avistamento de animais não é garantido, pois dependem do comportamento natural da vida selvagem."
-  ],
-  "important_info_en": [
-    "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
-    "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
-    "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
-    "We recommend bringing sunscreen, a hat and light, comfortable clothing.",
-    "Animals are wild — always follow the guide's instructions inside the park.",
-    "Animal sightings are not guaranteed as they depend on the natural behaviour of wildlife."
-  ],
-
-  "reviews": []
-},
-{
-  "id": "eswatini-hlane-safari-namacha-waterfalls",
-  "category": "safaris",
-  "title": "Hlane Royal Park Safari & Cascatas de Namaacha – Eswatini",
-  "title_en": "Hlane Royal Park Safari & Namacha Waterfalls – Eswatini",
-
-  "location": "Hlane Royal National Park, Eswatini",
-
-  "duration": "Dia inteiro (05:30 – 16:00)",
-  "duration_en": "Full Day (05:30 – 16:00)",
-
-  "group_size": "Mínimo 2 pessoas",
-  "group_size_en": "Minimum 2 people",
-
-  "languages": ["Português", "English"],
-
-  "price_from": 13500,
-  "currency": "MZN",
-
-  "rating": 4.9,
-  "reviews_count": 0,
-
-  "badge": "Safari",
-
-  "description": "Viva a emoção de um safari no Parque Nacional Real de Hlane, em Eswatini, combinado com uma paragem nas deslumbrantes Cascatas de Namaacha. Esta excursão de um dia inclui transporte em mini van, guia turístico, almoço, snacks e binóculos — tudo organizado para uma experiência inesquecível.",
-
-  "description_en": "Experience the thrill of a safari in Hlane Royal National Park, Eswatini, combined with a stop at the stunning Namacha Waterfalls. This full-day excursion includes mini van transport, a tour guide, lunch, snacks and binoculars — everything arranged for an unforgettable experience.",
-
-  "highlights": [
-    "Safari no Parque Nacional Real de Hlane",
-    "Avistamento de rinocerontes, leões e elefantes",
-    "Visita às Cascatas de Namaacha",
-    "Transporte confortável em mini van",
-    "Experiência guiada por especialista"
-  ],
-
-  "highlights_en": [
-    "Safari in Hlane Royal National Park",
-    "Spotting rhinos, lions and elephants",
-    "Visit to Namacha Waterfalls",
-    "Comfortable mini van transport",
-    "Expert-guided experience"
-  ],
-
-  "included": [
-    "Transfer em mini van com guia turístico",
-    "Taxas de entrada no parque",
-    "Almoço",
-    "Água e snacks",
-    "Cooler box com gelo",
-    "Binóculos"
-  ],
-
-  "included_en": [
-    "Mini van transfer with tour guide",
-    "Park entry fees",
-    "Lunch",
-    "Water and snacks",
-    "Cooler box with ice",
-    "Binoculars"
-  ],
-
-  "excluded": [
-    "Despesas pessoais",
-    "Bebidas alcoólicas",
-    "Taxas de fronteira"
-  ],
-
-  "excluded_en": [
-    "Personal expenses",
-    "Alcoholic drinks",
-    "Border fees"
-  ],
-
-  "images": [
-    "../assets/images/tours/safari/hlane/hlane-1.webp",
-    "../assets/images/tours/safari/hlane/hlane-2.webp",
-    "../assets/images/tours/safari/hlane/hlane-3.webp",
-    "../assets/images/tours/safari/hlane/hlane-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "05:30",
-      "title": "Partida de Maputo",
-      "title_en": "Departure from Maputo",
-      "description": "Saída cedo de Maputo em direção à fronteira com Eswatini.",
-      "description_en": "Early departure from Maputo towards the Eswatini border."
-    },
-    {
-      "time": "07:30",
-      "title": "Chegada ao Hlane",
-      "title_en": "Arrival at Hlane",
-      "description": "Chegada ao Parque Nacional Real de Hlane e início do safari.",
-      "description_en": "Arrival at Hlane Royal National Park and start of the safari."
-    },
-    {
-      "time": "08:00",
-      "title": "Safari",
-      "title_en": "Safari",
-      "description": "Safari guiado em mini van pelo parque com avistamento de vida selvagem.",
-      "description_en": "Guided mini van safari through the park with wildlife sightings."
-    },
-    {
-      "time": "12:30",
-      "title": "Almoço",
-      "title_en": "Lunch",
-      "description": "Pausa para almoço incluído na excursão.",
-      "description_en": "Lunch break included in the tour."
-    },
-    {
-      "time": "14:00",
-      "title": "Cascatas de Namaacha",
-      "title_en": "Namacha Waterfalls",
-      "description": "Partida em direção às Cascatas de Namaacha para uma visita panorâmica.",
-      "description_en": "Departure towards Namacha Waterfalls for a scenic visit."
-    },
-    {
-      "time": "16:00",
-      "title": "Regresso a Maputo",
-      "title_en": "Return to Maputo",
-      "description": "Fim da excursão e regresso a Maputo.",
-      "description_en": "End of excursion and return to Maputo."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "important_info": [
-    "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
-    "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
-    "É obrigatório possuir passaporte válido com pelo menos 6 meses de validade.",
-    "Verifique os requisitos de visto para a sua nacionalidade antes da viagem.",
-    "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
-    "Recomendamos trazer protector solar, chapéu e roupa leve e confortável.",
-    "Os animais são selvagens — siga sempre as instruções do guia dentro do parque.",
-    "O avistamento de animais não é garantido, pois dependem do comportamento natural da vida selvagem."
-  ],
-
-  "important_info_en": [
-    "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
-    "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
-    "A valid passport with at least 6 months validity is required.",
-    "Please check visa requirements for your nationality before travelling.",
-    "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
-    "We recommend bringing sunscreen, a hat and light, comfortable clothing.",
-    "Animals are wild — always follow the guide's instructions inside the park.",
-    "Animal sightings are not guaranteed as they depend on the natural behaviour of wildlife."
-  ],
-
-  "reviews": []
-},
-{
-  "id": "eswatini-mantenga-cultural-tour",
-  "category": "safaris",
-  "title": "Excursão Cultural Mantenga Village – Eswatini",
-  "title_en": "Eswatini Mantenga Village Cultural Tour",
-
-  "location": "Mantenga Village, Eswatini",
-
-  "duration": "Dia inteiro (05:30 – 17:30)",
-  "duration_en": "Full Day (05:30 – 17:30)",
-
-  "group_size": "Mínimo 2 pessoas",
-  "group_size_en": "Minimum 2 people",
-
-  "languages": ["Português", "English"],
-
-  "price_from": 15500,
-  "child_price": 9500,
-  "currency": "MZN",
-
-  "rating": 4.8,
-  "reviews_count": 0,
-
-  "badge": "Cultural Tour",
-
-  "description": "Descubra a cultura tradicional de Eswatini numa excursão de um dia saindo de Maputo. Esta experiência inclui uma visita ao famoso Mantenga Cultural Village, às cascatas de Mantenga e ao icónico restaurante House on Fire. Uma oportunidade única para conhecer a história, cultura e artesanato local.",
-
-  "description_en": "Discover the traditional culture of Eswatini on a day trip from Maputo. This experience includes a visit to the famous Mantenga Cultural Village, Mantenga Waterfall and the iconic House on Fire cultural center. A unique opportunity to experience local traditions, history and crafts.",
-
-  "highlights": [
-    "Visita ao Mantenga Cultural Village",
-    "Cascatas de Mantenga",
-    "Centro cultural House on Fire",
-    "Fábrica de velas artesanal",
-    "Experiência cultural em Eswatini"
-  ],
-
-  "highlights_en": [
-    "Visit Mantenga Cultural Village",
-    "Mantenga Waterfall visit",
-    "House on Fire cultural center",
-    "Candle factory visit",
-    "Authentic Eswatini cultural experience"
-  ],
-
-  "included": [
-    "Transfer em mini van",
-    "Guia turístico",
-    "Entrada no Mantenga Cultural Village",
-    "Visita às cascatas de Mantenga",
-    "Visita à fábrica de velas",
-    "Visita ao House on Fire",
-    "Almoço",
-    "Água e snacks",
-    "Cooler box com gelo",
-    "Binóculos"
-  ],
-
-  "included_en": [
-    "Mini van guided tour",
-    "Tour guide",
-    "Mantenga Cultural Village entry",
-    "Mantenga waterfall visit",
-    "Candle factory visit",
-    "House on Fire cultural center visit",
-    "Lunch",
-    "Water and snacks",
-    "Cooler box with ice",
-    "Binoculars"
-  ],
-
-  "excluded": [
-    "Despesas pessoais",
-    "Bebidas alcoólicas",
-    "Taxas de fronteira",
-    "Taxa de estacionamento — 250 MZN por carro/dia"
-  ],
-
-  "excluded_en": [
-    "Personal expenses",
-    "Alcoholic drinks",
-    "Border fees",
-    "Parking fee — 250 MZN per car/day"
-  ],
-
-  "images": [
-    "../assets/images/tours/safari/eswatini-tour-1.webp",
-    "../assets/images/tours/safari/eswatini-tour-2.webp",
-    "../assets/images/tours/safari/eswatini-tour-3.webp",
-    "../assets/images/tours/safari/eswatini-tour-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "05:30",
-      "title": "Partida de Maputo",
-      "title_en": "Departure from Maputo",
-      "description": "Saída cedo de Maputo em direção à fronteira com Eswatini.",
-      "description_en": "Early departure from Maputo towards the Eswatini border."
-    },
-    {
-      "time": "09:00",
-      "title": "Chegada ao Mantenga Cultural Village",
-      "title_en": "Arrival at Mantenga Cultural Village",
-      "description": "Visita guiada à aldeia cultural tradicional.",
-      "description_en": "Guided visit to the traditional cultural village."
-    },
-    {
-      "time": "11:30",
-      "title": "Visita às Cascatas de Mantenga",
-      "title_en": "Mantenga Waterfall Visit",
-      "description": "Paragem nas cascatas naturais de Mantenga.",
-      "description_en": "Stop at the beautiful Mantenga Waterfall."
-    },
-    {
-      "time": "13:00",
-      "title": "Almoço",
-      "title_en": "Lunch",
-      "description": "Almoço incluído durante a excursão.",
-      "description_en": "Lunch included during the tour."
-    },
-    {
-      "time": "14:30",
-      "title": "House on Fire & Candle Factory",
-      "title_en": "House on Fire & Candle Factory",
-      "description": "Visita ao famoso centro cultural e à fábrica de velas.",
-      "description_en": "Visit to the famous cultural center and candle factory."
-    },
-    {
-      "time": "17:30",
-      "title": "Regresso a Maputo",
-      "title_en": "Return to Maputo",
-      "description": "Chegada prevista a Maputo.",
-      "description_en": "Estimated arrival in Maputo."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "important_info": [
-    "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
-    "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
-    "É obrigatório possuir passaporte válido com pelo menos 6 meses de validade.",
-    "Verifique os requisitos de visto para a sua nacionalidade antes da viagem.",
-    "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
-    "Recomendamos trazer protetor solar, chapéu e roupa leve e confortável."
-  ],
-  "important_info_en": [
-    "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
-    "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
-    "A valid passport with at least 6 months validity is required.",
-    "Please check visa requirements for your nationality before travelling.",
-    "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
-    "We recommend bringing sunscreen, a hat and light, comfortable clothing."
-  ],
-
-
-  "reviews": []
-},
   {
-  "id": "maputo-city-transfer",
-  "category": "transfers",
-  "title": "Airport Car Transfer – Maputo City",
-  "title_en": "Airport Car Transfer – Maputo City",
-  "location": "Maputo",
-  "duration": "Conforme rota",
-  "duration_en": "As per route",
-  "group_size": "Mínimo 2 pessoas",
-  "group_size_en": "Minimum 2 people",
-  "languages": ["Português", "English"],
-  "price_from": 1250,
-  "currency": "MZN",
-  "rating": 4.8,
-  "reviews_count": 0,
-  "badge": "City Transfer",
-  "description": "Serviço de transfer privado dentro da cidade de Maputo. Ideal para deslocações entre hotéis, restaurantes, escritórios e pontos turísticos da cidade.",
-  "description_en": "Private transfer service within Maputo city. Ideal for trips between hotels, restaurants, offices and tourist spots in the city.",
-
-  "highlights": [
-    "Motorista profissional",
-    "Transporte privado",
-    "Viatura climatizada",
-    "Flexibilidade de horários",
-    "Ideal para turistas e executivos"
-  ],
-  "highlights_en": [
-    "Professional driver",
-    "Private transport",
-    "Air-conditioned vehicle",
-    "Flexible timetable",
-    "Ideal for tourists and executives"
-  ],
-
-  "included": [
-    "Transporte privado",
-    "Motorista profissional",
-    "Ar condicionado"
-  ],
-  "included_en": [
-    "Private transport",
-    "Professional driver",
-    "Air conditioning"
-  ],
-
-  "excluded": [
-    "Estacionamento — 250 MZN por carro/dia",
-    "Portagens",
-    "Despesas pessoais"
-  ],
-  "excluded_en": [
-    "Parking — 250 MZN per car/day",
-    "Tolls",
-    "Personal expenses"
-  ],
-
-  "images": [
-    "../assets/images/transfers/car/car-transfer-1.webp",
-    "../assets/images/transfers/car/car-transfer-2.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "Hora combinada",
-      "title": "Pick-up",
-      "title_en": "Pick-up",
-      "description": "Recolha no local combinado.",
-      "description_en": "Collection at the agreed location."
+    "id": "kruger-national-park-day-trip",
+    "category": "safaris",
+    "title": "Kruger National Park Day Trip",
+    "title_en": "Kruger National Park Day Trip",
+    "location": "Kruger National Park, South Africa",
+    "duration": "Dia Inteiro (05:00 – 18:00)",
+    "duration_en": "Full Day (05:00 – 18:00)",
+    "group_size": "Sob consulta",
+    "group_size_en": "On request",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 13500,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Safari",
+    "child_price": 11000,
+    "description": "Explore o famoso Parque Nacional Kruger numa aventura de um dia saindo de Maputo. Este safari oferece a oportunidade de observar os lendários Big Five e uma grande variedade de vida selvagem africana. A experiência inclui transporte, guia turístico e almoço num restaurante dentro do parque com vista para o Rio Sabie.",
+    "description_en": "Explore the famous Kruger National Park on a day adventure from Maputo. This safari offers the opportunity to spot the legendary Big Five and a wide variety of African wildlife. The experience includes transport, a tour guide and lunch at a restaurant inside the park overlooking the Sabie River.",
+    "highlights": [
+      "Safari no famoso Parque Nacional Kruger",
+      "Possibilidade de avistar os Big Five",
+      "Paisagens naturais e vida selvagem africana",
+      "Almoço com vista para o Rio Sabie",
+      "Experiência guiada por especialista"
+    ],
+    "highlights_en": [
+      "Safari in the famous Kruger National Park",
+      "Opportunity to spot the Big Five",
+      "Natural landscapes and African wildlife",
+      "Lunch overlooking the Sabie River",
+      "Guided experience by a specialist"
+    ],
+    "included": [
+      "Transfer ida e volta de Maputo",
+      "Taxas de entrada no Parque Nacional Kruger",
+      "Safari de dia inteiro",
+      "Guia turístico",
+      "Almoço",
+      "Cooler Box (Caixa térmica) com gelo",
+      "Lanche, frutas e água",
+      "Binóculos para observação de vida selvagem"
+    ],
+    "included_en": [
+      "Return transfer from Maputo",
+      "Kruger National Park entrance fees",
+      "Full-day safari",
+      "Tour guide",
+      "Lunch",
+      "Cool box with ice",
+      "Snacks, fruit and water",
+      "Binoculars for wildlife viewing"
+    ],
+    "excluded": [
+      "Atividades extras dentro do parque",
+      "Bebidas alcoólicas",
+      "Despesas pessoais",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
+    ],
+    "excluded_en": [
+      "Extra activities inside the park",
+      "Alcoholic drinks",
+      "Personal expenses",
+      "Parking fee — 250 MZN per car/day"
+    ],
+    "pricing": {
+      "regular_vehicle": {
+        "adults": 13500,
+        "children": 11000
+      },
+      "open_vehicle": {
+        "adults": 18500,
+        "children": 9200
+      }
     },
-    {
-      "time": "En route",
-      "title": "Viagem",
-      "title_en": "Journey",
-      "description": "Deslocação confortável até ao destino.",
-      "description_en": "Comfortable journey to the destination."
+    "images": [
+      "../assets/images/tours/safari/safari-kruger-1.webp",
+      "../assets/images/tours/safari/safari-kruger-2.webp",
+      "../assets/images/tours/safari/safari-kruger-3.webp",
+      "../assets/images/tours/safari/safari-kruger-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "05:45",
+        "title": "Partida de Maputo",
+        "title_en": "Departure from Maputo",
+        "description": "Saída cedo de Maputo em direção à fronteira de Ressano Garcia.",
+        "description_en": "Early departure from Maputo towards Ressano Garcia border."
+      },
+      {
+        "time": "06:30",
+        "title": "Chegada à Fronteira",
+        "title_en": "Arrival at the Border",
+        "description": "Procedimentos de imigração e alfândega.",
+        "description_en": "Immigration and customs procedures."
+      },
+      {
+        "time": "07:00",
+        "title": "Continuação da viagem",
+        "title_en": "Continuing the journey",
+        "description": "Viagem em direção ao Parque Nacional Kruger.",
+        "description_en": "Journey towards Kruger National Park."
+      },
+      {
+        "time": "07:30",
+        "title": "Chegada ao Kruger",
+        "title_en": "Arrival at Kruger",
+        "description": "Entrada no parque e início do safari.",
+        "description_en": "Park entry and start of the safari."
+      },
+      {
+        "time": "12:30",
+        "title": "Almoço",
+        "title_en": "Lunch",
+        "description": "Almoço num restaurante dentro do parque com vista para o Rio Sabie.",
+        "description_en": "Lunch at a restaurant inside the park overlooking the Sabie River."
+      },
+      {
+        "time": "14:00",
+        "title": "Continuação do Safari",
+        "title_en": "Safari continues",
+        "description": "Busca pelos lendários Big Five.",
+        "description_en": "Searching for the legendary Big Five."
+      },
+      {
+        "time": "16:00",
+        "title": "Fim do Safari",
+        "title_en": "End of Safari",
+        "description": "Saída do parque e início do regresso.",
+        "description_en": "Park exit and start of return journey."
+      },
+      {
+        "time": "18:00",
+        "title": "Chegada a Maputo",
+        "title_en": "Arrival in Maputo",
+        "description": "Fim da excursão.",
+        "description_en": "End of excursion."
+      }
+    ],
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
     },
-    {
-      "time": "Chegada",
-      "title": "Drop-off",
-      "title_en": "Drop-off",
-      "description": "Chegada ao destino final.",
-      "description_en": "Arrival at the final destination."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Local combinado",
-    "address": "Maputo"
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
+    },
+    "important_info": [
+      "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
+      "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
+      "É obrigatório possuir passaporte válido com pelo menos 6 meses de validade para a entrada na África do Sul.",
+      "Verifique os requisitos de visto para a sua nacionalidade antes da viagem.",
+      "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
+      "Recomendamos trazer protector solar, chapéu e roupa leve e confortável.",
+      "Os animais são selvagens — siga sempre as instruções do guia dentro do parque.",
+      "O avistamento de animais não é garantido, pois dependem do comportamento natural da vida selvagem."
+    ],
+    "important_info_en": [
+      "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
+      "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
+      "A valid passport with at least 6 months validity is required for entry into South Africa.",
+      "Please check visa requirements for your nationality before travelling.",
+      "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
+      "We recommend bringing sunscreen, a hat and light, comfortable clothing.",
+      "Animals are wild — always follow the guide's instructions inside the park.",
+      "Animal sightings are not guaranteed as they depend on the natural behaviour of wildlife."
+    ],
+    "reviews": []
   },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "map_location": {
-    "lat": -25.9692,
-    "lng": 32.5732,
-    "label": "Maputo City"
-  },
-
-  "important_info": [
-    "Horários flexíveis mediante reserva.",
-    "Confirme o local de recolha antes da viagem."
-  ],
-  "important_info_en": [
-    "Flexible timetables subject to booking.",
-    "Confirm the pick-up location before travel."
-  ],
-
-  "reviews": []
-},
   {
-  "id": "inhaca-transfer",
-  "category": "transfers",
-  "title": "Transfer de Barco – Inhaca",
-  "title_en": "Boat Transfer – Inhaca",
-  "location": "Marina de Maputo",
-  "duration": "Conforme maré",
-  "duration_en": "As per tide",
-  "group_size": "1 – 12 pessoas",
-  "group_size_en": "1 – 12 people",
-  "languages": ["Português", "English"],
-  "price_from": 2600,
-  "child_price": 1250,
-  "child_age_note": "Crianças 4–10 anos",
-  "child_age_note_en": "Children ages 4–10",
-  "currency": "MZN",
-  "rating": 4.8,
-  "reviews_count": 0,
-  "badge": "Boat Transfer",
-  "description": "Transfer de barco entre a Marina de Maputo, Ilha de Inhaca. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
-  "description_en": "Boat transfer between Maputo Marina, Inhaca Island. Departure times may vary depending on tides and weather conditions. We recommend always confirming dates and times before travel to ensure availability.",
-
-  "highlights": [
-    "Transfer rápido de barco",
-    "Partidas da Marina de Maputo",
-    "Ligação direta para Inhaca",
-    "Coordenação baseada nas marés",
-    "Ideal para hóspedes de lodges e turistas"
-  ],
-  "highlights_en": [
-    "Fast boat transfer",
-    "Departures from Maputo Marina",
-    "Direct connection to Inhaca",
-    "Tide-based coordination",
-    "Ideal for lodge guests and tourists"
-  ],
-
-  "included": [
-    "Transfer de barco por trajecto (ida ou volta)",
-    "Taxa da marina"
-  ],
-  "included_en": [
-    "Return boat transfer",
-    "Marina fee"
-  ],
-
-  "excluded": [
-    "Taxa de estacionamento (250 MZN por carro)",
-    "Taxa de reserva da Ilha da Inhaca 100 MZN/pessoa para locais",
-    "Taxa de reserva da Ilha da Inhaca 200 MZN/pessoa para estrangeiros",
-    "Despesas pessoais"
-  ],
-  "excluded_en": [
-    "Parking fee (250 MZN per car)",
-    "Inhaca Island reserve fee: 100 MZN/person for locals",
-    "Inhaca Island reserve fee: 200 MZN/person for foreigners",
-    "Personal expenses"
-  ],
-
-  "fees_info": {
-    "parking_fee": "250 MZN por carro",
-    "inhaca_reservation_fee_national": "100 MZN por pessoa",
-    "inhaca_reservation_fee_foreign": "200 MZN por pessoa"
-  },
-
-  "images": [
-    "../assets/images/transfers/boat/boat-transfer-1.webp",
-    "../assets/images/transfers/boat/boat-transfer-2.webp",
-    "../assets/images/transfers/boat/boat-transfer-3.webp",
-    "../assets/images/transfers/boat/boat-transfer-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "Hora combinada",
-      "time_en": "Agreed time",
-      "title": "Check-in na Marina",
-      "title_en": "Check-in at the Marina",
-      "description": "Encontro na Escola Náutica para embarque.",
-      "description_en": "Meeting at Escola Náutica for boarding."
+    "id": "safari-maputo-special-reserve",
+    "category": "safaris",
+    "title": "Safari Maputo Special Reserve",
+    "title_en": "Maputo Special Reserve Safari",
+    "location": "Maputo Special Reserve, Mozambique",
+    "duration": "Dia Inteiro (06:30 – 15:45)",
+    "duration_en": "Full Day (06:30 – 15:45)",
+    "group_size": "Sob consulta",
+    "group_size_en": "On request",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 11500,
+    "child_price": 9500,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Safari",
+    "description": "Explore a incrível Reserva Especial de Maputo numa aventura de safari de um dia. Esta experiência oferece a oportunidade de observar elefantes, girafas, hipopótamos e muitas outras espécies num dos parques naturais mais impressionantes de Moçambique. O passeio inclui transporte de Maputo, taxas de entrada, snacks e guia turístico.",
+    "description_en": "Explore the incredible Maputo Special Reserve on a day safari adventure. This experience offers the opportunity to observe elephants, giraffes, hippos and many other species in one of Mozambique's most impressive nature parks. The trip includes transport from Maputo, entrance fees, snacks and a tour guide.",
+    "highlights": [
+      "Safari na Reserva Especial de Maputo",
+      "Observação de elefantes, girafas e hipopótamos",
+      "Paisagens naturais e lagoas da reserva",
+      "Experiência guiada com especialista local",
+      "Ideal para amantes da natureza e fotografia"
+    ],
+    "highlights_en": [
+      "Safari in the Maputo Special Reserve",
+      "Sighting of elephants, giraffes and hippos",
+      "Natural landscapes and reserve lagoons",
+      "Guided experience with a local specialist",
+      "Ideal for nature and photography lovers"
+    ],
+    "included": [
+      "Transfer ida e volta a partir de Maputo",
+      "Taxas de entrada na reserva",
+      "Lanche, frutas e água",
+      "Binóculos para observação de vida selvagem",
+      "Guia turístico"
+    ],
+    "included_en": [
+      "Return transfer from Maputo",
+      "Reserve entrance fees",
+      "Snacks, fruit and water",
+      "Binoculars for wildlife viewing",
+      "Tour guide"
+    ],
+    "excluded": [
+      "Bebidas alcoólicas",
+      "Despesas pessoais",
+      "Atividades adicionais dentro da reserva",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
+    ],
+    "excluded_en": [
+      "Alcoholic drinks",
+      "Personal expenses",
+      "Additional activities inside the reserve",
+      "Parking fee — 250 MZN per car/day"
+    ],
+    "images": [
+      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-1.webp",
+      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-5.jpg",
+      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-3.webp",
+      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-4.webp",
+      "../assets/images/tours/safari/safari-maputo-reserve/safari-maputo-reserve-6.jpg"
+    ],
+    "itinerary": [
+      {
+        "time": "06:30",
+        "title": "Partida de Maputo",
+        "title_en": "Departure from Maputo",
+        "description": "Saída de Maputo com direcção à Reserva Especial de Maputo. Viagem de transporte com conforto e segurança.",
+        "description_en": "Early departure from Maputo heading towards the Maputo Special Reserve. Comfortable and safe transfer journey."
+      },
+      {
+        "time": "08:00",
+        "title": "Chegada à Entrada da Reserva",
+        "title_en": "Arrival at the Reserve Entrance",
+        "description": "Chegada à entrada da Reserva Especial de Maputo e preparação para o safari com o guia local.",
+        "description_en": "Arrival at the entrance of the Maputo Special Reserve and preparation for the safari with the local guide."
+      },
+      {
+        "time": "08:30",
+        "title": "Início do Safari",
+        "title_en": "Safari Begins",
+        "description": "Embarque no safari guiado pela reserva. Primeiras observações da fauna local — elefantes, girafas, hipopótamos e muito mais nas paisagens naturais e lagoas.",
+        "description_en": "Start of the guided safari through the reserve. First wildlife sightings — elephants, giraffes, hippos and more across the natural landscapes and lagoons."
+      },
+      {
+        "time": "12:30",
+        "title": "Pausa para Almoço",
+        "title_en": "Lunch Break",
+        "description": "Paragem para almoço no Milibangalala ou Ponta Membene, dois dos pontos mais idílicos da reserva, com vistas sobre a laguna e o mar.",
+        "description_en": "Lunch break at Milibangalala or Ponta Membene, two of the most idyllic spots in the reserve, with views over the lagoon and sea."
+      },
+      {
+        "time": "14:00",
+        "title": "Continuação do Safari",
+        "title_en": "Safari Continues",
+        "description": "Retomada do safari pelas trilhas e áreas mais privilegiadas da reserva, com novas oportunidades de avistamento e fotografia de vida selvagem.",
+        "description_en": "Resume the safari along the reserve's trails and most scenic areas, with new opportunities for wildlife watching and photography."
+      },
+      {
+        "time": "15:30",
+        "title": "Regresso à Entrada da Reserva",
+        "title_en": "Return to the Reserve Entrance",
+        "description": "Fim do percurso interno da reserva e preparação para o regresso a Maputo.",
+        "description_en": "End of the internal route within the reserve and preparation for the return journey to Maputo."
+      },
+      {
+        "time": "15:45",
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Partida da Reserva Especial de Maputo com destino a Maputo, encerrando esta experiência de safari inesquecível.",
+        "description_en": "Departure from the Maputo Special Reserve heading back to Maputo, closing this unforgettable safari experience."
+      }
+    ],
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
     },
-    {
-      "time": "En route",
-      "time_en": "En route",
-      "title": "Transfer de barco",
-      "title_en": "Boat transfer",
-      "description": "Viagem pela Baía de Maputo em direção à Ilha de Inhaca ou Machangulo.",
-      "description_en": "Journey across Maputo Bay towards Inhaca Island or Machangulo."
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
     },
-    {
-      "time": "Chegada",
-      "time_en": "Arrival",
-      "title": "Drop-off",
-      "title_en": "Drop-off",
-      "description": "Desembarque no lodge ou ponto acordado.",
-      "description_en": "Disembarkation at the lodge or agreed point."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    "important_info": [
+      "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
+      "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
+      "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
+      "Recomendamos trazer protetor solar, chapéu e roupa leve e confortável.",
+      "Os animais são selvagens — siga sempre as instruções do guia dentro do parque.",
+      "O avistamento de animais não é garantido, pois dependem do comportamento natural da vida selvagem."
+    ],
+    "important_info_en": [
+      "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
+      "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
+      "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
+      "We recommend bringing sunscreen, a hat and light, comfortable clothing.",
+      "Animals are wild — always follow the guide's instructions inside the park.",
+      "Animal sightings are not guaranteed as they depend on the natural behaviour of wildlife."
+    ],
+    "reviews": []
   },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "map_location": {
-    "lat": -25.9673,
-    "lng": 32.5834,
-    "label": "Maputo Marina"
-  },
-
-  "important_info": [
-    "Horários de partida podem variar devido às marés.",
-    "Confirme a disponibilidade antes da reserva.",
-    "Cancelamentos com menos de 48h não têm reembolso.",
-    "Após 15 minutos de tolerância o barco parte normalmente."
-  ],
-  "important_info_en": [
-    "Departure times may vary due to tides.",
-    "Confirm availability before booking.",
-    "Cancellations within 48h are non-refundable.",
-    "After 15 minutes tolerance the boat departs as normal."
-  ],
-
-  "reviews": []
-},
-
-{
-  "id": "machangulo-transfer",
-  "category": "transfers",
-  "title": "Transfer de Barco – Machangulo",
-  "title_en": "Boat Transfer – Machangulo",
-
-  "location": "Marina de Maputo",
-
-  "duration": "Conforme maré",
-  "duration_en": "As per tide",
-
-  "group_size": "1 – 12 pessoas",
-  "group_size_en": "1 – 12 people",
-
-  "languages": ["Português", "English"],
-
-  "price_from": 3600,
-  "price_weekday": 5500,
-  "child_price": 1750,
-  "child_price_weekday": 2750,
-  "child_age_note": "Crianças 4–10 anos",
-  "child_age_note_en": "Children ages 4–10",
-  "currency": "MZN",
-
-  "rating": 4.8,
-  "reviews_count": 0,
-
-  "badge": "Boat Transfer",
-
-  "description": "Transfer de barco entre a Marina de Maputo e a Península de Machangulo. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
-
-  "description_en": "Boat transfer between Maputo Marina and the Machangulo Peninsula. Departure times may vary depending on tides and weather conditions. We recommend confirming dates and times before travelling to ensure availability.",
-
-  "highlights": [
-    "Transfer rápido de barco",
-    "Partidas da Marina de Maputo",
-    "Ligação direta para Machangulo",
-    "Coordenação baseada nas marés",
-    "Ideal para hóspedes de lodges e turistas"
-  ],
-
-  "highlights_en": [
-    "Fast boat transfer",
-    "Departures from Maputo Marina",
-    "Direct connection to Machangulo",
-    "Tide-based coordination",
-    "Ideal for lodge guests and tourists"
-  ],
-
-  "included": [
-    "Transfer de barco por trajecto (ida ou volta) ",
-    "Taxa da marina"
-  ],
-
-  "included_en": [
-    "Boat transfer per trip",
-    "Marina fee"
-  ],
-
-  "excluded": [
-    "Taxa de estacionamento (250 MZN por carro)",
-    "Despesas pessoais"
-  ],
-
-  "excluded_en": [
-    "Parking fee (250 MZN per car)",
-    "Personal expenses"
-  ],
-
-  "pricing": {
-    "monday_thursday": {
-      "label": "Segunda a Quinta",
-      "price_round_trip": 5000
-    },
-    "friday_saturday": {
-      "label": "Sexta e Sábado",
-      "price_one_way": 3200
-    }
-  },
-
-  "images": [
-    "../assets/images/transfers/boat/machangulo-transfer-1.webp",
-    "../assets/images/transfers/boat/machangulo-transfer-2.webp",
-    "../assets/images/transfers/boat/machangulo-transfer-3.webp",
-    "../assets/images/transfers/boat/machangulo-transfer-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "Hora combinada",
-      "title": "Check-in na Marina",
-      "title_en": "Check-in at the Marina",
-      "description": "Encontro na Escola Náutica para embarque.",
-      "description_en": "Meeting at Escola Náutica for boarding."
-    },
-    {
-      "time": "En route",
-      "title": "Transfer de barco",
-      "title_en": "Boat transfer",
-      "description": "Travessia pela Baía de Maputo em direção à Península de Machangulo.",
-      "description_en": "Boat journey across Maputo Bay towards Machangulo Peninsula."
-    },
-    {
-      "time": "Chegada",
-      "title": "Drop-off",
-      "title_en": "Drop-off",
-      "description": "Desembarque no lodge ou ponto combinado.",
-      "description_en": "Disembarkation at the lodge or agreed point."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
-  },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
-  },
-
-  "map_location": {
-    "lat": -25.9673,
-    "lng": 32.5834,
-    "label": "Maputo Marina"
-  },
-
-  "important_info": [
-    "Confirme a disponibilidade antes da reserva.",
-    "Cancelamentos com menos de 48h não têm reembolso.",
-    "Após 15 minutos de tolerância o barco parte normalmente."
-  ],
-
-  "important_info_en": [
-    "Confirm availability before booking.",
-    "Cancellations within 48h are non-refundable.",
-    "After 15 minutes tolerance the boat departs as normal."
-  ],
-
-  "reviews": []
-},
-
   {
-  "id": "maputo-city-tour",
-  "category": "maputo-city-tour",
-  "title": "Maputo City Tour",
-  "title_en": "Maputo City Tour",
-
-  "location": "Maputo, Mozambique",
-
-  "duration": "3 horas",
-  "duration_en": "3 hours",
-
-  "group_size": "Mínimo 2 pessoas",
-  "group_size_en": "Minimum 2 people",
-
-  "languages": ["Português", "English"],
-
-  "price_from": 2500,
-  "currency": "MZN",
-
-  "rating": 4.7,
-  "reviews_count": 0,
-
-  "badge": "City Tour",
-
-  "description": "Descubra os principais pontos históricos e culturais da cidade de Maputo num tour guiado de 3 horas. Explore monumentos icónicos, mercados locais e edifícios históricos enquanto aprende sobre a história e cultura da capital moçambicana.",
-
-  "description_en": "Discover the main historical and cultural landmarks of Maputo on a guided 3-hour city tour. Explore iconic monuments, local markets and historic buildings while learning about the history and culture of Mozambique’s capital.",
-
-  "highlights": [
-    "Igreja da Polana",
-    "FEIMA – Feira de Artesanato",
-    "Jardim Botânico Tunduru",
-    "Casa de Ferro",
-    "Estátua de Samora Machel",
-    "Catedral de Maputo",
-    "Fortaleza de Maputo",
-    "Estação de Comboios CFM",
-    "Mercado Central"
-  ],
-
-  "highlights_en": [
-    "Polana Church",
-    "FEIMA Craft Market",
-    "Tunduru Botanical Gardens",
-    "Iron House",
-    "Samora Machel Statue",
-    "Maputo Cathedral",
-    "Maputo Fortress",
-    "CFM Railway Station",
-    "Central Market"
-  ],
-
-  "included": [
-    "Guia turístico local",
-    "Transporte durante o tour",
-    "Água"
-  ],
-
-  "included_en": [
-    "Local tour guide",
-    "Transport during the tour",
-    "Water"
-  ],
-
-  "excluded": [
-    "Entradas em museus ou monumentos pagos",
-    "Compras pessoais",
-    "Pickup fora da cidade de Maputo",
-    "Taxa de estacionamento — 250 MZN por carro/dia"
-  ],
-
-  "excluded_en": [
-    "Entrance fees to paid monuments or museums",
-    "Personal purchases",
-    "Pickup outside Maputo city",
-    "Parking fee — 250 MZN per car/day"
-  ],
-
-  "pricing": {
-    "adults": 2500,
-    "children": 1800
+    "id": "eswatini-hlane-safari-namacha-waterfalls",
+    "category": "safaris",
+    "title": "Hlane Royal Park Safari & Cascatas de Namaacha – Eswatini",
+    "title_en": "Hlane Royal Park Safari & Namacha Waterfalls – Eswatini",
+    "location": "Hlane Royal National Park, Eswatini",
+    "duration": "Dia inteiro (05:30 – 16:00)",
+    "duration_en": "Full Day (05:30 – 16:00)",
+    "group_size": "Mínimo 2 pessoas",
+    "group_size_en": "Minimum 2 people",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 13500,
+    "currency": "MZN",
+    "rating": 4.9,
+    "reviews_count": 0,
+    "badge": "Safari",
+    "description": "Viva a emoção de um safari no Parque Nacional Real de Hlane, em Eswatini, combinado com uma paragem nas deslumbrantes Cascatas de Namaacha. Esta excursão de um dia inclui transporte em mini van, guia turístico, almoço, snacks e binóculos — tudo organizado para uma experiência inesquecível.",
+    "description_en": "Experience the thrill of a safari in Hlane Royal National Park, Eswatini, combined with a stop at the stunning Namacha Waterfalls. This full-day excursion includes mini van transport, a tour guide, lunch, snacks and binoculars — everything arranged for an unforgettable experience.",
+    "highlights": [
+      "Safari no Parque Nacional Real de Hlane",
+      "Avistamento de rinocerontes, leões e elefantes",
+      "Visita às Cascatas de Namaacha",
+      "Transporte confortável em mini van",
+      "Experiência guiada por especialista"
+    ],
+    "highlights_en": [
+      "Safari in Hlane Royal National Park",
+      "Spotting rhinos, lions and elephants",
+      "Visit to Namacha Waterfalls",
+      "Comfortable mini van transport",
+      "Expert-guided experience"
+    ],
+    "included": [
+      "Transfer em mini van com guia turístico",
+      "Taxas de entrada no parque",
+      "Almoço",
+      "Água e snacks",
+      "Cooler box com gelo",
+      "Binóculos"
+    ],
+    "included_en": [
+      "Mini van transfer with tour guide",
+      "Park entry fees",
+      "Lunch",
+      "Water and snacks",
+      "Cooler box with ice",
+      "Binoculars"
+    ],
+    "excluded": [
+      "Despesas pessoais",
+      "Bebidas alcoólicas",
+      "Taxas de fronteira"
+    ],
+    "excluded_en": [
+      "Personal expenses",
+      "Alcoholic drinks",
+      "Border fees"
+    ],
+    "images": [
+      "../assets/images/tours/safari/hlane/hlane-1.webp",
+      "../assets/images/tours/safari/hlane/hlane-2.webp",
+      "../assets/images/tours/safari/hlane/hlane-3.webp",
+      "../assets/images/tours/safari/hlane/hlane-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "05:30",
+        "title": "Partida de Maputo",
+        "title_en": "Departure from Maputo",
+        "description": "Saída cedo de Maputo em direção à fronteira com Eswatini.",
+        "description_en": "Early departure from Maputo towards the Eswatini border."
+      },
+      {
+        "time": "07:30",
+        "title": "Chegada ao Hlane",
+        "title_en": "Arrival at Hlane",
+        "description": "Chegada ao Parque Nacional Real de Hlane e início do safari.",
+        "description_en": "Arrival at Hlane Royal National Park and start of the safari."
+      },
+      {
+        "time": "08:00",
+        "title": "Safari",
+        "title_en": "Safari",
+        "description": "Safari guiado em mini van pelo parque com avistamento de vida selvagem.",
+        "description_en": "Guided mini van safari through the park with wildlife sightings."
+      },
+      {
+        "time": "12:30",
+        "title": "Almoço",
+        "title_en": "Lunch",
+        "description": "Pausa para almoço incluído na excursão.",
+        "description_en": "Lunch break included in the tour."
+      },
+      {
+        "time": "14:00",
+        "title": "Cascatas de Namaacha",
+        "title_en": "Namacha Waterfalls",
+        "description": "Partida em direção às Cascatas de Namaacha para uma visita panorâmica.",
+        "description_en": "Departure towards Namacha Waterfalls for a scenic visit."
+      },
+      {
+        "time": "16:00",
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Fim da excursão e regresso a Maputo.",
+        "description_en": "End of excursion and return to Maputo."
+      }
+    ],
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    },
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
+    },
+    "important_info": [
+      "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
+      "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
+      "É obrigatório possuir passaporte válido com pelo menos 6 meses de validade.",
+      "Verifique os requisitos de visto para a sua nacionalidade antes da viagem.",
+      "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
+      "Recomendamos trazer protector solar, chapéu e roupa leve e confortável.",
+      "Os animais são selvagens — siga sempre as instruções do guia dentro do parque.",
+      "O avistamento de animais não é garantido, pois dependem do comportamento natural da vida selvagem."
+    ],
+    "important_info_en": [
+      "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
+      "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
+      "A valid passport with at least 6 months validity is required.",
+      "Please check visa requirements for your nationality before travelling.",
+      "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
+      "We recommend bringing sunscreen, a hat and light, comfortable clothing.",
+      "Animals are wild — always follow the guide's instructions inside the park.",
+      "Animal sightings are not guaranteed as they depend on the natural behaviour of wildlife."
+    ],
+    "reviews": []
   },
-
-  "images": [
-    "../assets/images/tours/city-tours/maputo-city-tour-1.webp",
-    "../assets/images/tours/city-tours/maputo-city-tour-2.webp",
-    "../assets/images/tours/city-tours/maputo-city-tour-3.webp",
-    "../assets/images/tours/city-tours/maputo-city-tour-4.webp"
-  ],
-
-  "itinerary": [
-    {
-      "time": "Início",
-      "title": "Pickup",
-      "title_en": "Pickup",
-      "description": "Recolha no hotel ou ponto combinado. Hora de início flexível conforme disponibilidade.",
-      "description_en": "Pickup at hotel or agreed point. Start time is flexible depending on availability."
+  {
+    "id": "eswatini-mantenga-cultural-tour",
+    "category": "safaris",
+    "title": "Excursão Cultural Mantenga Village – Eswatini",
+    "title_en": "Eswatini Mantenga Village Cultural Tour",
+    "location": "Mantenga Village, Eswatini",
+    "duration": "Dia inteiro (05:30 – 17:30)",
+    "duration_en": "Full Day (05:30 – 17:30)",
+    "group_size": "Mínimo 2 pessoas",
+    "group_size_en": "Minimum 2 people",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 15500,
+    "child_price": 9500,
+    "currency": "MZN",
+    "rating": 4.8,
+    "reviews_count": 0,
+    "badge": "Cultural Tour",
+    "description": "Descubra a cultura tradicional de Eswatini numa excursão de um dia saindo de Maputo. Esta experiência inclui uma visita ao famoso Mantenga Cultural Village, às cascatas de Mantenga e ao icónico restaurante House on Fire. Uma oportunidade única para conhecer a história, cultura e artesanato local.",
+    "description_en": "Discover the traditional culture of Eswatini on a day trip from Maputo. This experience includes a visit to the famous Mantenga Cultural Village, Mantenga Waterfall and the iconic House on Fire cultural center. A unique opportunity to experience local traditions, history and crafts.",
+    "highlights": [
+      "Visita ao Mantenga Cultural Village",
+      "Cascatas de Mantenga",
+      "Centro cultural House on Fire",
+      "Fábrica de velas artesanal",
+      "Experiência cultural em Eswatini"
+    ],
+    "highlights_en": [
+      "Visit Mantenga Cultural Village",
+      "Mantenga Waterfall visit",
+      "House on Fire cultural center",
+      "Candle factory visit",
+      "Authentic Eswatini cultural experience"
+    ],
+    "included": [
+      "Transfer em mini van",
+      "Guia turístico",
+      "Entrada no Mantenga Cultural Village",
+      "Visita às cascatas de Mantenga",
+      "Visita à fábrica de velas",
+      "Visita ao House on Fire",
+      "Almoço",
+      "Água e snacks",
+      "Cooler box com gelo",
+      "Binóculos"
+    ],
+    "included_en": [
+      "Mini van guided tour",
+      "Tour guide",
+      "Mantenga Cultural Village entry",
+      "Mantenga waterfall visit",
+      "Candle factory visit",
+      "House on Fire cultural center visit",
+      "Lunch",
+      "Water and snacks",
+      "Cooler box with ice",
+      "Binoculars"
+    ],
+    "excluded": [
+      "Despesas pessoais",
+      "Bebidas alcoólicas",
+      "Taxas de fronteira",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
+    ],
+    "excluded_en": [
+      "Personal expenses",
+      "Alcoholic drinks",
+      "Border fees",
+      "Parking fee — 250 MZN per car/day"
+    ],
+    "images": [
+      "../assets/images/tours/safari/eswatini-tour-1.webp",
+      "../assets/images/tours/safari/eswatini-tour-2.webp",
+      "../assets/images/tours/safari/eswatini-tour-3.webp",
+      "../assets/images/tours/safari/eswatini-tour-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "05:30",
+        "title": "Partida de Maputo",
+        "title_en": "Departure from Maputo",
+        "description": "Saída cedo de Maputo em direção à fronteira com Eswatini.",
+        "description_en": "Early departure from Maputo towards the Eswatini border."
+      },
+      {
+        "time": "09:00",
+        "title": "Chegada ao Mantenga Cultural Village",
+        "title_en": "Arrival at Mantenga Cultural Village",
+        "description": "Visita guiada à aldeia cultural tradicional.",
+        "description_en": "Guided visit to the traditional cultural village."
+      },
+      {
+        "time": "11:30",
+        "title": "Visita às Cascatas de Mantenga",
+        "title_en": "Mantenga Waterfall Visit",
+        "description": "Paragem nas cascatas naturais de Mantenga.",
+        "description_en": "Stop at the beautiful Mantenga Waterfall."
+      },
+      {
+        "time": "13:00",
+        "title": "Almoço",
+        "title_en": "Lunch",
+        "description": "Almoço incluído durante a excursão.",
+        "description_en": "Lunch included during the tour."
+      },
+      {
+        "time": "14:30",
+        "title": "House on Fire & Candle Factory",
+        "title_en": "House on Fire & Candle Factory",
+        "description": "Visita ao famoso centro cultural e à fábrica de velas.",
+        "description_en": "Visit to the famous cultural center and candle factory."
+      },
+      {
+        "time": "17:30",
+        "title": "Regresso a Maputo",
+        "title_en": "Return to Maputo",
+        "description": "Chegada prevista a Maputo.",
+        "description_en": "Estimated arrival in Maputo."
+      }
+    ],
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
     },
-    {
-      "time": "+ 30 min",
-      "title": "Igreja da Polana",
-      "title_en": "Polana Church",
-      "description": "Visita a um dos monumentos mais emblemáticos de Maputo.",
-      "description_en": "Visit one of the most iconic monuments in Maputo."
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
     },
-    {
-      "time": "+ 30 min",
-      "title": "Jardim Botânico & Casa de Ferro",
-      "title_en": "Botanical Garden & Iron House",
-      "description": "Passeio pelo histórico Jardim Tunduru e visita à famosa Casa de Ferro.",
-      "description_en": "Walk through the historic Tunduru Gardens and visit the famous Iron House."
-    },
-    {
-      "time": "+ 30 min",
-      "title": "Catedral & Estátua Samora Machel",
-      "title_en": "Cathedral & Samora Machel Statue",
-      "description": "Paragem no coração histórico da cidade.",
-      "description_en": "Stop in the historic heart of the city."
-    },
-    {
-      "time": "+ 30 min",
-      "title": "Fortaleza & Estação CFM",
-      "title_en": "Fortress & CFM Railway Station",
-      "description": "Visita a dois dos edifícios históricos mais importantes de Maputo.",
-      "description_en": "Visit two of the most important historic buildings in Maputo."
-    },
-    {
-      "time": "+ 30 min",
-      "title": "Mercado Central & FEIMA",
-      "title_en": "Central Market & FEIMA",
-      "description": "Exploração do mercado local e da feira de artesanato.",
-      "description_en": "Explore the local market and the craft fair."
-    },
-    {
-      "time": "+ 30 min",
-      "title": "Fim do tour",
-      "title_en": "End of tour",
-      "description": "Regresso ao hotel ou ponto de encontro.",
-      "description_en": "Return to hotel or meeting point."
-    }
-  ],
-
-  "meeting_point": {
-    "name": "Maputo Marina",
-    "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    "important_info": [
+      "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
+      "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
+      "É obrigatório possuir passaporte válido com pelo menos 6 meses de validade.",
+      "Verifique os requisitos de visto para a sua nacionalidade antes da viagem.",
+      "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
+      "Recomendamos trazer protetor solar, chapéu e roupa leve e confortável."
+    ],
+    "important_info_en": [
+      "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
+      "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
+      "A valid passport with at least 6 months validity is required.",
+      "Please check visa requirements for your nationality before travelling.",
+      "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
+      "We recommend bringing sunscreen, a hat and light, comfortable clothing."
+    ],
+    "reviews": []
   },
-
-  "contact": {
-    "phone": "+258847121666",
-    "email": "maputoblue.info@gmail.com"
+  {
+    "id": "maputo-city-transfer",
+    "category": "transfers",
+    "title": "Airport Car Transfer – Maputo City",
+    "title_en": "Airport Car Transfer – Maputo City",
+    "location": "Maputo",
+    "duration": "Conforme rota",
+    "duration_en": "As per route",
+    "group_size": "Mínimo 2 pessoas",
+    "group_size_en": "Minimum 2 people",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 1250,
+    "currency": "MZN",
+    "rating": 4.8,
+    "reviews_count": 0,
+    "badge": "City Transfer",
+    "description": "Serviço de transfer privado dentro da cidade de Maputo. Ideal para deslocações entre hotéis, restaurantes, escritórios e pontos turísticos da cidade.",
+    "description_en": "Private transfer service within Maputo city. Ideal for trips between hotels, restaurants, offices and tourist spots in the city.",
+    "highlights": [
+      "Motorista profissional",
+      "Transporte privado",
+      "Viatura climatizada",
+      "Flexibilidade de horários",
+      "Ideal para turistas e executivos"
+    ],
+    "highlights_en": [
+      "Professional driver",
+      "Private transport",
+      "Air-conditioned vehicle",
+      "Flexible timetable",
+      "Ideal for tourists and executives"
+    ],
+    "included": [
+      "Transporte privado",
+      "Motorista profissional",
+      "Ar condicionado"
+    ],
+    "included_en": [
+      "Private transport",
+      "Professional driver",
+      "Air conditioning"
+    ],
+    "excluded": [
+      "Estacionamento — 250 MZN por carro/dia",
+      "Portagens",
+      "Despesas pessoais"
+    ],
+    "excluded_en": [
+      "Parking — 250 MZN per car/day",
+      "Tolls",
+      "Personal expenses"
+    ],
+    "images": [
+      "../assets/images/transfers/car/car-transfer-1.webp",
+      "../assets/images/transfers/car/car-transfer-2.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "Hora combinada",
+        "title": "Pick-up",
+        "title_en": "Pick-up",
+        "description": "Recolha no local combinado.",
+        "description_en": "Collection at the agreed location."
+      },
+      {
+        "time": "En route",
+        "title": "Viagem",
+        "title_en": "Journey",
+        "description": "Deslocação confortável até ao destino.",
+        "description_en": "Comfortable journey to the destination."
+      },
+      {
+        "time": "Chegada",
+        "title": "Drop-off",
+        "title_en": "Drop-off",
+        "description": "Chegada ao destino final.",
+        "description_en": "Arrival at the final destination."
+      }
+    ],
+    "meeting_point": {
+      "name": "Local combinado",
+      "address": "Maputo"
+    },
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
+    },
+    "map_location": {
+      "lat": -25.9692,
+      "lng": 32.5732,
+      "label": "Maputo City"
+    },
+    "important_info": [
+      "Horários flexíveis mediante reserva.",
+      "Confirme o local de recolha antes da viagem."
+    ],
+    "important_info_en": [
+      "Flexible timetables subject to booking.",
+      "Confirm the pick-up location before travel."
+    ],
+    "reviews": []
   },
-
-  "map_location": {
-    "lat": -25.9692,
-    "lng": 32.5732,
-    "label": "Maputo City Center"
+  {
+    "id": "inhaca-transfer",
+    "category": "transfers",
+    "title": "Transfer de Barco – Inhaca",
+    "title_en": "Boat Transfer – Inhaca",
+    "location": "Marina de Maputo",
+    "duration": "Conforme maré",
+    "duration_en": "As per tide",
+    "group_size": "1 – 12 pessoas",
+    "group_size_en": "1 – 12 people",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 2600,
+    "child_price": 1250,
+    "child_age_note": "Crianças 4–10 anos",
+    "child_age_note_en": "Children ages 4–10",
+    "currency": "MZN",
+    "rating": 4.8,
+    "reviews_count": 0,
+    "badge": "Boat Transfer",
+    "description": "Transfer de barco entre a Marina de Maputo, Ilha de Inhaca. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
+    "description_en": "Boat transfer between Maputo Marina, Inhaca Island. Departure times may vary depending on tides and weather conditions. We recommend always confirming dates and times before travel to ensure availability.",
+    "highlights": [
+      "Transfer rápido de barco",
+      "Partidas da Marina de Maputo",
+      "Ligação direta para Inhaca",
+      "Coordenação baseada nas marés",
+      "Ideal para hóspedes de lodges e turistas"
+    ],
+    "highlights_en": [
+      "Fast boat transfer",
+      "Departures from Maputo Marina",
+      "Direct connection to Inhaca",
+      "Tide-based coordination",
+      "Ideal for lodge guests and tourists"
+    ],
+    "included": [
+      "Transfer de barco por trajecto (ida ou volta)",
+      "Taxa da marina"
+    ],
+    "included_en": [
+      "Return boat transfer",
+      "Marina fee"
+    ],
+    "excluded": [
+      "Taxa de estacionamento (250 MZN por carro)",
+      "Taxa de reserva da Ilha da Inhaca 100 MZN/pessoa para locais",
+      "Taxa de reserva da Ilha da Inhaca 200 MZN/pessoa para estrangeiros",
+      "Despesas pessoais"
+    ],
+    "excluded_en": [
+      "Parking fee (250 MZN per car)",
+      "Inhaca Island reserve fee: 100 MZN/person for locals",
+      "Inhaca Island reserve fee: 200 MZN/person for foreigners",
+      "Personal expenses"
+    ],
+    "fees_info": {
+      "parking_fee": "250 MZN por carro",
+      "inhaca_reservation_fee_national": "100 MZN por pessoa",
+      "inhaca_reservation_fee_foreign": "200 MZN por pessoa"
+    },
+    "images": [
+      "../assets/images/transfers/boat/boat-transfer-1.webp",
+      "../assets/images/transfers/boat/boat-transfer-2.webp",
+      "../assets/images/transfers/boat/boat-transfer-3.webp",
+      "../assets/images/transfers/boat/boat-transfer-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "Hora combinada",
+        "time_en": "Agreed time",
+        "title": "Check-in na Marina",
+        "title_en": "Check-in at the Marina",
+        "description": "Encontro na Escola Náutica para embarque.",
+        "description_en": "Meeting at Escola Náutica for boarding."
+      },
+      {
+        "time": "En route",
+        "time_en": "En route",
+        "title": "Transfer de barco",
+        "title_en": "Boat transfer",
+        "description": "Viagem pela Baía de Maputo em direção à Ilha de Inhaca ou Machangulo.",
+        "description_en": "Journey across Maputo Bay towards Inhaca Island or Machangulo."
+      },
+      {
+        "time": "Chegada",
+        "time_en": "Arrival",
+        "title": "Drop-off",
+        "title_en": "Drop-off",
+        "description": "Desembarque no lodge ou ponto acordado.",
+        "description_en": "Disembarkation at the lodge or agreed point."
+      }
+    ],
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    },
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
+    },
+    "map_location": {
+      "lat": -25.9673,
+      "lng": 32.5834,
+      "label": "Maputo Marina"
+    },
+    "important_info": [
+      "Horários de partida podem variar devido às marés.",
+      "Confirme a disponibilidade antes da reserva.",
+      "Cancelamentos com menos de 48h não têm reembolso.",
+      "Após 15 minutos de tolerância o barco parte normalmente."
+    ],
+    "important_info_en": [
+      "Departure times may vary due to tides.",
+      "Confirm availability before booking.",
+      "Cancellations within 48h are non-refundable.",
+      "After 15 minutes tolerance the boat departs as normal."
+    ],
+    "reviews": []
   },
-
-  "important_info": [
-    "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
-    "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
-    "Por favor, respeite os horários de partida e os outros participantes.",
-    "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
-    "Pais e responsáveis devem supervisionar as crianças em todos os momentos."
-  ],
-  "important_info_en": [
-    "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
-    "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
-    "Please respect our departure times and fellow guests.",
-    "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
-    "Parents and guardians must closely supervise their children at all times."
-  ],
-
-
-  "reviews": []
-},
-
+  {
+    "id": "machangulo-transfer",
+    "category": "transfers",
+    "title": "Transfer de Barco – Machangulo",
+    "title_en": "Boat Transfer – Machangulo",
+    "location": "Marina de Maputo",
+    "duration": "Conforme maré",
+    "duration_en": "As per tide",
+    "group_size": "1 – 12 pessoas",
+    "group_size_en": "1 – 12 people",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 3600,
+    "price_weekday": 5500,
+    "child_price": 1750,
+    "child_price_weekday": 2750,
+    "child_age_note": "Crianças 4–10 anos",
+    "child_age_note_en": "Children ages 4–10",
+    "currency": "MZN",
+    "rating": 4.8,
+    "reviews_count": 0,
+    "badge": "Boat Transfer",
+    "description": "Transfer de barco entre a Marina de Maputo e a Península de Machangulo. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
+    "description_en": "Boat transfer between Maputo Marina and the Machangulo Peninsula. Departure times may vary depending on tides and weather conditions. We recommend confirming dates and times before travelling to ensure availability.",
+    "highlights": [
+      "Transfer rápido de barco",
+      "Partidas da Marina de Maputo",
+      "Ligação direta para Machangulo",
+      "Coordenação baseada nas marés",
+      "Ideal para hóspedes de lodges e turistas"
+    ],
+    "highlights_en": [
+      "Fast boat transfer",
+      "Departures from Maputo Marina",
+      "Direct connection to Machangulo",
+      "Tide-based coordination",
+      "Ideal for lodge guests and tourists"
+    ],
+    "included": [
+      "Transfer de barco por trajecto (ida ou volta) ",
+      "Taxa da marina"
+    ],
+    "included_en": [
+      "Boat transfer per trip",
+      "Marina fee"
+    ],
+    "excluded": [
+      "Taxa de estacionamento (250 MZN por carro)",
+      "Despesas pessoais"
+    ],
+    "excluded_en": [
+      "Parking fee (250 MZN per car)",
+      "Personal expenses"
+    ],
+    "pricing": {
+      "monday_thursday": {
+        "label": "Segunda a Quinta",
+        "price_round_trip": 5000
+      },
+      "friday_saturday": {
+        "label": "Sexta e Sábado",
+        "price_one_way": 3200
+      }
+    },
+    "images": [
+      "../assets/images/transfers/boat/machangulo-transfer-1.webp",
+      "../assets/images/transfers/boat/machangulo-transfer-2.webp",
+      "../assets/images/transfers/boat/machangulo-transfer-3.webp",
+      "../assets/images/transfers/boat/machangulo-transfer-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "Hora combinada",
+        "title": "Check-in na Marina",
+        "title_en": "Check-in at the Marina",
+        "description": "Encontro na Escola Náutica para embarque.",
+        "description_en": "Meeting at Escola Náutica for boarding."
+      },
+      {
+        "time": "En route",
+        "title": "Transfer de barco",
+        "title_en": "Boat transfer",
+        "description": "Travessia pela Baía de Maputo em direção à Península de Machangulo.",
+        "description_en": "Boat journey across Maputo Bay towards Machangulo Peninsula."
+      },
+      {
+        "time": "Chegada",
+        "title": "Drop-off",
+        "title_en": "Drop-off",
+        "description": "Desembarque no lodge ou ponto combinado.",
+        "description_en": "Disembarkation at the lodge or agreed point."
+      }
+    ],
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    },
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
+    },
+    "map_location": {
+      "lat": -25.9673,
+      "lng": 32.5834,
+      "label": "Maputo Marina"
+    },
+    "important_info": [
+      "Confirme a disponibilidade antes da reserva.",
+      "Cancelamentos com menos de 48h não têm reembolso.",
+      "Após 15 minutos de tolerância o barco parte normalmente."
+    ],
+    "important_info_en": [
+      "Confirm availability before booking.",
+      "Cancellations within 48h are non-refundable.",
+      "After 15 minutes tolerance the boat departs as normal."
+    ],
+    "reviews": []
+  },
+  {
+    "id": "maputo-city-tour",
+    "category": "maputo-city-tour",
+    "title": "Maputo City Tour",
+    "title_en": "Maputo City Tour",
+    "location": "Maputo, Mozambique",
+    "duration": "3 horas",
+    "duration_en": "3 hours",
+    "group_size": "Mínimo 2 pessoas",
+    "group_size_en": "Minimum 2 people",
+    "languages": [
+      "Português",
+      "English"
+    ],
+    "price_from": 2500,
+    "currency": "MZN",
+    "rating": 4.7,
+    "reviews_count": 0,
+    "badge": "City Tour",
+    "description": "Descubra os principais pontos históricos e culturais da cidade de Maputo num tour guiado de 3 horas. Explore monumentos icónicos, mercados locais e edifícios históricos enquanto aprende sobre a história e cultura da capital moçambicana.",
+    "description_en": "Discover the main historical and cultural landmarks of Maputo on a guided 3-hour city tour. Explore iconic monuments, local markets and historic buildings while learning about the history and culture of Mozambique’s capital.",
+    "highlights": [
+      "Igreja da Polana",
+      "FEIMA – Feira de Artesanato",
+      "Jardim Botânico Tunduru",
+      "Casa de Ferro",
+      "Estátua de Samora Machel",
+      "Catedral de Maputo",
+      "Fortaleza de Maputo",
+      "Estação de Comboios CFM",
+      "Mercado Central"
+    ],
+    "highlights_en": [
+      "Polana Church",
+      "FEIMA Craft Market",
+      "Tunduru Botanical Gardens",
+      "Iron House",
+      "Samora Machel Statue",
+      "Maputo Cathedral",
+      "Maputo Fortress",
+      "CFM Railway Station",
+      "Central Market"
+    ],
+    "included": [
+      "Guia turístico local",
+      "Transporte durante o tour",
+      "Água"
+    ],
+    "included_en": [
+      "Local tour guide",
+      "Transport during the tour",
+      "Water"
+    ],
+    "excluded": [
+      "Entradas em museus ou monumentos pagos",
+      "Compras pessoais",
+      "Pickup fora da cidade de Maputo",
+      "Taxa de estacionamento — 250 MZN por carro/dia"
+    ],
+    "excluded_en": [
+      "Entrance fees to paid monuments or museums",
+      "Personal purchases",
+      "Pickup outside Maputo city",
+      "Parking fee — 250 MZN per car/day"
+    ],
+    "pricing": {
+      "adults": 2500,
+      "children": 1800
+    },
+    "images": [
+      "../assets/images/tours/city-tours/maputo-city-tour-1.webp",
+      "../assets/images/tours/city-tours/maputo-city-tour-2.webp",
+      "../assets/images/tours/city-tours/maputo-city-tour-3.webp",
+      "../assets/images/tours/city-tours/maputo-city-tour-4.webp"
+    ],
+    "itinerary": [
+      {
+        "time": "Início",
+        "title": "Pickup",
+        "title_en": "Pickup",
+        "description": "Recolha no hotel ou ponto combinado. Hora de início flexível conforme disponibilidade.",
+        "description_en": "Pickup at hotel or agreed point. Start time is flexible depending on availability."
+      },
+      {
+        "time": "+ 30 min",
+        "title": "Igreja da Polana",
+        "title_en": "Polana Church",
+        "description": "Visita a um dos monumentos mais emblemáticos de Maputo.",
+        "description_en": "Visit one of the most iconic monuments in Maputo."
+      },
+      {
+        "time": "+ 30 min",
+        "title": "Jardim Botânico & Casa de Ferro",
+        "title_en": "Botanical Garden & Iron House",
+        "description": "Passeio pelo histórico Jardim Tunduru e visita à famosa Casa de Ferro.",
+        "description_en": "Walk through the historic Tunduru Gardens and visit the famous Iron House."
+      },
+      {
+        "time": "+ 30 min",
+        "title": "Catedral & Estátua Samora Machel",
+        "title_en": "Cathedral & Samora Machel Statue",
+        "description": "Paragem no coração histórico da cidade.",
+        "description_en": "Stop in the historic heart of the city."
+      },
+      {
+        "time": "+ 30 min",
+        "title": "Fortaleza & Estação CFM",
+        "title_en": "Fortress & CFM Railway Station",
+        "description": "Visita a dois dos edifícios históricos mais importantes de Maputo.",
+        "description_en": "Visit two of the most important historic buildings in Maputo."
+      },
+      {
+        "time": "+ 30 min",
+        "title": "Mercado Central & FEIMA",
+        "title_en": "Central Market & FEIMA",
+        "description": "Exploração do mercado local e da feira de artesanato.",
+        "description_en": "Explore the local market and the craft fair."
+      },
+      {
+        "time": "+ 30 min",
+        "title": "Fim do tour",
+        "title_en": "End of tour",
+        "description": "Regresso ao hotel ou ponto de encontro.",
+        "description_en": "Return to hotel or meeting point."
+      }
+    ],
+    "meeting_point": {
+      "name": "Maputo Marina",
+      "address": "Escola Náutica, Av. 10 de Novembro Nº74, Maputo"
+    },
+    "contact": {
+      "phone": "+258847121666",
+      "email": "maputoblue.info@gmail.com"
+    },
+    "map_location": {
+      "lat": -25.9692,
+      "lng": 32.5732,
+      "label": "Maputo City Center"
+    },
+    "important_info": [
+      "Cancelamentos feitos com menos de 48 horas antes da data da viagem não são reembolsáveis.",
+      "Não aguardaremos mais de 15 minutos após o horário de partida para atrasos. Nestes casos, não haverá reembolso.",
+      "Por favor, respeite os horários de partida e os outros participantes.",
+      "A Maputo Blue não se responsabiliza por quaisquer pertences pessoais perdidos, roubados ou danificados.",
+      "Pais e responsáveis devem supervisionar as crianças em todos os momentos."
+    ],
+    "important_info_en": [
+      "Cancellations made less than 48 hours prior to the trip date are non-refundable.",
+      "We will not wait more than 15 minutes after the scheduled departure time for late arrivals. In such cases, no refund will be issued.",
+      "Please respect our departure times and fellow guests.",
+      "Maputo Blue is not responsible for any lost, stolen, or damaged personal belongings.",
+      "Parents and guardians must closely supervise their children at all times."
+    ],
+    "reviews": []
+  },
   {
     "id": "observacao-baleias",
     "category": "whale-watching",
@@ -1744,7 +1634,10 @@
     "duration_en": "Full Day (08:00 – 15:00)",
     "group_size": "Temporada: Ago – Out",
     "group_size_en": "Season: Aug – Oct",
-    "languages": ["Português", "English"],
+    "languages": [
+      "Português",
+      "English"
+    ],
     "price_from": 8000,
     "child_price": 6000,
     "currency": "MZN",
@@ -1768,20 +1661,14 @@
       "Suitable for the whole family, including children"
     ],
     "included": [
-      "Água",
-      "Frutas",
-      "Almoço",
-      "Taxas da Marina",
-      "Guia turístico especializado",
-      "Equipamento de segurança a bordo"
+      "Capitão experiente",
+      "Combustível",
+      "Colete salva-vidas"
     ],
     "included_en": [
-      "Water",
-      "Fruit",
-      "Lunch",
-      "Marina fees",
-      "Specialist tour guide",
-      "Safety equipment on board"
+      "Experienced captain",
+      "Fuel",
+      "Life jacket"
     ],
     "excluded": [
       "Transporte até à marina",
@@ -1847,7 +1734,11 @@
       "email": "maputoblue.info@gmail.com",
       "whatsapp": "+258847121666"
     },
-    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "map_location": {
+      "lat": -25.9653,
+      "lng": 32.5731,
+      "label": "Marina de Maputo"
+    },
     "important_info": [
       "Temporada de baleias: Agosto a Outubro",
       "Recomendado trazer protetor solar, chapéu e óculos de sol",
@@ -1862,7 +1753,6 @@
     ],
     "reviews": []
   },
-
   {
     "id": "observacao-baleias-barcos-privados",
     "category": "whale-watching",
@@ -1873,7 +1763,10 @@
     "duration_en": "Full Day (08:00 – 15:00)",
     "group_size": "Barcos privados até 25 passageiros",
     "group_size_en": "Private boats up to 25 passengers",
-    "languages": ["Português", "English"],
+    "languages": [
+      "Português",
+      "English"
+    ],
     "price_from": 27000,
     "price_unit": "/barco",
     "price_unit_en": "/boat",
@@ -1883,27 +1776,27 @@
     "badge": "Whale Watching",
     "boat_options": [
       {
-        "key": "barco-menor-3",
-        "name": "Barco Menor",
+        "key": "lancha-pequena",
+        "name": "Lancha Pequena",
         "name_en": "Small Boat",
-        "capacity": "Até max 3 Passageiros",
-        "capacity_en": "Up to max 3 passengers",
+        "capacity": "Até 3 Passageiros",
+        "capacity_en": "Up to 3 passengers",
         "price_mzn": 27000
       },
       {
-        "key": "barco-menor-8",
-        "name": "Barco Menor",
-        "name_en": "Small Boat",
-        "capacity": "Até max 8 Passageiros",
-        "capacity_en": "Up to max 8 passengers",
+        "key": "lancha-media",
+        "name": "Lancha Média",
+        "name_en": "Medium Boat",
+        "capacity": "Até 8 Passageiros",
+        "capacity_en": "Up to 8 passengers",
         "price_mzn": 44000
       },
       {
-        "key": "patron",
-        "name": "Patron",
-        "name_en": "Patron",
-        "capacity": "Até max 25 Passageiros",
-        "capacity_en": "Up to max 25 passengers",
+        "key": "catamaran-patron",
+        "name": "Catamaran Patron",
+        "name_en": "Patron Catamaran",
+        "capacity": "Até 25 Passageiros",
+        "capacity_en": "Up to 25 passengers",
         "price_mzn": 88000
       }
     ],
@@ -1923,19 +1816,16 @@
       "Picnic and swim at Portuguese Island",
       "Optional lunch at a restaurant in Inhaca"
     ],
-    "included": [
-      "Piquenique e mergulho na Ilha dos Portugueses",
-      "Capitão e tripulação",
-      "Guia turístico especializado",
-      "Equipamento de segurança a bordo"
+        "included": [
+      "Capitão experiente",
+      "Combustível",
+      "Colete salva-vidas"
     ],
     "included_en": [
-      "Picnic and swim at Portuguese Island",
-      "Captain and crew",
-      "Specialist tour guide",
-      "Safety equipment on board"
+      "Experienced captain",
+      "Fuel",
+      "Life jacket"
     ],
-
     "excluded": [
       "Taxa de entrada na Marina — 100 Mts por adulto",
       "Taxa de entrada na reserva — 200 Mts (estrangeiros) / 100 Mts (nacionais e residentes)",
@@ -2004,7 +1894,11 @@
       "email": "maputoblue.info@gmail.com",
       "whatsapp": "+258847121666"
     },
-    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "map_location": {
+      "lat": -25.9653,
+      "lng": 32.5731,
+      "label": "Marina de Maputo"
+    },
     "important_info": [
       "Temporada de baleias: Agosto a Outubro",
       "Recomendado trazer protetor solar, chapéu e óculos de sol",
@@ -2019,7 +1913,6 @@
     ],
     "reviews": []
   },
-
   {
     "id": "pesca-alto-mar",
     "category": "fishing-charters",
@@ -2030,7 +1923,10 @@
     "duration_en": "Full Day (06:00 – 15:00)",
     "group_size": "até 3 pessoas",
     "group_size_en": "up to 3 people",
-    "languages": ["Português", "English"],
+    "languages": [
+      "Português",
+      "English"
+    ],
     "price_from": 40000,
     "price_unit": "/barco",
     "price_unit_en": "/boat",
@@ -2042,9 +1938,9 @@
     "description_en": "Perfect for small groups of up to 3 people, the Small Speed Boat offers an intimate and agile deep sea fishing experience in the rich waters of the Indian Ocean. Maximum speed to reach the best fishing spots — Wahoo, Marlin, Tuna, Dorado and Sailfish awaiting.",
     "highlights": [
       "Pesca de Wahoo, Marlin, Atum, Dourado, Sailfish e Red Snapper",
-      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isco",
+      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isca",
       "Ideal para grupos até 3 pessoas",
-      "Todo o equipamento de pesca incluído (canas, isco, rapalas)",
+      "Todo o equipamento de pesca incluído (canas, isca, rapalas)",
       "Capitão experiente nas melhores zonas de pesca do Índico",
       "Saída ao amanhecer conforme a melhor maré do dia"
     ],
@@ -2059,18 +1955,18 @@
     "included": [
       "Embarcação com capitão",
       "Canas de pesca",
-      "Isco e rapalas",
+      "Isca e rapalas",
       "Equipamento completo de pesca",
       "Combustível",
-      "Água a bordo"
+      "Colete salva-vidas"
     ],
     "included_en": [
-      "Boat with captain",
+      "Experienced captain",
       "Fishing rods",
       "Bait and lures",
       "Full fishing equipment",
       "Fuel",
-      "Water on board"
+      "Life jacket"
     ],
     "excluded": [
       "Taxa da Marina: 100 MZN por pessoa",
@@ -2111,7 +2007,7 @@
         "time": "07:30–13:00",
         "title": "Pesca Ativa",
         "title_en": "Active Fishing",
-        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isco para Dorado.",
+        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isca para Dorado.",
         "description_en": "Fishing session with all techniques: trolling for Wahoo and Marlin, vertical jigging for Amberjack, spinning and bottom fishing for Snapper and Tuna, live bait drifting for Dorado."
       },
       {
@@ -2138,16 +2034,29 @@
       "email": "maputoblue.info@gmail.com",
       "whatsapp": "+258847121666"
     },
-    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "map_location": {
+      "lat": -25.9653,
+      "lng": 32.5731,
+      "label": "Marina de Maputo"
+    },
     "important_info": [
-      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
+      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável",
+      "Lembre-se de trazer repelente de insetos",
+      "Não esqueça de trazer toalha e roupa de banho",
+      "Recomendamos calçar sapatos fechados para a actividade",
+      "Gostaríamos apenas de informar que a pesca é uma atividade imprevisível e, por isso, não podemos garantir uma determinada quantidade de peixe. Podemos ter um dia com muitas capturas, poucas capturas ou, em alguns casos, não apanhar nenhum peixe.",
+      "No entanto, a nossa equipa fará o seu melhor para procurar os melhores locais e proporcionar a melhor experiência possível, aumentando ao máximo as possibilidades de uma boa pescaria."
     ],
     "important_info_en": [
-      "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
+      "Recommended: sunscreen, hat, sunglasses and waterproof clothing",
+      "Remember to bring insect repellent",
+      "Don't forget a towel and swimwear",
+      "We recommend wearing closed shoes for the activity",
+      "We would like to point out that fishing is an unpredictable activity and, for this reason, we cannot guarantee a specific amount of fish. We may have a day with many catches, few catches or, in some cases, not catch any fish at all.",
+      "However, our team will do its best to look for the best spots and provide the best possible experience, maximising the chances of a good catch."
     ],
     "reviews": []
   },
-
   {
     "id": "pesca-alto-mar-intermedia",
     "category": "fishing-charters",
@@ -2158,7 +2067,10 @@
     "duration_en": "Full Day (06:00 – 15:00)",
     "group_size": "até 6 pessoas",
     "group_size_en": "up to 6 people",
-    "languages": ["Português", "English"],
+    "languages": [
+      "Português",
+      "English"
+    ],
     "price_from": 60000,
     "price_unit": "/barco",
     "price_unit_en": "/boat",
@@ -2170,9 +2082,9 @@
     "description_en": "For groups of up to 6 people, the Large Boat combines speed and space for a complete and comfortable deep sea fishing experience. With all equipment included, it's the perfect choice for groups of friends or family — Wahoo, Marlin, Tuna, Dorado and Sailfish awaiting.",
     "highlights": [
       "Pesca de Wahoo, Marlin, Atum, Dourado, Sailfish e Red Snapper",
-      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isco",
+      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isca",
       "Ideal para grupos até 6 pessoas",
-      "Todo o equipamento de pesca incluído (canas, isco, rapalas)",
+      "Todo o equipamento de pesca incluído (canas, isca, rapalas)",
       "Capitão experiente nas melhores zonas de pesca do Índico",
       "Saída ao amanhecer conforme a melhor maré do dia"
     ],
@@ -2187,18 +2099,18 @@
     "included": [
       "Embarcação com capitão",
       "Canas de pesca",
-      "Isco e rapalas",
+      "Isca e rapalas",
       "Equipamento completo de pesca",
       "Combustível",
-      "Água a bordo"
+      "Colete salva-vidas"
     ],
     "included_en": [
-      "Boat with captain",
+      "Experienced captain",
       "Fishing rods",
       "Bait and lures",
       "Full fishing equipment",
       "Fuel",
-      "Water on board"
+      "Life jacket"
     ],
     "excluded": [
       "Taxa da Marina: 100 MZN por pessoa",
@@ -2239,7 +2151,7 @@
         "time": "07:30–13:00",
         "title": "Pesca Ativa",
         "title_en": "Active Fishing",
-        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isco para Dorado.",
+        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isca para Dorado.",
         "description_en": "Fishing session with all techniques: trolling for Wahoo and Marlin, vertical jigging for Amberjack, spinning and bottom fishing for Snapper and Tuna, live bait drifting for Dorado."
       },
       {
@@ -2266,16 +2178,29 @@
       "email": "maputoblue.info@gmail.com",
       "whatsapp": "+258847121666"
     },
-    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "map_location": {
+      "lat": -25.9653,
+      "lng": 32.5731,
+      "label": "Marina de Maputo"
+    },
     "important_info": [
-      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
+      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável",
+      "Lembre-se de trazer repelente de insetos",
+      "Não esqueça de trazer toalha e roupa de banho",
+      "Recomendamos calçar sapatos fechados para a actividade",
+      "Gostaríamos apenas de informar que a pesca é uma atividade imprevisível e, por isso, não podemos garantir uma determinada quantidade de peixe. Podemos ter um dia com muitas capturas, poucas capturas ou, em alguns casos, não apanhar nenhum peixe.",
+      "No entanto, a nossa equipa fará o seu melhor para procurar os melhores locais e proporcionar a melhor experiência possível, aumentando ao máximo as possibilidades de uma boa pescaria."
     ],
     "important_info_en": [
-      "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
+      "Recommended: sunscreen, hat, sunglasses and waterproof clothing",
+      "Remember to bring insect repellent",
+      "Don't forget a towel and swimwear",
+      "We recommend wearing closed shoes for the activity",
+      "We would like to point out that fishing is an unpredictable activity and, for this reason, we cannot guarantee a specific amount of fish. We may have a day with many catches, few catches or, in some cases, not catch any fish at all.",
+      "However, our team will do its best to look for the best spots and provide the best possible experience, maximising the chances of a good catch."
     ],
     "reviews": []
   },
-
   {
     "id": "pesca-alto-mar-catamarao",
     "category": "fishing-charters",
@@ -2286,7 +2211,10 @@
     "duration_en": "Full Day (06:00 – 15:00)",
     "group_size": "até 15-20 pessoas",
     "group_size_en": "up to 15-20 people",
-    "languages": ["Português", "English"],
+    "languages": [
+      "Português",
+      "English"
+    ],
     "price_from": 104000,
     "price_unit": "/barco",
     "price_unit_en": "/boat",
@@ -2298,9 +2226,9 @@
     "description_en": "The Patron Catamaran is the ultimate choice for large groups of up to 20 people. Spacious, stable and equipped for a premium deep sea fishing experience in the Indian Ocean — ideal for corporate events, bachelor parties or simply a big group adventure.",
     "highlights": [
       "Pesca de Wahoo, Marlin, Atum, Dourado, Sailfish e Red Snapper",
-      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isco",
+      "Técnicas: Corrico, Jigging Vertical, Spinning, Pesca de Fundo e Deriva com Isca",
       "Ideal para grandes grupos até 15-20 pessoas",
-      "Todo o equipamento de pesca incluído (canas, isco, rapalas)",
+      "Todo o equipamento de pesca incluído (canas, isca, rapalas)",
       "Capitão experiente nas melhores zonas de pesca do Índico",
       "Saída ao amanhecer conforme a melhor maré do dia"
     ],
@@ -2315,18 +2243,18 @@
     "included": [
       "Embarcação com capitão",
       "Canas de pesca",
-      "Isco e rapalas",
+      "Isca e rapalas",
       "Equipamento completo de pesca",
       "Combustível",
-      "Água a bordo"
+      "Colete salva-vidas"
     ],
     "included_en": [
-      "Boat with captain",
+      "Experienced captain",
       "Fishing rods",
       "Bait and lures",
       "Full fishing equipment",
       "Fuel",
-      "Water on board"
+      "Life jacket"
     ],
     "excluded": [
       "Taxa da Marina: 100 MZN por pessoa",
@@ -2367,7 +2295,7 @@
         "time": "07:30–13:00",
         "title": "Pesca Ativa",
         "title_en": "Active Fishing",
-        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isco para Dorado.",
+        "description": "Sessão de pesca com todas as técnicas: corrico para Wahoo e Marlin, jigging vertical para Amberjack, spinning e pesca de fundo para Snapper e Atum, deriva com isca para Dorado.",
         "description_en": "Fishing session with all techniques: trolling for Wahoo and Marlin, vertical jigging for Amberjack, spinning and bottom fishing for Snapper and Tuna, live bait drifting for Dorado."
       },
       {
@@ -2394,12 +2322,26 @@
       "email": "maputoblue.info@gmail.com",
       "whatsapp": "+258847121666"
     },
-    "map_location": { "lat": -25.9653, "lng": 32.5731, "label": "Marina de Maputo" },
+    "map_location": {
+      "lat": -25.9653,
+      "lng": 32.5731,
+      "label": "Marina de Maputo"
+    },
     "important_info": [
-      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável"
+      "Recomendado: protetor solar, chapéu, óculos de sol e roupa impermeável",
+      "Lembre-se de trazer repelente de insetos",
+      "Não esqueça de trazer toalha e roupa de banho",
+      "Recomendamos calçar sapatos fechados para a actividade",
+      "Gostaríamos apenas de informar que a pesca é uma atividade imprevisível e, por isso, não podemos garantir uma determinada quantidade de peixe. Podemos ter um dia com muitas capturas, poucas capturas ou, em alguns casos, não apanhar nenhum peixe.",
+      "No entanto, a nossa equipa fará o seu melhor para procurar os melhores locais e proporcionar a melhor experiência possível, aumentando ao máximo as possibilidades de uma boa pescaria."
     ],
     "important_info_en": [
-      "Recommended: sunscreen, hat, sunglasses and waterproof clothing"
+      "Recommended: sunscreen, hat, sunglasses and waterproof clothing",
+      "Remember to bring insect repellent",
+      "Don't forget a towel and swimwear",
+      "We recommend wearing closed shoes for the activity",
+      "We would like to point out that fishing is an unpredictable activity and, for this reason, we cannot guarantee a specific amount of fish. We may have a day with many catches, few catches or, in some cases, not catch any fish at all.",
+      "However, our team will do its best to look for the best spots and provide the best possible experience, maximising the chances of a good catch."
     ],
     "reviews": []
   }
