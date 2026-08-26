@@ -461,17 +461,25 @@
     const container = document.querySelector('#package-important-info');
     if (!container) return;
 
-    // Per-package override: add important_info / important_info_en arrays to a
-    // JSON entry to replace the global defaults for that specific package.
-    const defaults = IMPORTANT_INFO[LANG] || IMPORTANT_INFO.pt;
+    // The global defaults (which include the 4 required policy lines) are ALWAYS
+    // shown first. Any per-package extras are appended afterwards — they never
+    // replace the required lines. Duplicates are removed while preserving order.
+    const defaults  = IMPORTANT_INFO[LANG] || IMPORTANT_INFO.pt;
     const title = LANG === 'en'
       ? (item.important_info_title_en || defaults.title)
       : (item.important_info_title    || defaults.title);
-    const items = LANG === 'en'
-      ? (item.important_info_en || defaults.items)
-      : (item.important_info    || defaults.items);
 
-    if (!items || !items.length) return;
+    const baseItems  = defaults.items || [];
+    const extraItems = LANG === 'en' ? (item.important_info_en || []) : (item.important_info || []);
+
+    const items  = [];
+    const seen   = {};
+    [...baseItems, ...extraItems].forEach(info => {
+      const key = String(info).trim().toLowerCase();
+      if (!seen[key]) { seen[key] = true; items.push(info); }
+    });
+
+    if (!items.length) return;
 
     container.innerHTML = `
 <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
@@ -720,6 +728,7 @@
 
     // No vessel menu: for per-boat packages, disable the + / − steppers so the boat price stays fixed
     if (!wrap || !item.boat_options || !item.boat_options.length) {
+      if (wrap) wrap.style.display = 'none';
       if (perBoat) {
         ['adults-minus', 'adults-plus', 'children-minus', 'children-plus'].forEach(id => {
           const el = document.getElementById(id);
@@ -769,8 +778,11 @@
       document.querySelectorAll('#booking-whatsapp-btn, #mobile-booking-btn').forEach(el => { el.href = url; });
     }
 
-    wrap.innerHTML = `<div style="margin-bottom:16px;">
-      <label class="booking-input-label" style="margin-bottom:10px;display:block;">${label}</label>
+    if (wrap) wrap.style.display = 'block';
+    wrap.innerHTML = `<div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+      <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:14px;">
+        <i class='bx bx-anchor' style="color:var(--sea-green);margin-right:6px;"></i>${label}
+      </h2>
       <div class="boat-opts">
         ${item.boat_options.map((b, i) => {
           const name     = isEn ? (b.name_en || b.name) : b.name;

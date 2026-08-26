@@ -124,6 +124,9 @@
               </div>
             </div>
 
+            <!-- Destination selector — private-boat packages (choice moved out of the booking card) -->
+            <div id="cb-dest-selector" style="display:none;background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;"></div>
+
             <!-- Description -->
             <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
               <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:14px;">About This Boat</h2>
@@ -200,9 +203,6 @@
                     <span style="font-size:.75rem;color:var(--text-muted);" id="booking-reviews-count"></span>
                   </div>
                 </div>
-
-                <!-- Destination selector — integrated into the booking card -->
-                <div id="cb-dest-selector" style="margin-bottom:16px;"></div>
 
                 <!-- Date -->
                 <div style="margin-bottom:16px;">
@@ -566,7 +566,7 @@
       container.style.display = 'block';
 
       var wrapDiv = document.createElement('div');
-      wrapDiv.innerHTML = '<label class="booking-input-label" style="margin-bottom:10px;display:block;">Choose Destination</label><div class="boat-opts"></div>';
+      wrapDiv.innerHTML = '<h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:16px;"><i class="bx bx-map" style="color:var(--sea-green);margin-right:6px;"></i>Choose Destination</h2><div class="boat-opts"></div>';
       var opts = wrapDiv.querySelector('.boat-opts');
       container.innerHTML = '';
       container.appendChild(wrapDiv);
