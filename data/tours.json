@@ -693,8 +693,8 @@
     "title": "Safari Maputo Special Reserve",
     "title_en": "Maputo Special Reserve Safari",
     "location": "Maputo Special Reserve, Mozambique",
-    "duration": "Dia Inteiro (06:30 – 15:45)",
-    "duration_en": "Full Day (06:30 – 15:45)",
+    "duration": "Dia Inteiro (06:30 – 17:30)",
+    "duration_en": "Full Day (06:30 – 17:30)",
     "group_size": "Sob consulta",
     "group_size_en": "On request",
     "languages": [
@@ -805,6 +805,13 @@
         "title_en": "Return to Maputo",
         "description": "Partida da Reserva Especial de Maputo com destino a Maputo, encerrando esta experiência de safari inesquecível.",
         "description_en": "Departure from the Maputo Special Reserve heading back to Maputo, closing this unforgettable safari experience."
+      },
+      {
+        "time": "17:30",
+        "title": "Chegada a Maputo",
+        "title_en": "Arrival in Maputo",
+        "description": "Chegada a Maputo. Fim da excursão.",
+        "description_en": "Arrival in Maputo. End of excursion."
       }
     ],
     "meeting_point": {
@@ -839,8 +846,8 @@
     "title": "Hlane Royal Park Safari & Cascatas de Namaacha – Eswatini",
     "title_en": "Hlane Royal Park Safari & Namacha Waterfalls – Eswatini",
     "location": "Hlane Royal National Park, Eswatini",
-    "duration": "Dia inteiro (05:30 – 16:00)",
-    "duration_en": "Full Day (05:30 – 16:00)",
+    "duration": "Dia inteiro (05:30 – 17:30)",
+    "duration_en": "Full Day (05:30 – 17:30)",
     "group_size": "Mínimo 2 pessoas",
     "group_size_en": "Minimum 2 people",
     "languages": [
@@ -942,6 +949,13 @@
         "title_en": "Return to Maputo",
         "description": "Fim da excursão e regresso a Maputo.",
         "description_en": "End of excursion and return to Maputo."
+      },
+      {
+        "time": "17:30",
+        "title": "Chegada a Maputo",
+        "title_en": "Arrival in Maputo",
+        "description": "Chegada prevista a Maputo. Fim da excursão.",
+        "description_en": "Estimated arrival in Maputo. End of excursion."
       }
     ],
     "meeting_point": {
@@ -980,8 +994,8 @@
     "title": "Excursão Cultural Mantenga Village – Eswatini",
     "title_en": "Eswatini Mantenga Village Cultural Tour",
     "location": "Mantenga Village, Eswatini",
-    "duration": "Dia inteiro (05:30 – 17:30)",
-    "duration_en": "Full Day (05:30 – 17:30)",
+    "duration": "Dia inteiro (05:30 – 18:00)",
+    "duration_en": "Full Day (05:30 – 18:00)",
     "group_size": "Mínimo 2 pessoas",
     "group_size_en": "Minimum 2 people",
     "languages": [
@@ -1089,11 +1103,18 @@
         "description_en": "Visit to the famous cultural center and candle factory."
       },
       {
-        "time": "17:30",
+        "time": "16:00",
         "title": "Regresso a Maputo",
         "title_en": "Return to Maputo",
-        "description": "Chegada prevista a Maputo.",
-        "description_en": "Estimated arrival in Maputo."
+        "description": "Partida de Eswatini de regresso a Maputo.",
+        "description_en": "Departure from Eswatini heading back to Maputo."
+      },
+      {
+        "time": "18:00",
+        "title": "Chegada a Maputo",
+        "title_en": "Arrival in Maputo",
+        "description": "Chegada prevista a Maputo. Fim da excursão.",
+        "description_en": "Estimated arrival in Maputo. End of excursion."
       }
     ],
     "meeting_point": {
@@ -1630,8 +1651,8 @@
     "title": "Excursão de Observação de Baleias",
     "title_en": "Whale Watching Excursion",
     "location": "Baía de Maputo",
-    "duration": "Dia Inteiro (08:00 – 15:00)",
-    "duration_en": "Full Day (08:00 – 15:00)",
+    "duration": "Dia Inteiro (08:00 – 16:00)",
+    "duration_en": "Full Day (08:00 – 16:00)",
     "group_size": "Temporada: Ago – Out",
     "group_size_en": "Season: Aug – Oct",
     "languages": [
@@ -1719,10 +1740,17 @@
       },
       {
         "time": "15:00",
-        "title": "Regresso a Maputo",
-        "title_en": "Return to Maputo",
-        "description": "Viagem de regresso à Marina de Maputo. Fim da excursão.",
-        "description_en": "Return journey to Maputo Marina. End of excursion."
+        "title": "Partida de Regresso a Maputo",
+        "title_en": "Departure Back to Maputo",
+        "description": "Partida da Ilha da Inhaca de regresso à Marina de Maputo.",
+        "description_en": "Departure from Inhaca Island heading back to Maputo Marina."
+      },
+      {
+        "time": "16:00",
+        "title": "Chegada a Maputo",
+        "title_en": "Arrival in Maputo",
+        "description": "Chegada à Marina de Maputo. Fim da excursão.",
+        "description_en": "Arrival at Maputo Marina. End of excursion."
       }
     ],
     "meeting_point": {
