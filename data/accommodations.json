@@ -19,7 +19,8 @@
   "currency": "MZN",
   "rating": 4.7,
   "reviews_count": 0,
-  "badge": "Island Escape",
+  "badge": "Escapadela na Ilha",
+    "badge_en": "Island Escape",
   "description": "Pacote de uma noite na Ilha de Inhaca com transporte de barco desde Maputo, alojamento em lodge local e refeições incluídas. Ideal para uma escapadela rápida para desfrutar das praias tropicais e explorar a ilha.",
   "description_en": "One-night package on Inhaca Island with speedboat transfer from Maputo, lodge accommodation, and included meals. The perfect quick getaway to enjoy tropical beaches and explore the island at your own pace.",
 
@@ -219,7 +220,8 @@
   "currency": "MZN",
   "rating": 4.9,
   "reviews_count": 0,
-  "badge": "Luxury Escape",
+  "badge": "Escapadela de Luxo",
+    "badge_en": "Luxury Escape",
   "description": "Experimente uma escapadela de luxo no Machangulo Beach Lodge, localizado numa das praias mais exclusivas da Península de Machangulo. Este pacote inclui transporte de barco de Maputo, uma noite de alojamento no lodge, refeições selecionadas e acesso a uma das praias mais bonitas de Moçambique.",
   "description_en": "Experience a luxury escape at Machangulo Beach Lodge, set on one of the most exclusive beaches of the Machangulo Peninsula. This package includes speedboat transfer from Maputo, one night of lodge accommodation, selected meals, and access to one of Mozambique's most stunning beaches.",
 

@@ -116,8 +116,11 @@
   }
 
   function badgeClass(badge) {
-    const map = { 'Mais Popular': '', 'Best Seller': '', 'Premium': 'tour-badge--navy',
-                  'Eco Lodge': 'tour-badge--green', 'Top Rated': 'tour-badge--green' };
+    const map = { 'Mais Popular': '', 'Most Popular': '',
+                  'Best Seller': '', 'Mais Vendido': '',
+                  'Premium': 'tour-badge--navy',
+                  'Eco Lodge': 'tour-badge--green',
+                  'Top Rated': 'tour-badge--green', 'Melhor Avaliado': 'tour-badge--green' };
     return map[badge] || '';
   }
 

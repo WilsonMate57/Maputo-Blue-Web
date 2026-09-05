@@ -18,7 +18,8 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Island Daytrips",
+    "badge": "Passeios à Ilha",
+    "badge_en": "Island Daytrips",
     "description": "Explore três dos destinos mais paradisíacos da Baía de Maputo num único passeio. Este passeio de barco leva os visitantes às praias cristalinas de Santa Maria, à famosa Ilha da Inhaca e à tranquila Ilha dos Portugueses. Ideal para nadar, relaxar na praia e desfrutar de atividades aquáticas num ambiente tropical único.",
     "description_en": "Explore three of the most paradisiacal destinations in Maputo Bay in a single trip. This boat trip takes visitors to the crystal-clear beaches of Santa Maria, the famous Inhaca Island and the tranquil Portuguese Island. Ideal for swimming, relaxing on the beach and enjoying water activities in a unique tropical setting.",
     "highlights": [
@@ -165,7 +166,8 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Beach Day",
+    "badge": "Dia de Praia",
+    "badge_en": "Beach Day",
     "description": "Desfrute de um dia completo nas águas cristalinas de Santa Maria e Machangulo. Um passeio perfeito para relaxar, nadar e aproveitar o melhor das praias da Baía de Maputo. Os visitantes podem escolher entre levar o seu próprio piquenique ou almoçar num restaurante local em Machangulo.",
     "description_en": "Enjoy a full day in the crystal-clear waters of Santa Maria and Machangulo. A perfect trip for relaxing, swimming and making the most of the best beaches in Maputo Bay. Visitors can choose to bring their own picnic or have lunch at a local restaurant in Machangulo.",
     "highlights": [
@@ -383,17 +385,24 @@
       },
       {
         "time": "15:00",
-        "title": "Ilha dos Portugueses",
-        "title_en": "Portuguese Island",
-        "description": "Paragem na tranquila Ilha dos Portugueses para relaxar na praia, nadar em águas cristalinas e desfrutar das paisagens paradisíacas.",
-        "description_en": "Stop at the tranquil Portuguese Island to relax on the beach, swim in crystal-clear waters and enjoy the paradisiacal scenery."
+        "title": "Visita à Ilha dos Portugueses",
+        "title_en": "Visit to Portuguese Island",
+        "description": "Visita à tranquila Ilha dos Portugueses para relaxar na praia, nadar em águas cristalinas e desfrutar das paisagens paradisíacas.",
+        "description_en": "Visit the tranquil Portuguese Island to relax on the beach, swim in crystal-clear waters and enjoy the paradisiacal scenery."
+      },
+      {
+        "time": "16:00",
+        "title": "Partida de Volta a Maputo",
+        "title_en": "Departure Back to Maputo",
+        "description": "Início da viagem de regresso à Maputo Marina.",
+        "description_en": "Start of the return journey to Maputo Marina."
       },
       {
         "time": "17:00",
-        "title": "Regresso a Maputo",
-        "title_en": "Return to Maputo",
-        "description": "Viagem de regresso à Maputo Marina.",
-        "description_en": "Return journey to Maputo Marina."
+        "title": "Chegada a Maputo",
+        "title_en": "Arrival in Maputo",
+        "description": "Chegada à Maputo Marina. Fim do passeio.",
+        "description_en": "Arrival at Maputo Marina. End of the tour."
       }
     ],
     "map_location": {
@@ -430,7 +439,8 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Sunset",
+    "badge": "Pôr do Sol",
+    "badge_en": "Sunset",
     "description": "Desfrute de um inesquecível passeio de catamarã ao pôr do sol na Baía de Maputo. Durante o cruzeiro, os visitantes podem relaxar a bordo enquanto apreciam vistas panorâmicas da cidade, da Ponte Maputo–Katembe e da costa da baía ao entardecer.",
     "description_en": "Enjoy an unforgettable catamaran sunset cruise in Maputo Bay. During the cruise, visitors can relax on board while admiring panoramic views of the city, the Maputo–Katembe Bridge and the bay coastline at dusk.",
     "highlights": [
@@ -534,6 +544,7 @@
     "rating": 4.9,
     "reviews_count": 0,
     "badge": "Safari",
+    "badge_en": "Safari",
     "child_price": 11000,
     "description": "Explore o famoso Parque Nacional Kruger numa aventura de um dia saindo de Maputo. Este safari oferece a oportunidade de observar os lendários Big Five e uma grande variedade de vida selvagem africana. A experiência inclui transporte, guia turístico e almoço num restaurante dentro do parque com vista para o Rio Sabie.",
     "description_en": "Explore the famous Kruger National Park on a day adventure from Maputo. This safari offers the opportunity to spot the legendary Big Five and a wide variety of African wildlife. The experience includes transport, a tour guide and lunch at a restaurant inside the park overlooking the Sabie River.",
@@ -707,6 +718,7 @@
     "rating": 4.9,
     "reviews_count": 0,
     "badge": "Safari",
+    "badge_en": "Safari",
     "description": "Explore a incrível Reserva Especial de Maputo numa aventura de safari de um dia. Esta experiência oferece a oportunidade de observar elefantes, girafas, hipopótamos e muitas outras espécies num dos parques naturais mais impressionantes de Moçambique. O passeio inclui transporte de Maputo, taxas de entrada, snacks e guia turístico.",
     "description_en": "Explore the incredible Maputo Special Reserve on a day safari adventure. This experience offers the opportunity to observe elephants, giraffes, hippos and many other species in one of Mozambique's most impressive nature parks. The trip includes transport from Maputo, entrance fees, snacks and a tour guide.",
     "highlights": [
@@ -859,6 +871,7 @@
     "rating": 4.9,
     "reviews_count": 0,
     "badge": "Safari",
+    "badge_en": "Safari",
     "description": "Viva a emoção de um safari no Parque Nacional Real de Hlane, em Eswatini, combinado com uma paragem nas deslumbrantes Cascatas de Namaacha. Esta excursão de um dia inclui transporte em mini van, guia turístico, almoço, snacks e binóculos — tudo organizado para uma experiência inesquecível.",
     "description_en": "Experience the thrill of a safari in Hlane Royal National Park, Eswatini, combined with a stop at the stunning Namacha Waterfalls. This full-day excursion includes mini van transport, a tour guide, lunch, snacks and binoculars — everything arranged for an unforgettable experience.",
     "highlights": [
@@ -1007,7 +1020,8 @@
     "currency": "MZN",
     "rating": 4.8,
     "reviews_count": 0,
-    "badge": "Cultural Tour",
+    "badge": "Tour Cultural",
+    "badge_en": "Cultural Tour",
     "description": "Descubra a cultura tradicional de Eswatini numa excursão de um dia saindo de Maputo. Esta experiência inclui uma visita ao famoso Mantenga Cultural Village, às cascatas de Mantenga e ao icónico restaurante House on Fire. Uma oportunidade única para conhecer a história, cultura e artesanato local.",
     "description_en": "Discover the traditional culture of Eswatini on a day trip from Maputo. This experience includes a visit to the famous Mantenga Cultural Village, Mantenga Waterfall and the iconic House on Fire cultural center. A unique opportunity to experience local traditions, history and crafts.",
     "highlights": [
@@ -1161,7 +1175,8 @@
     "currency": "MZN",
     "rating": 4.8,
     "reviews_count": 0,
-    "badge": "City Transfer",
+    "badge": "Transfer na Cidade",
+    "badge_en": "City Transfer",
     "description": "Serviço de transfer privado dentro da cidade de Maputo. Ideal para deslocações entre hotéis, restaurantes, escritórios e pontos turísticos da cidade.",
     "description_en": "Private transfer service within Maputo city. Ideal for trips between hotels, restaurants, offices and tourist spots in the city.",
     "highlights": [
@@ -1269,7 +1284,8 @@
     "currency": "MZN",
     "rating": 4.8,
     "reviews_count": 0,
-    "badge": "Boat Transfer",
+    "badge": "Transfer de Barco",
+    "badge_en": "Boat Transfer",
     "description": "Transfer de barco entre a Marina de Maputo, Ilha de Inhaca. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
     "description_en": "Boat transfer between Maputo Marina, Inhaca Island. Departure times may vary depending on tides and weather conditions. We recommend always confirming dates and times before travel to ensure availability.",
     "highlights": [
@@ -1393,7 +1409,8 @@
     "currency": "MZN",
     "rating": 4.8,
     "reviews_count": 0,
-    "badge": "Boat Transfer",
+    "badge": "Transfer de Barco",
+    "badge_en": "Boat Transfer",
     "description": "Transfer de barco entre a Marina de Maputo e a Península de Machangulo. O horário das partidas pode variar dependendo das marés e condições meteorológicas. Recomendamos confirmar sempre as datas e horários antes da viagem para garantir disponibilidade.",
     "description_en": "Boat transfer between Maputo Marina and the Machangulo Peninsula. Departure times may vary depending on tides and weather conditions. We recommend confirming dates and times before travelling to ensure availability.",
     "highlights": [
@@ -1508,7 +1525,8 @@
     "currency": "MZN",
     "rating": 4.7,
     "reviews_count": 0,
-    "badge": "City Tour",
+    "badge": "Tour pela Cidade",
+    "badge_en": "City Tour",
     "description": "Descubra os principais pontos históricos e culturais da cidade de Maputo num tour guiado de 3 horas. Explore monumentos icónicos, mercados locais e edifícios históricos enquanto aprende sobre a história e cultura da capital moçambicana.",
     "description_en": "Discover the main historical and cultural landmarks of Maputo on a guided 3-hour city tour. Explore iconic monuments, local markets and historic buildings while learning about the history and culture of Mozambique’s capital.",
     "highlights": [
@@ -1563,7 +1581,10 @@
       "../assets/images/tours/city-tours/maputo-city-tour-1.webp",
       "../assets/images/tours/city-tours/maputo-city-tour-2.webp",
       "../assets/images/tours/city-tours/maputo-city-tour-3.webp",
-      "../assets/images/tours/city-tours/maputo-city-tour-4.webp"
+      "../assets/images/tours/city-tours/maputo-city-tour-4.webp",
+      "../assets/images/tours/city-tours/maputo-city-tour-5.webp",
+      "../assets/images/tours/city-tours/maputo-city-tour-6.webp",
+      "../assets/images/tours/city-tours/maputo-city-tour-7.webp"
     ],
     "itinerary": [
       {
@@ -1664,7 +1685,8 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Whale Watching",
+    "badge": "Observação de Baleias",
+    "badge_en": "Whale Watching",
     "description": "Viva a emoção de observar baleias em liberdade nas águas da Baía de Maputo. Esta excursão única combina o avistamento de baleias jubarte com uma paragem nas praias paradisíacas da Ilha da Inhaca ou da Ilha dos Portugueses — uma experiência inesquecível para toda a família.",
     "description_en": "Experience the thrill of watching whales in the wild waters of Maputo Bay. This unique excursion combines humpback whale sightings with a stop at the paradisiacal beaches of Inhaca Island or Portuguese Island — an unforgettable experience for the whole family.",
     "highlights": [
@@ -1801,7 +1823,8 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Whale Watching",
+    "badge": "Observação de Baleias",
+    "badge_en": "Whale Watching",
     "boat_options": [
       {
         "key": "lancha-pequena",
@@ -1961,7 +1984,8 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Fishing Charters",
+    "badge": "Pesca Desportiva",
+    "badge_en": "Fishing Charters",
     "description": "Ideal para grupos pequenos até 3 pessoas, a Lancha Rápida Menor oferece uma experiência íntima e ágil de pesca de alto mar nas águas ricas do Oceano Índico. Velocidade máxima para alcançar as melhores zonas de pesca — Wahoo, Marlin, Atum, Dourado e Sailfish à espera.",
     "description_en": "Perfect for small groups of up to 3 people, the Small Speed Boat offers an intimate and agile deep sea fishing experience in the rich waters of the Indian Ocean. Maximum speed to reach the best fishing spots — Wahoo, Marlin, Tuna, Dorado and Sailfish awaiting.",
     "highlights": [
@@ -2105,7 +2129,8 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Fishing Charters",
+    "badge": "Pesca Desportiva",
+    "badge_en": "Fishing Charters",
     "description": "Para grupos até 6 pessoas, a Lancha Grande combina velocidade e espaço para uma experiência de pesca de alto mar completa e confortável. Com todo o equipamento incluído, é a escolha perfeita para grupos de amigos ou família — Wahoo, Marlin, Atum, Dourado e Sailfish à espera.",
     "description_en": "For groups of up to 6 people, the Large Boat combines speed and space for a complete and comfortable deep sea fishing experience. With all equipment included, it's the perfect choice for groups of friends or family — Wahoo, Marlin, Tuna, Dorado and Sailfish awaiting.",
     "highlights": [
@@ -2249,7 +2274,8 @@
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
-    "badge": "Fishing Charters",
+    "badge": "Pesca Desportiva",
+    "badge_en": "Fishing Charters",
     "description": "O Catamarã Patron é a escolha definitiva para grandes grupos até 20 pessoas. Espaçoso, estável e equipado para uma experiência de pesca de alto mar premium no Oceano Índico — ideal para eventos corporativos, despedidas de solteiro ou simplesmente uma grande aventura em grupo.",
     "description_en": "The Patron Catamaran is the ultimate choice for large groups of up to 20 people. Spacious, stable and equipped for a premium deep sea fishing experience in the Indian Ocean — ideal for corporate events, bachelor parties or simply a big group adventure.",
     "highlights": [
