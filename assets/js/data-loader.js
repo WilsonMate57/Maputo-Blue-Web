@@ -135,7 +135,7 @@
   function buildTourCard(tour) {
     const title   = tf(tour, 'title');
     const desc    = tf(tour, 'description');
-    const imgSrc  = (tour.images && tour.images[0]) || '';
+    const imgSrc  = (tour.cover || (tour.images && tour.images[0])) || '';
     const imgTag  = imgSrc ? `<img src="${imgSrc}" alt="${title}" loading="lazy">` : '';
     const badgeText = tf(tour, 'badge');
     const badge   = badgeText ? `<span class="tour-badge ${badgeClass(badgeText)}">${badgeText}</span>` : '';
