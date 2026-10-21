@@ -437,7 +437,7 @@
     function updateTotal() {
       var childP = _childPrice || _pricePerPerson;
       var total  = (adults * _pricePerPerson) + (children * childP);
-      document.getElementById('booking-total').textContent = _currency + ' ' + Math.round(total);
+      document.getElementById('booking-total').textContent = _currency + ' ' + Math.round(total).toLocaleString('en-US');
       updateWhatsAppLinks();
     }
 
@@ -509,7 +509,7 @@
         if (unitEl)   { unitEl.textContent = 'Children (on request)'; unitEl.style.display = ''; }
         if (childRow) childRow.style.display = 'flex';
       } else if (_childPrice) {
-        if (childEl)  childEl.textContent = currency + ' ' + _childPrice;
+        if (childEl)  childEl.textContent = currency + ' ' + Number(_childPrice).toLocaleString('en-US');
         if (unitEl)   unitEl.style.display = '';
         if (childRow) childRow.style.display = 'flex';
       } else {

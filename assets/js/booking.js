@@ -286,6 +286,12 @@
     cta.setAttribute('role', 'button');
     cta.addEventListener('click', e => { e.preventDefault(); openDialog(); }, true);
 
+    // The bottom bar duplicates the card: hide it while the card is visible
+    const bar = document.getElementById('mobile-booking-bar');
+    if (bar && 'IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => bar.classList.toggle('is-hidden', e.isIntersecting), { threshold: 0.15 }).observe(card);
+    }
+
     const mobileBtn = document.getElementById('mobile-booking-btn');
     if (mobileBtn) {
       mobileBtn.innerHTML = `<i class='bx bx-calendar-check'></i>${EN ? 'Book' : 'Reservar'}`;

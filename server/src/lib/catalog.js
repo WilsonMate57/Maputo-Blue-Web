@@ -74,7 +74,10 @@ export function publicRecord(pkg, rules, rating) {
     },
   };
   if (pkg.seo && Object.keys(pkg.seo).length) rec.seo = pkg.seo;
+  // Only real, published reviews count: the legacy JSON "rating" values were
+  // not backed by reviews and must never be shown as a customer rating.
   if (rating) { rec.rating = rating.avg; rec.reviews_count = rating.count; }
+  else { rec.rating = null; rec.reviews_count = 0; }
   return rec;
 }
 

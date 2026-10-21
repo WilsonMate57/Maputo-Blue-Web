@@ -63,6 +63,11 @@
       loading:    'A carregar...',
       reviews:    'avaliações',
       easy:       'Fácil',
+      no_reviews: 'Sem avaliações',
+      search: 'Pesquisar', search_ph: 'Pesquisar por nome, local ou actividade…', sort: 'Ordenar',
+      sort_rec: 'Recomendados', sort_price_asc: 'Preço: mais baixo', sort_price_desc: 'Preço: mais alto', sort_name: 'Nome (A–Z)',
+      result: 'experiência', results: 'experiências', clear: 'Limpar filtros',
+      no_results_hint: 'Experimente outra categoria ou outra palavra — ou peça-nos um tour à medida.', custom_tour: 'Pedir tour personalizado',
     },
     en: {
       from:       'From',
@@ -74,6 +79,11 @@
       loading:    'Loading...',
       reviews:    'reviews',
       easy:       'Easy',
+      no_reviews: 'No reviews yet',
+      search: 'Search', search_ph: 'Search by name, place or activity…', sort: 'Sort',
+      sort_rec: 'Recommended', sort_price_asc: 'Price: low to high', sort_price_desc: 'Price: high to low', sort_name: 'Name (A–Z)',
+      result: 'experience', results: 'experiences', clear: 'Clear filters',
+      no_results_hint: 'Try another category or keyword — or ask us for a tailor-made tour.', custom_tour: 'Request a custom tour',
     },
   };
 
@@ -123,6 +133,19 @@
       return [];
     }
   }
+
+  /** Placeholder links ("#", empty) in the JSON data are not rendered as links. */
+  function realUrl(u) { return typeof u === 'string' && /^https?:\/\//i.test(u.trim()); }
+
+  /** Stars + count only when real reviews exist; otherwise a neutral label. */
+  function ratingHTML(item) {
+    const count = Number(item.reviews_count) || 0;
+    if (!count || !item.rating) return `<span class="rating-count">${t('no_reviews')}</span>`;
+    return `${starHTML(item.rating)}<span class="rating-value">${Number(item.rating).toFixed(1)}</span><span class="rating-count">(${count})</span>`;
+  }
+
+  /** Consistent price formatting everywhere: "MZN 6,000". */
+  function fmtPrice(n) { const v = Number(n); return Number.isFinite(v) ? v.toLocaleString('en-US') : n; }
 
   function starHTML(rating) {
     const full  = Math.floor(rating);
@@ -179,11 +202,9 @@
     <div class="tour-card-footer">
       <div class="tour-card-price">
         <span class="price-from">${t('from')}</span>
-        <span class="price-value">${tour.currency} ${cardPrice}<span>${(LANG === 'en' ? tour.price_unit_en : tour.price_unit) || t('per_person')}</span></span>
+        <span class="price-value">${tour.currency} ${fmtPrice(cardPrice)}<span>${(LANG === 'en' ? tour.price_unit_en : tour.price_unit) || t('per_person')}</span></span>
         <div class="star-rating">
-          ${starHTML(tour.rating)}
-          <span class="rating-value">${tour.rating}</span>
-          <span class="rating-count">(${tour.reviews_count || 0})</span>
+          ${ratingHTML(tour)}
         </div>
       </div>
       <a href="${detailUrl}" class="tour-card-btn" aria-label="${t('book')} ${title}">${t('book')}</a>
@@ -213,16 +234,14 @@
     </div>
     <div class="tour-meta-item" style="margin-bottom:6px;"><i class='bx bx-map-pin'></i>${tf(acc, 'location')}</div>
     <div class="star-rating" style="margin-bottom:10px;">
-      ${starHTML(acc.rating)}
-      <span class="rating-value">${acc.rating}</span>
-      <span class="rating-count">(${acc.reviews_count || 0})</span>
+      ${ratingHTML(acc)}
     </div>
     <p style="font-size:.875rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">${desc}</p>
     <div class="accommodation-amenities">${amenities}</div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border-light);">
       <div>
         <span class="price-from" style="display:block;">${t('from')}</span>
-        <span class="price-value">${acc.currency} ${acc.price_per_night}<span>${t('per_night')}</span></span>
+        <span class="price-value">${acc.currency} ${fmtPrice(acc.price_per_night)}<span>${t('per_night')}</span></span>
       </div>
       <a href="${PAGES_PREFIX}package.html?id=${acc.id}&type=accommodation" class="tour-card-btn">${t('details')}</a>
     </div>
@@ -290,57 +309,108 @@
     }
   }
 
-  /* ── Full Tours Grid (tours.html / en/tours.html) ────────── */
+  /* ── Listing toolbar (search, sort, count, URL state) ───── */
+  // Shared by the tours and accommodations pages. State lives in the URL
+  // (?category=&q=&sort=) so filters survive navigation and can be shared.
+  function initListing({ grid, items, chips, render, empty, priceOf, nameOf, searchText }) {
+    const params = new URLSearchParams(location.search);
+    const state = { category: params.get('category') || 'all', q: params.get('q') || '', sort: params.get('sort') || 'recommended' };
+    if (![...chips].some(c => c.dataset.category === state.category)) state.category = 'all';
+
+    const bar = document.createElement('div');
+    bar.className = 'listing-toolbar';
+    bar.innerHTML = `
+      <label class="listing-search"><i class='bx bx-search' aria-hidden="true"></i>
+        <span class="visually-hidden">${t('search')}</span>
+        <input type="search" placeholder="${t('search_ph')}" value="" autocomplete="off"></label>
+      <label class="listing-sort"><span>${t('sort')}</span>
+        <select>
+          <option value="recommended">${t('sort_rec')}</option>
+          <option value="price_asc">${t('sort_price_asc')}</option>
+          <option value="price_desc">${t('sort_price_desc')}</option>
+          <option value="name">${t('sort_name')}</option>
+        </select></label>
+      <p class="listing-count" aria-live="polite"></p>`;
+    grid.parentNode.insertBefore(bar, grid);
+    const input = bar.querySelector('input');
+    const select = bar.querySelector('select');
+    input.value = state.q;
+    select.value = state.sort;
+
+    const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    function apply() {
+      const q = norm(state.q.trim());
+      let list = items.filter(i => (state.category === 'all' || i.category === state.category) && (!q || norm(searchText(i)).includes(q)));
+      if (state.sort === 'price_asc') list = [...list].sort((a, b) => priceOf(a) - priceOf(b));
+      if (state.sort === 'price_desc') list = [...list].sort((a, b) => priceOf(b) - priceOf(a));
+      if (state.sort === 'name') list = [...list].sort((a, b) => nameOf(a).localeCompare(nameOf(b), LANG));
+      chips.forEach(c => {
+        const on = c.dataset.category === state.category;
+        c.classList.toggle('active', on);
+        c.setAttribute('aria-pressed', String(on));
+      });
+      const filtered = state.category !== 'all' || q;
+      bar.querySelector('.listing-count').innerHTML = `${list.length} ${list.length === 1 ? t('result') : t('results')}${filtered ? ` · <button type="button" class="listing-clear">${t('clear')}</button>` : ''}`;
+      const clr = bar.querySelector('.listing-clear');
+      if (clr) clr.addEventListener('click', clear);
+      grid.innerHTML = list.length ? render(list) : empty();
+      const emptyClr = grid.querySelector('.listing-clear');
+      if (emptyClr) emptyClr.addEventListener('click', clear);
+      const p = new URLSearchParams(location.search);
+      ['category', 'q', 'sort'].forEach(k => p.delete(k));
+      if (state.category !== 'all') p.set('category', state.category);
+      if (state.q.trim()) p.set('q', state.q.trim());
+      if (state.sort !== 'recommended') p.set('sort', state.sort);
+      history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : '') + location.hash);
+    }
+    function clear() { state.category = 'all'; state.q = ''; input.value = ''; apply(); input.focus(); }
+
+    chips.forEach(chip => chip.addEventListener('click', () => { state.category = chip.dataset.category; apply(); }));
+    let timer;
+    input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => { state.q = input.value; apply(); }, 200); });
+    select.addEventListener('change', () => { state.sort = select.value; apply(); });
+    apply();
+  }
+
+  function emptyState() {
+    const custom = `${PAGES_PREFIX}custom-tour.html`;
+    return `<div class="listing-empty"><i class='bx bx-search-alt' aria-hidden="true"></i>
+      <p><strong>${t('no_results')}</strong></p><p>${t('no_results_hint')}</p>
+      <div class="listing-empty__actions"><button type="button" class="btn-outline-mb listing-clear">${t('clear')}</button>
+      <a class="btn-primary-mb" href="${custom}"><i class='bx bx-map-alt'></i>${t('custom_tour')}</a></div></div>`;
+  }
+
+  /* ── Tours page ──────────────────────────────────────────── */
   async function initToursPage() {
     const grid  = document.querySelector('#tours-grid');
     const chips = document.querySelectorAll('.filter-chip[data-category]');
     if (!grid) return;
-
     const tours = await fetchJSON('tours.json');
-
-    function renderTours(category) {
-      const items = category === 'all' ? tours : tours.filter(t => t.category === category);
-      grid.innerHTML = items.length
-        ? items.map(buildTourCard).join('')
-        : `<p style="color:var(--text-muted);padding:24px 0;">${t('no_results')}</p>`;
-    }
-
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chips.forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        renderTours(chip.dataset.category);
-      });
+    initListing({
+      grid, items: tours, chips, empty: emptyState,
+      render: list => list.map(buildTourCard).join(''),
+      priceOf: i => Number(i.price_from) || 0,
+      nameOf: i => tf(i, 'title'),
+      searchText: i => [tf(i, 'title'), tf(i, 'location'), tf(i, 'description'), tf(i, 'badge')].join(' '),
     });
-
-    renderTours('all');
   }
 
-  /* ── Accommodations Page ─────────────────────────────────── */
+  /* ── Accommodations page ─────────────────────────────────── */
   async function initAccommodationsPage() {
     const grid  = document.querySelector('#accommodations-grid');
     const chips = document.querySelectorAll('.filter-chip[data-category]');
     if (!grid) return;
-
     const accs = await fetchJSON('accommodations.json');
-
-    function renderAccs(category) {
-      const items = category === 'all' ? accs : accs.filter(a => a.category === category);
-      grid.innerHTML = items.length
-        ? items.map(item => `<div class="col-lg-6">${buildAccommodationCard(item)}</div>`).join('')
-        : `<p style="color:var(--text-muted);padding:24px 0;">${t('no_results')}</p>`;
-    }
-
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chips.forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        renderAccs(chip.dataset.category);
-      });
+    initListing({
+      grid, items: accs, chips, empty: () => `<div class="col-12">${emptyState()}</div>`,
+      render: list => list.map(item => `<div class="col-lg-6">${buildAccommodationCard(item)}</div>`).join(''),
+      priceOf: i => Number(i.price_per_night) || 0,
+      nameOf: i => (LANG === 'en' && i.name_en) || i.name || '',
+      searchText: i => [i.name, i.name_en, tf(i, 'location'), tf(i, 'description'), (i.amenities || []).join(' ')].join(' '),
     });
-
-    renderAccs('all');
   }
+
 
   /* ── Package Detail Page ─────────────────────────────────── */
   async function initPackagePage() {
@@ -590,9 +660,9 @@
         }
       }
       const priceEl = document.querySelector('#package-price');
-      if (priceEl) priceEl.textContent = `${currency} ${adultP}`;
+      if (priceEl) priceEl.textContent = `${currency} ${fmtPrice(adultP)}`;
       const mobilePriceEl = document.querySelector('#mobile-price');
-      if (mobilePriceEl) mobilePriceEl.textContent = `${currency} ${adultP}`;
+      if (mobilePriceEl) mobilePriceEl.textContent = `${currency} ${fmtPrice(adultP)}`;
       if (window._pkgSetPrice) window._pkgSetPrice(adultP, currency, childP);
     }
 
@@ -637,14 +707,15 @@
     }
 
     const ratingEl = document.querySelector('#package-rating');
-    if (ratingEl) ratingEl.innerHTML = starHTML(item.rating);
+    const hasReviews = (Number(item.reviews_count) || 0) > 0 && item.rating;
+    if (ratingEl) ratingEl.innerHTML = hasReviews ? starHTML(item.rating) : '';
 
     const bookingRatingEl = document.querySelector('#booking-rating');
-    if (bookingRatingEl) bookingRatingEl.innerHTML = starHTML(item.rating);
+    if (bookingRatingEl) bookingRatingEl.innerHTML = hasReviews ? starHTML(item.rating) : '';
 
     const reviewsCount = item.reviews_count || (item.reviews ? item.reviews.length : 0);
     document.querySelectorAll('#package-reviews-count, #booking-reviews-count').forEach(el => {
-      el.textContent = `(${reviewsCount} ${t('reviews')})`;
+      el.textContent = reviewsCount ? `(${reviewsCount} ${t('reviews')})` : t('no_reviews');
     });
 
 
@@ -729,8 +800,10 @@
         <div class="itin-item">
           <button class="itin-trigger" aria-expanded="${idx === 0 ? 'true' : 'false'}">
             <div class="itin-step-badge">${idx + 1}</div>
-            <span class="itin-trigger__time">${LANG === 'en' ? (step.time_en || step.time) : step.time}</span>
-            <span class="itin-trigger__title">${LANG === 'en' ? (step.title_en || step.title) : step.title}</span>
+            <span class="itin-trigger__text">
+              <span class="itin-trigger__time">${LANG === 'en' ? (step.time_en || step.time) : step.time}</span>
+              <span class="itin-trigger__title">${LANG === 'en' ? (step.title_en || step.title) : step.title}</span>
+            </span>
             <i class='bx bx-chevron-down itin-trigger__chevron'></i>
           </button>
           <div class="itin-body${idx === 0 ? ' open' : ''}">
@@ -804,16 +877,16 @@
       const price    = parseInt(card.dataset.price) || 0;
       const priceUsd = card.dataset.priceUsd ? ` / USD ${card.dataset.priceUsd}` : '';
       const boatName = card.dataset.name;
-      const priceStr = `MZN ${price.toLocaleString()}${priceUsd}`;
+      const priceStr = `MZN ${price.toLocaleString('en-US')}${priceUsd}`;
 
       const priceEl = document.querySelector('#package-price');
       if (priceEl) priceEl.textContent = priceStr;
       const totalEl = document.querySelector('#booking-total');
       if (totalEl) totalEl.textContent = priceStr;
       const mobilePriceEl = document.querySelector('#mobile-price');
-      if (mobilePriceEl) mobilePriceEl.textContent = `MZN ${price.toLocaleString()}`;
+      if (mobilePriceEl) mobilePriceEl.textContent = `MZN ${price.toLocaleString('en-US')}`;
 
-      const url = buildBoatWAUrl(boatName, price.toLocaleString());
+      const url = buildBoatWAUrl(boatName, price.toLocaleString('en-US'));
       document.querySelectorAll('#booking-whatsapp-btn, #mobile-booking-btn').forEach(el => { el.href = url; });
     }
 
@@ -826,7 +899,7 @@
         ${item.boat_options.map((b, i) => {
           const name     = isEn ? (b.name_en || b.name) : b.name;
           const cap      = isEn ? (b.capacity_en || b.capacity) : b.capacity;
-          const pricePT  = `MZN ${b.price_mzn.toLocaleString()}`;
+          const pricePT  = `MZN ${b.price_mzn.toLocaleString('en-US')}`;
           const priceUsd = b.price_usd ? ` / USD ${b.price_usd}` : '';
           return `<label class="boat-opt-card${i === 0 ? ' selected' : ''}"
             data-price="${b.price_mzn}" data-price-usd="${b.price_usd || ''}" data-name="${name}" tabindex="0" role="radio" aria-checked="${i === 0}">
@@ -889,7 +962,9 @@
         </div>
         <div class="testimonial-footer">
           <div class="star-rating">${starHTML(t.rating)}</div>
-          <a href="${t.source_url}" class="testimonial-source" rel="noopener"><i class='bx bx-star'></i>${t.source}</a>
+          ${realUrl(t.source_url)
+            ? `<a href="${t.source_url}" class="testimonial-source" target="_blank" rel="noopener"><i class='bx bx-star'></i>${t.source}</a>`
+            : `<span class="testimonial-source"><i class='bx bx-star'></i>${t.source}</span>`}
         </div>
       </div>`).join('');
 
@@ -919,8 +994,8 @@
         <div class="team-card-name">${m.name}</div>
         <div class="team-card-position">${LANG === 'en' ? (m.position_en || m.position) : m.position}</div>
         <div class="team-card-socials">
-          ${m.social.linkedin ? `<a href="${m.social.linkedin}" class="team-social-link" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>` : ''}
-          ${m.social.instagram ? `<a href="${m.social.instagram}" class="team-social-link" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>` : ''}
+          ${realUrl(m.social && m.social.linkedin) ? `<a href="${m.social.linkedin}" class="team-social-link" target="_blank" rel="noopener" aria-label="LinkedIn — ${m.name}"><i class='bx bxl-linkedin'></i></a>` : ''}
+          ${realUrl(m.social && m.social.instagram) ? `<a href="${m.social.instagram}" class="team-social-link" target="_blank" rel="noopener" aria-label="Instagram — ${m.name}"><i class='bx bxl-instagram'></i></a>` : ''}
         </div>
       </div>`).join('');
 

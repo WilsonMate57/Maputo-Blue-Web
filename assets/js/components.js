@@ -164,6 +164,10 @@
       markSignedIn(el);
     });
 
-    await fetchComponent(BASE + footerFile, '#footer-placeholder');
+    // Scripts inside injected HTML never run, so the footer year is set here
+    await fetchComponent(BASE + footerFile, '#footer-placeholder', el => {
+      const year = el.querySelector('#footer-year');
+      if (year) year.textContent = new Date().getFullYear();
+    });
   });
 })();

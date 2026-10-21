@@ -98,24 +98,35 @@
     const counters = document.querySelectorAll('[data-count]');
     if (!counters.length) return;
 
+    // Decimals are preserved (e.g. 4.9). The HTML holds the final value so
+    // crawlers, no-JS visitors and reduced-motion users see real numbers.
+    const fmt = (el, v) => {
+      const decimals = (el.dataset.count.split('.')[1] || '').length;
+      return v.toLocaleString(document.documentElement.lang.startsWith('en') ? 'en-US' : 'pt-PT',
+        { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + (el.dataset.suffix || '');
+    };
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      counters.forEach(el => { el.textContent = fmt(el, parseFloat(el.dataset.count)); });
+      return;
+    }
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const el     = entry.target;
-        const target = parseInt(el.dataset.count, 10);
-        const suffix = el.dataset.suffix || '';
-        let current  = 0;
-        const step   = Math.ceil(target / 60);
-        const timer  = setInterval(() => {
-          current = Math.min(current + step, target);
-          el.textContent = current.toLocaleString('pt-MZ') + suffix;
-          if (current >= target) clearInterval(timer);
-        }, 20);
+        const target = parseFloat(el.dataset.count);
+        const start  = performance.now();
+        const tick = now => {
+          const t = Math.min((now - start) / 1200, 1);
+          el.textContent = fmt(el, t >= 1 ? target : target * (1 - Math.pow(1 - t, 3)));
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
         observer.unobserve(el);
       });
     }, { threshold: 0.5 });
 
-    counters.forEach(el => observer.observe(el));
+    counters.forEach(el => { el.textContent = fmt(el, 0); observer.observe(el); });
   }
 
   /* ── Booking button ripple ──────────────────────────────── */

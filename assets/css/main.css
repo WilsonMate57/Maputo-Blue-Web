@@ -1586,15 +1586,11 @@ main.tours-main { z-index: auto; }
   flex-wrap: wrap;
   margin-top: 8px;
 }
+/* Accepted payment methods: informative logos, not links */
 .payment-icon-link {
   display: inline-flex;
   align-items: center;
-  opacity: .75;
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
-}
-.payment-icon-link:hover {
-  opacity: 1;
-  transform: scale(1.08);
+  opacity: .9;
 }
 .payment-icon {
   height: 30px;
@@ -1725,13 +1721,24 @@ main.tours-main { z-index: auto; }
   background: var(--light-bg);
   border: 1.5px solid var(--border-light);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
   white-space: nowrap;
 }
 .filter-chip:hover, .filter-chip.active {
   background: var(--primary);
   color: var(--white);
   border-color: var(--primary);
+}
+@media (max-width: 767px) {
+  /* One scrollable row: a wrapped sticky bar would cover half the screen */
+  .tours-filters { padding: 12px 0; }
+  .filter-row {
+    flex-wrap: nowrap; overflow-x: auto; gap: 8px; scroll-snap-type: x proximity;
+    margin-inline: calc(var(--container-px) * -1); padding-inline: var(--container-px);
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .filter-chip { scroll-snap-align: start; flex-shrink: 0; }
 }
 
 
@@ -2509,8 +2516,17 @@ main.tours-main { z-index: auto; }
   justify-content: center;
   flex-shrink: 0;
 }
+.itin-trigger__text { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; }
 .itin-trigger__time { font-size: .8125rem; color: var(--text-muted); min-width: 50px; flex-shrink: 0; }
 .itin-trigger__title { flex: 1; font-weight: 600; font-size: .9375rem; color: var(--primary); }
+.itin-trigger:focus-visible { outline: 2px solid var(--sea-green); outline-offset: -2px; }
+@media (max-width: 575px) {
+  /* Time above the title so the title and description get the full width */
+  .itin-trigger { padding: 14px 14px; gap: 10px; }
+  .itin-trigger__text { flex-direction: column; align-items: flex-start; gap: 1px; }
+  .itin-trigger__time { min-width: 0; font-size: .75rem; }
+  .itin-body.open { padding: 0 16px 16px 52px; }
+}
 .itin-trigger__chevron { font-size: 1.25rem; color: var(--text-muted); transition: transform .25s ease; flex-shrink: 0; }
 .itin-trigger[aria-expanded="true"] .itin-trigger__chevron { transform: rotate(180deg); }
 .itin-body { max-height: 0; overflow: hidden; transition: max-height .32s ease, padding .32s ease; }
@@ -2536,9 +2552,13 @@ main.tours-main { z-index: auto; }
   box-shadow: 0 -4px 20px rgba(0,0,0,.08);
 }
 @media (max-width: 991px) {
-  .mobile-booking-bar { display: flex; }
-  #package-detail { padding-bottom: 72px; }
+  .mobile-booking-bar { display: flex; transition: transform var(--transition-base); }
+  /* keep the fixed bar from covering the end of the page (footer links) */
+  body:has(.mobile-booking-bar) { padding-bottom: 76px; }
+  /* hidden while the booking card itself is on screen (set by booking.js) */
+  .mobile-booking-bar.is-hidden { transform: translateY(110%); }
 }
+@media (prefers-reduced-motion: reduce) { .mobile-booking-bar { transition: none; } }
 .mobile-booking-bar__value { font-size: 1.25rem; font-weight: 800; color: var(--primary); }
 .mobile-booking-bar__label { font-size: .75rem; color: var(--text-muted); }
 
@@ -3521,4 +3541,36 @@ textarea.booking-input { resize: vertical; min-height: 80px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .mb-dialog[open], .mb-skeleton-line { animation: none; }
+}
+
+/* ── Listing toolbar (tours / accommodations) ── */
+.listing-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-bottom: 24px; }
+.listing-search { position: relative; flex: 1 1 280px; max-width: 460px; margin: 0; }
+.listing-search i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.125rem; pointer-events: none; }
+.listing-search input {
+  width: 100%; padding: 11px 14px 11px 40px; border: 1.5px solid var(--border-light); border-radius: var(--radius-pill);
+  background: var(--white); font-family: var(--font-base); font-size: .9375rem; color: var(--primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.listing-search input:focus { outline: none; border-color: var(--sea-green); box-shadow: 0 0 0 3px rgba(0, 188, 212, .15); }
+.listing-sort { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: .875rem; color: var(--text-muted); }
+.listing-sort select {
+  padding: 10px 34px 10px 14px; border: 1.5px solid var(--border-light); border-radius: var(--radius-pill); background-color: var(--white);
+  font-family: var(--font-base); font-size: .875rem; color: var(--primary); font-weight: 600; cursor: pointer;
+}
+.listing-sort select:focus-visible { outline: 2px solid var(--sea-green); outline-offset: 2px; }
+.listing-count { margin: 0 0 0 auto; font-size: .875rem; color: var(--text-muted); }
+.listing-clear:not(.btn-outline-mb) { background: none; border: 0; padding: 0; color: var(--sea-green); font-weight: 600; text-decoration: underline; cursor: pointer; font-size: inherit; }
+.listing-clear:not(.btn-outline-mb):hover { color: var(--primary); }
+.listing-clear:focus-visible { outline: 2px solid var(--sea-green); outline-offset: 2px; border-radius: 3px; }
+.listing-empty { grid-column: 1 / -1; text-align: center; padding: 48px 16px; background: var(--white); border: 1.5px dashed var(--border-light); border-radius: var(--radius-lg); }
+.listing-empty > i { font-size: 2.5rem; color: var(--sea-green); }
+.listing-empty p { margin: 6px 0; color: var(--text-muted); }
+.listing-empty p strong { color: var(--primary); font-size: 1.0625rem; }
+.listing-empty__actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 16px; }
+.listing-empty__actions .btn-outline-mb, .listing-empty__actions .btn-primary-mb { padding: 11px 22px; }
+.filter-chip:focus-visible { outline: 2px solid var(--sea-green); outline-offset: 2px; }
+@media (max-width: 575px) {
+  .listing-search { max-width: none; flex-basis: 100%; }
+  .listing-count { margin-left: 0; width: 100%; }
 }
