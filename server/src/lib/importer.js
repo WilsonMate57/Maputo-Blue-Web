@@ -86,22 +86,17 @@ export async function runImport(pool, plan, { force = false, log = () => {} } = 
       const exists = (await c.query('select version from packages where id = $1 for update', [r.id])).rows[0];
       if (exists && !force) { result.skipped.push(r.id); continue; }
       if (exists) {
-        const v = exists.version + 1;
         await c.query(
           `update packages set kind=$2, category=$3, content=$4, pricing=$5, availability=$6, sort_order=$7,
-                  version=$8, updated_at=now() where id=$1`,
-          [r.id, r.kind, r.category, r.content, r.pricing, r.availability, r.sort_order, v]);
+                  version=version+1, updated_at=now() where id=$1`,
+          [r.id, r.kind, r.category, r.content, r.pricing, r.availability, r.sort_order]);
         await c.query('delete from price_rules where package_id = $1', [r.id]);
-        await c.query('insert into package_revisions (package_id, version, snapshot) values ($1,$2,$3)',
-          [r.id, v, { via: 'import --force', source: r.source }]);
         result.replaced.push(r.id);
       } else {
         await c.query(
           `insert into packages (id, kind, category, status, content, pricing, availability, sort_order)
            values ($1,$2,$3,'published',$4,$5,$6,$7)`,
           [r.id, r.kind, r.category, r.content, r.pricing, r.availability, r.sort_order]);
-        await c.query('insert into package_revisions (package_id, version, snapshot) values ($1,1,$2)',
-          [r.id, { via: 'import', source: r.source }]);
         result.inserted.push(r.id);
       }
       for (const rule of r.rules) {
@@ -109,6 +104,13 @@ export async function runImport(pool, plan, { force = false, log = () => {} } = 
           `insert into price_rules (package_id, label, weekdays, adult, child, priority) values ($1,$2,$3,$4,$5,$6)`,
           [r.id, rule.label, rule.weekdays, rule.adult, rule.child, rule.priority]);
       }
+      // Full snapshot (restorable from the dashboard) + the original JSON record
+      const { rows: [p] } = await c.query('select * from packages where id = $1', [r.id]);
+      await c.query('insert into package_revisions (package_id, version, snapshot) values ($1,$2,$3)', [r.id, p.version, {
+        via: exists ? 'import --force' : 'import', status: p.status, category: p.category, featured: p.featured, promotional: p.promotional,
+        sort_order: p.sort_order, content: p.content, pricing: p.pricing, availability: p.availability, seo: p.seo,
+        rules: r.rules.map(x => ({ ...x, date_from: null, date_to: null, option_key: null, active: true })), source: r.source,
+      }]);
       log(`  ${exists ? '↻' : '+'} ${r.id}`);
     }
     await c.query(
