@@ -1,0 +1,34 @@
+{
+  "name": "maputo-blue-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Maputo Blue booking & management backend",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/index.js",
+    "dev": "node --env-file-if-exists=.env --watch src/index.js",
+    "db:dev": "node scripts/dev-db.js",
+    "migrate": "node --env-file-if-exists=.env scripts/migrate.js",
+    "import:json": "node --env-file-if-exists=.env scripts/import-json.js",
+    "import:reviews": "node --env-file-if-exists=.env scripts/import-firestore-reviews.js",
+    "create-admin": "node --env-file-if-exists=.env scripts/create-admin.js",
+    "backup": "node --env-file-if-exists=.env scripts/backup.js",
+    "test": "node --test --test-concurrency=1 \"test/*.test.js\""
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.1.3",
+    "@fastify/formbody": "^9.0.1",
+    "@fastify/multipart": "^10.1.4",
+    "@fastify/rate-limit": "^11.2.1",
+    "@fastify/static": "^10.1.6",
+    "fastify": "^5.12.7",
+    "pg": "^8.23.1",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "embedded-postgres": "^17.10.0-beta.17"
+  }
+}

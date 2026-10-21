@@ -22,3 +22,8 @@ npm-debug.log*
 *.zip
 dist/
 assets/images/lixo/
+
+# Backend
+server/.env
+server/.pgdata/
+backups/

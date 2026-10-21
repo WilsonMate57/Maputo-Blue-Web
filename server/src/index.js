@@ -1,0 +1,47 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// index.js — Production entry point: migrations, HTTP server, background jobs.
+// ─────────────────────────────────────────────────────────────────────────────
+import { loadConfig } from './config.js';
+import { createPool } from './db.js';
+import { migrate } from './migrate.js';
+import { buildApp } from './app.js';
+import { processOutbox, resendTransport } from './lib/mailer.js';
+import { runBookingMaintenance } from './lib/bookings.js';
+
+const cfg = loadConfig();
+const pool = createPool(cfg.databaseUrl);
+await migrate(pool);
+
+const transport = resendTransport(cfg.mail);
+const app = await buildApp({ cfg, pool, mailTransport: transport, logger: { level: cfg.env === 'production' ? 'info' : 'warn' } });
+await app.listen({ port: cfg.port, host: cfg.host });
+console.log(`\n  ✦ Maputo Blue server  ➜  http://${cfg.host}:${cfg.port}  (${cfg.env})`);
+if (!cfg.mail.resendApiKey) console.log('  ! RESEND_API_KEY not set — e-mails stay in the outbox as "failed" until configured.');
+
+const timers = [];
+if (cfg.jobs) {
+  let mailBusy = false, maintBusy = false;
+  timers.push(setInterval(async () => {
+    if (mailBusy) return; mailBusy = true;
+    try { await processOutbox(pool, transport, { log: m => app.log.warn(m) }); } catch (e) { app.log.error(e); } finally { mailBusy = false; }
+  }, 20_000));
+  const maintenance = async () => {
+    if (maintBusy) return; maintBusy = true;
+    try {
+      await runBookingMaintenance(pool, cfg);
+      await pool.query(`delete from sessions where expires_at < now()`);
+      await pool.query(`delete from auth_tokens where expires_at < now() - interval '7 days'`);
+    } catch (e) { app.log.error(e); } finally { maintBusy = false; }
+  };
+  timers.push(setInterval(maintenance, 60 * 60_000));
+  setTimeout(maintenance, 10_000);
+}
+
+const shutdown = async () => {
+  timers.forEach(clearInterval);
+  await app.close();
+  await pool.end();
+  process.exit(0);
+};
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
