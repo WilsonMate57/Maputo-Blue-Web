@@ -17,12 +17,12 @@ function layout({ title, intro, rows = [], body = '', cta, footerNote, locale })
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:20px 0;background:#F8FAFC;border-radius:10px;">
       ${rows.map(([k, v]) => `<tr><td style="padding:10px 16px;color:#64748B;font-size:13px;width:42%;border-bottom:1px solid #E2E8F0;">${esc(k)}</td><td style="padding:10px 16px;color:#0A2540;font-size:14px;font-weight:600;border-bottom:1px solid #E2E8F0;">${esc(v)}</td></tr>`).join('')}
     </table>` : '';
-  const ctaHtml = cta ? `<p style="margin:24px 0;"><a href="${esc(cta.url)}" style="background:#1EA896;color:#fff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600;display:inline-block;">${esc(cta.label)}</a></p>` : '';
+  const ctaHtml = cta ? `<p style="margin:24px 0;"><a href="${esc(cta.url)}" style="background:#ff8800;color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:600;display:inline-block;">${esc(cta.label)}</a></p>` : '';
   return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${esc(title)}</title></head>
 <body style="margin:0;background:#F2E9E4;font-family:'DM Sans',Arial,Helvetica,sans-serif;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:28px 12px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;">
-      <tr><td style="background:#0A2540;padding:22px 28px;color:#ffffff;font-size:20px;font-weight:700;letter-spacing:.3px;">Maputo <span style="color:#1EA896;">Blue</span></td></tr>
+      <tr><td style="background:#0A2540;padding:22px 28px;color:#ffffff;font-size:20px;font-weight:700;letter-spacing:.3px;">Maputo <span style="color:#00bcd4;">Blue</span></td></tr>
       <tr><td style="padding:28px;color:#334155;font-size:15px;line-height:1.6;">
         <h1 style="margin:0 0 12px;font-size:21px;color:#0A2540;">${esc(title)}</h1>
         <p style="margin:0;">${intro}</p>
@@ -79,7 +79,7 @@ const T = {
     const [title, msg] = map[d.event] || map.updated;
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${msg}`;
     const rows = bookingRows(d, L);
-    const body = d.message ? `<p style="background:#F8FAFC;border-left:3px solid #1EA896;padding:12px 14px;margin:0;">${esc(d.message)}</p>` : '';
+    const body = d.message ? `<p style="background:#F8FAFC;border-left:3px solid #00bcd4;padding:12px 14px;margin:0;">${esc(d.message)}</p>` : '';
     const cta = d.status_url ? { url: d.status_url, label: en ? 'View booking' : 'Ver reserva' } : null;
     return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, body, cta, locale: L }), text: toText(title, intro, rows, d.message || '') };
   },

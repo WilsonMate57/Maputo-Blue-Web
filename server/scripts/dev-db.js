@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // dev-db.js — Portable PostgreSQL 17 for local development (embedded-postgres).
 // Data lives in server/.pgdata (git-ignored). Production uses a regular
-// PostgreSQL service instead — see docs/DEPLOYMENT.md.
+// PostgreSQL service instead — see docs/IMPLANTACAO.md.
 // Usage: npm run db:dev   (keeps running; Ctrl+C to stop)
 // ─────────────────────────────────────────────────────────────────────────────
 import EmbeddedPostgres from 'embedded-postgres';

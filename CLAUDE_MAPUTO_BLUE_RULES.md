@@ -187,6 +187,10 @@ Accent Coral        #F26419
 
 Use these colors consistently across the interface.
 
+Note: the live tokens in `assets/css/main.css` currently use Sea Green `#00bcd4`
+and Accent Coral `#ff8800`. Always use the CSS variables (`--sea-green`,
+`--accent-coral`, …) rather than hard-coded values.
+
 ---
 
 # Reference Images
@@ -327,3 +331,35 @@ Do not:
 - assume DOM elements exist
 
 Always prefer **incremental improvements and data-driven content**.
+
+---
+
+# Booking Platform (branch `Automation`)
+
+The site now has a self-hosted backend. Read `docs/ARQUITECTURA.md` and
+`docs/IMPLANTACAO.md` before changing anything related to bookings.
+
+- Backend: `server/` — Node.js (Fastify) + PostgreSQL. No frontend framework.
+- Source of truth for packages, prices and availability is the database.
+  `data/tours.json` and `data/accommodations.json` are only the import source
+  and the offline fallback; do not edit them to change live prices.
+- Never compute authoritative prices or statuses in the browser: the server
+  recalculates every quote/booking (`server/src/lib/pricing.js`).
+- Public pages are progressively enhanced (`assets/js/api.js`, `booking.js`,
+  `portal-*.js`); the site must keep working when the API is unreachable.
+- PT and EN pages share the same filename (`pages/x.html` ↔ `en/x.html`).
+- Admin dashboard: `/admin/` (vanilla ES modules in `admin/js/`), styles in
+  `admin/admin.css`.
+- Schema changes: add a new numbered file in `server/migrations/`; never edit
+  an applied migration.
+
+## Local development
+
+    cd server
+    npm run db:dev        # portable PostgreSQL on :5433 (keep running)
+    npm start             # http://localhost:3100 (server/.env)
+    npm test              # integration tests (database maputoblue_test)
+    npm run test:e2e      # browser tests (needs the server + dev admin)
+    npm run screenshot -- <url> [out.png] [--mobile] [--full]
+
+Screenshots are written to `temporary screenshots/` (git-ignored).

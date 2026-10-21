@@ -12,6 +12,7 @@ import publicRoutes from './routes/public.js';
 import authRoutes from './routes/auth.js';
 import accountRoutes from './routes/account.js';
 import adminRoutes from './routes/admin/index.js';
+import seoRoutes from './routes/seo.js';
 
 // Only these top-level paths of the site folder are ever served.
 const STATIC_ALLOW = /^\/(index\.html|logo\.webp|robots\.txt|sitemap\.xml|favicon\.ico|(assets|components|data|pages|en|admin)\/.*)?$/;
@@ -105,6 +106,7 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
   await app.register(authRoutes, { prefix: '/api/auth' });
   await app.register(accountRoutes, { prefix: '/api/account' });
   await app.register(adminRoutes, { prefix: '/api/admin' });
+  await app.register(seoRoutes);
 
   app.all('/api/*', async (request, reply) => reply.code(404).send({ error: 'not_found' }));
 

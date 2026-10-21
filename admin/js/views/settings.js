@@ -44,7 +44,7 @@ export default async function settings(main) {
 
       <div class="card"><div class="card__head"><h2>E-mail</h2></div><div class="card__body">
         ${s.mail_configured ? `<p class="alert alert--success" style="margin:0;">Configurado. Remetente: ${esc(s.mail_from)}</p>`
-          : '<p class="alert alert--warn" style="margin:0;">Não configurado. Defina RESEND_API_KEY e MAIL_FROM no ficheiro server/.env do servidor e reinicie o serviço (ver docs/DEPLOYMENT.md).</p>'}
+          : '<p class="alert alert--warn" style="margin:0;">Não configurado. Defina RESEND_API_KEY e MAIL_FROM no ficheiro server/.env do servidor e reinicie o serviço (ver docs/IMPLANTACAO.md).</p>'}
       </div></div>
     </div>`;
 

@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // backup.js — Logical JSON backup of every table + a copy of data/*.json.
 // Written to <site>/backups/<timestamp>/ (git-ignored). For full-fidelity
-// production backups also schedule pg_dump (see docs/DEPLOYMENT.md).
+// production backups also schedule pg_dump (see docs/IMPLANTACAO.md).
 // ─────────────────────────────────────────────────────────────────────────────
 import fs from 'node:fs';
 import path from 'node:path';
