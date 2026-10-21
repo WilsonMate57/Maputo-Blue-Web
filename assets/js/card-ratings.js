@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // card-ratings.js  —  Patch tour/accommodation cards on listing pages with
-//                     live average ratings from Firestore.
+//                     live average ratings from the Maputo Blue API.
 //
 // Loaded as <script type="module"> on any page that renders tour cards.
 // Works alongside data-loader.js (IIFE) which renders cards asynchronously.
@@ -11,7 +11,12 @@
 // @license    Proprietary — Unauthorised use or distribution is prohibited.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { loadRatingsMap } from './ratings-cache.js';
+/** packageId → { avg, count } for every package with published reviews. */
+async function loadRatingsMap() {
+  const res = await fetch('/api/ratings', { credentials: 'same-origin' });
+  if (!res.ok || !(res.headers.get('content-type') || '').includes('application/json')) throw new Error(`HTTP ${res.status}`);
+  return new Map(Object.entries(await res.json()));
+}
 
 const LANG          = document.documentElement.lang.startsWith('en') ? 'en' : 'pt';
 const REVIEWS_LABEL = LANG === 'en' ? 'reviews'      : 'avaliações';
@@ -49,7 +54,7 @@ function patchCard(card, ratingsMap) {
   starRatingEl.querySelectorAll('i.bx').forEach(el => el.remove());
 
   if (!data) {
-    // No Firestore reviews — show empty state
+    // No reviews yet — show empty state
     if (valueEl) valueEl.textContent = '';
     if (countEl) countEl.textContent = NO_REVIEWS;
     return;
@@ -74,7 +79,7 @@ async function initCardRatings() {
   try {
     ratingsMap = await loadRatingsMap();
   } catch (err) {
-    console.warn('[card-ratings] Could not load ratings from Firestore:', err);
+    console.warn('[card-ratings] Could not load ratings:', err);
     return;
   }
 

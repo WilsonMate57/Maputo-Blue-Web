@@ -31,7 +31,7 @@ async function consumeToken(c, t, purpose) {
 }
 
 function accountUrl(cfg, locale, query) {
-  return `${cfg.publicBaseUrl}/${locale === 'en' ? 'en/account.html' : 'pages/conta.html'}?${query}`;
+  return `${cfg.publicBaseUrl}/${locale === 'en' ? 'en' : 'pages'}/account.html?${query}`;
 }
 
 export async function sendVerification(c, cfg, user) {

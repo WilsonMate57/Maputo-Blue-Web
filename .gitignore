@@ -27,3 +27,6 @@ assets/images/lixo/
 server/.env
 server/.pgdata/
 backups/
+
+# Local screenshots
+temporary screenshots/

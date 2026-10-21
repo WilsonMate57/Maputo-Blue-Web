@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// reviews.js  —  Firebase/Firestore reviews & ratings system
+// reviews.js  —  Reviews & ratings (Maputo Blue API; migrated from Firestore)
 // Imported as <script type="module"> in package.html pages.
 //
 // @copyright  2026 Maputo Blue. All rights reserved.
@@ -7,16 +7,18 @@
 // @license    Proprietary — Unauthorised use or distribution is prohibited.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { db } from './firebase.js';
-import {
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  serverTimestamp,
-} from 'https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js';
+// ── API helper ────────────────────────────────────────────────────────────────
+async function api(method, path, body) {
+  const res = await fetch('/api' + path, {
+    method,
+    credentials: 'same-origin',
+    headers: body ? { 'Content-Type': 'application/json' } : {},
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw Object.assign(new Error((data && data.message) || res.statusText), { status: res.status, code: data && data.error });
+  return data;
+}
 
 // ── Language ──────────────────────────────────────────────────────────────────
 const LANG = document.documentElement.lang.startsWith('en') ? 'en' : 'pt';
@@ -38,6 +40,7 @@ const S = {
     submitting:    'A enviar…',
     successMsg:    'Obrigado pela sua avaliação!',
     errorMsg:      'Erro ao enviar. Tente novamente.',
+    errorRate:     'Demasiadas avaliações seguidas. Tente mais tarde.',
     errorRequired: 'Por favor, preencha todos os campos e seleccione uma classificação.',
     anonymous:     'Anónimo',
   },
@@ -56,6 +59,7 @@ const S = {
     submitting:    'Submitting…',
     successMsg:    'Thank you for your review!',
     errorMsg:      'Could not submit. Please try again.',
+    errorRate:     'Too many reviews in a row. Please try later.',
     errorRequired: 'Please fill in all fields and select a rating.',
     anonymous:     'Anonymous',
   },
@@ -138,7 +142,7 @@ function renderAggregate(reviews) {
 // ── Render review list ─────────────────────────────────────────────────────────
 function formatDate(ts) {
   if (!ts) return '';
-  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const d = new Date(ts);
   return d.toLocaleDateString(LANG === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
@@ -155,7 +159,7 @@ function renderReviews(reviews) {
         <div class="review-card__avatar">${(r.name || S.anonymous).charAt(0).toUpperCase()}</div>
         <div class="review-card__meta">
           <span class="review-card__name">${escHtml(r.name || S.anonymous)}</span>
-          <span class="review-card__date">${formatDate(r.createdAt)}</span>
+          <span class="review-card__date">${formatDate(r.created_at)}</span>
         </div>
         <div class="review-card__stars">${starsHTML(r.rating)}</div>
       </div>
@@ -171,34 +175,9 @@ function escHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-// ── Load reviews from Firestore ───────────────────────────────────────────────
+// ── Load reviews (newest first) ───────────────────────────────────────────────
 async function loadReviews(packageId) {
-  let reviews = [];
-  try {
-    // Attempt ordered query — requires composite index on (packageId, createdAt)
-    const q = query(
-      collection(db, 'reviews'),
-      where('packageId', '==', packageId),
-      orderBy('createdAt', 'desc')
-    );
-    const snap = await getDocs(q);
-    snap.forEach(doc => reviews.push({ id: doc.id, ...doc.data() }));
-  } catch (e) {
-    // Composite index not yet created — fallback to simple where + client-side sort
-    if (e.code === 'failed-precondition' || e.code === 'unimplemented') {
-      const q2 = query(collection(db, 'reviews'), where('packageId', '==', packageId));
-      const snap2 = await getDocs(q2);
-      snap2.forEach(doc => reviews.push({ id: doc.id, ...doc.data() }));
-      reviews.sort((a, b) => {
-        const ta = a.createdAt?.seconds ?? 0;
-        const tb = b.createdAt?.seconds ?? 0;
-        return tb - ta;
-      });
-    } else {
-      throw e;
-    }
-  }
-  return reviews;
+  return api('GET', `/reviews?package_id=${encodeURIComponent(packageId)}`);
 }
 
 // ── Render review form ─────────────────────────────────────────────────────────
@@ -239,6 +218,7 @@ function renderForm(packageId, onSubmitSuccess) {
             maxlength="1000"
           ></textarea>
         </div>
+        <div class="mb-hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <p class="review-form-feedback" id="review-feedback" aria-live="polite"></p>
         <button type="submit" class="btn-primary-mb review-form-submit" id="review-submit">
           ${S.submitBtn}
@@ -268,12 +248,9 @@ function renderForm(packageId, onSubmitSuccess) {
     submitBtn.textContent = S.submitting;
 
     try {
-      await addDoc(collection(db, 'reviews'), {
-        packageId,
-        name,
-        rating,
-        comment,
-        createdAt: serverTimestamp(),
+      await api('POST', '/reviews', {
+        package_id: packageId, name, rating, comment,
+        website: form.querySelector('[name="website"]').value, // honeypot
       });
       form.reset();
       picker.reset();
@@ -283,7 +260,7 @@ function renderForm(packageId, onSubmitSuccess) {
       onSubmitSuccess();
     } catch (err) {
       console.error('Review submission failed:', err);
-      showFeedback(S.errorMsg, 'error');
+      showFeedback(err.status === 429 ? S.errorRate : S.errorMsg, 'error');
       submitBtn.disabled = false;
       submitBtn.textContent = S.submitBtn;
     }

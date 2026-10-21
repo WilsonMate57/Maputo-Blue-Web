@@ -137,6 +137,20 @@
     });
   }
 
+  /** Highlight the account icon when the visitor is signed in (backend optional). */
+  async function markSignedIn(container) {
+    const link = container.querySelector('.navbar-account-link');
+    if (!link) return;
+    try {
+      const res = await fetch('/api/auth/me', { credentials: 'same-origin' });
+      if (!res.ok || !(res.headers.get('content-type') || '').includes('application/json')) return;
+      const { user } = await res.json();
+      if (!user) return;
+      link.classList.add('is-signed-in');
+      link.title = user.name;
+    } catch (_) { /* static hosting: no account features */ }
+  }
+
   /** Load all components on DOMContentLoaded. */
   document.addEventListener('DOMContentLoaded', async () => {
     const navbarFile = LANG === 'en' ? 'navbar-en.html' : 'navbar.html';
@@ -147,6 +161,7 @@
       initMobileNav(el);
       initStickyNavbar();
       initLangSwitch(el);
+      markSignedIn(el);
     });
 
     await fetchComponent(BASE + footerFile, '#footer-placeholder');

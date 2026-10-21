@@ -93,7 +93,27 @@
   }
 
   /* ── Helpers ─────────────────────────────────────────────── */
+  // Catalogue files served by the backend (database is the source of truth);
+  // the static JSON files remain as a fallback when the API is unreachable.
+  const API_SOURCES = { 'tours.json': '/api/catalog/tours', 'accommodations.json': '/api/catalog/accommodations' };
+  const _cache = {};
+
   async function fetchJSON(file) {
+    if (_cache[file]) return _cache[file];
+    _cache[file] = _fetchJSON(file);
+    return _cache[file];
+  }
+
+  async function _fetchJSON(file) {
+    if (API_SOURCES[file]) {
+      try {
+        const res = await fetch(API_SOURCES[file], { credentials: 'same-origin' });
+        if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
+          const data = await res.json();
+          if (Array.isArray(data)) return data;
+        }
+      } catch (_) { /* fall back to the static file */ }
+    }
     try {
       const res = await fetch(DATA_BASE + file);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -337,7 +357,18 @@
       ? await fetchJSON('accommodations.json')
       : await fetchJSON('tours.json');
 
-    const item = data.find(d => d.id === id);
+    let item = data.find(d => d.id === id);
+    // Administrators can preview unpublished packages: ?id=…&preview=1
+    if (params.get('preview') === '1') {
+      try {
+        const res = await fetch(`/api/admin/packages/${encodeURIComponent(id)}/public`, { credentials: 'same-origin' });
+        if (res.ok) {
+          item = await res.json();
+          document.body.insertAdjacentHTML('afterbegin',
+            `<div class="pkg-preview-banner" role="status"><i class='bx bx-show'></i>${LANG === 'en' ? 'Preview — this is how the package will look once published.' : 'Pré-visualização — é assim que o pacote ficará quando for publicado.'}</div>`);
+        }
+      } catch (_) { /* not an admin or API offline: show the public version */ }
+    }
     if (!item) { el.innerHTML = '<p class="text-muted p-4">Package not found.</p>'; return; }
 
     renderPackageDetail(item, type);
@@ -345,6 +376,9 @@
     renderRelatedExperiences(item, type, data);
     renderImportantInfo(item);
     initShareButtons();
+    // Let the booking module (booking.js) enhance the booking card
+    window.MBPackage = item;
+    document.dispatchEvent(new CustomEvent('mb:package-loaded', { detail: item }));
   }
 
   /* ── Share Buttons ───────────────────────────────────────── */
@@ -642,9 +676,11 @@
     const imgSide2 = document.querySelector('#gallery-img-side2');
     const galCounter = document.querySelector('#gallery-counter');
 
-    if (images[0] && imgMain)  { imgMain.src  = images[0]; imgMain.alt  = title; }
-    if (imgSide1) { imgSide1.src = images[1] || images[0] || ''; imgSide1.alt = `${title} — 2`; }
-    if (imgSide2) { imgSide2.src = images[2] || images[0] || ''; imgSide2.alt = `${title} — 3`; }
+    // Alt texts managed in the dashboard (content.image_alts), else the title
+    const altFor = (src, n) => (item.image_alts && item.image_alts[src] && item.image_alts[src][LANG]) || (n ? `${title} — ${n}` : title);
+    if (images[0] && imgMain)  { imgMain.src  = images[0]; imgMain.alt  = altFor(images[0]); }
+    if (imgSide1) { imgSide1.src = images[1] || images[0] || ''; imgSide1.alt = altFor(images[1] || images[0], 2); }
+    if (imgSide2) { imgSide2.src = images[2] || images[0] || ''; imgSide2.alt = altFor(images[2] || images[0], 3); }
     if (galCounter) galCounter.textContent = images.length ? `${images.length} ${LANG === 'en' ? 'photos' : 'fotos'}` : '';
 
     if (window._pkgInitLightbox) {

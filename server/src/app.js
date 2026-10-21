@@ -15,7 +15,7 @@ import adminRoutes from './routes/admin/index.js';
 
 // Only these top-level paths of the site folder are ever served.
 const STATIC_ALLOW = /^\/(index\.html|logo\.webp|robots\.txt|sitemap\.xml|favicon\.ico|(assets|components|data|pages|en|admin)\/.*)?$/;
-const NOINDEX = /^\/(api|admin)\/|^\/(pages|en)\/(conta|account|booking-status|quote)\.html/;
+const NOINDEX = /^\/(api|admin)\/|^\/(pages|en)\/(account|booking-status|quote)\.html/;
 
 /**
  * Make every object schema that declares `properties` strip unknown keys
