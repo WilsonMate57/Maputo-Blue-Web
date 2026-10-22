@@ -135,7 +135,8 @@ let logoCache = null;
 async function logoPng(cfg) {
   if (logoCache) return logoCache;
   const file = path.join(cfg.siteRoot, 'logo.webp');
-  logoCache = fs.existsSync(file) ? await sharp(file).resize({ height: 160, withoutEnlargement: true }).png().toBuffer() : null;
+  // Read into memory: on Windows sharp keeps files it opened locked
+  logoCache = fs.existsSync(file) ? await sharp(fs.readFileSync(file)).resize({ height: 160, withoutEnlargement: true }).png().toBuffer() : null;
   return logoCache;
 }
 

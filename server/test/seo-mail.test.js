@@ -45,3 +45,37 @@ test('every e-mail template renders in PT and EN and escapes user input', () => 
   assert.match(renderTemplate('booking_received', 'en', data).subject, /Booking request/);
   assert.match(renderTemplate('booking_received', 'pt', data).subject, /Pedido de reserva/);
 });
+
+test('package pages get server-rendered title, canonical, Open Graph and JSON-LD (real data only)', async () => {
+  const g = client(ctx.app);
+  const r = await g.get('/pages/package.html?id=kruger-national-park-day-trip');
+  assert.equal(r.status, 200);
+  assert.match(r.raw, /<title>Kruger National Park Day Trip \| Maputo Blue<\/title>/);
+  assert.match(r.raw, /<link rel="canonical" href="http:\/\/localhost\/pages\/package\.html\?id=kruger-national-park-day-trip">/);
+  assert.match(r.raw, /hreflang="en" href="http:\/\/localhost\/en\/package\.html\?id=kruger-national-park-day-trip"/);
+  assert.match(r.raw, /<meta property="og:image" content="http:\/\/localhost\/assets\/images\//);
+  const ld = JSON.parse(r.raw.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1]);
+  assert.equal(ld['@type'], 'TouristTrip');
+  assert.equal(ld.offers.priceCurrency, 'MZN');
+  assert.equal(ld.offers.price, '13500');
+  assert.equal(ld.aggregateRating, undefined, 'no rating without real reviews');
+  // With a published review the rating appears
+  await ctx.pool.query(`insert into reviews (package_id, name, rating, comment) values ('kruger-national-park-day-trip','Ana',5,'Óptimo')`);
+  const r2 = await g.get('/en/package.html?id=kruger-national-park-day-trip');
+  const ld2 = JSON.parse(r2.raw.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1]);
+  assert.equal(ld2.aggregateRating.reviewCount, 1);
+  assert.match(r2.raw, /<link rel="canonical" href="http:\/\/localhost\/en\/package\.html/);
+  // Unknown or unpublished ids are not indexed
+  const r3 = await g.get('/pages/package.html?id=does-not-exist');
+  assert.match(r3.raw, /<meta name="robots" content="noindex, follow">/);
+  // Script injection through the id is impossible (strict id pattern)
+  const r4 = await g.get('/pages/package.html?id=%3Cscript%3Ealert(1)%3C%2Fscript%3E');
+  assert.ok(!r4.raw.includes('<script>alert(1)'));
+});
+
+test('image variants: whitelisted widths and paths only', async () => {
+  const g = client(ctx.app);
+  assert.equal((await g.raw('GET', '/img/800/assets/images/../../server/.env')).status, 404);
+  assert.equal((await g.raw('GET', '/img/777/logo.webp')).status, 404);
+  assert.equal((await g.raw('GET', '/img/400/server/src/app.js')).status, 404);
+});

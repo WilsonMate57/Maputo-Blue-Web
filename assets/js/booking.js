@@ -93,7 +93,7 @@
         <span class="mb-cal__title" aria-live="polite"></span>
         <button type="button" class="mb-cal__nav" data-step="1" aria-label="${T.next}"><i class='bx bx-chevron-right'></i></button>
       </div>
-      <div class="mb-cal__grid" role="grid"></div>
+      <div class="mb-cal__grid"></div>
       <div class="mb-cal__legend">
         <span><i class="mb-dot mb-dot--open"></i>${T.available}</span>
         <span><i class="mb-dot mb-dot--limited"></i>${T.limited}</span>
@@ -135,7 +135,7 @@
       const m = state.month;
       const first = (new Date(m.getFullYear(), m.getMonth(), 1).getDay() + 6) % 7; // Monday first
       const count = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
-      let html = T.wd.map(w => `<span class="mb-cal__wd" role="columnheader">${w}</span>`).join('');
+      let html = T.wd.map(w => `<span class="mb-cal__wd" aria-hidden="true">${w}</span>`).join('');
       html += '<span class="mb-cal__pad"></span>'.repeat(first);
       for (let d = 1; d <= count; d++) {
         const key = `${m.getFullYear()}-${pad(m.getMonth() + 1)}-${pad(d)}`;
@@ -145,7 +145,7 @@
         const extra = info.remaining !== undefined && selectable ? ` — ${T.left(info.remaining)}` : '';
         const statusText = { open: T.available, limited: T.limited, full: T.full }[info.status] || T.closed;
         const lbl = `${new Date(key + 'T12:00:00').toLocaleDateString(EN ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long' })} — ${statusText}${extra}`;
-        html += `<button type="button" role="gridcell" class="mb-cal__day mb-cal__day--${st}${state.date === key ? ' is-selected' : ''}"
+        html += `<button type="button" class="mb-cal__day mb-cal__day--${st}${state.date === key ? ' is-selected' : ''}"
           data-day="${key}" ${selectable ? '' : 'disabled'} aria-label="${esc(lbl)}" aria-pressed="${state.date === key}">${d}</button>`;
       }
       grid.innerHTML = html;

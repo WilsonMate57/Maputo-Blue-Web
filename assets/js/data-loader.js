@@ -134,6 +134,22 @@
     }
   }
 
+  /* ── Responsive images ───────────────────────────────────── */
+  // The backend serves resized WebP variants at /img/<width>/<path>. If it is
+  // unavailable (static hosting) the browser falls back to the original file.
+  function imgVariant(src, w) {
+    const clean = String(src || '').replace(/^(\.\.\/|\.\/|\/)+/, '');
+    return /^assets\/images\//.test(clean) ? `/img/${w}/${clean}` : src;
+  }
+  function imgFallback(src) { return `this.onerror=null;this.removeAttribute('srcset');this.src='${String(src).replace(/'/g, '')}'`; }
+  function responsiveImg(src, alt, { sizes = '(max-width: 600px) 100vw, 400px', eager = false, w = 800, h = 533 } = {}) {
+    if (!src) return '';
+    return `<img src="${imgVariant(src, 800)}" srcset="${imgVariant(src, 400)} 400w, ${imgVariant(src, 800)} 800w, ${imgVariant(src, 1200)} 1200w"
+      sizes="${sizes}" width="${w}" height="${h}" alt="${String(alt).replace(/"/g, '&quot;')}" ${eager ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'}
+      onerror="${imgFallback(src)}">`;
+  }
+  window.MBImg = { variant: imgVariant };
+
   /** Placeholder links ("#", empty) in the JSON data are not rendered as links. */
   function realUrl(u) { return typeof u === 'string' && /^https?:\/\//i.test(u.trim()); }
 
@@ -179,7 +195,7 @@
     const title   = tf(tour, 'title');
     const desc    = tf(tour, 'description');
     const imgSrc  = (tour.cover || (tour.images && tour.images[0])) || '';
-    const imgTag  = imgSrc ? `<img src="${imgSrc}" alt="${title}" loading="lazy">` : '';
+    const imgTag  = responsiveImg(imgSrc, title);
     const badgeText = tf(tour, 'badge');
     const badge   = badgeText ? `<span class="tour-badge ${badgeClass(badgeText)}">${badgeText}</span>` : '';
     const detailUrl = `${PAGES_PREFIX}package.html?id=${tour.id}`;
@@ -218,7 +234,7 @@
     const name     = acc.name_en && LANG === 'en' ? acc.name_en : acc.name;
     const desc     = tf(acc, 'description');
     const imgSrc   = (acc.images && acc.images[0]) || '';
-    const imgTag   = imgSrc ? `<img src="${imgSrc}" alt="${name}" loading="lazy">` : '';
+    const imgTag   = responsiveImg(imgSrc, name, { sizes: '(max-width: 991px) 100vw, 560px' });
     const amenities = (acc.amenities || []).slice(0, 5)
       .map(a => `<span class="amenity-chip"><i class='bx bx-check'></i>${a}</span>`)
       .join('');
@@ -312,11 +328,8 @@
   /* ── Listing toolbar (search, sort, count, URL state) ───── */
   // Shared by the tours and accommodations pages. State lives in the URL
   // (?category=&q=&sort=) so filters survive navigation and can be shared.
-  function initListing({ grid, items, chips, render, empty, priceOf, nameOf, searchText }) {
-    const params = new URLSearchParams(location.search);
-    const state = { category: params.get('category') || 'all', q: params.get('q') || '', sort: params.get('sort') || 'recommended' };
-    if (![...chips].some(c => c.dataset.category === state.category)) state.category = 'all';
-
+  /** Insert the toolbar immediately (before data loads) so nothing shifts later. */
+  function createToolbar(grid) {
     const bar = document.createElement('div');
     bar.className = 'listing-toolbar';
     bar.innerHTML = `
@@ -330,8 +343,15 @@
           <option value="price_desc">${t('sort_price_desc')}</option>
           <option value="name">${t('sort_name')}</option>
         </select></label>
-      <p class="listing-count" aria-live="polite"></p>`;
+      <p class="listing-count" aria-live="polite">&nbsp;</p>`;
     grid.parentNode.insertBefore(bar, grid);
+    return bar;
+  }
+
+  function initListing({ bar, grid, items, chips, render, empty, priceOf, nameOf, searchText }) {
+    const params = new URLSearchParams(location.search);
+    const state = { category: params.get('category') || 'all', q: params.get('q') || '', sort: params.get('sort') || 'recommended' };
+    if (![...chips].some(c => c.dataset.category === state.category)) state.category = 'all';
     const input = bar.querySelector('input');
     const select = bar.querySelector('select');
     input.value = state.q;
@@ -386,9 +406,10 @@
     const grid  = document.querySelector('#tours-grid');
     const chips = document.querySelectorAll('.filter-chip[data-category]');
     if (!grid) return;
+    const bar = createToolbar(grid);
     const tours = await fetchJSON('tours.json');
     initListing({
-      grid, items: tours, chips, empty: emptyState,
+      bar, grid, items: tours, chips, empty: emptyState,
       render: list => list.map(buildTourCard).join(''),
       priceOf: i => Number(i.price_from) || 0,
       nameOf: i => tf(i, 'title'),
@@ -401,9 +422,10 @@
     const grid  = document.querySelector('#accommodations-grid');
     const chips = document.querySelectorAll('.filter-chip[data-category]');
     if (!grid) return;
+    const bar = createToolbar(grid);
     const accs = await fetchJSON('accommodations.json');
     initListing({
-      grid, items: accs, chips, empty: () => `<div class="col-12">${emptyState()}</div>`,
+      bar, grid, items: accs, chips, empty: () => `<div class="col-12">${emptyState()}</div>`,
       render: list => list.map(item => `<div class="col-lg-6">${buildAccommodationCard(item)}</div>`).join(''),
       priceOf: i => Number(i.price_per_night) || 0,
       nameOf: i => (LANG === 'en' && i.name_en) || i.name || '',
@@ -749,9 +771,17 @@
 
     // Alt texts managed in the dashboard (content.image_alts), else the title
     const altFor = (src, n) => (item.image_alts && item.image_alts[src] && item.image_alts[src][LANG]) || (n ? `${title} — ${n}` : title);
-    if (images[0] && imgMain)  { imgMain.src  = images[0]; imgMain.alt  = altFor(images[0]); }
-    if (imgSide1) { imgSide1.src = images[1] || images[0] || ''; imgSide1.alt = altFor(images[1] || images[0], 2); }
-    if (imgSide2) { imgSide2.src = images[2] || images[0] || ''; imgSide2.alt = altFor(images[2] || images[0], 3); }
+    // Resized variants (originals as fallback); the main photo is the LCP element
+    const setImg = (el, src, w, alt) => {
+      if (!el || !src) return;
+      el.onerror = () => { el.onerror = null; el.src = src; };
+      el.src = imgVariant(src, w);
+      el.alt = alt;
+    };
+    if (imgMain) imgMain.setAttribute('fetchpriority', 'high');
+    setImg(imgMain, images[0], 1600, altFor(images[0]));
+    setImg(imgSide1, images[1] || images[0], 800, altFor(images[1] || images[0], 2));
+    setImg(imgSide2, images[2] || images[0], 800, altFor(images[2] || images[0], 3));
     if (galCounter) galCounter.textContent = images.length ? `${images.length} ${LANG === 'en' ? 'photos' : 'fotos'}` : '';
 
     if (window._pkgInitLightbox) {

@@ -22,6 +22,11 @@ function tempSiteRoot() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mb-site-'));
   fs.mkdirSync(path.join(dir, 'assets', 'images', 'tours', 'test'), { recursive: true });
   fs.mkdirSync(path.join(dir, 'data'), { recursive: true });
+  for (const d of ['pages', 'en']) {
+    fs.mkdirSync(path.join(dir, d), { recursive: true });
+    fs.copyFileSync(path.join(SITE_ROOT, d, 'package.html'), path.join(dir, d, 'package.html'));
+  }
+  fs.copyFileSync(path.join(SITE_ROOT, 'logo.webp'), path.join(dir, 'logo.webp'));
   for (const f of ['tours.json', 'accommodations.json', 'gallery.json']) {
     fs.copyFileSync(path.join(SITE_ROOT, 'data', f), path.join(dir, 'data', f));
   }

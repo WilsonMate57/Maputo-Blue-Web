@@ -30,3 +30,4 @@ backups/
 
 # Local screenshots
 temporary screenshots/
+server/.cache/

@@ -13,6 +13,9 @@
   --primary:       #0A2540;
   --deep-navy:     #071B2E;
   --sea-green:     #00bcd4;
+  /* Same turquoise, darker: for TEXT on light backgrounds (contrast 5.1:1).
+     The brand colour itself stays for fills, icons and accents. */
+  --sea-green-text: #007A87;
   --soft-sand:     #F2E9E4;
   --light-bg:      #F8FAFC;
   --accent-coral:  #ff8800;
@@ -101,7 +104,7 @@ ul { list-style: none; }
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--sea-green);
+  color: var(--sea-green-text);
   margin-bottom: 12px;
 }
 .section-eyebrow::before {
@@ -228,7 +231,7 @@ ul { list-style: none; }
   display: inline-block;
   padding: 4px 12px;
   background: var(--sea-green);
-  color: var(--white);
+  color: var(--deep-navy);
   font-size: 0.75rem;
   font-weight: 700;
   border-radius: var(--radius-pill);
@@ -236,7 +239,7 @@ ul { list-style: none; }
   text-transform: uppercase;
 }
 .tour-badge--green { background: var(--sea-green); }
-.tour-badge--navy  { background: var(--primary); }
+.tour-badge--navy  { background: var(--primary); color: var(--white); }
 
 /* ── Marine Background Decoration ── */
 .marine-bg {
@@ -316,7 +319,7 @@ main.tours-main { z-index: auto; }
 .lang-btn.active,
 .lang-btn:hover {
   background: var(--sea-green);
-  color: var(--white);
+  color: var(--deep-navy);
 }
 
 @media (max-width: 767px) {
@@ -1226,6 +1229,8 @@ main.tours-main { z-index: auto; }
 .testimonials-indicators button {
   width: 8px;
   height: 8px;
+  /* 24px touch target around the 8px dot */
+  box-sizing: content-box; padding: 8px; background-clip: content-box;
   border-radius: 50%;
   background: var(--border-light);
   border: none;
@@ -1639,6 +1644,8 @@ main.tours-main { z-index: auto; }
 }
 .footer-copyright a {
   color: var(--sea-green);
+  text-decoration: underline;
+  text-underline-offset: 2px;
   transition: color var(--transition-fast);
 }
 .footer-copyright a:hover { color: var(--white); }
@@ -3652,3 +3659,6 @@ body:has(.verify) .mb-portal { padding-top: 24px; }
   body:has(.verify) .page-hero, body:has(.ticket) .page-hero { padding: 28px 0 18px; }
   body:has(.verify) .page-hero-title { font-size: 1.5rem; }
 }
+
+/* Reserve the injected navbar's height (top bar + navbar) to avoid layout shift */
+#navbar-placeholder { min-height: 117px; }

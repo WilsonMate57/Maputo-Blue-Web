@@ -6,6 +6,7 @@ import cookie from '@fastify/cookie';
 import rateLimit from '@fastify/rate-limit';
 import multipart from '@fastify/multipart';
 import fastifyStatic from '@fastify/static';
+import compress from '@fastify/compress';
 import { AppError } from './lib/errors.js';
 import { sessionHook } from './lib/auth.js';
 import publicRoutes from './routes/public.js';
@@ -14,6 +15,7 @@ import accountRoutes from './routes/account.js';
 import adminRoutes from './routes/admin/index.js';
 import seoRoutes from './routes/seo.js';
 import ticketRoutes from './routes/tickets.js';
+import imageRoutes from './routes/images.js';
 
 // Only these top-level paths of the site folder are ever served.
 const STATIC_ALLOW = /^\/(index\.html|logo\.webp|robots\.txt|sitemap\.xml|favicon\.ico|(assets|components|data|pages|en|admin)\/.*)?$/;
@@ -55,6 +57,8 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
   app.decorate('cfg', cfg);
   app.decorate('mailTransport', mailTransport);
 
+  // gzip/brotli for HTML, CSS, JS and JSON (images are already compressed)
+  await app.register(compress, { global: true, threshold: 1024, encodings: ['br', 'gzip'] });
   await app.register(cookie);
   // Per-route limits (see route configs); can be disabled for automated tests only
   await app.register(rateLimit, { global: false, allowList: () => !!cfg.disableRateLimit });
@@ -109,6 +113,7 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
   await app.register(accountRoutes, { prefix: '/api/account' });
   await app.register(adminRoutes, { prefix: '/api/admin' });
   await app.register(seoRoutes);
+  await app.register(imageRoutes);
 
   app.all('/api/*', async (request, reply) => reply.code(404).send({ error: 'not_found' }));
 
