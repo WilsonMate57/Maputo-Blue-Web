@@ -48,7 +48,7 @@ for (const url of urls) {
       const overflowEls = [...document.querySelectorAll('body *')].filter(el => vis(el) && el.getBoundingClientRect().right > window.innerWidth + 2 && !el.closest('[class*="slider"],[class*="track"],[class*="carousel"],.mobile-nav,.table-wrap'))
         .slice(0, 6).map(el => `${el.tagName.toLowerCase()}.${[...el.classList].join('.')}`);
       const imgsNoAlt = [...document.images].filter(i => vis(i) && !i.hasAttribute('alt')).map(i => i.src.split('/').pop()).slice(0, 10);
-      const brokenImgs = [...document.images].filter(i => i.complete && i.naturalWidth === 0 && i.src && !i.src.endsWith('/')).map(i => i.src).slice(0, 10);
+      const brokenImgs = [...document.images].filter(i => i.complete && i.naturalWidth === 0 && i.getAttribute('src') && !i.src.endsWith('/')).map(i => i.src).slice(0, 10);
       const h1 = [...document.querySelectorAll('h1')].filter(vis).map(h => h.textContent.trim().slice(0, 60));
       const unlabeled = [...document.querySelectorAll('input:not([type=hidden]):not([tabindex="-1"]), select, textarea')].filter(vis)
         .filter(el => !(el.labels && el.labels.length) && !el.getAttribute('aria-label') && !el.getAttribute('aria-labelledby')).map(el => el.name || el.id || el.type).slice(0, 10);

@@ -48,7 +48,11 @@
     const links = container.querySelectorAll('.nav-link-item > a, .mobile-nav-link[data-page]');
     links.forEach(link => {
       const href = link.getAttribute('href') || link.dataset.page || '';
-      if (href && href.includes(page)) link.classList.add('active');
+      // Exact file match only: in-page anchors (index.html#sobre-nos) are not "the current page"
+      if (href && !href.includes('#') && href.split('?')[0].split('/').pop() === page) {
+        link.classList.add('active');
+        link.setAttribute('aria-current', 'page');
+      }
     });
   }
 

@@ -435,6 +435,19 @@
 
 
   /* ── Package Detail Page ─────────────────────────────────── */
+  /** Friendly not-found state: explains, offers a way back, hides the mobile booking bar. */
+  function renderPackageNotFound(el) {
+    const en = LANG === 'en';
+    document.getElementById('mobile-booking-bar')?.remove();
+    el.innerHTML = `
+      <div class="empty-state mb-container" role="status">
+        <i class='bx bx-compass' aria-hidden="true"></i>
+        <h1 class="empty-state__title">${en ? 'We couldn’t find this experience' : 'Não encontrámos esta experiência'}</h1>
+        <p>${en ? 'The link may be outdated or the experience is no longer available.' : 'O link pode estar desactualizado ou a experiência já não está disponível.'}</p>
+        <a href="tours.html" class="btn-primary-mb">${en ? 'See all experiences' : 'Ver todas as experiências'}</a>
+      </div>`;
+  }
+
   async function initPackagePage() {
     const el = document.querySelector('#package-detail');
     if (!el) return;
@@ -443,7 +456,7 @@
     const id     = params.get('id');
     const type   = params.get('type') || 'tour';
 
-    if (!id) { el.innerHTML = '<p class="text-muted p-4">Package not found.</p>'; return; }
+    if (!id) { renderPackageNotFound(el); return; }
 
     const data = type === 'accommodation'
       ? await fetchJSON('accommodations.json')
@@ -461,7 +474,7 @@
         }
       } catch (_) { /* not an admin or API offline: show the public version */ }
     }
-    if (!item) { el.innerHTML = '<p class="text-muted p-4">Package not found.</p>'; return; }
+    if (!item) { renderPackageNotFound(el); return; }
 
     renderPackageDetail(item, type);
     renderBoatSelector(item);
@@ -1034,7 +1047,7 @@
       const visibleItems = window.innerWidth >= 992 ? 4 : window.innerWidth >= 576 ? 2 : 1;
       const pages = Math.ceil(data.length / visibleItems);
       indicatorsEl.innerHTML = Array.from({ length: pages }, (_, i) =>
-        `<button aria-label="Page ${i + 1}" class="${i === 0 ? 'active' : ''}"></button>`
+        `<button aria-label="${LANG === 'en' ? 'Page' : 'Página'} ${i + 1}" class="${i === 0 ? 'active' : ''}"></button>`
       ).join('');
     }
 
