@@ -11,7 +11,11 @@ import { CATEGORIES } from './packages.js';
 const uuid = { type: 'string', pattern: '^[0-9a-f-]{36}$' };
 const email = { type: 'string', maxLength: 200, pattern: '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$' };
 
+const str = n => ({ type: 'string', maxLength: n });
 const SETTING_SCHEMAS = {
+  company: { type: 'object', properties: {
+    trade_name: str(120), legal_name: str(160), phone: str(40), whatsapp: str(40), email: str(200),
+    website: str(200), address: str(300), nuit: str(40), licence: str(80) } },
   booking: { type: 'object', properties: {
     pending_holds_capacity: { type: 'boolean' },
     pending_hold_hours: { type: 'integer', minimum: 1, maximum: 720 },
@@ -40,6 +44,7 @@ export default async function systemRoutes(app) {
     booking: await getSetting(pool, 'booking'),
     loyalty: await getSetting(pool, 'loyalty'),
     notifications: await getSetting(pool, 'notifications'),
+    company: await getSetting(pool, 'company'),
     mail_configured: !!cfg.mail.resendApiKey,
     mail_from: cfg.mail.from,
   }));

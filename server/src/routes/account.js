@@ -3,6 +3,7 @@
 // so changing an id in the URL can never expose another customer's data.
 // ─────────────────────────────────────────────────────────────────────────────
 import { publicUser, requireUser } from '../lib/auth.js';
+import { ticketResponders } from './tickets.js';
 import { publicBooking, requestCancellation, transitionBooking } from '../lib/bookings.js';
 import { loyaltyStatus } from '../lib/loyalty.js';
 import { audit } from '../lib/audit.js';
@@ -42,6 +43,14 @@ export default async function accountRoutes(app) {
     }
     return publicBooking(await requestCancellation(pool, cfg, { bookingId: b.id, user: req.user, reason }));
   });
+
+  // Tickets of the customer's own bookings
+  const T = ticketResponders(app);
+  const idParams = { params: { type: 'object', properties: { id: uuid } } };
+  app.get('/bookings/:id/ticket', { schema: idParams }, async req => T.json(await ownBooking(req)));
+  app.get('/bookings/:id/ticket.pdf', { schema: idParams }, async (req, reply) => T.pdf(await ownBooking(req), reply));
+  app.post('/bookings/:id/ticket/email', { config: { rateLimit: { max: 5, timeWindow: '10 minutes' } }, schema: idParams },
+    async req => T.email(await ownBooking(req), req.user));
 
   app.get('/requests', async req => {
     const { rows } = await pool.query(

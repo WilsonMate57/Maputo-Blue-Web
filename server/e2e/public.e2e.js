@@ -45,7 +45,8 @@ test('package page: calendar → server quote → booking request → reference'
   await page.click('#adults-plus');
   await page.waitForFunction(() => /MZN\s3,600/.test(document.getElementById('booking-total').textContent), { timeout: 10000 });
   await page.click('#booking-whatsapp-btn');
-  await page.waitForSelector('dialog.mb-dialog[open] form');
+  try { await page.waitForSelector('dialog.mb-dialog[open] form', { timeout: 8000 }); }
+  catch (e) { await page.screenshot({ path: path.join(SHOTS, 'FAIL-dialog.png') }); console.log('dlg', await page.evaluate(() => [document.querySelector('dialog.mb-dialog')?.open, document.querySelector('.mb-cal__hint')?.textContent, document.getElementById('booking-total').textContent])); throw e; }
   // Submitting empty shows validation, nothing is sent
   await page.click('[data-submit]');
   assert.ok(await page.$eval('dialog .mb-alert', el => !el.hidden));
@@ -57,7 +58,7 @@ test('package page: calendar → server quote → booking request → reference'
   await page.waitForSelector('dialog .mb-ref', { timeout: 15000 });
   const ref = await page.$eval('dialog .mb-ref', el => el.textContent.trim());
   assert.match(ref, /^MB-[A-Z0-9]{6}$/);
-  booking = { ref, statusHref: await page.$eval('dialog .mb-dialog__actions a', a => a.href) };
+  booking = { ref, statusHref: await page.$eval('dialog .mb-dialog__actions a[href*="booking-status"]', a => a.href), ticketHref: await page.$eval('dialog .mb-dialog__actions a[href*="ticket.html"]', a => a.href) };
   await page.screenshot({ path: path.join(SHOTS, 'booking-success.png') });
   await page.close();
 });
@@ -70,6 +71,37 @@ test('booking status page shows the pending booking from the e-mail link', async
   assert.match(await page.$eval('.mb-status', el => el.textContent), /Pendente/);
   await page.screenshot({ path: path.join(SHOTS, 'booking-status.png'), fullPage: true });
   await page.close();
+});
+
+test('ticket: from the confirmation to the ticket page, PDF download and QR verification', async () => {
+  const page = await open(new URL(booking.ticketHref).pathname + new URL(booking.ticketHref).search);
+  await page.waitForSelector('.ticket', { timeout: 15000 });
+  assert.equal(await page.$eval('.ticket__ref strong', el => el.textContent.trim()), booking.ref);
+  assert.match(await page.$eval('.ticket .mb-status', el => el.textContent), /Pendente/);
+  assert.ok(await page.$('.ticket__qr svg'), 'QR rendered');
+  // The PDF endpoint used by the download button returns a real PDF
+  const pdf = await page.evaluate(async (ref, token) => {
+    const r = await fetch('/api/bookings/ticket.pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: ref, token }) });
+    const buf = new Uint8Array(await r.arrayBuffer());
+    return { type: r.headers.get('content-type'), head: String.fromCharCode(...buf.slice(0, 5)), size: buf.length };
+  }, booking.ref, new URL(booking.statusHref).searchParams.get('token'));
+  assert.match(pdf.type, /application\/pdf/);
+  assert.equal(pdf.head, '%PDF-');
+  // Download button works without errors
+  await page.click('[data-act=pdf]');
+  await sleep(800);
+  assert.equal(await page.$eval('.ticket-wrap .mb-alert, #portal-root > .mb-alert', el => el.hidden).catch(() => true), true);
+  // Copy reference
+  await page.click('[data-act=copy]');
+  // QR → verification page shows the live (pending) status and no personal data
+  const verifyHref = await page.evaluate(async (ref, token) => (await (await fetch('/api/bookings/ticket', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: ref, token }) })).json()).ticket.verify_url, booking.ref, new URL(booking.statusHref).searchParams.get('token'));
+  const v = await open(new URL(verifyHref).pathname + new URL(verifyHref).search, { mobile: true });
+  await v.waitForSelector('.verify__result');
+  assert.match(await v.$eval('.verify__result h2', el => el.textContent), /pendente/i);
+  assert.ok(!(await v.$eval('.verify', el => el.textContent)).includes('Teste E2E'), 'no customer name on the public page');
+  assert.ok(await noHorizontalScroll(v));
+  await v.screenshot({ path: path.join(SHOTS, 'verify-mobile.png') });
+  await page.close(); await v.close();
 });
 
 test('custom tour request: steps → summary → reference', async () => {
@@ -119,7 +151,7 @@ test('account: register → dashboard → sign out → sign in', async () => {
 });
 
 test('responsive: no horizontal scrolling on phones', async () => {
-  for (const url of ['/pages/package.html?id=dia-de-praia-santa-maria-machangulo', '/pages/account.html', '/en/custom-tour.html', '/pages/booking-status.html', '/pages/privacy.html']) {
+  for (const url of ['/pages/package.html?id=dia-de-praia-santa-maria-machangulo', '/pages/account.html', '/en/custom-tour.html', '/pages/booking-status.html', '/pages/privacy.html', '/pages/tours.html', '/en/verify.html', '/pages/ticket.html']) {
     const page = await open(url, { mobile: true });
     await sleep(800);
     assert.ok(await noHorizontalScroll(page), `${url} scrolls horizontally on mobile`);

@@ -13,10 +13,11 @@ import authRoutes from './routes/auth.js';
 import accountRoutes from './routes/account.js';
 import adminRoutes from './routes/admin/index.js';
 import seoRoutes from './routes/seo.js';
+import ticketRoutes from './routes/tickets.js';
 
 // Only these top-level paths of the site folder are ever served.
 const STATIC_ALLOW = /^\/(index\.html|logo\.webp|robots\.txt|sitemap\.xml|favicon\.ico|(assets|components|data|pages|en|admin)\/.*)?$/;
-const NOINDEX = /^\/(api|admin)\/|^\/(pages|en)\/(account|booking-status|quote)\.html/;
+const NOINDEX = /^\/(api|admin)\/|^\/(pages|en)\/(account|booking-status|quote|ticket|verify)\.html/;
 
 /**
  * Make every object schema that declares `properties` strip unknown keys
@@ -103,6 +104,7 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
   });
 
   await app.register(publicRoutes, { prefix: '/api' });
+  await app.register(ticketRoutes, { prefix: '/api' });
   await app.register(authRoutes, { prefix: '/api/auth' });
   await app.register(accountRoutes, { prefix: '/api/account' });
   await app.register(adminRoutes, { prefix: '/api/admin' });

@@ -68,7 +68,7 @@ export function qs(obj) {
 
 /* ── Formatting ─────────────────────────────────────────────────────────── */
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-export const money = (n, cur = 'MZN') => (n === null || n === undefined ? '—' : `${cur} ${Number(n).toLocaleString('pt-PT', { maximumFractionDigits: 2 })}`);
+export const money = (n, cur = 'MZN') => (n === null || n === undefined ? '—' : `${cur} ${Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 })}`);
 export const date = d => {
   if (!d) return '—';
   const dt = /^\d{4}-\d{2}-\d{2}$/.test(d) ? new Date(d + 'T12:00:00') : new Date(d);

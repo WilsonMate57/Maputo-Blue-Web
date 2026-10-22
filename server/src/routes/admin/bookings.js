@@ -3,10 +3,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { mailData, recordPayment, statusUrl, transitionBooking, updateBooking } from '../../lib/bookings.js';
 import { randomToken, sha256 } from '../../lib/security.js';
+import { ticketResponders } from '../tickets.js';
+import { verifyUrl } from '../../lib/tickets.js';
+import { tx } from '../../db.js';
 import { enqueueMail } from '../../lib/mailer.js';
 import { audit } from '../../lib/audit.js';
 import { addDays, todayLocal } from '../../lib/dates.js';
-import { badRequest, notFound } from '../../lib/errors.js';
+import { badRequest, conflict, notFound } from '../../lib/errors.js';
 
 const uuid = { type: 'string', pattern: '^[0-9a-f-]{36}$' };
 const date = { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$' };
@@ -169,7 +172,7 @@ export default async function bookingRoutes(app) {
       `select b.*, u.email as account_email from bookings b left join users u on u.id = b.user_id where b.id = $1`, [req.params.id]);
     if (!b) throw notFound('booking_not_found');
     delete b.lookup_token_hash;
-    const [notes, history, payments, mails, allocations] = await Promise.all([
+    const [notes, history, payments, mails, allocations, scans] = await Promise.all([
       pool.query(`select n.id, n.body, n.created_at, u.name as author from internal_notes n left join users u on u.id = n.author_id
                    where n.entity_type = 'booking' and n.entity_id = $1 order by n.created_at desc`, [b.id]),
       pool.query(`select a.at, a.action, a.data, a.actor_type, u.name as actor_name from audit_log a left join users u on u.id = a.actor_id
@@ -179,8 +182,11 @@ export default async function bookingRoutes(app) {
       pool.query(`select id, template, to_email, status, attempts, last_error, sent_at, created_at from mail_outbox
                    where idempotency_key like $1 order by created_at desc`, [`booking:${b.id}:%`]),
       pool.query(`select resource_key, day, quantity from booking_allocations where booking_id = $1 order by day`, [b.id]),
+      pool.query(`select s.at, s.result, u.name as staff_name from ticket_scans s left join users u on u.id = s.staff_id
+                   where s.booking_id = $1 order by s.at desc limit 20`, [b.id]),
     ]);
-    return { booking: b, notes: notes.rows, history: history.rows, payments: payments.rows, mails: mails.rows, allocations: allocations.rows };
+    return { booking: b, notes: notes.rows, history: history.rows, payments: payments.rows, mails: mails.rows, allocations: allocations.rows,
+      scans: scans.rows, verify_url: verifyUrl(cfg, b) };
   });
 
   app.post('/bookings/:id/status', {
@@ -229,6 +235,41 @@ export default async function bookingRoutes(app) {
     if (!req.body.amount) throw badRequest('invalid_amount');
     return recordPayment(pool, { bookingId: req.params.id, actor: req.user, ...req.body });
   });
+
+  // ── Tickets: download, e-mail, revoke QR, check-in ─────────────────────────
+  const T = ticketResponders(app);
+  const loadBooking = async id => {
+    const { rows: [b] } = await pool.query('select * from bookings where id = $1', [id]);
+    if (!b) throw notFound('booking_not_found');
+    return b;
+  };
+  const idParams = { params: { type: 'object', properties: { id: uuid } } };
+  app.get('/bookings/:id/ticket.pdf', { schema: idParams }, async (req, reply) => {
+    const b = await loadBooking(req.params.id);
+    await audit(pool, req.user, 'booking', b.id, 'ticket_downloaded', {});
+    return T.pdf(b, reply);
+  });
+  app.post('/bookings/:id/ticket/email', { schema: idParams }, async req => T.email(await loadBooking(req.params.id), req.user));
+
+  // Invalidate every QR code issued so far (a new one is generated on the next download)
+  app.post('/bookings/:id/ticket/revoke', { schema: idParams }, async req => {
+    const { rows: [b] } = await pool.query(
+      'update bookings set ticket_version = ticket_version + 1, updated_at = now() where id = $1 returning id, ticket_version', [req.params.id]);
+    if (!b) throw notFound('booking_not_found');
+    await audit(pool, req.user, 'booking', b.id, 'ticket_revoked', { ticket_version: b.ticket_version });
+    return { ok: true, ticket_version: b.ticket_version };
+  });
+
+  // Staff check-in at the meeting point (only confirmed bookings, once)
+  app.post('/bookings/:id/check-in', { schema: idParams }, async req => tx(pool, async c => {
+    const { rows: [b] } = await c.query('select * from bookings where id = $1 for update', [req.params.id]);
+    if (!b) throw notFound('booking_not_found');
+    if (b.status !== 'confirmed') throw conflict('not_confirmed', 'Only confirmed bookings can be checked in');
+    if (b.checked_in_at) throw conflict('already_checked_in', 'This booking was already checked in');
+    const { rows: [u] } = await c.query('update bookings set checked_in_at = now(), checked_in_by = $2, updated_at = now() where id = $1 returning checked_in_at', [b.id, req.user.id]);
+    await audit(c, req.user, 'booking', b.id, 'checked_in', {});
+    return { ok: true, checked_in_at: u.checked_in_at };
+  }));
 
   // Re-send the e-mail matching the booking's current status
   app.post('/bookings/:id/resend', { schema: { params: { type: 'object', properties: { id: uuid } } } }, async req => {

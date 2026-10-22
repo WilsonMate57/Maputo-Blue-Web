@@ -7,6 +7,7 @@ import { migrate } from './migrate.js';
 import { buildApp } from './app.js';
 import { processOutbox, resendTransport } from './lib/mailer.js';
 import { runBookingMaintenance } from './lib/bookings.js';
+import { ticketAttachments } from './lib/tickets.js';
 
 const cfg = loadConfig();
 const pool = createPool(cfg.databaseUrl);
@@ -23,7 +24,7 @@ if (cfg.jobs) {
   let mailBusy = false, maintBusy = false;
   timers.push(setInterval(async () => {
     if (mailBusy) return; mailBusy = true;
-    try { await processOutbox(pool, transport, { log: m => app.log.warn(m) }); } catch (e) { app.log.error(e); } finally { mailBusy = false; }
+    try { await processOutbox(pool, transport, { log: m => app.log.warn(m), attachments: ticketAttachments(pool, cfg) }); } catch (e) { app.log.error(e); } finally { mailBusy = false; }
   }, 20_000));
   const maintenance = async () => {
     if (maintBusy) return; maintBusy = true;

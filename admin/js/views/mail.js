@@ -2,7 +2,7 @@
 import { $, $$, badge, busy, dateTime, emptyState, esc, get, pager, post, qs } from '../core.js';
 
 const TEMPLATES = {
-  booking_received: 'Pedido de reserva recebido', booking_status: 'Actualização de reserva', trip_reminder: 'Lembrete de viagem',
+  booking_received: 'Pedido de reserva recebido', booking_ticket: 'Ticket da reserva (PDF)', booking_status: 'Actualização de reserva', trip_reminder: 'Lembrete de viagem',
   request_received: 'Pedido personalizado recebido', quote_issued: 'Cotação enviada', quote_accepted: 'Cotação aceite',
   verify_email: 'Confirmação de e-mail', reset_password: 'Recuperação de palavra-passe',
   admin_new_booking: 'Equipa: novo pedido', admin_cancel_request: 'Equipa: pedido de cancelamento', admin_new_request: 'Equipa: novo pedido personalizado', admin_quote_accepted: 'Equipa: cotação aceite',

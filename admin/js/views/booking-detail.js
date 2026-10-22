@@ -3,10 +3,11 @@ import { $, badge, busy, confirmAction, date, dateTime, errorText, esc, get, lab
 
 const ACTIONS = {
   created: 'Pedido criado', status_changed: 'Estado alterado', updated: 'Reserva editada', payment_recorded: 'Pagamento registado',
-  cancel_requested: 'Cliente pediu cancelamento', email_resent: 'E-mail reenviado',
+  cancel_requested: 'Cliente pediu cancelamento', email_resent: 'E-mail reenviado', ticket_emailed: 'Ticket enviado por e-mail',
+  ticket_downloaded: 'Ticket descarregado (equipa)', ticket_revoked: 'QR code invalidado', checked_in: 'Check-in registado',
 };
 const METHODS = { cash: 'Numerário', bank_transfer: 'Transferência bancária', mpesa: 'M-Pesa', emola: 'e-Mola', card: 'Cartão', other: 'Outro' };
-const TEMPLATES = { booking_received: 'Pedido recebido', booking_status: 'Actualização de estado', trip_reminder: 'Lembrete da viagem', admin_new_booking: 'Aviso à equipa', admin_cancel_request: 'Aviso de cancelamento' };
+const TEMPLATES = { booking_received: 'Pedido recebido', booking_ticket: 'Ticket (PDF)', booking_status: 'Actualização de estado', trip_reminder: 'Lembrete da viagem', admin_new_booking: 'Aviso à equipa', admin_cancel_request: 'Aviso de cancelamento' };
 
 const TRANSITIONS = {
   pending: [
@@ -100,6 +101,19 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
             </ul>
           </div></div>
 
+          <div class="card"><div class="card__head"><h2>Ticket e QR code</h2></div><div class="card__body">
+            <div class="status-actions">
+              <a class="btn btn--ghost btn--sm" href="/api/admin/bookings/${b.id}/ticket.pdf" download><i class='bx bx-download'></i>PDF</a>
+              <button type="button" class="btn btn--ghost btn--sm" data-ticket-email><i class='bx bx-envelope'></i>Enviar ao cliente</button>
+              <a class="btn btn--ghost btn--sm" href="${esc(d.verify_url)}" target="_blank" rel="noopener"><i class='bx bx-qr-scan'></i>Página de verificação</a>
+              ${b.status === 'confirmed' && !b.checked_in_at ? `<button type="button" class="btn btn--success btn--sm" data-checkin><i class='bx bx-log-in-circle'></i>Check-in</button>` : ''}
+              <button type="button" class="btn btn--danger btn--sm" data-revoke><i class='bx bx-block'></i>Invalidar QR</button>
+            </div>
+            ${b.checked_in_at ? `<p class="alert alert--success">Check-in registado em ${dateTime(b.checked_in_at)}.</p>` : ''}
+            <p class="muted small" style="margin:10px 0 0;">O ticket é sempre gerado a partir dos dados guardados desta reserva (versão ${b.ticket_version}). “Invalidar QR” torna inválidos todos os tickets já emitidos; o próximo download gera um QR novo.</p>
+            ${d.scans.length ? `<ul class="list-plain" style="margin-top:8px;">${d.scans.map(x => `<li><span>${esc(({ confirmed: 'Válida (confirmada)', pending: 'Pendente', cancelled: 'Cancelada', rejected: 'Rejeitada', completed: 'Concluída', revoked: 'QR substituído', invalid: 'Inválido' })[x.result] || x.result)}<span class="t-sub">${dateTime(x.at)}${x.staff_name ? ` · ${esc(x.staff_name)}` : ' · visitante'}</span></span></li>`).join('')}</ul>` : '<p class="muted small" style="margin:6px 0 0;">O QR ainda não foi lido.</p>'}
+          </div></div>
+
           <div class="card"><div class="card__head"><h2>Pagamentos</h2><button type="button" class="btn btn--ghost btn--sm" data-pay><i class='bx bx-plus'></i>Registar</button></div>
             <div class="card__body">
               <div class="grid grid--2" style="margin-bottom:10px;"><div><span class="muted small">Pago</span><div class="t-strong mono">${money(b.amount_paid, b.currency)}</div></div>
@@ -148,6 +162,19 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
       try { await busy(e.currentTarget, () => post(`/admin/bookings/${b.id}/resend`), 'E-mail colocado na fila de envio.'); load(); } catch { /* toast */ }
     });
     main.querySelector('[data-pay]').addEventListener('click', () => recordPayment(b));
+    main.querySelector('[data-ticket-email]').addEventListener('click', async e => {
+      if (!(await confirmAction({ title: 'Enviar ticket', text: `Enviar o ticket em PDF para ${esc(b.customer_email)}?`, confirm: 'Enviar' }))) return;
+      try { await busy(e.currentTarget, () => post(`/admin/bookings/${b.id}/ticket/email`), 'Ticket colocado na fila de envio.'); load(); } catch { /* toast */ }
+    });
+    main.querySelector('[data-revoke]').addEventListener('click', async e => {
+      if (!(await confirmAction({ title: 'Invalidar QR code', text: 'Todos os tickets já emitidos para esta reserva deixam de ser aceites na verificação. Use isto se um ticket foi partilhado indevidamente. Depois, reenvie o ticket ao cliente.', confirm: 'Invalidar', kind: 'danger-solid' }))) return;
+      try { await busy(e.currentTarget, () => post(`/admin/bookings/${b.id}/ticket/revoke`), 'QR invalidado. Reenvie o ticket ao cliente.'); load(); } catch { /* toast */ }
+    });
+    const ci = main.querySelector('[data-checkin]');
+    if (ci) ci.addEventListener('click', async e => {
+      if (!(await confirmAction({ title: 'Registar check-in', text: 'Confirma que o cliente se apresentou para esta experiência?', confirm: 'Registar check-in', kind: 'success' }))) return;
+      try { await busy(e.currentTarget, () => post(`/admin/bookings/${b.id}/check-in`), 'Check-in registado.'); load(); } catch { /* toast */ }
+    });
     main.querySelectorAll('[data-retry]').forEach(btn => btn.addEventListener('click', async () => {
       try { await busy(btn, () => post(`/admin/mail/${btn.dataset.retry}/retry`), 'E-mail colocado de novo na fila.'); load(); } catch { /* toast */ }
     }));

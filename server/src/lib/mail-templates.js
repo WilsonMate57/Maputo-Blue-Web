@@ -83,6 +83,17 @@ const T = {
     const cta = d.status_url ? { url: d.status_url, label: en ? 'View booking' : 'Ver reserva' } : null;
     return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, body, cta, locale: L }), text: toText(title, intro, rows, d.message || '') };
   },
+  booking_ticket(d, L) {
+    const en = L === 'en';
+    const title = en ? 'Your booking document' : 'O seu documento de reserva';
+    const statusNote = d.status === 'pending'
+      ? (en ? 'Your request is still <strong>pending</strong>: this document is a receipt of the request, not a confirmation.' : 'O seu pedido ainda está <strong>pendente</strong>: este documento comprova o pedido, mas não é uma confirmação.')
+      : d.status === 'confirmed' ? (en ? 'Your booking is <strong>confirmed</strong>. Please bring this document (printed or on your phone).' : 'A sua reserva está <strong>confirmada</strong>. Apresente este documento (impresso ou no telemóvel).')
+        : (en ? 'Please check the current status of your booking in the attached document.' : 'Consulte o estado actual da sua reserva no documento em anexo.');
+    const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${en ? 'attached is the document for booking' : 'em anexo segue o documento da reserva'} <strong>${esc(d.reference)}</strong>. ${statusNote}`;
+    return { subject: `${title} ${d.reference} — Maputo Blue`, html: layout({ title, intro, locale: L,
+      footerNote: en ? 'This document is not a receipt or a tax document.' : 'Este documento não é um recibo nem um documento fiscal.' }), text: toText(title, intro, []) };
+  },
   trip_reminder(d, L) {
     const en = L === 'en';
     const title = en ? 'Your trip is coming up' : 'A sua viagem está a chegar';

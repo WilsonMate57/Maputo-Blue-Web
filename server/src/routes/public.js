@@ -13,6 +13,7 @@ import { addDays, todayLocal } from '../lib/dates.js';
 import { badRequest, conflict, notFound } from '../lib/errors.js';
 import { reference, sha256 } from '../lib/security.js';
 import { tx } from '../db.js';
+import { guestBooking } from './tickets.js';
 
 const date = { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$' };
 const id = { type: 'string', pattern: '^[a-z0-9][a-z0-9-]{1,80}$' };
@@ -122,16 +123,7 @@ export default async function publicRoutes(app) {
         reference: { type: 'string', maxLength: 20, pattern: '^MB-[A-Z0-9]{4,10}$' },
         token: { type: 'string', maxLength: 100 }, email: { type: 'string', maxLength: 200 } } },
     },
-  }, async req => {
-    const { reference: ref, token, email: em } = req.body;
-    if (!token && !em) throw badRequest('token_or_email_required');
-    const { rows } = await pool.query('select * from bookings where reference = $1', [ref]);
-    const b = rows[0];
-    const ok = b && ((token && b.lookup_token_hash === sha256(token)) ||
-                     (em && b.customer_email.toLowerCase() === String(em).trim().toLowerCase()));
-    if (!ok) throw notFound('booking_not_found', 'No booking matches these details');
-    return { booking: publicBooking(b) };
-  });
+  }, async req => ({ booking: publicBooking(await guestBooking(pool, req.body)) }));
 
   // ── Reviews ────────────────────────────────────────────────────────────────
   app.get('/reviews', {

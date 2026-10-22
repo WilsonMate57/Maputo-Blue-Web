@@ -28,7 +28,7 @@ export async function enqueueAdminMail(db, { key, template, data }) {
 
 /** Default transport: Resend HTTP API. */
 export function resendTransport(cfg) {
-  return async ({ to, subject, html, text, idempotencyKey }) => {
+  return async ({ to, subject, html, text, idempotencyKey, attachments }) => {
     if (!cfg.resendApiKey) throw Object.assign(new Error('RESEND_API_KEY not configured'), { retryable: false });
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -37,7 +37,8 @@ export function resendTransport(cfg) {
         'Content-Type': 'application/json',
         'Idempotency-Key': idempotencyKey.slice(0, 256),
       },
-      body: JSON.stringify({ from: cfg.from, to: [to], reply_to: cfg.replyTo, subject, html, text }),
+      body: JSON.stringify({ from: cfg.from, to: [to], reply_to: cfg.replyTo, subject, html, text,
+        ...(attachments && attachments.length ? { attachments } : {}) }),
       signal: AbortSignal.timeout(15000),
     });
     const body = await res.json().catch(() => ({}));
@@ -51,7 +52,7 @@ export function resendTransport(cfg) {
 }
 
 /** Deliver due e-mails. Safe to run from several processes (SKIP LOCKED). */
-export async function processOutbox(pool, transport, { limit = 20, log = () => {} } = {}) {
+export async function processOutbox(pool, transport, { limit = 20, log = () => {}, attachments = async () => [] } = {}) {
   const client = await pool.connect();
   let jobs;
   try {
@@ -74,7 +75,9 @@ export async function processOutbox(pool, transport, { limit = 20, log = () => {
   for (const job of jobs) {
     try {
       const msg = renderTemplate(job.template, job.locale, job.data);
-      const providerId = await transport({ to: job.to_email, ...msg, idempotencyKey: job.idempotency_key });
+      // Attachments (e.g. the ticket PDF) are generated at send time from the current booking
+      const files = await attachments(job);
+      const providerId = await transport({ to: job.to_email, ...msg, idempotencyKey: job.idempotency_key, attachments: files });
       await pool.query(`update mail_outbox set status='sent', sent_at=now(), provider_id=$2, last_error=null where id=$1`, [job.id, providerId]);
       stats.sent++;
     } catch (err) {

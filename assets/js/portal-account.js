@@ -30,7 +30,7 @@
     tabs: { bookings: 'My bookings', requests: 'Custom requests', loyalty: 'Loyalty', profile: 'Profile' },
     noBookings: 'You have no bookings yet.', explore: 'Explore experiences', noRequests: 'You have not requested a custom tour yet.',
     newRequest: 'Request a custom tour', guests: 'guests', ref: 'Reference', total: 'Total', paid: 'Paid',
-    details: 'Details', hide: 'Hide', cancel: 'Cancel request', requestCancel: 'Request cancellation',
+    details: 'Details', hide: 'Hide', ticket: 'Ticket', cancel: 'Cancel request', requestCancel: 'Request cancellation',
     confirmCancel: 'Cancel this booking request?', confirmRequestCancel: 'Ask Maputo Blue to cancel this confirmed booking? Our cancellation policy applies.',
     cancelRequested: 'Cancellation requested — our team will contact you.',
     holdNote: 'Waiting for confirmation by our team.',
@@ -53,7 +53,7 @@
     tabs: { bookings: 'As minhas reservas', requests: 'Pedidos personalizados', loyalty: 'Fidelização', profile: 'Perfil' },
     noBookings: 'Ainda não tem reservas.', explore: 'Explorar experiências', noRequests: 'Ainda não pediu nenhum tour personalizado.',
     newRequest: 'Pedir tour personalizado', guests: 'pessoas', ref: 'Referência', total: 'Total', paid: 'Pago',
-    details: 'Detalhes', hide: 'Ocultar', cancel: 'Cancelar pedido', requestCancel: 'Pedir cancelamento',
+    details: 'Detalhes', hide: 'Ocultar', ticket: 'Ticket', cancel: 'Cancelar pedido', requestCancel: 'Pedir cancelamento',
     confirmCancel: 'Cancelar este pedido de reserva?', confirmRequestCancel: 'Pedir à Maputo Blue o cancelamento desta reserva confirmada? Aplica-se a nossa política de cancelamento.',
     cancelRequested: 'Cancelamento pedido — a nossa equipa vai contactá-lo.',
     holdNote: 'A aguardar confirmação da nossa equipa.',
@@ -208,7 +208,8 @@
           ${b.amount_paid > 0 ? `<span class="mb-status mb-status--${b.payment_status}">${API.statusLabel(b.payment_status)}</span>` : ''}
         </div>
         <div class="mb-booking-item__actions">
-          <button type="button" class="mb-btn-sm" data-toggle aria-expanded="false"><i class='bx bx-receipt'></i>${T.details}</button>
+          <button type="button" class="mb-btn-sm" data-toggle aria-expanded="false"><i class='bx bx-list-ul'></i>${T.details}</button>
+          <a class="mb-btn-sm" href="${PAGE}/ticket.html?id=${encodeURIComponent(b.id)}"><i class='bx bx-receipt'></i>${T.ticket}</a>
           ${canCancel ? `<button type="button" class="mb-btn-sm mb-btn-sm--danger" data-cancel><i class='bx bx-x-circle'></i>${T.cancel}</button>` : ''}
           ${canRequest ? `<button type="button" class="mb-btn-sm mb-btn-sm--danger" data-cancel><i class='bx bx-x-circle'></i>${T.requestCancel}</button>` : ''}
         </div>

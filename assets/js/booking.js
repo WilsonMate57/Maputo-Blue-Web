@@ -36,7 +36,7 @@
     privacy: 'privacy policy', send: 'Send booking request', sending: 'Sending…', cancel: 'Back',
     successTitle: 'Request received!', successRef: 'Your booking reference',
     successText: 'Your request is <strong>pending</strong>. Our team will confirm availability shortly and you will receive an e-mail. This is not yet a confirmation.',
-    track: 'Track booking', createAccount: 'Create an account to see all your bookings', close: 'Close',
+    track: 'Track booking', ticket: 'View ticket', copy: 'Copy reference', copied: 'Copied', createAccount: 'Create an account to see all your bookings', close: 'Close',
     required: 'Please fill in all required fields.', guests: 'Guests', adults: 'adult(s)', children: 'child(ren)',
     prev: 'Previous month', next: 'Next month', month: { month: 'long', year: 'numeric' },
     wd: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -57,7 +57,7 @@
     privacy: 'política de privacidade', send: 'Enviar pedido de reserva', sending: 'A enviar…', cancel: 'Voltar',
     successTitle: 'Pedido recebido!', successRef: 'A sua referência de reserva',
     successText: 'O seu pedido está <strong>pendente</strong>. A nossa equipa vai confirmar a disponibilidade em breve e receberá um e-mail. Isto ainda não é uma confirmação.',
-    track: 'Acompanhar reserva', createAccount: 'Crie uma conta para ver todas as suas reservas', close: 'Fechar',
+    track: 'Acompanhar reserva', ticket: 'Ver ticket', copy: 'Copiar referência', copied: 'Copiada', createAccount: 'Crie uma conta para ver todas as suas reservas', close: 'Fechar',
     required: 'Preencha todos os campos obrigatórios.', guests: 'Participantes', adults: 'adulto(s)', children: 'criança(s)',
     prev: 'Mês anterior', next: 'Mês seguinte', month: { month: 'long', year: 'numeric' },
     wd: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
@@ -230,27 +230,49 @@
     }
 
     let timer;
+    // Returns a promise for the quote of the *current* selection, so the
+    // booking button can wait for an in-flight calculation instead of failing.
     function requote() {
       clearTimeout(timer);
-      if (!state.date) return;
-      timer = setTimeout(async () => {
-        const seq = ++state.quoteSeq;
-        alertEl.hidden = true;
-        totalEl.textContent = T.calculating;
-        try {
-          const q = await API.post('/quote', selection());
-          if (seq !== state.quoteSeq) return;
-          state.quote = q;
-          renderQuote(q);
-        } catch (err) {
-          if (seq !== state.quoteSeq) return;
-          state.quote = null;
-          breakdown.innerHTML = '';
-          totalEl.textContent = '—';
-          alertEl.textContent = API.errorText(err);
-          alertEl.hidden = false;
-        }
-      }, 200);
+      if (state.resolveQuote) state.resolveQuote(null); // superseded request
+      if (!state.date) { state.pending = null; return Promise.resolve(null); }
+      state.pending = new Promise(resolve => {
+        state.resolveQuote = resolve;
+        timer = setTimeout(async () => {
+          const seq = ++state.quoteSeq;
+          alertEl.hidden = true;
+          totalEl.textContent = T.calculating;
+          try {
+            const q = await API.post('/quote', selection());
+            if (seq !== state.quoteSeq) return resolve(null);
+            state.quote = q;
+            renderQuote(q);
+            resolve(q);
+          } catch (err) {
+            if (seq !== state.quoteSeq) return resolve(null);
+            state.quote = null;
+            breakdown.innerHTML = '';
+            totalEl.textContent = '—';
+            alertEl.textContent = API.errorText(err);
+            alertEl.hidden = false;
+            resolve(null);
+          } finally {
+            if (state.resolveQuote === resolve) { state.resolveQuote = null; state.pending = null; }
+          }
+        }, 200);
+      });
+      return state.pending;
+    }
+
+    /** Is the displayed quote the one for what is selected right now? */
+    function quoteIsCurrent() {
+      const q = state.quote, s = selection();
+      if (!q) return false;
+      const extras = q.lines.filter(l => l.type === 'extra').map(l => l.key).sort().join();
+      const transfer = (q.lines.find(l => l.type === 'transfer') || {}).key || null;
+      return q.date === s.date && q.adults === s.adults && q.children === s.children &&
+        (q.option_key || null) === (s.option_key || null) &&
+        extras === [...s.extras].sort().join() && transfer === (s.transfer_key || null);
     }
 
     function renderQuote(q) {
@@ -318,7 +340,10 @@
         if (firstDay) firstDay.focus({ preventScroll: true });
         return;
       }
-      if (!state.quote) { requote(); return; }
+      // Wait for any calculation in progress; recalculate if the selection changed
+      if (state.pending) await state.pending;
+      if (!quoteIsCurrent()) await requote();
+      if (!quoteIsCurrent()) return; // the quote failed: the error is shown in the card
       if (!state.user) {
         try { state.user = (await API.get('/auth/me')).user; } catch (_) { state.user = null; }
       }
@@ -397,6 +422,7 @@
       const b = res.booking;
       const statusPage = `${ROOT}${EN ? 'en/booking-status.html' : 'pages/booking-status.html'}?ref=${encodeURIComponent(b.reference)}${res.token ? `&token=${encodeURIComponent(res.token)}` : ''}`;
       const accountPage = `${ROOT}${EN ? 'en' : 'pages'}/account.html`;
+      const ticketPage = `${ROOT}${EN ? 'en' : 'pages'}/ticket.html?ref=${encodeURIComponent(b.reference)}&token=${encodeURIComponent(res.token || '')}`;
       dlg.innerHTML = `
         <div class="mb-dialog__body mb-dialog__body--success">
           <button type="button" class="mb-dialog__close" aria-label="${T.close}"><i class='bx bx-x'></i></button>
@@ -406,13 +432,18 @@
           <p class="mb-ref">${esc(b.reference)}</p>
           <p>${T.successText}</p>
           <div class="mb-dialog__actions">
-            <a class="btn-primary-mb" href="${statusPage}"><i class='bx bx-search-alt'></i>${T.track}</a>
-            <button type="button" class="btn-outline-mb" data-close>${T.close}</button>
+            ${res.token ? `<a class="btn-primary-mb" href="${ticketPage}"><i class='bx bx-receipt'></i>${T.ticket}</a>` : ''}
+            <a class="btn-outline-mb" href="${statusPage}"><i class='bx bx-search-alt'></i>${T.track}</a>
+            <button type="button" class="btn-outline-mb" data-copy><i class='bx bx-copy'></i>${T.copy}</button>
           </div>
           ${state.user ? '' : `<p class="mb-dialog__foot"><a href="${accountPage}">${T.createAccount}</a></p>`}
         </div>`;
       dlg.querySelectorAll('.mb-dialog__close, [data-close]').forEach(x => x.addEventListener('click', () => dlg.close()));
-      dlg.querySelector('.btn-primary-mb').focus();
+      const copy = dlg.querySelector('[data-copy]');
+      copy.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(b.reference); copy.innerHTML = `<i class='bx bx-check'></i>${T.copied}`; } catch (_) { /* reference is visible */ }
+      });
+      (dlg.querySelector('.btn-primary-mb') || copy).focus();
     }
 
     // A sticky sidebar taller than the viewport would hide the booking button:

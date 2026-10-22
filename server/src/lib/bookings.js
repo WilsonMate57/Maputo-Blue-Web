@@ -118,9 +118,9 @@ export async function createBooking(pool, cfg, { input, user }) {
       await c.query('update promotions set used_count = used_count + 1 where id = $1', [d.promotion_id]);
     }
     await audit(c, user, 'booking', row.id, 'created', { reference: row.reference, total: row.total, status: 'pending' });
-    const data = mailData(row, cfg, { status_url: statusUrl(cfg, row, token) });
+    const data = mailData(row, cfg, { status_url: statusUrl(cfg, row, token), attach_ticket_booking: row.id });
     await enqueueMail(c, { key: `booking:${row.id}:received`, to: row.customer_email, template: 'booking_received', locale: row.locale, data });
-    await enqueueAdminMail(c, { key: `booking:${row.id}:admin_new`, template: 'admin_new_booking', data });
+    await enqueueAdminMail(c, { key: `booking:${row.id}:admin_new`, template: 'admin_new_booking', data: { ...data, attach_ticket_booking: undefined } });
     return row;
   }).catch(async err => {
     // Two identical requests racing: the unique idempotency key decides the winner
@@ -163,7 +163,7 @@ export async function transitionBooking(pool, cfg, { bookingId, to, actor, messa
       { from: b.status, to, message, ...(isSystem ? { __system: true } : {}) });
     if (notify) {
       await enqueueMail(c, { key: `booking:${b.id}:status:${to}`, to: b.customer_email, template: 'booking_status', locale: b.locale,
-        data: mailData(updated, cfg, { event: to, message, status_url: statusUrl(cfg, updated) }) });
+        data: mailData(updated, cfg, { event: to, message, status_url: statusUrl(cfg, updated), ...(to === 'confirmed' ? { attach_ticket_booking: b.id } : {}) }) });
     }
     return updated;
   });

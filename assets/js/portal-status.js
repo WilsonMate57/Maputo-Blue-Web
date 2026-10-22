@@ -24,7 +24,7 @@
     confirmed: 'Your booking is confirmed. See you soon!', rejected: 'We could not confirm this booking. Please contact us to find an alternative.',
     cancelled: 'This booking was cancelled.', completed: 'We hope you enjoyed it! Leave a review on the experience page.',
     childReq: 'Children price on request — our team will confirm it.',
-    help: 'Questions about this booking?', whatsapp: 'Message us on WhatsApp', account: 'Create an account to see all your bookings in one place',
+    help: 'Questions about this booking?', ticket: 'View / download ticket', whatsapp: 'Message us on WhatsApp', account: 'Create an account to see all your bookings in one place',
   } : {
     ref: 'Referência da reserva', email: 'E-mail usado na reserva', find: 'Encontrar a minha reserva', another: 'Consultar outra reserva',
     status: 'Estado', experience: 'Experiência', date: 'Data', guests: 'Participantes', payment: 'Pagamento', requested: 'Pedido em',
@@ -33,7 +33,7 @@
     confirmed: 'A sua reserva está confirmada. Até breve!', rejected: 'Não foi possível confirmar esta reserva. Contacte-nos para encontrarmos uma alternativa.',
     cancelled: 'Esta reserva foi cancelada.', completed: 'Esperamos que tenha gostado! Deixe a sua avaliação na página da experiência.',
     childReq: 'Preço das crianças sob consulta — a nossa equipa vai confirmá-lo.',
-    help: 'Dúvidas sobre esta reserva?', whatsapp: 'Fale connosco pelo WhatsApp', account: 'Crie uma conta para ver todas as suas reservas num só lugar',
+    help: 'Dúvidas sobre esta reserva?', ticket: 'Ver / descarregar ticket', whatsapp: 'Fale connosco pelo WhatsApp', account: 'Crie uma conta para ver todas as suas reservas num só lugar',
   };
 
   const params = new URLSearchParams(location.search);
@@ -66,7 +66,7 @@
     });
   }
 
-  function show(b) {
+  function show(b, creds) {
     const title = EN ? b.package_title_en || b.package_title : b.package_title;
     const lines = b.lines.map(l => `<li><span>${esc(EN ? l.label_en : l.label)}${l.quantity > 1 ? ` × ${l.quantity}` : ''}</span><span>${l.unit_price === null ? '—' : money(l.amount, b.currency)}</span></li>`).join('') +
       b.discounts.map(d => `<li class="is-discount"><span>${esc(d.label)}</span><span>− ${money(d.amount, b.currency)}</span></li>`).join('');
@@ -89,17 +89,32 @@
         ${b.child_price_on_request ? `<p class="mb-alert mb-alert--info">${T.childReq}</p>` : ''}
         <div class="mb-form-actions" style="margin-top:24px;">
           <a class="btn-outline-mb" href="${wa}" target="_blank" rel="noopener"><i class='bx bxl-whatsapp'></i>${T.whatsapp}</a>
+          ${window.MBTicket ? `<button type="button" class="btn-primary-mb" data-ticket><i class='bx bx-receipt'></i>${T.ticket}</button>` : ''}
           <button type="button" class="mb-link" data-another>${T.another}</button>
         </div>
         <p style="margin-top:14px;font-size:.875rem;"><a class="mb-link" href="${ROOT}${EN ? 'en' : 'pages'}/account.html?tab=register">${T.account}</a></p>
       </div>`;
     root.querySelector('[data-another]').addEventListener('click', () => { history.replaceState(null, '', location.pathname); form(); });
+    // Ticket (PDF / print / e-mail) using the same credentials, kept in memory only
+    const tb = root.querySelector('[data-ticket]');
+    if (tb) tb.addEventListener('click', async () => {
+      let box = root.querySelector('.ticket-wrap');
+      if (box) { box.scrollIntoView({ behavior: 'smooth' }); return; }
+      box = document.createElement('div');
+      box.className = 'ticket-wrap';
+      root.appendChild(box);
+      tb.disabled = true;
+      const src = window.MBTicket.guestSource(creds);
+      try { window.MBTicket.render(box, await src.load(), src); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      catch (err) { box.innerHTML = `<p class="mb-alert" role="alert">${esc(API.errorText(err))}</p>`; }
+      finally { tb.disabled = false; }
+    });
   }
 
   async function lookup(body) {
     try {
       const r = await API.post('/bookings/lookup', body);
-      show(r.booking);
+      show(r.booking, body);
     } catch (err) {
       form(`<p class="mb-alert" role="alert">${esc(API.errorText(err))}</p>`);
     }

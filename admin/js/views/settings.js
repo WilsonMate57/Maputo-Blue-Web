@@ -3,7 +3,7 @@ import { $, CATEGORY_LABELS, busy, esc, formValues, get, put } from '../core.js'
 
 export default async function settings(main) {
   const [s, cats] = await Promise.all([get('/admin/settings'), get('/admin/categories')]);
-  const b = s.booking, l = s.loyalty, n = s.notifications;
+  const b = s.booking, l = s.loyalty, n = s.notifications, c = s.company || {};
   const allCats = [...cats.tour, ...cats.accommodation];
 
   main.innerHTML = `
@@ -42,6 +42,23 @@ export default async function settings(main) {
         <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
       </div></form>
 
+      <form class="card" id="f-company" novalidate><div class="card__head"><h2>Dados da empresa (tickets e e-mails)</h2></div><div class="card__body">
+        <p class="muted small" style="margin:0 0 12px;">Aparecem no ticket da reserva. Campos vazios não são impressos — nunca preencha dados que não estejam confirmados.</p>
+        <div class="grid grid--2">
+          <label class="field"><span>Nome comercial</span><input name="trade_name" maxlength="120" value="${esc(c.trade_name || '')}"></label>
+          <label class="field"><span>Denominação legal</span><input name="legal_name" maxlength="160" value="${esc(c.legal_name || '')}" placeholder="por configurar"></label>
+          <label class="field"><span>Telefone</span><input name="phone" maxlength="40" value="${esc(c.phone || '')}"></label>
+          <label class="field"><span>WhatsApp</span><input name="whatsapp" maxlength="40" value="${esc(c.whatsapp || '')}"></label>
+          <label class="field"><span>E-mail</span><input name="email" maxlength="200" value="${esc(c.email || '')}"></label>
+          <label class="field"><span>Website</span><input name="website" maxlength="200" value="${esc(c.website || '')}"></label>
+          <label class="field span-2"><span>Morada</span><input name="address" maxlength="300" value="${esc(c.address || '')}"></label>
+          <label class="field"><span>NUIT</span><input name="nuit" maxlength="40" value="${esc(c.nuit || '')}" placeholder="por configurar"></label>
+          <label class="field"><span>Alvará / licença</span><input name="licence" maxlength="80" value="${esc(c.licence || '')}" placeholder="por configurar"></label>
+        </div>
+        ${!c.nuit || !c.legal_name ? '<p class="alert alert--warn">Denominação legal e/ou NUIT por configurar: o ticket é emitido sem estes dados.</p>' : ''}
+        <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
+      </div></form>
+
       <div class="card"><div class="card__head"><h2>E-mail</h2></div><div class="card__body">
         ${s.mail_configured ? `<p class="alert alert--success" style="margin:0;">Configurado. Remetente: ${esc(s.mail_from)}</p>`
           : '<p class="alert alert--warn" style="margin:0;">Não configurado. Defina RESEND_API_KEY e MAIL_FROM no ficheiro server/.env do servidor e reinicie o serviço (ver docs/IMPLANTACAO.md).</p>'}
@@ -55,5 +72,6 @@ export default async function settings(main) {
   });
   wire('#f-booking', 'booking', v => v);
   wire('#f-loyalty', 'loyalty', v => ({ ...v, categories: v.categories.length ? v.categories : null }));
+  wire('#f-company', 'company', v => Object.fromEntries(Object.entries(v).map(([k, x]) => [k, String(x || '').trim()])));
   wire('#f-notifications', 'notifications', v => ({ admin_emails: v.admin_emails.split(/[\n,;]+/).map(x => x.trim()).filter(Boolean), reminder_days_before: v.reminder_days_before ?? 0 }));
 }

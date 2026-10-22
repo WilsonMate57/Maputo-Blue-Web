@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS = {
   booking: { pending_holds_capacity: true, pending_hold_hours: 48, auto_complete: true, min_lead_hours: 24, max_advance_days: 365 },
   loyalty: { enabled: false },
   notifications: { admin_emails: [] },
+  company: { trade_name: 'Maputo Blue' },
 };
 
 export async function getSetting(db, key) {

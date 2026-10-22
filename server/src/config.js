@@ -32,6 +32,13 @@ export function loadConfig(overrides = {}) {
       replyTo:      env.MAIL_REPLY_TO || 'maputoblue.info@gmail.com',
     },
     ipHashSalt:     env.IP_HASH_SALT || 'dev-salt-change-me',
+    // Signs ticket QR codes. Changing it invalidates every issued QR code.
+    ticketSecret:   env.TICKET_SECRET || '',
   };
-  return { ...cfg, ...overrides, mail: { ...cfg.mail, ...(overrides.mail || {}) } };
+  const out = { ...cfg, ...overrides, mail: { ...cfg.mail, ...(overrides.mail || {}) } };
+  if (!out.ticketSecret) {
+    if (out.env === 'production') throw new Error('TICKET_SECRET must be set in production (see docs/IMPLANTACAO.md)');
+    out.ticketSecret = 'dev-only-ticket-secret';
+  }
+  return out;
 }
