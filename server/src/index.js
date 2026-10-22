@@ -8,6 +8,7 @@ import { buildApp } from './app.js';
 import { processOutbox, resendTransport } from './lib/mailer.js';
 import { runBookingMaintenance } from './lib/bookings.js';
 import { ticketAttachments } from './lib/tickets.js';
+import { invoiceAttachments } from './lib/invoices.js';
 
 const cfg = loadConfig();
 const pool = createPool(cfg.databaseUrl);
@@ -22,9 +23,11 @@ if (!cfg.mail.resendApiKey) console.log('  ! RESEND_API_KEY not set — e-mails 
 const timers = [];
 if (cfg.jobs) {
   let mailBusy = false, maintBusy = false;
+  const tickets = ticketAttachments(pool, cfg), invoices = invoiceAttachments(pool, cfg);
+  const mailAttachments = async job => [...await tickets(job), ...await invoices(job)];
   timers.push(setInterval(async () => {
     if (mailBusy) return; mailBusy = true;
-    try { await processOutbox(pool, transport, { log: m => app.log.warn(m), attachments: ticketAttachments(pool, cfg) }); } catch (e) { app.log.error(e); } finally { mailBusy = false; }
+    try { await processOutbox(pool, transport, { log: m => app.log.warn(m), attachments: mailAttachments }); } catch (e) { app.log.error(e); } finally { mailBusy = false; }
   }, 20_000));
   const maintenance = async () => {
     if (maintBusy) return; maintBusy = true;

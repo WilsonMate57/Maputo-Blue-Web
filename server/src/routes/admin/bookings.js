@@ -1,7 +1,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // routes/admin/bookings.js — Dashboard metrics and booking management.
 // ─────────────────────────────────────────────────────────────────────────────
-import { mailData, recordPayment, statusUrl, transitionBooking, updateBooking } from '../../lib/bookings.js';
+import { mailData, statusUrl, transitionBooking, updateBooking } from '../../lib/bookings.js';
+import { recordPayment } from '../../lib/payments.js';
+import { displayStatus, queueInvoiceMail } from '../../lib/invoices.js';
+import { paymentBody } from './invoices.js';
 import { randomToken, sha256 } from '../../lib/security.js';
 import { ticketResponders } from '../tickets.js';
 import { verifyUrl } from '../../lib/tickets.js';
@@ -119,13 +122,17 @@ export default async function bookingRoutes(app) {
       pool.query(`select count(*) filter (where status = 'new')::int as new_requests from custom_requests`),
       pool.query(`select count(*) filter (where status = 'failed')::int as failed_mail from mail_outbox`),
     ]);
+    const { rows: [inv] } = await pool.query(
+      `select count(*) filter (where pay_status in ('unpaid','partially_paid') and due_date < $1)::int as overdue_invoices,
+              count(*) filter (where pay_status in ('unpaid','partially_paid'))::int as open_invoices
+         from invoices where doc_status = 'issued'`, [today]);
     const byStatus = Object.fromEntries(STATUSES.map(s => [s, 0]));
     counts.rows.forEach(r => { byStatus[r.status] = r.n; });
     return {
       range: { from, to },
       counts: { ...byStatus, total: Object.values(byStatus).reduce((a, b) => a + b, 0) },
       money: money.rows,
-      attention: { ...attention.rows[0], ...reqs, ...mail },
+      attention: { ...attention.rows[0], ...reqs, ...mail, ...inv },
       upcoming: upcoming.rows, recent: recent.rows, popular: popular.rows, limited: limited.rows,
     };
   });
@@ -172,21 +179,23 @@ export default async function bookingRoutes(app) {
       `select b.*, u.email as account_email from bookings b left join users u on u.id = b.user_id where b.id = $1`, [req.params.id]);
     if (!b) throw notFound('booking_not_found');
     delete b.lookup_token_hash;
-    const [notes, history, payments, mails, allocations, scans] = await Promise.all([
+    const [notes, history, payments, mails, allocations, scans, invoices] = await Promise.all([
       pool.query(`select n.id, n.body, n.created_at, u.name as author from internal_notes n left join users u on u.id = n.author_id
                    where n.entity_type = 'booking' and n.entity_id = $1 order by n.created_at desc`, [b.id]),
       pool.query(`select a.at, a.action, a.data, a.actor_type, u.name as actor_name from audit_log a left join users u on u.id = a.actor_id
                    where a.entity_type = 'booking' and a.entity_id = $1 order by a.at desc`, [b.id]),
-      pool.query(`select p.*, u.name as recorded_by_name from payments p left join users u on u.id = p.recorded_by
-                   where p.booking_id = $1 order by p.recorded_at desc`, [b.id]),
+      pool.query(`select p.*, u.name as recorded_by_name, exists (select 1 from payments r where r.reverses_payment_id = p.id) as reversed
+                    from payments p left join users u on u.id = p.recorded_by where p.booking_id = $1 order by p.recorded_at desc`, [b.id]),
       pool.query(`select id, template, to_email, status, attempts, last_error, sent_at, created_at from mail_outbox
                    where idempotency_key like $1 order by created_at desc`, [`booking:${b.id}:%`]),
       pool.query(`select resource_key, day, quantity from booking_allocations where booking_id = $1 order by day`, [b.id]),
       pool.query(`select s.at, s.result, u.name as staff_name from ticket_scans s left join users u on u.id = s.staff_id
                    where s.booking_id = $1 order by s.at desc limit 20`, [b.id]),
+      pool.query(`select id, number, doc_status, pay_status, total, amount_paid, issue_date, due_date, currency
+                    from invoices where booking_id = $1 order by created_at desc`, [b.id]),
     ]);
     return { booking: b, notes: notes.rows, history: history.rows, payments: payments.rows, mails: mails.rows, allocations: allocations.rows,
-      scans: scans.rows, verify_url: verifyUrl(cfg, b) };
+      scans: scans.rows, verify_url: verifyUrl(cfg, b), invoices: invoices.rows.map(i => ({ ...i, display_status: displayStatus(i) })) };
   });
 
   app.post('/bookings/:id/status', {
@@ -225,15 +234,12 @@ export default async function bookingRoutes(app) {
     return n;
   });
 
-  app.post('/bookings/:id/payments', {
-    schema: { params: { type: 'object', properties: { id: uuid } },
-              body: { type: 'object', required: ['amount', 'method'], properties: {
-                amount: { type: 'number', minimum: -1e9, maximum: 1e9 },
-                method: { type: 'string', enum: ['cash', 'bank_transfer', 'mpesa', 'emola', 'card', 'other'] },
-                reference: { type: 'string', maxLength: 120 }, note: { type: 'string', maxLength: 500 } } } },
-  }, async req => {
-    if (!req.body.amount) throw badRequest('invalid_amount');
-    return recordPayment(pool, { bookingId: req.params.id, actor: req.user, ...req.body });
+  // Verified payments / refunds / reversals (rules in lib/payments.js)
+  app.post('/bookings/:id/payments', { schema: { params: { type: 'object', properties: { id: uuid } }, body: paymentBody } }, async (req, reply) => {
+    const r = await recordPayment(pool, { ...req.body, bookingId: req.params.id, actor: req.user });
+    if (r.becamePaid && r.invoice && req.body.notify !== false) await queueInvoiceMail(pool, r.invoice, 'invoice_paid', req.user);
+    reply.code(r.duplicate ? 200 : 201);
+    return { ...r.booking, payment: r.payment, duplicate: r.duplicate, invoice: r.invoice ? { id: r.invoice.id, number: r.invoice.number, pay_status: r.invoice.pay_status } : null };
   });
 
   // ── Tickets: download, e-mail, revoke QR, check-in ─────────────────────────

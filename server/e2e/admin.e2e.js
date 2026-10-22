@@ -67,7 +67,7 @@ test('admin signs in and sees the dashboard', async () => {
 });
 
 test('every section loads without errors', async () => {
-  for (const h of ['#/bookings', '#/calendar', '#/requests', '#/packages', '#/promotions', '#/media', '#/customers', '#/reviews', '#/mail', '#/settings', '#/audit']) {
+  for (const h of ['#/bookings', '#/invoices', '#/invoices/new', '#/calendar', '#/requests', '#/packages', '#/promotions', '#/media', '#/customers', '#/reviews', '#/mail', '#/settings', '#/audit']) {
     await go(h);
     await sleep(300);
     await shot(h.replace(/\W+/g, '_'));
@@ -92,16 +92,85 @@ test('booking workflow: open a pending booking, confirm it, add a note and a pay
   await page.waitForSelector('dialog.modal[open]');
   await page.type('dialog.modal textarea[name=message]', 'Até breve! Traga protector solar.');
   await page.click('dialog.modal button[type=submit]');
-  await page.waitForFunction(() => /Confirmada/.test(document.querySelector('.page-head h2').textContent), { timeout: 10000 });
+  await page.waitForFunction(() => /Confirmada/.test(document.querySelector('.detail-hero__title').textContent), { timeout: 10000 });
   await page.type('#note-form textarea', 'Nota de teste E2E');
   await page.click('#note-form button');
   await page.waitForFunction(() => /Nota de teste E2E/.test(document.querySelector('#main').textContent));
+  // Centre it first: the sticky topbar must not cover the click target
+  await page.$eval('[data-pay]', el => el.scrollIntoView({ block: 'center' }));
+  await page.click('[data-pay]');
+  try { await page.waitForSelector('dialog.modal[open] [name=amount]', { timeout: 8000 }); } catch (e) { await shot('FAIL-pay'); throw e; }
+  await page.$eval('dialog.modal [name=amount]', el => { el.value = '500'; });
+  // Without the verification tick nothing is recorded
+  await page.click('dialog.modal button[type=submit]');
+  await page.waitForSelector('dialog.modal[open] .alert[data-modal-alert]');
+  await page.click('dialog.modal [name=verified]');
+  await page.click('dialog.modal button[type=submit]');
+  await page.waitForFunction(() => /Parcial|Pago/.test(document.querySelector('.detail-hero__title').textContent), { timeout: 10000 });
+  await shot('booking-detail');
+});
+
+test('invoices: unknown reference refused; issue from a reference; partial then full payment → PAGA', async () => {
+  const booking = await page.evaluate(async () => {
+    const cal = await fetch('/api/availability/sunset-cruise-maputo-bay').then(r => r.json());
+    const day = cal.days.find(d => d.status === 'open' || d.status === 'limited').day;
+    const res = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+      package_id: 'sunset-cruise-maputo-bay', date: day, adults: 2, children: 0, locale: 'pt', consent: true,
+      idempotency_key: 'e2e-inv-' + Date.now(), customer: { name: 'Factura E2E', email: 'factura-e2e@example.com', phone: '+258840000077' } }) });
+    return (await res.json()).booking;
+  });
+  await go('#/invoices/new');
+  await page.type('#lookup [name=reference]', 'MB-ZZZZZZ');
+  await page.click('#lookup button[type=submit]');
+  await page.waitForFunction(() => !document.getElementById('lookup-error').hidden);
+  assert.match(await page.$eval('#lookup-error', el => el.textContent), /Não existe nenhuma reserva/);
+
+  await page.$eval('#lookup [name=reference]', el => { el.value = ''; });
+  await page.type('#lookup [name=reference]', booking.reference.toLowerCase());
+  await page.click('#lookup button[type=submit]');
+  await page.waitForSelector('#issue-form');
+  assert.match(await page.$eval('.doc', el => el.textContent), new RegExp(booking.reference));
+  await shot('invoice-review');
+  // Issue with a partial payment that was already verified
+  await page.click('#issue-form [name=with_payment]');
+  await page.$eval('#issue-form [name=amount]', el => { el.value = '1000'; });
+  await page.type('#issue-form [name=reference]', 'MP-E2E-1');
+  await page.click('#issue-form [name=send_email]');
+  await page.click('#issue-form button[type=submit]');
+  await page.waitForFunction(() => /verificou/.test(document.querySelector('[data-form-error]').textContent));
+  await page.click('#issue-form [name=verified]');
+  await page.click('#issue-form button[type=submit]');
+  await page.waitForSelector('dialog.modal[open]');
+  await page.click('dialog.modal button[type=submit]');
+  await page.waitForSelector('.detail-hero__title', { timeout: 15000 });
+  const title = await page.$eval('.detail-hero__title', el => el.textContent);
+  assert.match(title, /FT \d{4}\/\d{4}/);
+  assert.match(title, /Parcialmente paga/);
+  await shot('invoice-detail-partial');
+  // Record the rest from the invoice → PAGA
+  await page.$eval('[data-pay]', el => el.scrollIntoView({ block: 'center' }));
   await page.click('[data-pay]');
   await page.waitForSelector('dialog.modal[open] [name=amount]');
-  await page.$eval('dialog.modal [name=amount]', el => { el.value = '500'; });
+  assert.equal(await page.$eval('dialog.modal [name=amount]', el => el.value), '2600');
+  await page.click('dialog.modal [name=verified]');
   await page.click('dialog.modal button[type=submit]');
-  await page.waitForFunction(() => /Parcial|Pago/.test(document.querySelector('.page-head h2').textContent), { timeout: 10000 });
-  await shot('booking-detail');
+  await page.waitForFunction(() => /Pago/.test(document.querySelector('.detail-hero__title').textContent), { timeout: 10000 });
+  // Headless Chrome answers fetch() of any response carrying Content-Disposition with an
+  // empty 204, so the document is checked over HTTP with the same session cookie.
+  const href = await page.$eval('a[href$="/pdf"]', a => a.href);
+  assert.match(href, /\/api\/admin\/invoices\/[0-9a-f-]{36}\/pdf$/);
+  const cookie = (await page.cookies()).map(c => `${c.name}=${c.value}`).join('; ');
+  const res = await fetch(href, { headers: { cookie } });
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get('content-type'), 'application/pdf');
+  assert.equal(Buffer.from(await res.arrayBuffer()).subarray(0, 5).toString(), '%PDF-');
+  await shot('invoice-detail-paid');
+  // Duplicate attempt from the reference screen points to the existing invoice
+  await go(`#/invoices/new?ref=${booking.reference}`);
+  await page.waitForFunction(() => /já emitida/i.test(document.getElementById('review').textContent), { timeout: 10000 });
+  await go('#/invoices');
+  await page.waitForSelector('#summary .kpi');
+  await shot('invoices');
 });
 
 test('package editor: change a price, see the preview, save, and restore', async () => {
@@ -178,7 +247,7 @@ test('media: upload an image (converted to WebP)', async () => {
 
 test('mobile layout: sidebar toggles and no horizontal scroll', async () => {
   await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
-  for (const h of ['#/dashboard', '#/bookings', '#/calendar', '#/requests', '#/packages', '#/packages/sunset-cruise-maputo-bay', '#/promotions', '#/media', '#/customers', '#/reviews', '#/mail', '#/settings', '#/audit']) {
+  for (const h of ['#/dashboard', '#/bookings', '#/invoices', '#/invoices/new', '#/calendar', '#/requests', '#/packages', '#/packages/sunset-cruise-maputo-bay', '#/promotions', '#/media', '#/customers', '#/reviews', '#/mail', '#/settings', '#/audit']) {
     await go(h);
     await sleep(300);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), `horizontal scroll on mobile: ${h}`);

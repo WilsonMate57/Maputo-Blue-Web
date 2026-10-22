@@ -136,8 +136,11 @@ test('account: register → dashboard → sign out → sign in', async () => {
   await page.type('input[name=password]', 'e2e-password-123');
   await page.click('button[type=submit]');
   await page.waitForSelector('[data-logout]', { timeout: 10000 });
-  assert.match(await page.$eval('.mb-panel h2', el => el.textContent), /Cliente/);
+  assert.match(await page.$eval('.acct__profile strong', el => el.textContent), /Cliente/);
   await page.screenshot({ path: path.join(SHOTS, 'account-dashboard.png'), fullPage: true });
+  // Invoices tab: issued invoices only — none yet for a new account
+  await page.click('[data-tab=invoices]');
+  await page.waitForFunction(() => /Ainda não há facturas/.test(document.querySelector('#account-pane').textContent), { timeout: 10000 });
   await page.click('[data-logout]');
   await page.waitForSelector('input[name=password]');
   await page.type('input[name=email]', `e2e-account-${run}@example.com`);

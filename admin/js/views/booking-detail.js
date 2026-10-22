@@ -1,13 +1,14 @@
 // Booking detail: status workflow, edit, payments, notes, e-mails, history.
-import { $, badge, busy, confirmAction, date, dateTime, errorText, esc, get, label, modal, money, patch, post, toast } from '../core.js';
+import { $, METHODS, badge, busy, confirmAction, date, dateTime, errorText, esc, get, label, modal, money, patch, post, toast } from '../core.js';
+import { paymentDialog, paymentList, reversalDialog } from '../payments-ui.js';
 
 const ACTIONS = {
   created: 'Pedido criado', status_changed: 'Estado alterado', updated: 'Reserva editada', payment_recorded: 'Pagamento registado',
   cancel_requested: 'Cliente pediu cancelamento', email_resent: 'E-mail reenviado', ticket_emailed: 'Ticket enviado por e-mail',
   ticket_downloaded: 'Ticket descarregado (equipa)', ticket_revoked: 'QR code invalidado', checked_in: 'Check-in registado',
+  refund_recorded: 'Reembolso registado', payment_reversed: 'Pagamento estornado', invoice_issued: 'Factura emitida', invoice_cancelled: 'Factura anulada',
 };
-const METHODS = { cash: 'Numerário', bank_transfer: 'Transferência bancária', mpesa: 'M-Pesa', emola: 'e-Mola', card: 'Cartão', other: 'Outro' };
-const TEMPLATES = { booking_received: 'Pedido recebido', booking_ticket: 'Ticket (PDF)', booking_status: 'Actualização de estado', trip_reminder: 'Lembrete da viagem', admin_new_booking: 'Aviso à equipa', admin_cancel_request: 'Aviso de cancelamento' };
+const TEMPLATES = { booking_received: 'Pedido recebido', booking_ticket: 'Ticket (PDF)', booking_status: 'Actualização de estado', invoice_issued: 'Factura (PDF)', invoice_paid: 'Factura paga', trip_reminder: 'Lembrete da viagem', admin_new_booking: 'Aviso à equipa', admin_cancel_request: 'Aviso de cancelamento' };
 
 const TRANSITIONS = {
   pending: [
@@ -32,24 +33,33 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
     const s = b.price_snapshot || {};
     const q = s.quote || {};
     setTitle(`Reserva ${b.reference}`);
+    const activeInvoice = d.invoices.find(i => i.doc_status !== 'cancelled') || null;
+    // With an issued invoice, the invoice total is what is owed
+    const billTotal = activeInvoice && activeInvoice.doc_status === 'issued' ? Number(activeInvoice.total) : Number(b.total);
     const holdExpired = b.status === 'pending' && (!b.hold_expires_at || new Date(b.hold_expires_at) < new Date());
     const wa = `https://wa.me/${String(b.customer_phone).replace(/\D/g, '')}?text=${encodeURIComponent(`Olá ${b.customer_name}, aqui é a Maputo Blue sobre a reserva ${b.reference}.`)}`;
     const lines = (q.lines || []).map(l => `<li><span>${esc(l.label)}${l.quantity > 1 ? ` × ${l.quantity}` : ''}${l.unit_price !== null && l.quantity > 1 ? ` <span class="muted small">(${money(l.unit_price, b.currency)})</span>` : ''}</span><span class="mono">${l.unit_price === null ? 'sob consulta' : money(l.amount, b.currency)}</span></li>`).join('')
       + (q.discounts || []).map(x => `<li class="is-discount"><span>${esc(x.label)}${x.code ? ` (${esc(x.code)})` : ''}</span><span class="mono">− ${money(x.amount, b.currency)}</span></li>`).join('');
 
     main.innerHTML = `
-      <div class="page-head">
+      <a class="back" href="#/bookings"><i class='bx bx-arrow-back'></i>Reservas</a>
+      <section class="card detail-hero">
         <div>
-          <a class="link small" href="#/bookings"><i class='bx bx-arrow-back'></i> Reservas</a>
-          <h2 class="mono" style="margin-top:4px;">${esc(b.reference)} ${badge(b.status)} ${badge(b.payment_status)}</h2>
-          <p class="muted small" style="margin:4px 0 0;">Criada em ${dateTime(b.created_at)}${b.user_id ? ' · cliente com conta' : ' · cliente sem conta'}</p>
+          <span class="eyebrow">Reserva</span>
+          <h2 class="detail-hero__title"><span class="mono">${esc(b.reference)}</span> ${badge(b.status)} ${badge(b.payment_status)}</h2>
+          <div class="detail-hero__meta">
+            <span><i class='bx bx-user'></i>${esc(b.customer_name)}</span>
+            <span><i class='bx bx-map'></i>${esc(s.package?.title || b.package_id)}</span>
+            <span><i class='bx bx-calendar'></i>${date(b.start_date)}${b.end_date !== b.start_date ? ` → ${date(b.end_date)}` : ''}</span>
+            <span><i class='bx bx-time'></i>Criada ${dateTime(b.created_at)}${b.user_id ? ' · com conta' : ' · sem conta'}</span>
+          </div>
         </div>
         <div class="status-actions">
           ${(TRANSITIONS[b.status] || []).map((t, i) => `<button type="button" class="btn btn--${t.kind}" data-t="${i}"><i class='bx ${t.icon}'></i>${t.label}</button>`).join('')}
           ${['pending', 'confirmed'].includes(b.status) ? `<button type="button" class="btn btn--ghost" data-edit><i class='bx bx-edit'></i>Editar</button>` : ''}
           <button type="button" class="btn btn--ghost" data-resend><i class='bx bx-envelope'></i>Reenviar e-mail</button>
         </div>
-      </div>
+      </section>
       ${b.cancel_requested_at && ['pending', 'confirmed'].includes(b.status) ? `<p class="alert alert--warn" style="margin:0 0 16px;"><i class='bx bx-error'></i> O cliente pediu o cancelamento em ${dateTime(b.cancel_requested_at)}. Veja o motivo no histórico.</p>` : ''}
       ${b.status === 'pending' ? `<p class="alert ${holdExpired ? 'alert--warn' : 'alert--info'}" style="margin:0 0 16px;">${holdExpired
         ? 'O bloqueio de capacidade deste pedido expirou. Ao confirmar, o sistema volta a verificar a disponibilidade.'
@@ -83,7 +93,8 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
               ${h.data?.from && h.data?.to ? ` ${badge(h.data.from)} → ${badge(h.data.to)}` : ''}
               ${h.data?.message || h.data?.reason ? `<div class="muted">“${esc(h.data.message || h.data.reason)}”</div>` : ''}
               ${h.action === 'updated' && h.data?.before ? `<div class="muted small">${describeChange(h.data.before, h.data.after, b.currency)}</div>` : ''}
-              ${h.action === 'payment_recorded' ? `<div class="muted small">${money(h.data.amount, b.currency)} · ${esc(METHODS[h.data.method] || h.data.method)}</div>` : ''}
+              ${['payment_recorded', 'refund_recorded', 'payment_reversed'].includes(h.action) ? `<div class="muted small">${money(h.data.amount, b.currency)} · ${esc(METHODS[h.data.method] || h.data.method)}${h.data.reference ? ` · ${esc(h.data.reference)}` : ''}</div>` : ''}
+              ${h.action.startsWith('invoice_') && h.data?.number ? `<div class="muted small"><a class="link" href="#/invoices/${esc(h.data.invoice_id)}">${esc(h.data.number)}</a></div>` : ''}
               <time>${dateTime(h.at)} · ${esc(h.actor_name || (h.actor_type === 'guest' ? 'Cliente' : h.actor_type === 'system' ? 'Sistema' : h.actor_type))}</time></li>`).join('')}
           </ul></div></div>
         </div>
@@ -114,14 +125,25 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
             ${d.scans.length ? `<ul class="list-plain" style="margin-top:8px;">${d.scans.map(x => `<li><span>${esc(({ confirmed: 'Válida (confirmada)', pending: 'Pendente', cancelled: 'Cancelada', rejected: 'Rejeitada', completed: 'Concluída', revoked: 'QR substituído', invalid: 'Inválido' })[x.result] || x.result)}<span class="t-sub">${dateTime(x.at)}${x.staff_name ? ` · ${esc(x.staff_name)}` : ' · visitante'}</span></span></li>`).join('')}</ul>` : '<p class="muted small" style="margin:6px 0 0;">O QR ainda não foi lido.</p>'}
           </div></div>
 
+          <div class="card"><div class="card__head"><h2>Factura</h2></div><div class="card__body">
+            ${activeInvoice ? `<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;">
+                <span><a class="t-strong link mono" href="#/invoices/${activeInvoice.id}">${esc(activeInvoice.number || 'Rascunho')}</a>
+                <span class="t-sub">${activeInvoice.issue_date ? `Emitida ${date(activeInvoice.issue_date)} · ` : ''}${money(activeInvoice.total, activeInvoice.currency)}</span></span>
+                ${badge(activeInvoice.display_status)}</div>`
+              : `<p class="muted small" style="margin:0 0 12px;">Esta reserva ainda não tem factura.</p>
+                 ${['pending', 'confirmed', 'completed'].includes(b.status) ? `<a class="btn btn--secondary btn--sm" href="#/invoices/new?ref=${encodeURIComponent(b.reference)}"><i class='bx bx-receipt'></i>Emitir factura</a>` : ''}`}
+            ${d.invoices.filter(i => i.doc_status === 'cancelled').map(i => `<p class="muted small" style="margin:8px 0 0;">Anulada: <a class="link" href="#/invoices/${i.id}">${esc(i.number)}</a></p>`).join('')}
+          </div></div>
+
           <div class="card"><div class="card__head"><h2>Pagamentos</h2><button type="button" class="btn btn--ghost btn--sm" data-pay><i class='bx bx-plus'></i>Registar</button></div>
             <div class="card__body">
-              <div class="grid grid--2" style="margin-bottom:10px;"><div><span class="muted small">Pago</span><div class="t-strong mono">${money(b.amount_paid, b.currency)}</div></div>
-                <div><span class="muted small">Em falta</span><div class="t-strong mono">${money(Math.max(b.total - b.amount_paid, 0), b.currency)}</div></div></div>
-              <div class="bar" aria-hidden="true"><span style="width:${Math.min(100, b.total ? (b.amount_paid / b.total) * 100 : 0)}%"></span></div>
-              ${d.payments.length ? `<ul class="list-plain" style="margin-top:8px;">${d.payments.map(p => `<li><span><span class="t-strong mono">${money(p.amount, b.currency)}</span>
-                <span class="t-sub">${esc(METHODS[p.method] || p.method)}${p.reference ? ` · ${esc(p.reference)}` : ''} · ${dateTime(p.recorded_at)}</span>${p.note ? `<span class="t-sub">${esc(p.note)}</span>` : ''}</span></li>`).join('')}</ul>`
-                : '<p class="muted small" style="margin:10px 0 0;">Nenhum pagamento registado. Os pagamentos são registados manualmente.</p>'}
+              <div class="money">
+                <div><div class="money__k">Total</div><div class="money__v">${money(billTotal, b.currency)}</div></div>
+                <div><div class="money__k">Pago</div><div class="money__v money__v--ok">${money(b.amount_paid, b.currency)}</div></div>
+                <div><div class="money__k">Em falta</div><div class="money__v ${billTotal - b.amount_paid > 0 ? 'money__v--due' : ''}">${money(Math.max(billTotal - b.amount_paid, 0), b.currency)}</div></div>
+              </div>
+              <div class="bar" aria-hidden="true"><span style="width:${Math.min(100, billTotal ? (b.amount_paid / billTotal) * 100 : 0)}%"></span></div>
+              ${paymentList(d.payments, b.currency, { reversible: true })}
             </div></div>
 
           <div class="card"><div class="card__head"><h2>Notas internas</h2></div><div class="card__body">
@@ -161,7 +183,15 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
       if (!(await confirmAction({ title: 'Reenviar e-mail', text: `Reenviar ao cliente o e-mail correspondente ao estado actual (“${label(b.status)}”), com um novo link de acompanhamento?`, confirm: 'Reenviar' }))) return;
       try { await busy(e.currentTarget, () => post(`/admin/bookings/${b.id}/resend`), 'E-mail colocado na fila de envio.'); load(); } catch { /* toast */ }
     });
-    main.querySelector('[data-pay]').addEventListener('click', () => recordPayment(b));
+    main.querySelector('[data-pay]').addEventListener('click', async () => {
+      const r = await paymentDialog({ currency: b.currency, total: billTotal, paid: Number(b.amount_paid), send: body => post(`/admin/bookings/${b.id}/payments`, body) });
+      if (r) { toast(r.duplicate ? 'Este pagamento já estava registado.' : 'Pagamento registado.'); load(); }
+    });
+    main.querySelectorAll('[data-reverse]').forEach(btn => btn.addEventListener('click', async () => {
+      const p = d.payments.find(x => x.id === btn.dataset.reverse);
+      const r = await reversalDialog({ payment: p, currency: b.currency, send: body => post(`/admin/bookings/${b.id}/payments`, body) });
+      if (r) { toast('Pagamento estornado.'); load(); }
+    }));
     main.querySelector('[data-ticket-email]').addEventListener('click', async e => {
       if (!(await confirmAction({ title: 'Enviar ticket', text: `Enviar o ticket em PDF para ${esc(b.customer_email)}?`, confirm: 'Enviar' }))) return;
       try { await busy(e.currentTarget, () => post(`/admin/bookings/${b.id}/ticket/email`), 'Ticket colocado na fila de envio.'); load(); } catch { /* toast */ }
@@ -221,25 +251,6 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
       }],
     });
     if (r) { toast('Reserva actualizada.'); load(); }
-  }
-
-  async function recordPayment(b) {
-    const r = await modal({
-      title: 'Registar pagamento',
-      body: `
-        <div class="grid grid--2">
-          <label class="field"><span>Valor (${esc(b.currency)})</span><input name="amount" type="number" step="0.01" required value="${Math.max(b.total - b.amount_paid, 0)}"><span class="field__hint">Use um valor negativo para registar um reembolso.</span></label>
-          <label class="field"><span>Método</span><select name="method">${Object.entries(METHODS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
-          <label class="field"><span>Referência</span><input name="reference" maxlength="120" placeholder="Ex.: ID da transacção"></label>
-          <label class="field"><span>Nota</span><input name="note" maxlength="500"></label>
-        </div>`,
-      actions: [{ label: 'Cancelar', value: null }, {
-        label: 'Registar', kind: 'primary', value: 'ok', submit: true,
-        validate: v => (!v.amount ? 'Indique um valor diferente de zero.' : null),
-        run: v => post(`/admin/bookings/${b.id}/payments`, { amount: v.amount, method: v.method, reference: v.reference || undefined, note: v.note || undefined }),
-      }],
-    });
-    if (r) { toast('Pagamento registado.'); load(); }
   }
 
   try { await load(); } catch (err) { main.innerHTML = `<p class="alert">${esc(errorText(err))}</p>`; }

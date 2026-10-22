@@ -94,6 +94,28 @@ const T = {
     return { subject: `${title} ${d.reference} — Maputo Blue`, html: layout({ title, intro, locale: L,
       footerNote: en ? 'This document is not a receipt or a tax document.' : 'Este documento não é um recibo nem um documento fiscal.' }), text: toText(title, intro, []) };
   },
+  invoice_issued(d, L) {
+    const en = L === 'en';
+    const title = en ? `Invoice ${d.number}` : `Factura ${d.number}`;
+    const balance = Math.max(0, Math.round((d.total - d.amount_paid) * 100) / 100);
+    const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${en ? 'attached is the invoice for booking' : 'em anexo segue a factura da reserva'} <strong>${esc(d.reference)}</strong>.`;
+    const rows = [
+      [en ? 'Invoice' : 'Factura', d.number], [en ? 'Booking' : 'Reserva', d.reference],
+      [en ? 'Total' : 'Total', fmtMoney(d.total, d.currency)], [en ? 'Paid' : 'Pago', fmtMoney(d.amount_paid, d.currency)],
+      [en ? 'Balance due' : 'Saldo em dívida', fmtMoney(balance, d.currency)],
+    ];
+    if (balance > 0 && d.due_date) rows.push([en ? 'Due date' : 'Data de vencimento', fmtDate(d.due_date, L)]);
+    return { subject: `${title} — Maputo Blue`, html: layout({ title, intro, rows, locale: L }), text: toText(title, intro, rows) };
+  },
+  invoice_paid(d, L) {
+    const en = L === 'en';
+    const title = en ? `Payment received — invoice ${d.number}` : `Pagamento recebido — factura ${d.number}`;
+    const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${en
+      ? 'we have verified your payment. Your invoice is now <strong>PAID</strong>. The updated invoice is attached.'
+      : 'confirmámos o seu pagamento. A sua factura está agora <strong>PAGA</strong>. Segue em anexo a factura actualizada.'}`;
+    const rows = [[en ? 'Invoice' : 'Factura', d.number], [en ? 'Booking' : 'Reserva', d.reference], [en ? 'Amount paid' : 'Valor pago', fmtMoney(d.amount_paid, d.currency)]];
+    return { subject: `${title} — Maputo Blue`, html: layout({ title, intro, rows, locale: L }), text: toText(title, intro, rows) };
+  },
   trip_reminder(d, L) {
     const en = L === 'en';
     const title = en ? 'Your trip is coming up' : 'A sua viagem está a chegar';

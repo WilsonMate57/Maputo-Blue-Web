@@ -587,11 +587,41 @@
     ══════════════════════════════════════════════════════ -->
     <section class="mb-section contact-section" id="contact" aria-labelledby="contact-title">
       <div class="mb-container">
-        <div class="row gx-lg-5 gy-4 align-items-center">
+        <div class="contact-grid">
 
-          <div class="col-lg-6">
-            <div class="contact-map">
-              <iframe
+          <div class="contact-info-col">
+            <div>
+              <span class="section-eyebrow">Get in Touch</span>
+              <h2 class="section-title" id="contact-title">Contact Us</h2>
+              <p class="section-subtitle">Our team is available to answer all your questions and help plan your dream trip.</p>
+            </div>
+
+            <ul class="contact-tiles" role="list">
+              <li><a class="contact-tile" href="tel:+258847121666">
+                <span class="contact-tile__icon"><i class='bx bx-phone' aria-hidden="true"></i></span>
+                <span><small>Phone / WhatsApp</small><strong>+258 84 712 1666</strong></span></a></li>
+              <li><a class="contact-tile" href="mailto:maputoblue.info@gmail.com">
+                <span class="contact-tile__icon"><i class='bx bx-envelope' aria-hidden="true"></i></span>
+                <span><small>E-mail</small><strong>maputoblue.info@gmail.com</strong></span></a></li>
+              <li><a class="contact-tile" href="https://maps.app.goo.gl/j4wfCtJdM7iqYDxC6" target="_blank" rel="noopener">
+                <span class="contact-tile__icon"><i class='bx bx-map-pin' aria-hidden="true"></i></span>
+                <span><small>Location</small><strong>Maputo Marina, Av. 25 de Setembro</strong><em>Next to Escola Náutica, Maputo</em></span></a></li>
+              <li><div class="contact-tile">
+                <span class="contact-tile__icon"><i class='bx bx-time-five' aria-hidden="true"></i></span>
+                <span><small>Opening hours</small><strong>Every day</strong><em>07:00 – 17:30</em></span></div></li>
+            </ul>
+
+            <div class="contact-actions">
+              <a href="https://wa.me/258847121666?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%20tours." class="whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp (opens in a new window)">
+                <i class='bx bxl-whatsapp' aria-hidden="true"></i>Chat on WhatsApp
+              </a>
+              <a href="tel:+258847121666" class="btn-outline-mb btn-on-dark"><i class='bx bx-phone' aria-hidden="true"></i>Call</a>
+              <a href="mailto:maputoblue.info@gmail.com" class="btn-outline-mb btn-on-dark"><i class='bx bx-envelope' aria-hidden="true"></i>Send an e-mail</a>
+            </div>
+          </div>
+
+          <figure class="contact-map" style="background-image:url('../assets/images/hero/hero-8.webp')">
+            <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3587.8!2d32.5829152!3d-25.9816784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ee69b5606419411%3A0x737d30b688e8d30!2sMaputo%20Blue!5e0!3m2!1sen!2smz!4v1710000000000"
                 allowfullscreen=""
                 loading="lazy"
@@ -599,61 +629,11 @@
                 title="Maputo Marina location"
                 aria-label="Google Maps showing Maputo Marina location">
               </iframe>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="contact-info-col">
-              <div>
-                <span class="section-eyebrow" style="color:var(--sea-green);">Get in Touch</span>
-                <h2 class="section-title" id="contact-title">Contact Us</h2>
-                <p class="section-subtitle" style="color:rgba(255,255,255,.7);">
-                  Our team is available to answer all your questions and
-                  help plan your dream trip.
-                </p>
-              </div>
-
-              <div>
-                <div class="contact-detail">
-                  <div class="contact-detail-icon"><i class='bx bx-phone'></i></div>
-                  <div class="contact-detail-text">
-                    <strong>Phone / WhatsApp</strong>
-                    <a href="tel:+258847121666">+258 84 712 1666</a>
-                  </div>
-                </div>
-                <div class="contact-detail" style="margin-top:16px;">
-                  <div class="contact-detail-icon"><i class='bx bx-envelope'></i></div>
-                  <div class="contact-detail-text">
-                    <strong>Email</strong>
-                    <a href="mailto:maputoblue.info@gmail.com">maputoblue.info@gmail.com</a>
-                  </div>
-                </div>
-                <div class="contact-detail" style="margin-top:16px;">
-                  <div class="contact-detail-icon"><i class='bx bx-map-pin'></i></div>
-                  <div class="contact-detail-text">
-                    <strong>Location</strong>
-                    <a href="https://maps.app.goo.gl/j4wfCtJdM7iqYDxC6" target="_blank" rel="noopener" style="color:inherit;">Maputo Marina, Av. 25 de Setembro<br>Next to Escola Náutica, Maputo</a>
-                  </div>
-                </div>
-                <div class="contact-detail" style="margin-top:16px;">
-                  <div class="contact-detail-icon"><i class='bx bx-time'></i></div>
-                  <div class="contact-detail-text">
-                    <strong>Opening Hours</strong>
-                    <p>Every day: 07:00 – 17:30</p>
-                  </div>
-                </div>
-              </div>
-
-              <a href="https://wa.me/258847121666?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%20tours."
-                 class="whatsapp-btn"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 aria-label="Chat on WhatsApp (opens in a new window)">
-                <i class='bx bxl-whatsapp'></i>
-                Chat on WhatsApp
-              </a>
-            </div>
-          </div>
+            <a class="contact-map__chip" href="https://maps.app.goo.gl/j4wfCtJdM7iqYDxC6" target="_blank" rel="noopener">
+              <i class='bx bx-map' aria-hidden="true"></i><span><strong>Maputo Marina</strong><small>Open in Google Maps</small></span>
+              <i class='bx bx-link-external' aria-hidden="true"></i>
+            </a>
+          </figure>
 
         </div>
       </div>

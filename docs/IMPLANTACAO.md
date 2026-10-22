@@ -193,6 +193,12 @@ As migrações aplicam-se no arranque.
 
 ## 10. Lista de verificação para produção
 
+**Facturação** (ver [FACTURACAO.md](FACTURACAO.md)):
+- [ ] O contabilista confirmou os requisitos das facturas em Moçambique: campos obrigatórios, regime e taxa de IVA, numeração e certificação do software
+- [ ] Em Definições → Facturação estão preenchidos a denominação legal, a morada correcta do emitente e as instruções de pagamento (dados bancários e M-Pesa confirmados)
+- [ ] O IVA está ligado **apenas** com a taxa confirmada
+- [ ] O fluxo completo (emitir, pagamento parcial, pagamento total, anular/corrigir) foi ensaiado numa cópia de teste da base de dados e **não** em produção, porque cada factura emitida consome um número real da série
+
 **Infra-estrutura:**
 - [ ] PostgreSQL com palavra-passe forte e porta 5432 fechada ao exterior
 - [ ] `.env` preenchido, com `COOKIE_SECURE=true`, `TRUST_PROXY=true` e o `PUBLIC_BASE_URL` correcto

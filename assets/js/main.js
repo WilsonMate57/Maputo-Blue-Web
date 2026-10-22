@@ -183,6 +183,20 @@
     });
   }
 
+  /* ── Package page: highlight the section in view ───────── */
+  function initSectionNav() {
+    const links = [...document.querySelectorAll('.pkg-secnav a')];
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+    const visible = new Set();
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => (e.isIntersecting ? visible.add(e.target.id) : visible.delete(e.target.id)));
+      const current = [...byId.keys()].find(id => visible.has(id));
+      if (current) links.forEach(a => a.setAttribute('aria-current', String(a === byId.get(current))));
+    }, { rootMargin: '-80px 0px -55% 0px' });
+    byId.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+  }
+
   /* ── Active nav link via current page ──────────────────── */
   function initActiveNavFromURL() {
     const page = window.location.pathname.split('/').pop() || 'index.html';
@@ -203,6 +217,7 @@
     initRipple();
     initWhatsApp();
     initHeroCarousel();
+    initSectionNav();
     initActiveNavFromURL();
   });
 })();

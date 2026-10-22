@@ -16,15 +16,18 @@ export default async function bookings(main) {
 
   main.innerHTML = `
     <div class="page-head">
-      <div class="chips" role="group" aria-label="Filtrar por estado">
-        <button type="button" class="chip" data-status="" aria-pressed="${!selected.size}">Todas</button>
-        ${STATUSES.map(s => `<button type="button" class="chip" data-status="${s}" aria-pressed="${selected.has(s)}">${STATUS_PT[s]}</button>`).join('')}
-        <button type="button" class="chip" data-cancelreq aria-pressed="${!!state.cancel_requested}">Pedidos de cancelamento</button>
-      </div>
+      <div><span class="eyebrow">Operação</span><h2>Reservas</h2><p class="page-head__sub">Pedidos, confirmações e pagamentos. Abra uma reserva para confirmar, registar pagamentos ou emitir a factura.</p></div>
       <div class="page-head__actions"><a class="btn btn--ghost" id="csv" href="#"><i class='bx bx-download'></i>Exportar CSV</a></div>
     </div>
     <div class="card">
-      <form class="filters" id="filters" role="search">
+      <div class="filters" style="padding-bottom:12px;">
+        <div class="seg" role="group" aria-label="Filtrar por estado">
+          <button type="button" data-status="" aria-pressed="${!selected.size}">Todas</button>
+          ${STATUSES.map(s => `<button type="button" data-status="${s}" aria-pressed="${selected.has(s)}">${STATUS_PT[s]}</button>`).join('')}
+          <button type="button" data-cancelreq aria-pressed="${!!state.cancel_requested}"><i class='bx bx-error-circle'></i>Pedidos de cancelamento</button>
+        </div>
+      </div>
+      <form class="filters" id="filters" role="search" style="border-radius:0;background:var(--surface);">
         <label class="field field--search"><span>Pesquisar</span><input type="search" name="q" value="${esc(state.q)}" placeholder="Referência, nome, e-mail ou telefone"></label>
         <label class="field"><span>Pacote</span><select name="package_id"><option value="">Todos</option>
           ${packages.map(p => `<option value="${esc(p.id)}"${p.id === state.package_id ? ' selected' : ''}>${esc(p.title)}</option>`).join('')}</select></label>
@@ -51,19 +54,19 @@ export default async function bookings(main) {
     list.innerHTML = '<div class="card__body"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>';
     const r = await get('/admin/bookings' + qs({ ...filterParams(), page: state.page, page_size: 25 }));
     if (!r.items.length) { list.innerHTML = emptyState('bx-calendar-x', 'Nenhuma reserva encontrada com estes filtros.'); return; }
-    list.innerHTML = `<div class="table-wrap"><table class="table">
+    list.innerHTML = `<div class="table-wrap"><table class="table table--stack">
       <thead><tr><th>Referência</th><th>Cliente</th><th>Experiência</th><th>Data</th><th>Pessoas</th><th class="right">Total</th><th>Estado</th><th>Pagamento</th><th>Criada</th></tr></thead>
       <tbody>${r.items.map(b => `
         <tr data-href="#/bookings/${b.id}">
-          <td class="t-strong mono nowrap">${esc(b.reference)}${b.cancel_requested_at && ['pending', 'confirmed'].includes(b.status) ? ' <i class="bx bx-error-circle" style="color:var(--danger)" title="Cancelamento pedido"></i>' : ''}</td>
-          <td>${esc(b.customer_name)}<span class="t-sub">${esc(b.customer_email)}</span></td>
-          <td>${esc(b.package_title)}${b.option_key ? `<span class="t-sub">${esc(b.option_key)}</span>` : ''}</td>
-          <td class="nowrap">${date(b.start_date)}</td>
-          <td>${b.adults}${b.children ? ` + ${b.children}` : ''}</td>
-          <td class="right mono nowrap">${money(b.total, b.currency)}</td>
-          <td>${badge(b.status)}${b.status === 'pending' && b.hold_expires_at && new Date(b.hold_expires_at) < new Date() ? '<span class="t-sub">bloqueio expirado</span>' : ''}</td>
-          <td>${badge(b.payment_status)}</td>
-          <td class="nowrap muted">${date(b.created_at)}</td>
+          <td data-label="Referência" class="t-strong mono nowrap">${esc(b.reference)}${b.cancel_requested_at && ['pending', 'confirmed'].includes(b.status) ? ' <i class="bx bx-error-circle" style="color:var(--danger)" title="Cancelamento pedido"></i>' : ''}</td>
+          <td data-label="Cliente">${esc(b.customer_name)}<span class="t-sub">${esc(b.customer_email)}</span></td>
+          <td data-label="Experiência">${esc(b.package_title)}${b.option_key ? `<span class="t-sub">${esc(b.option_key)}</span>` : ''}</td>
+          <td data-label="Data" class="nowrap">${date(b.start_date)}</td>
+          <td data-label="Pessoas">${b.adults}${b.children ? ` + ${b.children}` : ''}</td>
+          <td data-label="Total" class="right mono nowrap">${money(b.total, b.currency)}</td>
+          <td data-label="Estado">${badge(b.status)}${b.status === 'pending' && b.hold_expires_at && new Date(b.hold_expires_at) < new Date() ? '<span class="t-sub">bloqueio expirado</span>' : ''}</td>
+          <td data-label="Pagamento">${badge(b.payment_status)}</td>
+          <td data-label="Criada" class="nowrap muted">${date(b.created_at)}</td>
         </tr>`).join('')}</tbody></table></div>`;
     list.appendChild(pager(r.total, r.page, r.page_size, p => { state.page = p; load(); }));
     linkRows(list);

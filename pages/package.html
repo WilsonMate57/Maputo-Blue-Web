@@ -57,23 +57,29 @@
   </div>
 
   <main id="package-detail">
-
-    <!-- Breadcrumb -->
-    <div style="background:var(--white);border-bottom:1px solid var(--border-light);padding:14px 0;">
+    <!-- Editorial header + gallery -->
+    <div class="pkg-top">
       <div class="mb-container">
-        <nav style="display:flex;align-items:center;gap:4px;font-size:.875rem;flex-wrap:wrap;" aria-label="Breadcrumb">
-          <a href="../index.html" style="color:var(--sea-green-text);text-decoration:none;">Home</a>
-          <span style="color:var(--border-light);margin:0 4px;">/</span>
-          <a href="tours.html" style="color:var(--sea-green-text);text-decoration:none;">Tours</a>
-          <span style="color:var(--border-light);margin:0 4px;">/</span>
-          <span id="pkg-breadcrumb-title" style="color:var(--text-body);">A carregar...</span>
+        <header class="pkg-head">
+          <nav class="pkg-crumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span>/</span>
+          <a href="tours.html">Tours</a>
+          <span>/</span>
+          <span id="pkg-breadcrumb-title">A carregar...</span>
         </nav>
-      </div>
-    </div>
-
-    <!-- Gallery -->
-    <div style="background:var(--white);padding:24px 0 0;">
-      <div class="mb-container">
+          <h1 id="package-title-h1" class="pkg-head__title">
+                A carregar...
+              </h1>
+              <div class="pkg-head__meta">
+                <span class="pkg-head__loc">
+                  <i class='bx bx-map-pin' aria-hidden="true"></i>
+                  <span id="package-location">Maputo, Moçambique</span>
+                </span>
+                <div class="star-rating" id="package-rating"></div>
+                <span class="pkg-head__count" id="package-reviews-count"></span>
+              </div>
+        </header>
         <div class="pkg-gallery" id="pkg-gallery" aria-label="Galeria de imagens">
           <div class="pkg-gallery__main" id="gallery-slot-main">
             <img src="../assets/images/hero/hero-1.webp" alt="Foto principal" id="gallery-img-main">
@@ -92,29 +98,18 @@
       </div>
     </div>
 
+
+    <nav class="pkg-secnav" aria-label="Secções">
+      <div class="mb-container"><div class="pkg-secnav__inner"><a href="#sec-about" aria-current="true">Visão geral</a><a href="#sec-highlights">Destaques</a><a href="#sec-included">Incluído</a><a href="#sec-itinerary">Itinerário</a><a href="#package-important-info">Informações</a><a href="#sec-reviews">Avaliações</a></div></div>
+    </nav>
+
     <!-- Main Content -->
-    <section style="background:var(--light-bg);padding:36px 0 60px;" aria-label="Detalhes do tour">
+    <section class="pkg-main" aria-label="Detalhes do tour">
       <div class="mb-container">
         <div class="row g-5">
 
           <!-- LEFT COLUMN ─────────────────────────────── -->
           <div class="col-lg-8">
-
-            <!-- Title + Rating -->
-            <div style="margin-bottom:4px;">
-              <h1 id="package-title-h1"
-                  style="font-size:clamp(1.5rem,3vw,2.125rem);font-weight:800;color:var(--primary);margin-bottom:10px;">
-                A carregar...
-              </h1>
-              <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-                <span style="display:flex;align-items:center;gap:5px;font-size:.875rem;color:var(--text-muted);">
-                  <i class='bx bx-map-pin' style="color:var(--sea-green);"></i>
-                  <span id="package-location">Maputo, Moçambique</span>
-                </span>
-                <div class="star-rating" id="package-rating"></div>
-                <span style="font-size:.875rem;color:var(--text-muted);" id="package-reviews-count"></span>
-              </div>
-            </div>
 
             <!-- Overview Bar -->
             <div class="pkg-overview-bar" aria-label="Resumo do tour">
@@ -144,32 +139,32 @@
             <div id="boat-selector-wrap" style="display:none;"></div>
 
             <!-- Description -->
-            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
-              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:14px;">Sobre este Tour</h2>
-              <p id="package-description" style="color:var(--text-muted);line-height:1.8;font-size:.9375rem;margin:0;">A carregar...</p>
+            <div class="pkg-card" id="sec-about">
+              <h2 class="pkg-card__title">Sobre este Tour</h2>
+              <p id="package-description" class="pkg-card__lead">A carregar...</p>
             </div>
 
             <!-- Highlights -->
-            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
-              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:16px;">
+            <div class="pkg-card" id="sec-highlights">
+              <h2 class="pkg-card__title">
                 <i class='bx bxs-star' style="color:var(--sea-green);margin-right:6px;"></i>Destaques
               </h2>
-              <ul id="package-highlights" style="list-style:none;padding:0;margin:0;" aria-label="Destaques do tour">
+              <ul id="package-highlights" class="pkg-highlights" aria-label="Destaques do tour">
                 <!-- Populated by data-loader.js -->
               </ul>
             </div>
 
             <!-- Included / Excluded -->
-            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
+            <div class="pkg-card" id="sec-included">
               <div class="row g-4">
                 <div class="col-md-6">
-                  <h2 style="font-size:1.0625rem;font-weight:700;color:var(--primary);margin-bottom:14px;">
+                  <h2 class="pkg-card__title">
                     <i class='bx bx-check-circle' style="color:var(--sea-green);margin-right:6px;"></i>Incluído
                   </h2>
                   <div id="package-included" aria-label="O que está incluído"></div>
                 </div>
                 <div class="col-md-6">
-                  <h2 style="font-size:1.0625rem;font-weight:700;color:var(--primary);margin-bottom:14px;">
+                  <h2 class="pkg-card__title">
                     <i class='bx bx-x-circle' style="color:#EF4444;margin-right:6px;"></i>Não Incluído
                   </h2>
                   <div id="package-excluded" aria-label="O que não está incluído"></div>
@@ -178,8 +173,8 @@
             </div>
 
             <!-- Itinerary Accordion -->
-            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);margin-bottom:20px;">
-              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:18px;">
+            <div class="pkg-card" id="sec-itinerary">
+              <h2 class="pkg-card__title">
                 <i class='bx bx-map' style="color:var(--sea-green);margin-right:6px;"></i>Itinerário
               </h2>
               <div class="itin-accordion" id="package-itinerary" aria-label="Itinerário do tour">
@@ -191,8 +186,8 @@
             <div id="package-important-info"></div>
 
             <!-- Reviews -->
-            <div style="background:var(--white);border-radius:var(--radius-xl);padding:28px;border:1.5px solid var(--border-light);">
-              <h2 style="font-size:1.125rem;font-weight:700;color:var(--primary);margin-bottom:4px;">
+            <div class="pkg-card" id="sec-reviews">
+              <h2 class="pkg-card__title">
                 <i class='bx bxs-star' style="color:#F59E0B;margin-right:6px;"></i>Avaliações
               </h2>
               <!-- Aggregate score -->
@@ -234,11 +229,12 @@
 
               <!-- Date -->
               <div style="margin-bottom:16px;">
-                <label for="booking-date" class="booking-input-label">Data</label>
+                <label for="booking-date" class="booking-input-label bk-step">Data</label>
                 <input type="date" id="booking-date" class="booking-input" aria-label="Selecionar data">
               </div>
 
               <!-- Steppers -->
+              <p class="bk-step">Participantes</p>
               <div style="border:1.5px solid var(--border-light);border-radius:var(--radius-md);overflow:hidden;margin-bottom:16px;">
                 <div class="booking-stepper-row" style="padding:12px 16px;">
                   <div>
@@ -265,6 +261,7 @@
               </div>
 
               <!-- Total -->
+              <p class="bk-step">Resumo</p>
               <div class="booking-total-row" style="margin-bottom:16px;">
                 <span class="booking-total-label">Total estimado</span>
                 <span class="booking-total-value" id="booking-total">USD 00</span>
@@ -280,6 +277,8 @@
                  aria-label="Reservar agora via WhatsApp">
                 <i class='bx bxl-whatsapp'></i>Reservar Agora
               </a>
+
+              <p class="bk-next"><i class='bx bx-info-circle' aria-hidden="true"></i>Ainda não paga nada: a nossa equipa confirma a disponibilidade e envia-lhe a confirmação e o ticket por e-mail.</p>
 
               <!-- Trust -->
               <div class="booking-trust">

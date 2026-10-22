@@ -194,3 +194,24 @@ Migração `002_tickets.sql` (só acrescenta, sem apagar nada): `bookings.ticket
 - **Carregamento:** scripts com `defer` e CSS dos ícones sem bloquear a renderização. O preloader deixou de forçar 3 s.
 - **Estabilidade visual:** altura da navbar reservada e imagens com `width`/`height`, para não haver deslocamentos.
 - **SEO:** as páginas de pacote recebem do servidor o título, a descrição, o canonical, o hreflang, o Open Graph e o JSON-LD `TouristTrip`. A classificação só aparece no JSON-LD quando há avaliações reais.
+
+## 11. Facturação e pagamentos verificados
+
+Ver [FACTURACAO.md](FACTURACAO.md): fluxo de emissão a partir da referência da reserva, numeração sem saltos (`invoice_sequences`), conteúdo congelado na emissão com o PDF original arquivado (SHA-256), pagamentos, reembolsos e estornos verificados com idempotência, estados financeiros separados do estado da reserva, permissões, auditoria e relatórios. Migração `003_invoices.sql` (só acrescenta).
+
+## 12. Sistema visual (redesign)
+
+- **Tokens** em `assets/css/main.css` §1: escala tipográfica, espaçamentos, raios, sombras, anel de foco, transições e paleta da marca (navy, turquesa e coral, sem cores novas).
+- **Composições** em `assets/css/main.css`:
+  - área de cliente com coluna de perfil, cartões de reserva com linha do tempo, pagamento e factura (§27);
+  - página de experiência com cabeçalho editorial, navegação de secções e reserva em passos (§29);
+  - navbar fixa ao fazer scroll, com conta e «Reservar», e redes sociais na barra superior (§30);
+  - equipa em cartões-retrato (§31);
+  - contacto com cartões clicáveis e mapa enquadrado (§9);
+  - rodapé em grelha com a faixa de pagamentos (§32).
+- **Revertido a pedido do cliente:** a homepage e as listagens de tours e alojamentos mantêm o layout anterior (commit `ce3e90b`).
+- **Painel de gestão:** `admin/admin.css` tem o mesmo sistema de tokens, com navegação clara agrupada, barra superior com pesquisa rápida por referência e acção «Emitir factura», KPIs com ícones, controlos segmentados, tabelas que viram cartões no telemóvel, documento de factura no ecrã e diálogos com rodapé.
+- **Verificação:**
+  - `server/scripts/baseline-shots.js <pasta>` guarda capturas comparáveis (1440×900 e 390×844, primeiro ecrã e página inteira);
+  - `server/scripts/overflow-check.js <url> <largura>` detecta scroll horizontal;
+  - `server/scripts/audit.js` faz a auditoria de acessibilidade e SEO.

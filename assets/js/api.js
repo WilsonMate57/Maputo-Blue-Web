@@ -128,18 +128,33 @@
   const STATUS = {
     pt: { pending: 'Pendente', confirmed: 'Confirmada', rejected: 'Rejeitada', cancelled: 'Cancelada', completed: 'Concluída',
           new: 'Novo', under_review: 'Em análise', quote_sent: 'Cotação enviada', accepted: 'Aceite', closed: 'Fechado',
-          unpaid: 'Por pagar', partial: 'Pago parcialmente', paid: 'Pago', refunded: 'Reembolsado' },
+          unpaid: 'Por pagar', partial: 'Pago parcialmente', paid: 'Pago', refunded: 'Reembolsado',
+          partially_paid: 'Parcialmente paga', overdue: 'Vencida', issued: 'Emitida' },
     en: { pending: 'Pending', confirmed: 'Confirmed', rejected: 'Rejected', cancelled: 'Cancelled', completed: 'Completed',
           new: 'New', under_review: 'Under review', quote_sent: 'Quotation sent', accepted: 'Accepted', closed: 'Closed',
-          unpaid: 'Unpaid', partial: 'Partially paid', paid: 'Paid', refunded: 'Refunded' },
+          unpaid: 'Unpaid', partial: 'Partially paid', paid: 'Paid', refunded: 'Refunded',
+          partially_paid: 'Partially paid', overdue: 'Overdue', issued: 'Issued' },
   };
   const statusLabel = s => STATUS[LANG][s] || s;
+
+  /** POST credentials, receive a PDF and save it (no secret ever goes in a URL). */
+  async function downloadPdf(path, body, filename) {
+    const res = await fetch(BASE + path, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      throw new ApiError(res.status, (data && data.error) || 'internal', (data && data.message) || res.statusText);
+    }
+    const url = URL.createObjectURL(await res.blob());
+    const a = Object.assign(document.createElement('a'), { href: url, download: filename });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
 
   /** Path prefix from the current page to the site root ('' or '../'). */
   const ROOT = /\/(pages|en)\//.test(location.pathname) ? '../' : '';
 
   window.MBApi = {
-    LANG, ROOT, ApiError, available, idempotencyKey, esc, money, date, statusLabel,
+    LANG, ROOT, ApiError, available, idempotencyKey, esc, money, date, statusLabel, downloadPdf,
     get: (p, o) => request('GET', p, undefined, o),
     post: (p, b, o) => request('POST', p, b === undefined ? {} : b, o),
     patch: (p, b, o) => request('PATCH', p, b, o),

@@ -25,6 +25,8 @@
     cancelled: 'This booking was cancelled.', completed: 'We hope you enjoyed it! Leave a review on the experience page.',
     childReq: 'Children price on request — our team will confirm it.',
     help: 'Questions about this booking?', ticket: 'View / download ticket', whatsapp: 'Message us on WhatsApp', account: 'Create an account to see all your bookings in one place',
+    invoice: 'Invoice', invTotal: 'Total', invPaid: 'Paid', invBalance: 'Balance due', invDownload: 'Download invoice (PDF)', issued: 'Issued',
+    steps: ['Requested', 'Confirmed', 'Trip', 'Completed'],
   } : {
     ref: 'Referência da reserva', email: 'E-mail usado na reserva', find: 'Encontrar a minha reserva', another: 'Consultar outra reserva',
     status: 'Estado', experience: 'Experiência', date: 'Data', guests: 'Participantes', payment: 'Pagamento', requested: 'Pedido em',
@@ -34,6 +36,8 @@
     cancelled: 'Esta reserva foi cancelada.', completed: 'Esperamos que tenha gostado! Deixe a sua avaliação na página da experiência.',
     childReq: 'Preço das crianças sob consulta — a nossa equipa vai confirmá-lo.',
     help: 'Dúvidas sobre esta reserva?', ticket: 'Ver / descarregar ticket', whatsapp: 'Fale connosco pelo WhatsApp', account: 'Crie uma conta para ver todas as suas reservas num só lugar',
+    invoice: 'Factura', invTotal: 'Total', invPaid: 'Pago', invBalance: 'Saldo em dívida', invDownload: 'Descarregar factura (PDF)', issued: 'Emitida',
+    steps: ['Pedido', 'Confirmada', 'Viagem', 'Concluída'],
   };
 
   const params = new URLSearchParams(location.search);
@@ -77,6 +81,10 @@
           <div><p class="mb-ref-label" style="margin:0;">${T.ref}</p><p class="mb-ref" style="margin:0;">${esc(b.reference)}</p></div>
           <span class="mb-status mb-status--${b.status}" style="font-size:.875rem;">${API.statusLabel(b.status)}</span>
         </div>
+        ${['cancelled', 'rejected'].includes(b.status) ? '' : `<ol class="bk-journey bk-journey--lg">${T.steps.map((st, k) => {
+          const reached = { pending: 1, confirmed: 2, completed: 4 }[b.status] || 1;
+          return `<li class="${k < reached ? 'is-done' : ''}${k === reached - 1 ? ' is-current' : ''}">${esc(st)}</li>`;
+        }).join('')}</ol>`}
         <p class="mb-alert mb-alert--${b.status === 'confirmed' || b.status === 'completed' ? 'success' : b.status === 'pending' ? 'info' : ''}" style="margin-top:16px;">${T[b.status] || ''}</p>
         <dl class="mb-detail">
           <div><dt>${T.experience}</dt><dd>${esc(title)}</dd></div>
@@ -87,6 +95,7 @@
         </dl>
         <ul class="booking-breakdown">${lines}<li><strong>${T.total}</strong><strong>${money(b.total, b.currency)}</strong></li></ul>
         ${b.child_price_on_request ? `<p class="mb-alert mb-alert--info">${T.childReq}</p>` : ''}
+        <div data-invoice></div>
         <div class="mb-form-actions" style="margin-top:24px;">
           <a class="btn-outline-mb" href="${wa}" target="_blank" rel="noopener"><i class='bx bxl-whatsapp'></i>${T.whatsapp}</a>
           ${window.MBTicket ? `<button type="button" class="btn-primary-mb" data-ticket><i class='bx bx-receipt'></i>${T.ticket}</button>` : ''}
@@ -95,6 +104,23 @@
         <p style="margin-top:14px;font-size:.875rem;"><a class="mb-link" href="${ROOT}${EN ? 'en' : 'pages'}/account.html?tab=register">${T.account}</a></p>
       </div>`;
     root.querySelector('[data-another]').addEventListener('click', () => { history.replaceState(null, '', location.pathname); form(); });
+    // Invoice (when issued): same credentials, POST only
+    API.post('/bookings/invoice', creds).then(({ invoice: inv }) => {
+      if (!inv) return;
+      const box = root.querySelector('[data-invoice]');
+      box.innerHTML = `<div class="bk-invoice bk-invoice--lg">
+        <i class='bx bx-receipt' aria-hidden="true"></i>
+        <span><strong>${T.invoice} ${esc(inv.number)}</strong><small>${T.issued} ${esc(API.date(inv.issue_date))} · ${T.invTotal} ${money(inv.total, inv.currency)} · ${T.invPaid} ${money(inv.amount_paid, inv.currency)} · ${T.invBalance} ${money(inv.balance, inv.currency)}</small></span>
+        <span class="mb-status mb-status--${inv.status}">${API.statusLabel(inv.status)}</span>
+        <button type="button" class="mb-btn-sm" data-inv-pdf><i class='bx bx-download'></i>${T.invDownload}</button></div>`;
+      const btn = box.querySelector('[data-inv-pdf]');
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        try { await API.downloadPdf('/bookings/invoice.pdf', creds, `factura-${inv.number.replace(/[^A-Za-z0-9]+/g, '-')}.pdf`); }
+        catch (err) { alert(API.errorText(err)); }
+        finally { btn.disabled = false; }
+      });
+    }).catch(() => { /* invoice is optional */ });
     // Ticket (PDF / print / e-mail) using the same credentials, kept in memory only
     const tb = root.querySelector('[data-ticket]');
     if (tb) tb.addEventListener('click', async () => {

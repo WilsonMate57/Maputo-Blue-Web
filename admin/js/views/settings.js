@@ -4,6 +4,7 @@ import { $, CATEGORY_LABELS, busy, esc, formValues, get, put } from '../core.js'
 export default async function settings(main) {
   const [s, cats] = await Promise.all([get('/admin/settings'), get('/admin/categories')]);
   const b = s.booking, l = s.loyalty, n = s.notifications, c = s.company || {};
+  const inv = s.invoicing || {}, iss = inv.issuer || {}, tax = inv.tax || {};
   const allCats = [...cats.tour, ...cats.accommodation];
 
   main.innerHTML = `
@@ -59,6 +60,35 @@ export default async function settings(main) {
         <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
       </div></form>
 
+      <form class="card span-all" id="f-invoicing" novalidate style="grid-column:1/-1;"><div class="card__head"><h2>Facturação</h2><span class="muted">Dados impressos nas facturas emitidas a partir de agora</span></div><div class="card__body">
+        <p class="alert alert--info" style="margin:0 0 14px;"><i class='bx bx-info-circle'></i>Facturas já emitidas guardam os dados do momento da emissão e não mudam. Antes de apresentar estes documentos como facturas fiscais, confirme com o contabilista os requisitos legais aplicáveis em Moçambique (campos obrigatórios, regime de IVA, certificação do software).</p>
+        <div class="grid grid--3">
+          <label class="field"><span>Nome do emitente</span><input name="iss_name" maxlength="160" value="${esc(iss.name || '')}"></label>
+          <label class="field"><span>Denominação legal</span><input name="iss_legal_name" maxlength="200" value="${esc(iss.legal_name || '')}" placeholder="por configurar"></label>
+          <label class="field"><span>NUIT</span><input name="iss_nuit" maxlength="40" value="${esc(iss.nuit || '')}"></label>
+          <label class="field"><span>Telefone</span><input name="iss_phone" maxlength="60" value="${esc(iss.phone || '')}"></label>
+          <label class="field"><span>E-mail</span><input name="iss_email" maxlength="200" value="${esc(iss.email || '')}"></label>
+          <label class="field"><span>Website</span><input name="iss_website" maxlength="200" value="${esc(iss.website || '')}"></label>
+          <label class="field span-2"><span>Morada <small>(uma linha por linha impressa)</small></span><textarea name="iss_address" rows="2" maxlength="400">${esc(iss.address || '')}</textarea></label>
+          <div class="grid grid--2">
+            <label class="field"><span>Série</span><input name="series_prefix" maxlength="6" pattern="[A-Z]{1,6}" value="${esc(inv.series_prefix || 'FT')}"><span class="field__hint">Ex.: FT 2026/0001</span></label>
+            <label class="field"><span>Vencimento (dias)</span><input name="due_days" type="number" min="0" max="365" value="${inv.due_days ?? 7}"></label>
+          </div>
+        </div>
+        <div class="grid grid--3" style="margin-top:14px;">
+          <label class="check"><input type="checkbox" name="tax_enabled"${tax.enabled ? ' checked' : ''}> Mostrar imposto incluído no preço</label>
+          <label class="field"><span>Designação</span><input name="tax_label" maxlength="20" value="${esc(tax.label || 'IVA')}"></label>
+          <label class="field"><span>Taxa (%)</span><input name="tax_rate" type="number" min="0" max="100" step="0.01" value="${tax.rate ?? ''}" placeholder="confirmar com o contabilista"></label>
+        </div>
+        <div class="grid grid--2" style="margin-top:14px;">
+          <label class="field"><span>Instruções de pagamento (PT)</span><textarea name="payment_instructions" rows="3" maxlength="1500" placeholder="Ex.: dados bancários confirmados, número M-Pesa">${esc(inv.payment_instructions || '')}</textarea></label>
+          <label class="field"><span>Payment instructions (EN)</span><textarea name="payment_instructions_en" rows="3" maxlength="1500">${esc(inv.payment_instructions_en || '')}</textarea></label>
+          <label class="field"><span>Nota de rodapé (PT)</span><input name="footer_note" maxlength="300" value="${esc(inv.footer_note || '')}"></label>
+          <label class="field"><span>Footer note (EN)</span><input name="footer_note_en" maxlength="300" value="${esc(inv.footer_note_en || '')}"></label>
+        </div>
+        <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
+      </div></form>
+
       <div class="card"><div class="card__head"><h2>E-mail</h2></div><div class="card__body">
         ${s.mail_configured ? `<p class="alert alert--success" style="margin:0;">Configurado. Remetente: ${esc(s.mail_from)}</p>`
           : '<p class="alert alert--warn" style="margin:0;">Não configurado. Defina RESEND_API_KEY e MAIL_FROM no ficheiro server/.env do servidor e reinicie o serviço (ver docs/IMPLANTACAO.md).</p>'}
@@ -71,6 +101,14 @@ export default async function settings(main) {
     try { await busy(e.currentTarget.querySelector('[type=submit]'), () => put(`/admin/settings/${key}`, map(v)), 'Definições guardadas.'); } catch { /* toast */ }
   });
   wire('#f-booking', 'booking', v => v);
+  wire('#f-invoicing', 'invoicing', v => ({
+    series_prefix: v.series_prefix.trim().toUpperCase(), due_days: v.due_days ?? 0,
+    issuer: { name: v.iss_name.trim(), legal_name: v.iss_legal_name.trim(), nuit: v.iss_nuit.trim(), phone: v.iss_phone.trim(),
+      email: v.iss_email.trim(), website: v.iss_website.trim(), address: v.iss_address.trim() },
+    tax: { enabled: v.tax_enabled, label: v.tax_label.trim() || 'IVA', rate: v.tax_rate, mode: 'inclusive' },
+    payment_instructions: v.payment_instructions.trim(), payment_instructions_en: v.payment_instructions_en.trim(),
+    footer_note: v.footer_note.trim(), footer_note_en: v.footer_note_en.trim(),
+  }));
   wire('#f-loyalty', 'loyalty', v => ({ ...v, categories: v.categories.length ? v.categories : null }));
   wire('#f-company', 'company', v => Object.fromEntries(Object.entries(v).map(([k, x]) => [k, String(x || '').trim()])));
   wire('#f-notifications', 'notifications', v => ({ admin_emails: v.admin_emails.split(/[\n,;]+/).map(x => x.trim()).filter(Boolean), reminder_days_before: v.reminder_days_before ?? 0 }));

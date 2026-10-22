@@ -177,7 +177,12 @@ test('admin edit recomputes price, keeps old snapshot in audit; CSV export works
   assert.equal(ev.data.previous_snapshot.quote.total, 3600);
   const note = await admin.post(`/api/admin/bookings/${id}/notes`, { body: 'Cliente pediu almoço vegetariano' });
   assert.equal(note.status, 201);
-  const pay = await admin.post(`/api/admin/bookings/${id}/payments`, { amount: 2000, method: 'mpesa', reference: 'MP123' });
+  // Money is only recorded once the administrator confirms it was received
+  const unverified = await admin.post(`/api/admin/bookings/${id}/payments`, { amount: 2000, method: 'mpesa', reference: 'MP123', verified: false });
+  assert.equal(unverified.status, 400);
+  assert.equal(unverified.body.error, 'payment_not_verified');
+  const pay = await admin.post(`/api/admin/bookings/${id}/payments`, { amount: 2000, method: 'mpesa', reference: 'MP123', verified: true });
+  assert.equal(pay.status, 201, pay.raw);
   assert.equal(pay.body.payment_status, 'partial');
   const csv = await admin.get('/api/admin/bookings.csv?status=pending');
   assert.equal(csv.status, 200);

@@ -9,6 +9,9 @@ const ROUTES = [
   { re: /^\/dashboard$/, key: 'dashboard', title: 'Visão geral', load: () => import('./views/dashboard.js') },
   { re: /^\/bookings$/, key: 'bookings', title: 'Reservas', load: () => import('./views/bookings.js') },
   { re: /^\/bookings\/([0-9a-f-]{36})$/, key: 'bookings', title: 'Reserva', load: () => import('./views/booking-detail.js') },
+  { re: /^\/invoices$/, key: 'invoices', title: 'Facturas', load: () => import('./views/invoices.js') },
+  { re: /^\/invoices\/new$/, key: 'invoices', title: 'Emitir factura', load: () => import('./views/invoice-new.js') },
+  { re: /^\/invoices\/([0-9a-f-]{36})$/, key: 'invoices', title: 'Factura', load: () => import('./views/invoice-detail.js') },
   { re: /^\/calendar$/, key: 'calendar', title: 'Disponibilidade', load: () => import('./views/calendar.js') },
   { re: /^\/requests$/, key: 'requests', title: 'Pedidos personalizados', load: () => import('./views/requests.js') },
   { re: /^\/requests\/([0-9a-f-]{36})$/, key: 'requests', title: 'Pedido personalizado', load: () => import('./views/request-detail.js') },
@@ -120,6 +123,7 @@ async function refreshBadges() {
     set('#badge-pending', d.attention.pending);
     set('#badge-requests', d.attention.new_requests);
     set('#badge-mail', d.attention.failed_mail);
+    set('#badge-overdue', d.attention.overdue_invoices);
   } catch { /* badges are best-effort */ }
 }
 
@@ -127,9 +131,29 @@ function start() {
   $('#login').hidden = true;
   $('#app').hidden = false;
   $('#user-name').textContent = user.name;
+  $('#user-initials').textContent = user.name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'MB';
   render();
   refreshBadges();
 }
+
+/* ── Quick jump: MB-XXXX opens the booking, "FT 2026/0001" the invoice ── */
+$('#gsearch').addEventListener('submit', async e => {
+  e.preventDefault();
+  const input = e.currentTarget.q;
+  const q = input.value.trim();
+  if (!q) return;
+  try {
+    if (/^[A-Za-z]{2}-[A-Za-z0-9]{4,10}$/.test(q)) {
+      const r = await get('/admin/bookings?q=' + encodeURIComponent(q.toUpperCase()) + '&page_size=2');
+      const hit = r.items.find(b => b.reference === q.toUpperCase());
+      if (hit) { location.hash = `#/bookings/${hit.id}`; input.value = ''; return; }
+    }
+    const inv = await get('/admin/invoices?q=' + encodeURIComponent(q) + '&page_size=2');
+    if (inv.items.length === 1) { location.hash = `#/invoices/${inv.items[0].id}`; input.value = ''; return; }
+    location.hash = `#/bookings?q=${encodeURIComponent(q)}`;
+    input.value = '';
+  } catch (err) { toast(errorText(err), 'error'); }
+});
 
 window.addEventListener('hashchange', render);
 setInterval(() => { if (user && document.visibilityState === 'visible') refreshBadges(); }, 60_000);

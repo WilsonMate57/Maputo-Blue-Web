@@ -9,6 +9,7 @@
 // can register a check-in through the protected admin API.
 // ─────────────────────────────────────────────────────────────────────────────
 import { checkSignature, qrSvg, renderTicketPdf, ticketData, verificationView } from '../lib/tickets.js';
+import { currentInvoicePdf, invoiceFilename, publicInvoice } from '../lib/invoices.js';
 import { enqueueMail } from '../lib/mailer.js';
 import { audit } from '../lib/audit.js';
 import { badRequest, notFound } from '../lib/errors.js';
@@ -66,6 +67,25 @@ export default async function ticketRoutes(app) {
   app.post('/bookings/ticket.pdf', { config: limited, schema: { body: credentials } }, async (req, reply) => T.pdf(await guestBooking(pool, req.body), reply));
   app.post('/bookings/ticket/email', { config: { rateLimit: { max: 5, timeWindow: '10 minutes' } }, schema: { body: credentials } },
     async req => T.email(await guestBooking(pool, req.body), null));
+
+  // Invoice of a guest booking: same proof of ownership, POST only (no guessable URL)
+  const guestInvoice = async body => {
+    const b = await guestBooking(pool, body);
+    const { rows: [inv] } = await pool.query(
+      `select * from invoices where booking_id = $1 and doc_status <> 'draft' order by (doc_status = 'issued') desc, created_at desc limit 1`, [b.id]);
+    return inv || null;
+  };
+  app.post('/bookings/invoice', { config: limited, schema: { body: credentials } }, async req => {
+    const inv = await guestInvoice(req.body);
+    return { invoice: inv ? publicInvoice(inv) : null };
+  });
+  app.post('/bookings/invoice.pdf', { config: limited, schema: { body: credentials } }, async (req, reply) => {
+    const inv = await guestInvoice(req.body);
+    if (!inv) throw notFound('invoice_not_found');
+    reply.header('Content-Type', 'application/pdf');
+    reply.header('Content-Disposition', `attachment; filename="${invoiceFilename(inv)}"`);
+    return reply.send(await currentInvoicePdf(pool, cfg, inv));
+  });
 
   // QR verification — read-only, minimal data, every scan logged
   app.get('/tickets/verify', {

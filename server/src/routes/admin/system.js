@@ -32,6 +32,14 @@ const SETTING_SCHEMAS = {
     categories: { type: ['array', 'null'], items: { type: 'string', maxLength: 40 }, maxItems: 20 },
     combinable_with_promotions: { type: 'boolean' },
     require_verified_email: { type: 'boolean' } } },
+  invoicing: { type: 'object', properties: {
+    series_prefix: { type: 'string', pattern: '^[A-Z]{1,6}$' },
+    due_days: { type: 'integer', minimum: 0, maximum: 365 },
+    issuer: { type: 'object', properties: {
+      name: str(160), legal_name: str(200), address: str(400), phone: str(60), email: str(200), nuit: str(40), website: str(200) } },
+    tax: { type: 'object', properties: {
+      enabled: { type: 'boolean' }, label: str(20), rate: { type: ['number', 'null'], minimum: 0, maximum: 100 }, mode: { type: 'string', enum: ['inclusive'] } } },
+    payment_instructions: str(1500), payment_instructions_en: str(1500), footer_note: str(300), footer_note_en: str(300) } },
   notifications: { type: 'object', properties: {
     admin_emails: { type: 'array', items: email, maxItems: 10 },
     reminder_days_before: { type: 'integer', minimum: 0, maximum: 30 } } },
@@ -45,13 +53,21 @@ export default async function systemRoutes(app) {
     loyalty: await getSetting(pool, 'loyalty'),
     notifications: await getSetting(pool, 'notifications'),
     company: await getSetting(pool, 'company'),
+    invoicing: await getSetting(pool, 'invoicing'),
     mail_configured: !!cfg.mail.resendApiKey,
     mail_from: cfg.mail.from,
   }));
 
   for (const key of Object.keys(SETTING_SCHEMAS)) {
     app.put(`/settings/${key}`, { schema: { body: SETTING_SCHEMAS[key] } }, async req => {
-      const next = { ...(await getSetting(pool, key)), ...req.body };
+      const prev = await getSetting(pool, key);
+      const next = { ...prev, ...req.body };
+      if (key === 'invoicing') {
+        // Nested groups are merged so a partial form never wipes the issuer details
+        next.issuer = { ...(prev.issuer || {}), ...(req.body.issuer || {}) };
+        next.tax = { ...(prev.tax || {}), ...(req.body.tax || {}) };
+        if (next.tax.enabled && !(Number(next.tax.rate) > 0)) throw badRequest('invalid_setting', 'Set the tax rate before enabling tax');
+      }
       if (key === 'loyalty') {
         if (next.kind === 'percent' && next.value > 100) throw badRequest('invalid_setting', 'Percentage cannot exceed 100');
         const all = [...CATEGORIES.tour, ...CATEGORIES.accommodation];

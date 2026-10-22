@@ -19,6 +19,24 @@ const ERR = {
   file_in_use: 'Esta imagem ainda é usada por um pacote.',
   protected_file: 'As imagens originais do site não podem ser apagadas aqui.',
   rate_limited: 'Demasiados pedidos. Aguarde um momento.',
+  booking_not_found: 'Não existe nenhuma reserva com esta referência.',
+  invoice_exists: 'Esta reserva já tem uma factura.',
+  booking_not_billable: 'Reservas canceladas ou rejeitadas não podem ser facturadas.',
+  price_on_request: 'Há preços “sob consulta” nesta reserva. Ajuste o total da reserva antes de facturar.',
+  payment_not_verified: 'Confirme que o dinheiro foi recebido antes de registar o pagamento.',
+  overpayment: 'O valor é superior ao saldo em dívida.',
+  duplicate_payment: 'Já existe um pagamento com esta referência de transacção.',
+  refund_exceeds_paid: 'Não é possível reembolsar mais do que foi pago.',
+  already_reversed: 'Este pagamento já foi estornado.',
+  reversal_exceeds_paid: 'Parte deste pagamento já foi reembolsada; registe a diferença como reembolso.',
+  invoice_locked: 'Facturas emitidas não podem ser alteradas. Anule e emita uma nova.',
+  invoice_not_issued: 'Esta acção só está disponível para facturas emitidas.',
+  invoice_not_draft: 'Só é possível emitir rascunhos.',
+  cancel_reason_required: 'Indique o motivo da anulação.',
+  billing_incomplete: 'Indique o nome e o e-mail de facturação.',
+  invalid_due_date: 'A data de vencimento não pode ser anterior a hoje.',
+  future_payment_date: 'A data do pagamento não pode ser no futuro.',
+  invalid_setting: 'Valor inválido.',
   internal: 'Erro inesperado no servidor.',
 };
 
@@ -87,7 +105,10 @@ export const LABELS = {
   tour: 'Tour', accommodation: 'Alojamento', admin: 'Administrador', customer: 'Cliente',
   per_person: 'Por pessoa', per_group: 'Por grupo / barco', per_night: 'Por noite',
   open: 'Aberto', limited: 'Limitado', full: 'Esgotado',
+  issued: 'Emitida', partially_paid: 'Parcialmente paga', overdue: 'Vencida',
 };
+export const METHODS = { cash: 'Numerário', bank_transfer: 'Transferência bancária', mpesa: 'M-Pesa', emola: 'e-Mola', card: 'Cartão', other: 'Outro' };
+export const PAY_KINDS = { payment: 'Pagamento', refund: 'Reembolso', reversal: 'Estorno' };
 export const label = s => LABELS[s] || s;
 export const badge = s => `<span class="badge badge--${esc(s)}">${esc(label(s))}</span>`;
 

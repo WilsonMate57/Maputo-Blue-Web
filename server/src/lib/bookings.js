@@ -18,6 +18,7 @@ import { enqueueMail, enqueueAdminMail } from './mailer.js';
 import { isDateString, todayLocal } from './dates.js';
 import { badRequest, conflict, forbidden, notFound } from './errors.js';
 import { randomToken, reference, sha256 } from './security.js';
+import { syncFinancialState } from './payments.js';
 
 export const TRANSITIONS = {
   pending:   ['confirmed', 'rejected', 'cancelled'],
@@ -244,6 +245,8 @@ export async function updateBooking(pool, cfg, { bookingId, actor, patch }) {
       after: { start_date: u.start_date, adults: u.adults, children: u.children, option_key: u.option_key, total: u.total, customer_email: u.customer_email },
       previous_snapshot: tripChanged || patch.total_override !== undefined ? b.price_snapshot : undefined,
     });
+    // A new total can change how much is still owed (an issued invoice keeps its own total)
+    if (Number(u.total) !== Number(b.total)) Object.assign(u, (await syncFinancialState(c, b.id)).booking);
     if (patch.notify !== false && (tripChanged || patch.total_override !== undefined)) {
       await enqueueMail(c, { key: `booking:${b.id}:updated:${Date.now()}`, to: u.customer_email, template: 'booking_status', locale: u.locale,
         data: mailData(u, cfg, { event: 'updated', status_url: statusUrl(cfg, u) }) });
@@ -252,19 +255,8 @@ export async function updateBooking(pool, cfg, { bookingId, actor, patch }) {
   });
 }
 
-export async function recordPayment(pool, { bookingId, actor, amount, method, reference: ref, note }) {
-  return tx(pool, async c => {
-    const { rows: [b] } = await c.query('select * from bookings where id = $1 for update', [bookingId]);
-    if (!b) throw notFound('booking_not_found');
-    await c.query(`insert into payments (booking_id, amount, method, reference, note, recorded_by) values ($1,$2,$3,$4,$5,$6)`,
-      [b.id, amount, method, ref || null, note || null, actor.id]);
-    const paid = Math.round((Number(b.amount_paid) + amount) * 100) / 100;
-    const status = paid <= 0 ? (amount < 0 ? 'refunded' : 'unpaid') : paid >= Number(b.total) ? 'paid' : 'partial';
-    const { rows: [u] } = await c.query('update bookings set amount_paid=$2, payment_status=$3, updated_at=now() where id=$1 returning *', [b.id, paid, status]);
-    await audit(c, actor, 'booking', b.id, 'payment_recorded', { amount, method, reference: ref || null, amount_paid: paid, payment_status: status });
-    return u;
-  });
-}
+// Payments live in payments.js (verification, refunds, reversals, invoice status)
+export { recordPayment } from './payments.js';
 
 /** Safe public projection of a booking (no internal fields). */
 export function publicBooking(b) {

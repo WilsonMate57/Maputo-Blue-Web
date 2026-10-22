@@ -17,30 +17,42 @@
 
   <!-- Sign-in screen -->
   <section class="login" id="login" hidden>
-    <form class="login__card" id="login-form" novalidate>
-      <img src="../logo.webp" alt="Maputo Blue" class="login__logo">
-      <h1>Painel de gestão</h1>
-      <p class="muted">Acesso reservado a administradores.</p>
-      <label class="field"><span>E-mail</span><input type="email" name="email" required autocomplete="username"></label>
-      <label class="field"><span>Palavra-passe</span><input type="password" name="password" required autocomplete="current-password"></label>
-      <p class="alert" role="alert" hidden></p>
-      <button type="submit" class="btn btn--primary btn--block"><i class='bx bx-log-in'></i>Entrar</button>
-      <a class="link" href="../index.html">← Voltar ao site</a>
-    </form>
+    <div class="login__art" aria-hidden="true">
+      <span class="eyebrow" style="color:#7EE8F5;">Maputo Blue</span>
+      <h2>Reservas, pagamentos e facturas num só lugar.</h2>
+      <p>Painel de gestão da equipa — acesso reservado a administradores.</p>
+    </div>
+    <div class="login__panel">
+      <form class="login__card" id="login-form" novalidate>
+        <img src="../logo.webp" alt="Maputo Blue" class="login__logo">
+        <div>
+          <h1>Painel de gestão</h1>
+          <p class="muted" style="margin:4px 0 0;">Inicie sessão com a sua conta de administrador.</p>
+        </div>
+        <label class="field"><span>E-mail</span><input type="email" name="email" required autocomplete="username"></label>
+        <label class="field"><span>Palavra-passe</span><input type="password" name="password" required autocomplete="current-password"></label>
+        <p class="alert" role="alert" hidden></p>
+        <button type="submit" class="btn btn--secondary btn--block" style="min-height:48px;"><i class='bx bx-log-in'></i>Entrar</button>
+        <a class="link" href="../index.html">← Voltar ao site</a>
+      </form>
+    </div>
   </section>
 
   <!-- Application -->
   <div class="app" id="app" hidden>
     <aside class="sidebar" id="sidebar" aria-label="Menu principal">
       <div class="sidebar__brand">
-        <img src="../logo.webp" alt="" width="36" height="36">
-        <span>Maputo <b>Blue</b></span>
+        <img src="../logo.webp" alt="">
+        <span>Maputo <b>Blue</b><small>Painel de gestão</small></span>
       </div>
       <nav class="sidebar__nav">
         <a href="#/dashboard" data-route="dashboard"><i class='bx bx-grid-alt'></i>Visão geral</a>
+        <p class="sidebar__group">Operação</p>
         <a href="#/bookings" data-route="bookings"><i class='bx bx-calendar-check'></i>Reservas<span class="sidebar__badge" id="badge-pending" hidden></span></a>
         <a href="#/calendar" data-route="calendar"><i class='bx bx-calendar'></i>Disponibilidade</a>
         <a href="#/requests" data-route="requests"><i class='bx bx-map-alt'></i>Pedidos personalizados<span class="sidebar__badge" id="badge-requests" hidden></span></a>
+        <p class="sidebar__group">Finanças</p>
+        <a href="#/invoices" data-route="invoices"><i class='bx bx-receipt'></i>Facturas<span class="sidebar__badge sidebar__badge--danger" id="badge-overdue" hidden></span></a>
         <p class="sidebar__group">Catálogo</p>
         <a href="#/packages" data-route="packages"><i class='bx bx-package'></i>Pacotes e alojamentos</a>
         <a href="#/promotions" data-route="promotions"><i class='bx bx-purchase-tag-alt'></i>Promoções</a>
@@ -54,7 +66,12 @@
         <a href="#/audit" data-route="audit"><i class='bx bx-history'></i>Registo de actividade</a>
       </nav>
       <div class="sidebar__foot">
-        <a href="../index.html" target="_blank" rel="noopener"><i class='bx bx-link-external'></i>Ver o site</a>
+        <div class="sidebar__user">
+          <span class="sidebar__avatar" id="user-initials" aria-hidden="true">MB</span>
+          <span style="min-width:0;"><span class="sidebar__user-name" id="user-name"></span><span class="sidebar__user-role">Administrador</span></span>
+          <button type="button" class="icon-btn" id="logout" aria-label="Terminar sessão" title="Terminar sessão"><i class='bx bx-log-out'></i></button>
+        </div>
+        <a class="sidebar__site" href="../index.html" target="_blank" rel="noopener"><i class='bx bx-link-external'></i>Ver o site</a>
       </div>
     </aside>
     <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
@@ -63,9 +80,12 @@
       <header class="topbar">
         <button type="button" class="icon-btn topbar__menu" id="menu-toggle" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false"><i class='bx bx-menu'></i></button>
         <h1 class="topbar__title" id="page-title">Visão geral</h1>
+        <form class="gsearch" id="gsearch" role="search">
+          <i class='bx bx-search' aria-hidden="true"></i>
+          <input type="search" name="q" placeholder="Ir para MB-… ou FT …" aria-label="Abrir reserva ou factura pela referência" autocomplete="off">
+        </form>
         <div class="topbar__user">
-          <span class="topbar__name" id="user-name"></span>
-          <button type="button" class="btn btn--ghost btn--sm" id="logout"><i class='bx bx-log-out'></i><span>Sair</span></button>
+          <a class="btn btn--primary" href="#/invoices/new"><i class='bx bx-receipt'></i><span>Emitir factura</span></a>
         </div>
       </header>
       <main class="main" id="main" tabindex="-1" aria-live="polite"></main>

@@ -27,7 +27,7 @@
     verifyBanner: 'Please confirm your e-mail address to unlock your full booking history and loyalty benefits.',
     resend: 'Resend e-mail', resent: 'Confirmation e-mail sent.',
     hello: n => `Hello, ${n}`, logout: 'Sign out',
-    tabs: { bookings: 'My bookings', requests: 'Custom requests', loyalty: 'Loyalty', profile: 'Profile' },
+    tabs: { bookings: 'My bookings', invoices: 'Invoices', requests: 'Custom requests', loyalty: 'Loyalty', profile: 'Profile' },
     noBookings: 'You have no bookings yet.', explore: 'Explore experiences', noRequests: 'You have not requested a custom tour yet.',
     newRequest: 'Request a custom tour', guests: 'guests', ref: 'Reference', total: 'Total', paid: 'Paid',
     details: 'Details', hide: 'Hide', ticket: 'Ticket', cancel: 'Cancel request', requestCancel: 'Request cancellation',
@@ -40,6 +40,11 @@
     loyaltyVerify: 'Confirm your e-mail to start collecting loyalty benefits.',
     save: 'Save changes', saved: 'Saved.', changePw: 'Change password', currentPw: 'Current password', language: 'E-mail language',
     quote: 'Quotation', validUntil: 'valid until',
+    invoices: 'Invoices', noInvoices: 'No invoices yet. Invoices appear here once our team issues them for your bookings.',
+    invoice: 'Invoice', download: 'Download PDF', balance: 'Balance due', issued: 'Issued', due: 'Due',
+    stepRequested: 'Requested', stepConfirmed: 'Confirmed', stepTrip: 'Trip', stepDone: 'Completed',
+    payProgress: (p, t) => `${p} of ${t} paid`, upcoming: 'Upcoming', past: 'Past and cancelled', memberSince: 'Signed in as',
+    paidNote: 'Paid in full — thank you!',
   } : {
     login: 'Entrar', register: 'Criar conta', forgot: 'Esqueceu a palavra-passe?', email: 'E-mail', password: 'Palavra-passe',
     name: 'Nome completo', phone: 'Telefone (opcional)', country: 'País (opcional)', pwHint: 'Pelo menos 10 caracteres',
@@ -50,7 +55,7 @@
     verifyBanner: 'Confirme o seu endereço de e-mail para ver todo o histórico de reservas e aceder aos benefícios de fidelização.',
     resend: 'Reenviar e-mail', resent: 'E-mail de confirmação enviado.',
     hello: n => `Olá, ${n}`, logout: 'Terminar sessão',
-    tabs: { bookings: 'As minhas reservas', requests: 'Pedidos personalizados', loyalty: 'Fidelização', profile: 'Perfil' },
+    tabs: { bookings: 'As minhas reservas', invoices: 'Facturas', requests: 'Pedidos personalizados', loyalty: 'Fidelização', profile: 'Perfil' },
     noBookings: 'Ainda não tem reservas.', explore: 'Explorar experiências', noRequests: 'Ainda não pediu nenhum tour personalizado.',
     newRequest: 'Pedir tour personalizado', guests: 'pessoas', ref: 'Referência', total: 'Total', paid: 'Pago',
     details: 'Detalhes', hide: 'Ocultar', ticket: 'Ticket', cancel: 'Cancelar pedido', requestCancel: 'Pedir cancelamento',
@@ -63,6 +68,11 @@
     loyaltyVerify: 'Confirme o seu e-mail para começar a acumular benefícios de fidelização.',
     save: 'Guardar alterações', saved: 'Guardado.', changePw: 'Alterar palavra-passe', currentPw: 'Palavra-passe actual', language: 'Idioma dos e-mails',
     quote: 'Cotação', validUntil: 'válida até',
+    invoices: 'Facturas', noInvoices: 'Ainda não há facturas. As facturas aparecem aqui quando a nossa equipa as emite para as suas reservas.',
+    invoice: 'Factura', download: 'Descarregar PDF', balance: 'Saldo em dívida', issued: 'Emitida', due: 'Vence',
+    stepRequested: 'Pedido', stepConfirmed: 'Confirmada', stepTrip: 'Viagem', stepDone: 'Concluída',
+    payProgress: (p, t) => `${p} de ${t} pagos`, upcoming: 'Próximas', past: 'Anteriores e canceladas', memberSince: 'Sessão iniciada como',
+    paidNote: 'Paga na totalidade — obrigado!',
   };
 
   const params = new URLSearchParams(location.search);
@@ -184,36 +194,69 @@
   }
 
   /* ── Signed-in dashboard ──────────────────────────────────── */
+  const TAB_ICONS = { bookings: 'bx-calendar-check', invoices: 'bx-receipt', requests: 'bx-map-alt', loyalty: 'bx-award', profile: 'bx-user' };
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Maputo' }).format(new Date());
+
+  /** Requested → Confirmed → Trip → Completed, with the current step highlighted. */
+  function journey(b) {
+    if (b.status === 'cancelled' || b.status === 'rejected') return '';
+    const reached = { pending: 1, confirmed: 2, completed: 4 }[b.status] || 1;
+    const trip = b.status === 'confirmed' && b.start_date <= today ? 3 : reached;
+    const steps = [T.stepRequested, T.stepConfirmed, T.stepTrip, T.stepDone];
+    return `<ol class="bk-journey" aria-label="${esc(API.statusLabel(b.status))}">${steps.map((s, k) =>
+      `<li class="${k < trip ? 'is-done' : ''}${k === trip - 1 ? ' is-current' : ''}">${esc(s)}</li>`).join('')}</ol>`;
+  }
+
+  function invoiceRow(inv) {
+    if (!inv) return '';
+    return `<div class="bk-invoice">
+      <i class='bx bx-receipt' aria-hidden="true"></i>
+      <span><strong>${T.invoice} ${esc(inv.number)}</strong>
+        <small>${T.issued} ${esc(API.date(inv.issue_date))}${inv.balance > 0 && inv.due_date ? ` · ${T.due} ${esc(API.date(inv.due_date))}` : ''}</small></span>
+      <span class="mb-status mb-status--${inv.status}">${API.statusLabel(inv.status)}</span>
+      <a class="mb-btn-sm" href="/api/account/invoices/${encodeURIComponent(inv.id)}/pdf" download><i class='bx bx-download'></i>PDF</a>
+    </div>`;
+  }
+
   function bookingItem(b) {
     const title = EN ? b.package_title_en || b.package_title : b.package_title;
     const canCancel = b.status === 'pending';
     const canRequest = b.status === 'confirmed' && !b.cancel_requested;
+    const owed = b.invoice ? b.invoice.total : b.total;
+    const paidPct = owed > 0 ? Math.min(100, Math.round((b.amount_paid / owed) * 100)) : 0;
     const lines = b.lines.map(l => `<li><span>${esc(EN ? l.label_en : l.label)}${l.quantity > 1 ? ` × ${l.quantity}` : ''}</span><span>${l.unit_price === null ? '—' : money(l.amount, b.currency)}</span></li>`).join('') +
       b.discounts.map(d => `<li class="is-discount"><span>${esc(d.label)}</span><span>− ${money(d.amount, b.currency)}</span></li>`).join('');
+    const d = new Date(b.start_date + 'T12:00:00');
     return `
-      <article class="mb-booking-item" data-id="${b.id}">
-        <div>
-          <h3>${esc(title)}</h3>
+      <article class="mb-booking-item bk-card" data-id="${b.id}">
+        <div class="bk-card__date" aria-hidden="true"><b>${d.getDate()}</b><span>${esc(d.toLocaleDateString(EN ? 'en-GB' : 'pt-PT', { month: 'short' }).replace('.', ''))}</span><small>${d.getFullYear()}</small></div>
+        <div class="bk-card__main">
+          <div class="bk-card__top">
+            <h3>${esc(title)}</h3>
+            <span class="mb-status mb-status--${b.status}">${API.statusLabel(b.status)}</span>
+          </div>
           <div class="mb-booking-item__meta">
             <span><i class='bx bx-hash'></i>${esc(b.reference)}</span>
             <span><i class='bx bx-calendar'></i>${esc(API.date(b.start_date))}${b.end_date !== b.start_date ? ` → ${esc(API.date(b.end_date))}` : ''}</span>
             <span><i class='bx bx-group'></i>${b.adults + b.children} ${T.guests}</span>
           </div>
-          ${b.status === 'pending' ? `<p class="mb-booking-item__meta" style="margin-top:6px;">${T.holdNote}</p>` : ''}
-          ${b.cancel_requested && b.status === 'confirmed' ? `<p class="mb-booking-item__meta" style="margin-top:6px;">${T.cancelRequested}</p>` : ''}
+          ${journey(b)}
+          ${b.status === 'pending' ? `<p class="bk-card__note"><i class='bx bx-time-five'></i>${T.holdNote}</p>` : ''}
+          ${b.cancel_requested && b.status === 'confirmed' ? `<p class="bk-card__note"><i class='bx bx-info-circle'></i>${T.cancelRequested}</p>` : ''}
+          <div class="bk-pay">
+            <div class="bk-pay__row"><span>${T.total} <strong>${money(owed, b.currency)}</strong></span>
+              <span>${b.amount_paid >= owed && owed > 0 ? `<strong class="bk-pay__ok"><i class='bx bx-check-circle'></i>${T.paidNote}</strong>` : T.payProgress(money(b.amount_paid, b.currency), money(owed, b.currency))}</span></div>
+            <div class="bk-pay__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${paidPct}"><span style="width:${paidPct}%"></span></div>
+          </div>
+          ${invoiceRow(b.invoice)}
+          <div class="mb-booking-item__actions">
+            <button type="button" class="mb-btn-sm" data-toggle aria-expanded="false"><i class='bx bx-list-ul'></i>${T.details}</button>
+            <a class="mb-btn-sm" href="${PAGE}/ticket.html?id=${encodeURIComponent(b.id)}"><i class='bx bx-qr'></i>${T.ticket}</a>
+            ${canCancel ? `<button type="button" class="mb-btn-sm mb-btn-sm--danger" data-cancel><i class='bx bx-x-circle'></i>${T.cancel}</button>` : ''}
+            ${canRequest ? `<button type="button" class="mb-btn-sm mb-btn-sm--danger" data-cancel><i class='bx bx-x-circle'></i>${T.requestCancel}</button>` : ''}
+          </div>
+          <ul class="booking-breakdown" hidden>${lines}<li><strong>${T.total}</strong><strong>${money(b.total, b.currency)}</strong></li></ul>
         </div>
-        <div class="mb-booking-item__side">
-          <span class="mb-status mb-status--${b.status}">${API.statusLabel(b.status)}</span>
-          <span class="mb-booking-item__total">${money(b.total, b.currency)}</span>
-          ${b.amount_paid > 0 ? `<span class="mb-status mb-status--${b.payment_status}">${API.statusLabel(b.payment_status)}</span>` : ''}
-        </div>
-        <div class="mb-booking-item__actions">
-          <button type="button" class="mb-btn-sm" data-toggle aria-expanded="false"><i class='bx bx-list-ul'></i>${T.details}</button>
-          <a class="mb-btn-sm" href="${PAGE}/ticket.html?id=${encodeURIComponent(b.id)}"><i class='bx bx-receipt'></i>${T.ticket}</a>
-          ${canCancel ? `<button type="button" class="mb-btn-sm mb-btn-sm--danger" data-cancel><i class='bx bx-x-circle'></i>${T.cancel}</button>` : ''}
-          ${canRequest ? `<button type="button" class="mb-btn-sm mb-btn-sm--danger" data-cancel><i class='bx bx-x-circle'></i>${T.requestCancel}</button>` : ''}
-        </div>
-        <ul class="booking-breakdown" hidden style="grid-column:1/-1;">${lines}<li><strong>${T.total}</strong><strong>${money(b.total, b.currency)}</strong></li></ul>
       </article>`;
   }
 
@@ -225,7 +268,11 @@
         pane.innerHTML = `<div class="mb-empty"><i class='bx bx-calendar-x'></i><p>${T.noBookings}</p><a class="btn-primary-mb" href="${PAGE}/tours.html">${T.explore}</a></div>`;
         return;
       }
-      pane.innerHTML = `<div class="mb-booking-list">${list.map(bookingItem).join('')}</div>`;
+      const upcoming = list.filter(b => ['pending', 'confirmed'].includes(b.status) && b.end_date >= today).sort((a, b) => a.start_date.localeCompare(b.start_date));
+      const past = list.filter(b => !upcoming.includes(b));
+      pane.innerHTML = [[T.upcoming, upcoming], [T.past, past]].filter(([, l]) => l.length).map(([h, l]) => `
+        <h3 class="acct__group">${h} <span>${l.length}</span></h3>
+        <div class="mb-booking-list">${l.map(bookingItem).join('')}</div>`).join('');
       pane.querySelectorAll('.mb-booking-item').forEach(el => {
         const b = list.find(x => x.id === el.dataset.id);
         el.querySelector('[data-toggle]').addEventListener('click', e => {
@@ -246,6 +293,24 @@
       pane.innerHTML = alertBox(esc(API.errorText(err)));
       if (err.status === 401) authView('login');
     }
+  }
+
+  async function loadInvoices(pane) {
+    pane.innerHTML = '<div class="mb-skeleton-line"></div>';
+    try {
+      const list = await API.get('/account/invoices');
+      if (!list.length) { pane.innerHTML = `<div class="mb-empty"><i class='bx bx-receipt'></i><p>${T.noInvoices}</p></div>`; return; }
+      pane.innerHTML = `<div class="inv-list">${list.map(inv => `
+        <article class="inv-row">
+          <div><strong class="inv-row__no">${esc(inv.number)}</strong>
+            <small>${T.ref} ${esc(inv.booking_reference)} · ${T.issued} ${esc(API.date(inv.issue_date))}</small></div>
+          <div class="inv-row__money"><span>${T.total} <b>${money(inv.total, inv.currency)}</b></span>
+            <span>${T.paid} <b>${money(inv.amount_paid, inv.currency)}</b></span>
+            <span>${T.balance} <b class="${inv.balance > 0 ? 'is-due' : ''}">${money(inv.balance, inv.currency)}</b></span></div>
+          <span class="mb-status mb-status--${inv.status}">${API.statusLabel(inv.status)}</span>
+          ${inv.doc_status === 'issued' || inv.doc_status === 'cancelled' ? `<a class="mb-btn-sm" href="/api/account/invoices/${encodeURIComponent(inv.id)}/pdf" download><i class='bx bx-download'></i>${T.download}</a>` : ''}
+        </article>`).join('')}</div>`;
+    } catch (err) { pane.innerHTML = alertBox(esc(API.errorText(err))); }
   }
 
   async function loadRequests(pane) {
@@ -325,19 +390,26 @@
 
   function dashboard(notice = '') {
     const tab = (location.hash || '#bookings').slice(1);
-    const tabs = ['bookings', 'requests', 'loyalty', 'profile'];
+    const tabs = ['bookings', 'invoices', 'requests', 'loyalty', 'profile'];
     const active = tabs.includes(tab) ? tab : 'bookings';
+    const initials = user.name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
     root.innerHTML = `
       ${notice}
       ${user.email_verified ? '' : `<div class="mb-alert mb-alert--info" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 18px;">
         <span style="flex:1;min-width:220px;">${T.verifyBanner}</span><button type="button" class="mb-btn-sm" data-resend>${T.resend}</button></div>`}
-      <div class="mb-panel">
-        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;">
-          <h2 style="margin:0;">${esc(T.hello(user.name.split(' ')[0]))}</h2>
-          <button type="button" class="mb-btn-sm" data-logout><i class='bx bx-log-out'></i>${T.logout}</button>
-        </div>
-        <div class="mb-tabs" role="tablist">${tabs.map(t => `<button class="mb-tab" role="tab" data-tab="${t}" aria-selected="${t === active}">${T.tabs[t]}</button>`).join('')}</div>
-        <div id="account-pane" role="tabpanel"></div>
+      <div class="acct">
+        <aside class="acct__side">
+          <div class="acct__profile">
+            <span class="acct__avatar" aria-hidden="true">${esc(initials)}</span>
+            <div><strong>${esc(T.hello(user.name.split(' ')[0]))}</strong><small>${T.memberSince} ${esc(user.email)}</small></div>
+          </div>
+          <nav class="acct__nav" role="tablist" aria-orientation="vertical">${tabs.map(t => `<button class="mb-tab acct__tab" role="tab" data-tab="${t}" aria-selected="${t === active}"><i class='bx ${TAB_ICONS[t]}' aria-hidden="true"></i>${T.tabs[t]}</button>`).join('')}</nav>
+          <button type="button" class="mb-btn-sm acct__logout" data-logout><i class='bx bx-log-out'></i>${T.logout}</button>
+        </aside>
+        <section class="acct__main mb-panel">
+          <h2 class="acct__title">${T.tabs[active]}</h2>
+          <div id="account-pane" role="tabpanel"></div>
+        </section>
       </div>`;
     const pane = root.querySelector('#account-pane');
     root.querySelectorAll('.mb-tab').forEach(b => b.addEventListener('click', () => { location.hash = b.dataset.tab; dashboard(); }));
@@ -352,7 +424,7 @@
       try { await API.post('/auth/resend-verification'); resend.textContent = T.resent; }
       catch (err) { resend.disabled = false; alert(API.errorText(err)); }
     });
-    ({ bookings: loadBookings, requests: loadRequests, loyalty: loadLoyalty, profile: profilePane })[active](pane);
+    ({ bookings: loadBookings, invoices: loadInvoices, requests: loadRequests, loyalty: loadLoyalty, profile: profilePane })[active](pane);
   }
 
   async function start() {

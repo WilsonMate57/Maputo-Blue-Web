@@ -4,15 +4,24 @@ import { $, addDays, badge, date, dateTime, esc, get, linkRows, money, qs, today
 
 const ACTIONS = {
   created: 'Pedido criado', status_changed: 'Estado alterado', updated: 'Reserva editada', payment_recorded: 'Pagamento registado',
-  cancel_requested: 'Cancelamento pedido', email_resent: 'E-mail reenviado',
+  cancel_requested: 'Cancelamento pedido', email_resent: 'E-mail reenviado', ticket_downloaded: 'Ticket descarregado', ticket_emailed: 'Ticket enviado',
+  ticket_revoked: 'QR invalidado', checked_in: 'Check-in', refund_recorded: 'Reembolso registado', payment_reversed: 'Pagamento estornado',
+  invoice_issued: 'Factura emitida', invoice_cancelled: 'Factura anulada',
 };
 
-export default async function dashboard(main) {
+export default async function dashboard(main, _params, { user }) {
   const state = { from: addDays(today(), -30), to: today(), package_id: '' };
   const packages = await get('/admin/packages');
 
+  const hour = Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Africa/Maputo', hour: 'numeric', hour12: false }).format(new Date()));
+  const greet = hour < 12 ? 'Bom dia' : hour < 19 ? 'Boa tarde' : 'Boa noite';
+  const longDate = new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Africa/Maputo' });
   main.innerHTML = `
-    <div class="card" style="margin-bottom:18px;">
+    <section class="hello" aria-label="Resumo do dia">
+      <div><h2>${greet}, ${esc((user && user.name || '').split(' ')[0])}</h2><p>${esc(longDate)} · o que precisa de atenção hoje</p></div>
+      <div class="hello__chips" id="hello-chips"></div>
+    </section>
+    <div class="card" style="margin-bottom:20px;">
       <form class="filters" id="dash-filters">
         <label class="field"><span>De</span><input type="date" name="from" value="${state.from}"></label>
         <label class="field"><span>Até</span><input type="date" name="to" value="${state.to}"></label>
@@ -43,20 +52,27 @@ export default async function dashboard(main) {
           <td class="right mono">${money(m.received, m.currency)}</td>
           <td class="right mono">${money(m.outstanding, m.currency)}</td></tr>`).join('')
       : '<tr><td colspan="5" class="muted">Sem reservas no período.</td></tr>';
+    $('#hello-chips', main).innerHTML = [
+      [a.pending, 'pendentes', '#/bookings?status=pending', true],
+      [a.overdue_invoices, 'facturas vencidas', '#/invoices?status=overdue', true],
+      [a.open_invoices, 'facturas em aberto', '#/invoices?status=unpaid', false],
+      [a.new_requests, 'pedidos novos', '#/requests', false],
+    ].map(([n, t, href, hot]) => `<a class="hello__chip${hot && n ? ' hello__chip--hot' : ''}" href="${href}"><b>${n || 0}</b>${t}</a>`).join('');
     const attention = [
       [a.pending, 'Pedidos pendentes por responder', '#/bookings?status=pending', 'bx-time-five'],
       [a.pending_hold_expired, 'Pendentes com bloqueio de 48h expirado', '#/bookings?status=pending', 'bx-error'],
       [a.cancel_requests, 'Pedidos de cancelamento', '#/bookings?cancel_requested=1', 'bx-x-circle'],
       [a.new_requests, 'Novos pedidos personalizados', '#/requests', 'bx-map-alt'],
+      [a.overdue_invoices, 'Facturas vencidas por cobrar', '#/invoices?status=overdue', 'bx-receipt'],
       [a.failed_mail, 'E-mails que falharam', '#/mail', 'bx-envelope'],
     ].filter(x => x[0] > 0);
 
     body.innerHTML = `
       <div class="kpis">
-        <div class="card kpi"><div class="kpi__label"><i class='bx bx-calendar'></i>Reservas no período</div><div class="kpi__value">${c.total}</div><div class="kpi__sub">pedidos criados</div></div>
-        <div class="card kpi kpi--accent"><div class="kpi__label">Pendentes</div><div class="kpi__value">${c.pending}</div><div class="kpi__sub">à espera de resposta</div></div>
-        <div class="card kpi kpi--green"><div class="kpi__label">Confirmadas</div><div class="kpi__value">${c.confirmed}</div><div class="kpi__sub">+ ${c.completed} concluídas</div></div>
-        <div class="card kpi kpi--red"><div class="kpi__label">Canceladas / rejeitadas</div><div class="kpi__value">${c.cancelled + c.rejected}</div><div class="kpi__sub">${c.cancelled} canceladas · ${c.rejected} rejeitadas</div></div>
+        <div class="card kpi kpi--navy"><div class="kpi__label">Reservas no período</div><span class="kpi__icon"><i class='bx bx-calendar'></i></span><div class="kpi__value">${c.total}</div><div class="kpi__sub">pedidos criados</div></div>
+        <div class="card kpi kpi--accent"><div class="kpi__label">Pendentes</div><span class="kpi__icon"><i class='bx bx-time-five'></i></span><div class="kpi__value">${c.pending}</div><div class="kpi__sub">à espera de resposta</div></div>
+        <div class="card kpi kpi--green"><div class="kpi__label">Confirmadas</div><span class="kpi__icon"><i class='bx bx-check-circle'></i></span><div class="kpi__value">${c.confirmed}</div><div class="kpi__sub">+ ${c.completed} concluídas</div></div>
+        <div class="card kpi kpi--red"><div class="kpi__label">Canceladas / rejeitadas</div><span class="kpi__icon"><i class='bx bx-x-circle'></i></span><div class="kpi__value">${c.cancelled + c.rejected}</div><div class="kpi__sub">${c.cancelled} canceladas · ${c.rejected} rejeitadas</div></div>
       </div>
 
       <div class="cols">
@@ -68,7 +84,7 @@ export default async function dashboard(main) {
                 <th class="right" title="Pedidos pendentes: ainda não é receita">Estimado (pendentes)</th>
                 <th class="right" title="Pagamentos registados manualmente">Recebido</th><th class="right">Por receber</th></tr></thead>
                 <tbody>${moneyRows}</tbody></table>
-              <p class="muted small" style="margin:10px 0 0;">“Recebido” só inclui pagamentos registados no painel. Os pedidos pendentes são uma estimativa e não representam receita.</p>
+              <p class="muted small" style="margin:10px 0 0;">“Recebido” só inclui pagamentos verificados e registados no painel. Os pedidos pendentes são uma estimativa e não representam receita. <a class="link" href="#/invoices">Ver facturação</a></p>
             </div>
           </div>
 
@@ -77,7 +93,7 @@ export default async function dashboard(main) {
             <div class="card__body table-wrap">${d.upcoming.length ? `
               <table class="table"><thead><tr><th>Data</th><th>Referência</th><th>Cliente</th><th>Experiência</th><th>Pessoas</th><th>Estado</th></tr></thead><tbody>
               ${d.upcoming.map(b => `<tr data-href="#/bookings/${b.id}"><td class="nowrap">${date(b.start_date)}${b.kind === 'accommodation' ? `<span class="t-sub">até ${date(b.end_date)}</span>` : ''}</td>
-                <td class="t-strong mono">${esc(b.reference)}</td><td>${esc(b.customer_name)}</td><td>${esc(b.package_title)}</td>
+                <td class="t-strong mono nowrap">${esc(b.reference)}</td><td>${esc(b.customer_name)}</td><td>${esc(b.package_title)}</td>
                 <td>${b.adults + b.children}</td><td>${badge(b.status)}</td></tr>`).join('')}</tbody></table>` : '<p class="muted">Nada agendado para os próximos 14 dias.</p>'}
             </div>
           </div>

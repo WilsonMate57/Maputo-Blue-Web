@@ -4,6 +4,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { publicUser, requireUser } from '../lib/auth.js';
 import { ticketResponders } from './tickets.js';
+import { currentInvoicePdf, invoiceFilename, publicInvoice } from '../lib/invoices.js';
 import { publicBooking, requestCancellation, transitionBooking } from '../lib/bookings.js';
 import { loyaltyStatus } from '../lib/loyalty.js';
 import { audit } from '../lib/audit.js';
@@ -22,10 +23,29 @@ export default async function accountRoutes(app) {
     return rows[0];
   }
 
+  // Issued/cancelled invoices of the customer's own bookings (drafts are internal)
+  const ownInvoices = (userId, extra = '', params = []) => pool.query(
+    `select i.* from invoices i join bookings b on b.id = i.booking_id
+      where b.user_id = $1 and i.doc_status <> 'draft' ${extra} order by i.issue_date desc, i.created_at desc`, [userId, ...params]);
+
   app.get('/bookings', async req => {
-    const { rows } = await pool.query(
-      'select * from bookings where user_id = $1 order by start_date desc, created_at desc limit 200', [req.user.id]);
-    return rows.map(publicBooking);
+    const [{ rows }, { rows: invoices }] = await Promise.all([
+      pool.query('select * from bookings where user_id = $1 order by start_date desc, created_at desc limit 200', [req.user.id]),
+      ownInvoices(req.user.id, "and i.doc_status = 'issued'"),
+    ]);
+    const byBooking = new Map(invoices.map(i => [i.booking_id, publicInvoice(i)]));
+    return rows.map(b => ({ ...publicBooking(b), invoice: byBooking.get(b.id) || null }));
+  });
+
+  app.get('/invoices', async req => (await ownInvoices(req.user.id)).rows.map(publicInvoice));
+
+  app.get('/invoices/:id/pdf', { schema: { params: { type: 'object', properties: { id: uuid } } } }, async (req, reply) => {
+    const { rows: [inv] } = await ownInvoices(req.user.id, 'and i.id = $2', [req.params.id]);
+    if (!inv) throw notFound('invoice_not_found');
+    const pdf = await currentInvoicePdf(pool, cfg, inv);
+    reply.header('Content-Type', 'application/pdf');
+    reply.header('Content-Disposition', `attachment; filename="${invoiceFilename(inv)}"`);
+    return reply.send(pdf);
   });
 
   app.get('/bookings/:id', { schema: { params: { type: 'object', properties: { id: uuid } } } },
