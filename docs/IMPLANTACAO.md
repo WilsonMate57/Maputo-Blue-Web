@@ -52,6 +52,7 @@ Preencha o `.env`:
 | `MAIL_FROM` | ex.: `Maputo Blue <reservas@maputoblue.com>`, num domínio verificado no Resend |
 | `MAIL_REPLY_TO` | caixa que recebe as respostas dos clientes |
 | `IP_HASH_SALT` | texto aleatório longo: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
+| `TICKET_SECRET` | **obrigatório em produção** (sem ele o servidor não arranca). Texto aleatório longo, gerado da mesma forma. Assina os QR codes dos tickets. **Nunca o altere depois de emitir tickets**, porque todos os QR já emitidos deixariam de ser válidos |
 | `SERVE_STATIC` | `true`: o Node serve também o site. Use `false` se o IIS servir os ficheiros estáticos |
 | `RUN_JOBS` | `true` numa única instância. Pode haver mais, porque a fila de e-mails usa `SKIP LOCKED` |
 
@@ -214,6 +215,14 @@ As migrações aplicam-se no arranque.
 
 **SEO:**
 - [ ] Sitemap submetido no Google Search Console: `https://www.maputoblue.com/sitemap.xml`
+
+**Tickets:**
+- [ ] `TICKET_SECRET` definido e guardado num local seguro, porque é preciso para os QR continuarem válidos após uma reinstalação
+- [ ] Dados da empresa revistos em Definições → «Dados da empresa». A denominação legal, o NUIT e o alvará só aparecem no ticket depois de configurados
+- [ ] Um ticket de teste descarregado, impresso e com o QR lido num telemóvel. A página de verificação deve abrir com o domínio real
+
+**Cache de imagens:**
+- [ ] A pasta `server\.cache\img` pode ser apagada a qualquer momento, porque é regenerada automaticamente. Não precisa de backup
 
 **Testes:**
 - [ ] `npm test` e `npm run test:e2e` executados num ambiente de testes antes de cada actualização

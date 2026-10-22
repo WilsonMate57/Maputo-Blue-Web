@@ -164,7 +164,33 @@ Navegador ──HTTPS──► Proxy (IIS ou Caddy, certificado TLS)
 
 ## 8. Testes
 
-- `npm test`: 47 testes de integração contra PostgreSQL real. Cobrem preços, reservas, concorrência, bloqueios que expiram, validação, falha de e-mail, segurança (os 7 cenários pedidos), administração, contas, fidelização, cotações, SEO e e-mails.
-- `npm run test:e2e`: testes no Chrome real.
+- `npm test`: 58 testes de integração contra PostgreSQL real. Cobrem preços, reservas, concorrência, bloqueios que expiram, validação, falha de e-mail, segurança (os 7 cenários pedidos), administração, contas, fidelização, cotações, SEO e e-mails.
+- `npm run test:e2e`: 17 testes no Chrome real (incluindo ticket, PDF e verificação por QR).
   - **Público:** calendário, preço, pedido, estado, tour personalizado, conta, e ausência de scroll horizontal em telemóvel.
   - **Painel:** login, todas as secções, confirmar, nota e pagamento, editar preço com pré-visualização e restauro, calendário, promoção, upload, e layout em telemóvel.
+
+## 9. Tickets de reserva e verificação por QR code
+
+| Peça | Implementação |
+|---|---|
+| Dados | Gerados sempre a partir da reserva gravada (`price_snapshot`). Uma alteração de preço posterior não muda o ticket. |
+| Título do documento | Depende do estado real. *Pendente*: «Comprovativo de pedido de reserva», com aviso de que **não** é confirmação. *Confirmada*: «Confirmação de reserva». *Cancelada* ou *rejeitada*: aviso de que não é válida. O pagamento aparece separado («Por pagar», «Pago parcialmente», «Pago»). O rodapé diz sempre que o documento **não é recibo nem documento fiscal**. |
+| PDF | `server/src/lib/tickets.js` gera um A4 com pdfkit. O texto é seleccionável, o logótipo vem do disco (não de um URL remoto) e o QR é desenhado em vector, sem imagem. |
+| HTML | `pages/ticket.html` e `en/ticket.html`, com `assets/js/ticket-view.js`. Inclui CSS de impressão que esconde menus e botões. |
+| QR | Contém só `…/pages/verify.html?r=<referência>&k=<assinatura>`. A assinatura é um HMAC-SHA256 de `referência\|ticket_version` com o `TICKET_SECRET`, truncado a 128 bits. O QR não contém dados pessoais. |
+| Verificação pública | `GET /api/tickets/verify`. É só de leitura e devolve referência, experiência, data, nº de pessoas, estado e pagamento. Não mostra o nome nem os contactos do cliente. Cada leitura fica registada em `ticket_scans`. |
+| Vista da equipa | Se quem lê o QR tiver sessão de administrador, vê também o nome e o telefone do cliente e um botão de check-in. O check-in passa pela API de administração (`POST /api/admin/bookings/:id/check-in`), só funciona em reservas confirmadas e só uma vez. |
+| Revogação | No painel, «Invalidar QR» incrementa `ticket_version`. Os QR antigos passam a dar «Ticket substituído». |
+| Acesso ao ticket | **Convidado:** referência + token do e-mail, ou referência + e-mail, sempre por POST e nunca no URL. **Cliente com conta:** pela sessão, e só às suas próprias reservas. **Administrador:** download, reenvio por e-mail, invalidação e check-in. |
+| E-mails | O PDF vai em anexo no «pedido recebido» e na «confirmação», gerado no momento do envio. O ticket pode ser reenviado a pedido, no máximo uma vez a cada 10 minutos, sem duplicar mensagens. |
+| Dados da empresa | Em Definições → «Dados da empresa» (`settings.company`). Os campos vazios não são impressos. A denominação legal, o NUIT e o alvará ficam por configurar e nunca são inventados. |
+
+Migração `002_tickets.sql` (só acrescenta, sem apagar nada): `bookings.ticket_version`, `checked_in_at`, `checked_in_by`, a tabela `ticket_scans` e a definição `company`.
+
+## 10. Desempenho
+
+- **Variantes de imagem:** `/img/<400|800|1200|1600>/<caminho>` gera WebP redimensionados com o sharp e guarda-os em `server/.cache/img`. Os originais ficam intactos. O frontend usa `srcset` e, se a rota não existir, carrega o original.
+- **Compressão:** gzip/brotli para HTML, CSS, JS e JSON (`@fastify/compress`).
+- **Carregamento:** scripts com `defer` e CSS dos ícones sem bloquear a renderização. O preloader deixou de forçar 3 s.
+- **Estabilidade visual:** altura da navbar reservada e imagens com `width`/`height`, para não haver deslocamentos.
+- **SEO:** as páginas de pacote recebem do servidor o título, a descrição, o canonical, o hreflang, o Open Graph e o JSON-LD `TouristTrip`. A classificação só aparece no JSON-LD quando há avaliações reais.
