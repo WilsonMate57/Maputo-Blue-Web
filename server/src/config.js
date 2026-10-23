@@ -16,7 +16,8 @@ export function loadConfig(overrides = {}) {
   const env = process.env;
   const cfg = {
     env:            env.NODE_ENV || 'development',
-    port:           Number(env.PORT || 3000),
+    // A number, or a named pipe when the host hands one over (Plesk on Windows / iisnode)
+    port:           /^\d+$/.test(env.PORT || '3000') ? Number(env.PORT || 3000) : env.PORT,
     host:           env.HOST || '127.0.0.1',
     databaseUrl:    env.DATABASE_URL || 'postgres://postgres:postgres@127.0.0.1:5433/maputoblue',
     siteRoot:       path.resolve(env.SITE_ROOT || path.join(__dirname, '..', '..')),

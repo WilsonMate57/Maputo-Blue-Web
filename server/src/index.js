@@ -16,8 +16,8 @@ await migrate(pool);
 
 const transport = resendTransport(cfg.mail);
 const app = await buildApp({ cfg, pool, mailTransport: transport, logger: { level: cfg.env === 'production' ? 'info' : 'warn' } });
-await app.listen({ port: cfg.port, host: cfg.host });
-console.log(`\n  ✦ Maputo Blue server  ➜  http://${cfg.host}:${cfg.port}  (${cfg.env})`);
+await app.listen(typeof cfg.port === 'number' ? { port: cfg.port, host: cfg.host } : { path: cfg.port });
+console.log(`\n  ✦ Maputo Blue server  ➜  ${typeof cfg.port === 'number' ? `http://${cfg.host}:${cfg.port}` : cfg.port}  (${cfg.env})`);
 if (!cfg.mail.resendApiKey) console.log('  ! RESEND_API_KEY not set — e-mails stay in the outbox as "failed" until configured.');
 
 const timers = [];

@@ -1,6 +1,7 @@
 # Maputo Blue — Instalação no Windows Server, operação e reversão
 
 Este guia é para quem vai instalar e manter a plataforma no servidor próprio (Windows Server).
+**O alojamento actual (`maputoblue.co.mz`) é Plesk em Linux: siga [PLESK.md](PLESK.md).** Este guia continua válido para as secções de facturação, e-mail e lista de verificação.
 **Nenhum valor secreto deve ser escrito neste repositório.** As credenciais vão só para `server\.env`, que o Git ignora.
 
 **Resumo da instalação** (cada passo está detalhado abaixo):
