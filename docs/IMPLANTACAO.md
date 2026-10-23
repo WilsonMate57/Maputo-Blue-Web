@@ -3,6 +3,22 @@
 Este guia é para quem vai instalar e manter a plataforma no servidor próprio (Windows Server).
 **Nenhum valor secreto deve ser escrito neste repositório.** As credenciais vão só para `server\.env`, que o Git ignora.
 
+**Resumo da instalação** (cada passo está detalhado abaixo):
+
+| # | Passo | Comando / ficheiro |
+|---|---|---|
+| 1 | Instalar Node 22+, PostgreSQL 17, Git, NSSM e Caddy (ou IIS) | secção 1 |
+| 2 | Criar a base de dados UTF-8 | secção 2 |
+| 3 | Clonar o repositório e instalar | `deploy\windows\install.ps1 -Domain www.maputoblue.com` |
+| 4 | Migrar os dados e criar o administrador | secção 4 |
+| 5 | Verificar tudo | `npm run check` (em `server\`) |
+| 6 | Arrancar o serviço | `nssm start MaputoBlue` |
+| 7 | HTTPS | `deploy\windows\Caddyfile` ou `deploy\windows\web.config` |
+| 8 | Backups diários | `deploy\windows\backup.ps1 -Register` |
+| 9 | Actualizações seguintes | `deploy\windows\update.ps1` |
+
+Os scripts estão em `deploy\windows\` e correm numa PowerShell **como Administrador**. Se a política de execução os bloquear, use `powershell -ExecutionPolicy Bypass -File deploy\windows\install.ps1 ...`.
+
 ---
 
 ## 1. Pré-requisitos
@@ -32,14 +48,20 @@ A base tem de estar em **UTF-8**. O script de migração recusa-se a correr nout
 cd D:\sites
 git clone https://github.com/WilsonMate57/Maputo-Blue-Web.git maputoblue
 cd maputoblue
-git checkout Automation
-cd server
-npm ci --omit=dev
-copy .env.example .env
-notepad .env
+git checkout main
+.\deploy\windows\install.ps1 -Domain www.maputoblue.com
 ```
 
-Preencha o `.env`:
+Use a branch ou tag aprovada para produção (por exemplo, `main` depois de juntar a `UI/UX-improvements`).
+
+O `install.ps1`:
+- confirma que o Node 22+ e o NSSM estão instalados;
+- instala as dependências (`npm ci --omit=dev`);
+- cria `server\.env` a partir de `.env.example`, **só se ainda não existir**, com `NODE_ENV=production`, o domínio em `PUBLIC_BASE_URL` e `TICKET_SECRET` e `IP_HASH_SALT` aleatórios, e restringe o acesso ao ficheiro a Administradores e SYSTEM;
+- pára e pede para preencher o `DATABASE_URL` enquanto houver valores `CHANGE_ME`. Edite com `notepad server\.env` e volte a correr o script;
+- corre `npm run check` e regista o serviço Windows `MaputoBlue` (secção 5), sem o arrancar.
+
+Variáveis do `.env`:
 
 | Variável | Valor |
 |---|---|
@@ -52,7 +74,7 @@ Preencha o `.env`:
 | `MAIL_FROM` | ex.: `Maputo Blue <reservas@maputoblue.com>`, num domínio verificado no Resend |
 | `MAIL_REPLY_TO` | caixa que recebe as respostas dos clientes |
 | `IP_HASH_SALT` | texto aleatório longo: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
-| `TICKET_SECRET` | **obrigatório em produção** (sem ele o servidor não arranca). Texto aleatório longo, gerado da mesma forma. Assina os QR codes dos tickets. **Nunca o altere depois de emitir tickets**, porque todos os QR já emitidos deixariam de ser válidos |
+| `TICKET_SECRET` | **obrigatório em produção**, com pelo menos 32 caracteres (sem ele o servidor não arranca). Texto aleatório longo, gerado da mesma forma. Assina os QR codes dos tickets. **Nunca o altere depois de emitir tickets**, porque todos os QR já emitidos deixariam de ser válidos |
 | `SERVE_STATIC` | `true`: o Node serve também o site. Use `false` se o IIS servir os ficheiros estáticos |
 | `RUN_JOBS` | `true` numa única instância. Pode haver mais, porque a fila de e-mails usa `SKIP LOCKED` |
 
@@ -88,7 +110,27 @@ Depois de entrar em `https://SEU-DOMINIO/admin/`, abra **Definições** e config
 - a política de reservas (bloqueio de 48 h por defeito, antecedência mínima de 24 h);
 - o programa de fidelização, que vem desactivado.
 
+### Verificação antes de arrancar
+
+```powershell
+cd D:\sites\maputoblue\server
+npm run check
+```
+
+Não altera nada. Confirma a versão do Node, o `.env` de produção, a ligação e a codificação do PostgreSQL, as migrações, as permissões de escrita (`assets\images`, `server\.cache`, `backups`), as fontes dos PDF, se existem administrador e catálogo, e avisa sobre contas de teste. Termina com código 1 enquanto houver problemas.
+
+Em produção (`NODE_ENV=production`) o servidor **recusa-se a arrancar** se o `DATABASE_URL` ou o `PUBLIC_BASE_URL` (tem de ser `https://`) estiverem por preencher, se `COOKIE_SECURE` não for `true`, ou se `TICKET_SECRET`/`IP_HASH_SALT` forem curtos ou `CHANGE_ME`. A mensagem, em `logs\server-error.log`, diz o que falta.
+
 ## 5. Serviço Windows (NSSM)
+
+O `install.ps1` já cria o serviço (reinício automático 5 s depois se o processo cair, registos rodados em `logs\`). Para o arrancar:
+
+```powershell
+nssm start MaputoBlue
+curl http://127.0.0.1:3000/api/health
+```
+
+Configuração manual equivalente, se preferir não usar o script:
 
 ```powershell
 nssm install MaputoBlue "C:\Program Files\nodejs\node.exe" "--env-file=.env src\index.js"
@@ -106,21 +148,24 @@ Para confirmar que está a funcionar: `curl http://127.0.0.1:3000/api/health`.
 
 ## 6. HTTPS (proxy reverso)
 
-**Opção A — Caddy (mais simples, certificado automático).** `Caddyfile`:
+**Opção A — Caddy (mais simples, certificado automático).** Use `deploy\windows\Caddyfile`: redirecciona `maputoblue.com` para `www.maputoblue.com`, faz o proxy para o Node e guarda o registo de acessos. Copie-o para `C:\caddy\` e instale o Caddy como serviço:
 
-```
-www.maputoblue.com, maputoblue.com {
-    encode gzip
-    reverse_proxy 127.0.0.1:3000
-}
+```powershell
+nssm install Caddy C:\caddy\caddy.exe run --config C:\caddy\Caddyfile
+nssm start Caddy
 ```
 
-Instale o Caddy também como serviço com NSSM: `caddy run --config Caddyfile`.
+O certificado é emitido automaticamente quando o DNS dos dois nomes apontar para o servidor e as portas 80 e 443 estiverem abertas.
 
-**Opção B — IIS:**
+**Opção B — IIS.** Use `deploy\windows\web.config`:
 1. Instale URL Rewrite e Application Request Routing, e active «Enable proxy» no ARR.
-2. Crie uma regra de *reverse proxy* para `http://127.0.0.1:3000`, com preservação do cabeçalho Host.
-3. Configure o certificado com win-acme (Let's Encrypt).
+2. Corra os dois comandos `appcmd` indicados no topo do `web.config` (preservar o cabeçalho Host e permitir `X-Forwarded-Proto`).
+3. Crie um site IIS para `www.maputoblue.com` e `maputoblue.com` numa pasta vazia e copie para lá o `web.config`. Ele redirecciona HTTP → HTTPS e o domínio sem `www`, e envia o resto para o Node.
+4. Configure o certificado com win-acme (Let's Encrypt).
+
+Se o domínio final não for `www.maputoblue.com`, altere-o no `Caddyfile`/`web.config` e no `PUBLIC_BASE_URL`.
+
+Com `NODE_ENV=production` o site envia o cabeçalho HSTS: depois de o abrirem em HTTPS, os navegadores recusam HTTP durante um ano. Arranque em produção só com o certificado a funcionar.
 
 **Firewall:** abra apenas as portas 80 e 443. A porta 3000 e a do PostgreSQL (5432) **não** devem ficar acessíveis de fora.
 
@@ -140,15 +185,16 @@ Instale o Caddy também como serviço com NSSM: `caddy run --config Caddyfile`.
 
 ## 8. Backups
 
-**Backup completo diário (recomendado).** Crie uma tarefa agendada:
+**Backup completo diário (recomendado).** O script `deploy\windows\backup.ps1` faz o `pg_dump` (formato custom) da base indicada no `.env`, uma cópia espelhada de `assets\images`, e apaga dumps com mais de 30 dias:
 
 ```powershell
-$d = Get-Date -Format yyyyMMdd
-& "C:\Program Files\PostgreSQL\17\bin\pg_dump.exe" -U maputoblue -h 127.0.0.1 -F c -f "E:\backups\maputoblue-$d.dump" maputoblue
+.\deploy\windows\backup.ps1 -BackupDir E:\backups\maputoblue            # um backup agora
+.\deploy\windows\backup.ps1 -BackupDir E:\backups\maputoblue -Register  # tarefa diária às 02:30
 ```
 
-- Guarde a palavra-passe em `%APPDATA%\postgresql\pgpass.conf` da conta que corre a tarefa.
-- Copie os backups para fora do servidor e mantenha pelo menos 30 dias.
+- Guarde a palavra-passe da base em `%APPDATA%\postgresql\pgpass.conf` da conta que corre a tarefa (linha `127.0.0.1:5432:maputoblue:maputoblue:SENHA`). O script nunca contém nem mostra a senha.
+- O `update.ps1` usa a pasta por defeito (`D:\backups\maputoblue`); se usar outra, altere o valor de `$BackupDir` no `backup.ps1`.
+- Copie a pasta de backups para fora do servidor (disco externo ou armazenamento na nuvem).
 
 **Backup lógico rápido.** Usado automaticamente antes da importação, mas também pode ser corrido à mão:
 
@@ -172,15 +218,17 @@ Grava em `backups\<data>-<nome>\` um JSON por tabela e uma cópia de `data\*.jso
 
 ```powershell
 cd D:\sites\maputoblue
-npm --prefix server run backup -- pre-update
-git fetch
-git checkout <commit-ou-tag-novo>
-cd server
-npm ci --omit=dev
-nssm restart MaputoBlue
+.\deploy\windows\update.ps1                 # último commit da branch actual
+.\deploy\windows\update.ps1 -Ref v1.2.0     # uma tag ou commit concreto
 ```
 
-As migrações aplicam-se no arranque.
+O `update.ps1`:
+1. recusa avançar se houver ficheiros do repositório alterados à mão no servidor;
+2. faz backup (`backup.ps1 -Label pre-update`) e cancela se falhar;
+3. obtém a nova versão, corre `npm ci --omit=dev` e reinicia o serviço (as migrações aplicam-se no arranque);
+4. espera até 60 s por `/api/health`. **Se não responder, volta sozinho à versão anterior** e reinicia-a.
+
+Antes de cada actualização, corra `npm test` e `npm run test:e2e` numa máquina de testes.
 
 **Para reverter:**
 1. **Código:** `git checkout <commit-anterior>` e depois `nssm restart MaputoBlue`. As migrações deste projecto só acrescentam tabelas e colunas, por isso o código anterior continua a funcionar com a base de dados mais recente.
@@ -200,6 +248,7 @@ As migrações aplicam-se no arranque.
 - [ ] O fluxo completo (emitir, pagamento parcial, pagamento total, anular/corrigir) foi ensaiado numa cópia de teste da base de dados e **não** em produção, porque cada factura emitida consome um número real da série
 
 **Infra-estrutura:**
+- [ ] `npm run check` termina sem problemas (✗)
 - [ ] PostgreSQL com palavra-passe forte e porta 5432 fechada ao exterior
 - [ ] `.env` preenchido, com `COOKIE_SECURE=true`, `TRUST_PROXY=true` e o `PUBLIC_BASE_URL` correcto
 - [ ] Serviço NSSM com arranque automático e `/api/health` a responder
@@ -209,14 +258,14 @@ As migrações aplicam-se no arranque.
 - [ ] `import:json` e `import:reviews` executados e relatórios revistos
 - [ ] Preços com avisos revistos no painel (Dia de Praia, Kruger, Machangulo Transfer, Eswatini Hlane, Maputo City Transfer)
 - [ ] Capacidades definidas nos pacotes onde se quer controlo automático
-- [ ] Administrador criado e conta de teste removida
+- [ ] Administrador criado e contas de teste removidas (o `npm run check` indica quantas há)
 - [ ] E-mails da equipa configurados em Definições
 
 **E-mail:**
 - [ ] Domínio verificado no Resend, `RESEND_API_KEY` definido e e-mail de teste recebido (faça uma reserva de teste)
 
 **Backups:**
-- [ ] Tarefa diária de `pg_dump` criada e **um restauro testado**
+- [ ] Tarefa diária criada (`backup.ps1 -Register`) e **um restauro testado**
 - [ ] `assets\images` incluído no backup de ficheiros
 
 **SEO:**

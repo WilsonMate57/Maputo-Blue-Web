@@ -12,6 +12,7 @@ import { tx } from '../db.js';
 import { getSetting, loadPackage } from './catalog.js';
 import { computeQuote } from './pricing.js';
 import { checkAndLock, endDateFor } from './availability.js';
+import { diffDays } from './dates.js';
 import { loyaltyStatus } from './loyalty.js';
 import { audit } from './audit.js';
 import { enqueueMail, enqueueAdminMail } from './mailer.js';
@@ -19,6 +20,9 @@ import { isDateString, todayLocal } from './dates.js';
 import { badRequest, conflict, forbidden, notFound } from './errors.js';
 import { randomToken, reference, sha256 } from './security.js';
 import { syncFinancialState } from './payments.js';
+
+/** Nights of an existing stay (from its dates); undefined for tours. */
+const stayLength = (pkg, b) => (pkg.kind === 'accommodation' ? diffDays(b.start_date, b.end_date) : undefined);
 
 export const TRANSITIONS = {
   pending:   ['confirmed', 'rejected', 'cancelled'],
@@ -91,7 +95,7 @@ export async function createBooking(pool, cfg, { input, user }) {
   const token = randomToken(24);
   const booking = await tx(pool, async c => {
     const allocations = await checkAndLock(c, pkg, {
-      start: input.date, optionKey: quote.option_key, adults: quote.adults, children: quote.children, settings,
+      start: input.date, nights: quote.nights || undefined, optionKey: quote.option_key, adults: quote.adults, children: quote.children, settings,
     });
     const holdHours = settings.pending_holds_capacity !== false ? Number(settings.pending_hold_hours || 48) : 0;
     let row;
@@ -104,7 +108,7 @@ export async function createBooking(pool, cfg, { input, user }) {
                  case when $20::int > 0 then now() + make_interval(hours => $20::int) end, $21, $22)
          on conflict (reference) do nothing returning *`,
         [reference('MB'), pkg.id, user ? user.id : null, input.customer.name, input.customer.email.toLowerCase(), input.customer.phone,
-         input.customer.country || null, input.locale === 'en' ? 'en' : 'pt', input.date, endDateFor(pkg, input.date),
+         input.customer.country || null, input.locale === 'en' ? 'en' : 'pt', input.date, endDateFor(pkg, input.date, quote.nights || undefined),
          quote.adults, quote.children, quote.option_key, JSON.stringify(quote.lines.filter(l => l.type === 'extra').map(l => l.key)),
          input.transfer_key || null, input.notes || null, quote.currency, quote.total, snapshotOf(pkg, quote), holdHours,
          input.idempotency_key || null, sha256(token)]);
@@ -153,7 +157,7 @@ export async function transitionBooking(pool, cfg, { bookingId, to, actor, messa
       const { pkg } = await loadPackage(c, b.package_id);
       const settings = await getSetting(c, 'booking');
       // Re-verify capacity (excluding this booking's own hold); date rules were checked at request time
-      await checkAndLock(c, pkg, { start: b.start_date, optionKey: b.option_key, adults: b.adults, children: b.children,
+      await checkAndLock(c, pkg, { start: b.start_date, nights: stayLength(pkg, b), optionKey: b.option_key, adults: b.adults, children: b.children,
         settings, excludeBookingId: b.id, ignoreStatic: true, now });
     }
     const stamp = { confirmed: 'confirmed_at', cancelled: 'cancelled_at', completed: 'completed_at' }[to];
@@ -204,8 +208,11 @@ export async function updateBooking(pool, cfg, { bookingId, actor, patch }) {
       adults: patch.adults ?? b.adults,
       children: patch.children ?? b.children,
       option_key: patch.option_key !== undefined ? patch.option_key : b.option_key,
+      nights: patch.nights ?? diffDays(b.start_date, b.end_date),
     };
-    const tripChanged = next.start_date !== b.start_date || next.adults !== b.adults || next.children !== b.children || next.option_key !== b.option_key;
+    const prevNights = diffDays(b.start_date, b.end_date);
+    const tripChanged = next.start_date !== b.start_date || next.adults !== b.adults || next.children !== b.children
+      || next.option_key !== b.option_key || next.nights !== prevNights;
     let snapshot = b.price_snapshot, total = b.total, end = b.end_date;
 
     if (tripChanged) {
@@ -216,14 +223,14 @@ export async function updateBooking(pool, cfg, { bookingId, actor, patch }) {
         const promotions = await activePromotions(c);
         const prevQuote = b.price_snapshot.quote || {};
         const quote = computeQuote({ pkg, rules, promotions: promotions.filter(p => (prevQuote.discounts || []).some(d => d.promotion_id === p.id)),
-          input: { date: next.start_date, adults: next.adults, children: next.children, option_key: next.option_key, extras: b.extras, transfer_key: b.transfer_key },
+          input: { date: next.start_date, nights: next.nights || undefined, adults: next.adults, children: next.children, option_key: next.option_key, extras: b.extras, transfer_key: b.transfer_key },
           today: todayLocal() });
         snapshot = snapshotOf(pkg, quote);
         total = quote.total;
       }
-      end = endDateFor(pkg, next.start_date);
+      end = endDateFor(pkg, next.start_date, pkg.kind === 'accommodation' ? next.nights : undefined);
       await c.query('delete from booking_allocations where booking_id = $1', [b.id]);
-      const allocations = await checkAndLock(c, pkg, { start: next.start_date, optionKey: next.option_key, adults: next.adults,
+      const allocations = await checkAndLock(c, pkg, { start: next.start_date, nights: pkg.kind === 'accommodation' ? next.nights : undefined, optionKey: next.option_key, adults: next.adults,
         children: next.children, settings, excludeBookingId: b.id, ignoreStatic: true });
       for (const a of allocations) {
         await c.query(`insert into booking_allocations (booking_id, package_id, resource_key, day, quantity) values ($1,$2,$3,$4,$5)`,

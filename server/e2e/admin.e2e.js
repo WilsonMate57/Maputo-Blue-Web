@@ -173,6 +173,34 @@ test('invoices: unknown reference refused; issue from a reference; partial then 
   await shot('invoices');
 });
 
+test('quote request: lines generated from the chosen items, sent by link', async () => {
+  const req = await page.evaluate(async () => {
+    const d = new Date(Date.now() + 12 * 864e5).toISOString().slice(0, 10);
+    const res = await fetch('/api/custom-requests', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+      name: 'Cotação E2E', email: 'cotacao-e2e@example.com', phone: '+258840000055', adults: 2, children: 0, consent: true, locale: 'pt',
+      date_from: d, idempotency_key: 'e2e-quote-' + Date.now(), items: [{ package_id: 'sunset-cruise-maputo-bay', date: d }, { service_key: 'boat-charter' }] }) });
+    return (await res.json()).request;
+  });
+  const { id } = await page.evaluate(ref => fetch('/api/admin/requests?q=' + ref).then(r => r.json()).then(j => j.items[0]), req.reference);
+  await go(`#/requests/${id}`);
+  assert.match(await page.$eval('#main', el => el.textContent), /Sunset Cruise[\s\S]*Aluguer de barco privado/);
+  await page.click('#new-quote');
+  await page.waitForSelector('dialog.modal[open] #q-items');
+  const prices = await page.$$eval('dialog.modal [data-k=unit_price]', els => els.map(e => e.value));
+  assert.ok(Number(prices[0]) > 0, 'catalogue item priced automatically');
+  assert.equal(prices[1], '', 'service priced by the team');
+  await shot('quote-generate');
+  await page.type('dialog.modal .repeat__row:nth-child(2) [data-k=unit_price]', '20000');
+  await page.click('dialog.modal [name=ch_email]');
+  await page.click('dialog.modal [name=ch_link]');
+  await page.click('dialog.modal button[type=submit]');
+  await page.waitForSelector('dialog.modal[open] #q-link', { timeout: 10000 });
+  assert.match(await page.$eval('#q-link', el => el.value), /quote\.html\?t=/);
+  await shot('quote-sent');
+  await page.click('dialog.modal button[type=submit]');
+  await page.waitForFunction(() => /Link partilhado/.test(document.querySelector('#main').textContent), { timeout: 10000 });
+});
+
 test('package editor: change a price, see the preview, save, and restore', async () => {
   const before = await page.evaluate(() => fetch('/api/catalog/packages/sunset-cruise-maputo-bay').then(r => r.json()));
   const base = before.price_from;

@@ -13,6 +13,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import PDFDocument from 'pdfkit';
+import { brandFonts } from './pdf-fonts.js';
 import QRCode from 'qrcode';
 import sharp from 'sharp';
 import { getSetting } from './catalog.js';
@@ -91,7 +92,7 @@ export async function ticketData(db, cfg, b) {
   const mp = snap.package && snap.package.meeting_point;
   const info = pick(content, 'important_info');
   const lines = (q.lines || []).map(l => ({
-    label: lang === 'en' ? l.label_en || l.label : l.label, quantity: l.quantity,
+    label: lang === 'en' ? l.label_en || l.label : l.label, quantity: l.quantity, qty_in_label: !!l.qty_in_label,
     unit_price: l.unit_price, amount: l.unit_price === null ? null : l.amount,
   }));
   const optionLine = (q.lines || []).find(l => (l.type === 'group' || l.type === 'night') && b.option_key);
@@ -155,38 +156,39 @@ export async function renderTicketPdf(cfg, d) {
   doc.on('data', c => chunks.push(c));
   const done = new Promise(r => doc.on('end', r));
   const W = doc.page.width, M = 50, CW = W - 2 * M;
+  const F = brandFonts(doc);
 
   // Header: logo + company block
   let y = 44;
   if (logo) doc.image(logo, M, y, { height: 56 });
-  doc.font('Helvetica-Bold').fontSize(16).fillColor(C.navy).text(d.company.trade_name || 'Maputo Blue', M + 72, y + 4, { width: 220 });
-  doc.font('Helvetica').fontSize(8.5).fillColor(C.muted);
+  doc.font(F.bold).fontSize(16).fillColor(C.navy).text(d.company.trade_name || 'Maputo Blue', M + 72, y + 4, { width: 220 });
+  doc.font(F.regular).fontSize(8.5).fillColor(C.muted);
   const contact = [d.company.legal_name, d.company.address, [d.company.phone, d.company.email].filter(Boolean).join('  ·  '), d.company.website,
     d.company.nuit ? `NUIT ${d.company.nuit}` : null, d.company.licence ? `Alvará ${d.company.licence}` : null].filter(Boolean);
   doc.text(contact.join('\n'), M + 72, y + 24, { width: 250, lineGap: 1 });
 
   // Title block (right)
-  doc.font('Helvetica').fontSize(8.5).fillColor(C.muted).text(t.ref.toUpperCase(), W - M - 200, y + 2, { width: 200, align: 'right', characterSpacing: 0.6 });
-  doc.font('Helvetica-Bold').fontSize(20).fillColor(C.navy).text(d.reference, W - M - 200, y + 14, { width: 200, align: 'right', characterSpacing: 1 });
-  doc.font('Helvetica').fontSize(8.5).fillColor(C.muted).text(`${t.issued} ${fmtDate(d.issued_at, d.lang, { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`,
+  doc.font(F.regular).fontSize(8.5).fillColor(C.muted).text(t.ref.toUpperCase(), W - M - 200, y + 2, { width: 200, align: 'right', characterSpacing: 0.6 });
+  doc.font(F.heavy).fontSize(20).fillColor(C.navy).text(d.reference, W - M - 200, y + 14, { width: 200, align: 'right', characterSpacing: 1 });
+  doc.font(F.regular).fontSize(8.5).fillColor(C.muted).text(`${t.issued} ${fmtDate(d.issued_at, d.lang, { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`,
     W - M - 200, y + 40, { width: 200, align: 'right' });
   y = Math.max(doc.y, y + 64) + 14;
   doc.moveTo(M, y).lineTo(W - M, y).lineWidth(2).strokeColor(C.teal).stroke();
   y += 16;
 
   // Document title + status
-  doc.font('Helvetica-Bold').fontSize(17).fillColor(C.navy).text(d.doc_title, M, y, { width: CW });
+  doc.font(F.heavy).fontSize(17).fillColor(C.navy).text(d.doc_title, M, y, { width: CW });
   const sc = STATUS_COLORS[d.status] || C.muted;
   const statusText = d.status_label.toUpperCase();
   y = doc.y + 6;
-  doc.font('Helvetica-Bold').fontSize(8.5);
+  doc.font(F.bold).fontSize(8.5);
   const sw = doc.widthOfString(statusText) + 22;
   doc.roundedRect(M, y, sw, 20, 10).lineWidth(1.2).strokeColor(sc).stroke();
   doc.fillColor(sc).text(statusText, M, y + 6, { width: sw, align: 'center' });
   y += 32;
   if (d.status === 'pending' || d.status === 'cancelled' || d.status === 'rejected') {
     const note = d.status === 'pending' ? t.pendingNote : t.cancelNote;
-    doc.font('Helvetica').fontSize(9.5);
+    doc.font(F.regular).fontSize(9.5);
     const h = doc.heightOfString(note, { width: CW - 24 }) + 16;
     doc.roundedRect(M, y, CW, h, 6).fillColor(d.status === 'pending' ? '#FFF7ED' : '#FEF2F2').fill();
     doc.fillColor(sc).text(note, M + 12, y + 8, { width: CW - 24 });
@@ -208,8 +210,8 @@ export async function renderTicketPdf(cfg, d) {
   ].filter(Boolean);
   const colW = CW - qrSize - 24;
   for (const [k, v] of rows) {
-    doc.font('Helvetica').fontSize(7.5).fillColor(C.muted).text(k.toUpperCase(), M, y, { width: colW, characterSpacing: 0.5 });
-    doc.font('Helvetica-Bold').fontSize(10.5).fillColor(C.navy).text(String(v || '—'), M, doc.y + 1, { width: colW });
+    doc.font(F.regular).fontSize(7.5).fillColor(C.muted).text(k.toUpperCase(), M, y, { width: colW, characterSpacing: 0.5 });
+    doc.font(F.bold).fontSize(10.5).fillColor(C.navy).text(String(v || '—'), M, doc.y + 1, { width: colW });
     y = doc.y + 7;
   }
   // QR as vector modules
@@ -218,15 +220,15 @@ export async function renderTicketPdf(cfg, d) {
   // One path filled once: no hairline seams between modules
   for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.modules.get(r, c)) doc.rect(qrX + 6 + c * cell, top + 6 + r * cell, cell, cell);
   doc.fillColor(C.navy).fill();
-  doc.font('Helvetica').fontSize(7.5).fillColor(C.muted).text(t.scan, qrX - 6, top + qrSize + 6, { width: qrSize + 12, align: 'center' });
+  doc.font(F.regular).fontSize(7.5).fillColor(C.muted).text(t.scan, qrX - 6, top + qrSize + 6, { width: qrSize + 12, align: 'center' });
   y = Math.max(y, doc.y) + 10;
 
   // Price table
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(C.navy).text(t.details, M, y);
+  doc.font(F.bold).fontSize(11).fillColor(C.navy).text(t.details, M, y);
   y = doc.y + 6;
   const row = (label, value, opts = {}) => {
     if (y > doc.page.height - 120) { doc.addPage(); y = 56; }
-    doc.font(opts.bold ? 'Helvetica-Bold' : 'Helvetica').fontSize(opts.size || 9.5).fillColor(opts.color || C.text);
+    doc.font(opts.bold ? F.bold : F.regular).fontSize(opts.size || 9.5).fillColor(opts.color || C.text);
     const h = Math.max(doc.heightOfString(label, { width: CW - 150 }), 12);
     doc.text(label, M + 8, y + 5, { width: CW - 150 });
     doc.text(value, W - M - 140, y + 5, { width: 132, align: 'right' });
@@ -235,7 +237,7 @@ export async function renderTicketPdf(cfg, d) {
   };
   doc.rect(M, y, CW, 1).fillColor(C.line).fill();
   for (const l of d.lines) {
-    const label = `${l.label}${l.quantity > 1 ? ` × ${l.quantity}` : ''}${l.unit_price !== null && l.quantity > 1 ? `  (${money(l.unit_price, d.currency)})` : ''}`;
+    const label = `${l.label}${l.quantity > 1 && !l.qty_in_label ? ` × ${l.quantity}` : ''}${l.unit_price !== null && l.quantity > 1 ? `  (${money(l.unit_price, d.currency)})` : ''}`;
     row(label, l.amount === null ? t.onRequest : money(l.amount, d.currency));
   }
   if (d.discounts.length) {
@@ -244,11 +246,11 @@ export async function renderTicketPdf(cfg, d) {
   }
   if (y > doc.page.height - 150) { doc.addPage(); y = 56; }
   doc.rect(M, y + 4, CW, 30).fillColor(C.soft).fill();
-  doc.font('Helvetica-Bold').fontSize(12).fillColor(C.navy).text(t.total, M + 10, y + 13);
+  doc.font(F.bold).fontSize(12).fillColor(C.navy).text(t.total, M + 10, y + 13);
   doc.text(money(d.total, d.currency), W - M - 200, y + 13, { width: 190, align: 'right' });
   y += 44;
   const payLine = `${t.payment}: ${d.payment_label}${d.amount_paid > 0 && d.payment_status !== 'paid' ? ` — ${t.paid_amount} ${money(d.amount_paid, d.currency)}` : ''}`;
-  doc.font('Helvetica').fontSize(9.5).fillColor(C.text).text(payLine, M, y, { width: CW });
+  doc.font(F.regular).fontSize(9.5).fillColor(C.text).text(payLine, M, y, { width: CW });
   y = doc.y + 4;
   if (d.child_price_on_request) { doc.fillColor(C.coral).text(t.childOnRequest, M, y, { width: CW }); y = doc.y + 4; }
 
@@ -256,8 +258,8 @@ export async function renderTicketPdf(cfg, d) {
   const block = (title, body) => {
     if (y > doc.page.height - 140) { doc.addPage(); y = 56; }
     y += 10;
-    doc.font('Helvetica-Bold').fontSize(10).fillColor(C.navy).text(title, M, y, { width: CW });
-    doc.font('Helvetica').fontSize(9).fillColor(C.text).text(body, M, doc.y + 3, { width: CW, lineGap: 1.5 });
+    doc.font(F.bold).fontSize(10).fillColor(C.navy).text(title, M, y, { width: CW });
+    doc.font(F.regular).fontSize(9).fillColor(C.text).text(body, M, doc.y + 3, { width: CW, lineGap: 1.5 });
     y = doc.y;
   };
   if (d.customer_notes) block(t.notes, d.customer_notes);
@@ -272,7 +274,7 @@ export async function renderTicketPdf(cfg, d) {
     doc.page.margins.bottom = 0;
     const fy = doc.page.height - 40;
     doc.moveTo(M, fy - 8).lineTo(W - M, fy - 8).lineWidth(0.6).strokeColor(C.line).stroke();
-    doc.font('Helvetica').fontSize(7.5).fillColor(C.muted)
+    doc.font(F.regular).fontSize(7.5).fillColor(C.muted)
       .text(t.disclaimer, M, fy, { width: CW - 60, lineBreak: false })
       .text([d.company.website, d.company.phone].filter(Boolean).join('  ·  '), M, fy + 11, { width: CW - 60, lineBreak: false });
     doc.text(`${t.page} ${i + 1}/${range.count}`, W - M - 60, fy, { width: 60, align: 'right', lineBreak: false });

@@ -36,9 +36,25 @@ export function loadConfig(overrides = {}) {
     ticketSecret:   env.TICKET_SECRET || '',
   };
   const out = { ...cfg, ...overrides, mail: { ...cfg.mail, ...(overrides.mail || {}) } };
-  if (!out.ticketSecret) {
-    if (out.env === 'production') throw new Error('TICKET_SECRET must be set in production (see docs/IMPLANTACAO.md)');
-    out.ticketSecret = 'dev-only-ticket-secret';
+  if (out.env === 'production') {
+    const problems = productionProblems(out, env);
+    if (problems.length) {
+      throw new Error(`Invalid production configuration (see docs/IMPLANTACAO.md):\n  - ${problems.join('\n  - ')}`);
+    }
   }
+  if (!out.ticketSecret) out.ticketSecret = 'dev-only-ticket-secret';
   return out;
+}
+
+const placeholder = v => !v || /CHANGE_ME/i.test(v);
+
+/** Settings that must be real before the server runs in production. */
+export function productionProblems(cfg, env = process.env) {
+  const problems = [];
+  if (placeholder(env.DATABASE_URL)) problems.push('DATABASE_URL is not set');
+  if (placeholder(env.PUBLIC_BASE_URL) || !/^https:\/\//.test(cfg.publicBaseUrl)) problems.push('PUBLIC_BASE_URL must be the public https:// address of the site');
+  if (!cfg.cookieSecure) problems.push('COOKIE_SECURE must be true (the site is served over HTTPS)');
+  if (placeholder(cfg.ticketSecret) || cfg.ticketSecret.length < 32) problems.push('TICKET_SECRET must be a random string of at least 32 characters');
+  if (placeholder(env.IP_HASH_SALT) || cfg.ipHashSalt.length < 16) problems.push('IP_HASH_SALT must be a random string of at least 16 characters');
+  return problems;
 }

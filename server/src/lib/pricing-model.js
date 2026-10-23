@@ -14,7 +14,8 @@
 //   extras:    [{ key, name, name_en, price, per: 'person'|'booking'|'night', active }],
 //   transfers: [{ key, name, name_en, price, per: 'person'|'booking', active }],
 //   limits: { adults_min, adults_max, children_max, pax_max },
-//   nights: number                       // accommodation stay length (0 for tours)
+//   nights: number                       // accommodation minimum stay in nights (0 for tours)
+//   max_nights: number                   // accommodation maximum stay the customer can choose
 // }
 // ─────────────────────────────────────────────────────────────────────────────
 import { badRequest } from './errors.js';
@@ -69,6 +70,7 @@ export function validatePricing(p) {
   };
   if (limits.adults_min < 0 || limits.adults_max < limits.adults_min || limits.children_max < 0) errs.push('limits are inconsistent');
   const nights = Number.isInteger(p.nights) && p.nights >= 0 ? p.nights : 0;
+  const maxNights = nights > 0 ? (Number.isInteger(p.max_nights) && p.max_nights >= nights ? Math.min(p.max_nights, 60) : 30) : 0;
 
   if (errs.length) throw badRequest('invalid_pricing', 'Invalid pricing', errs);
   return {
@@ -82,6 +84,7 @@ export function validatePricing(p) {
     transfers,
     limits,
     nights,
+    ...(nights > 0 ? { max_nights: maxNights } : {}),
     ...(p.child_age_note ? { child_age_note: p.child_age_note } : {}),
   };
 }

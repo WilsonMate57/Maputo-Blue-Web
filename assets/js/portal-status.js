@@ -72,7 +72,7 @@
 
   function show(b, creds) {
     const title = EN ? b.package_title_en || b.package_title : b.package_title;
-    const lines = b.lines.map(l => `<li><span>${esc(EN ? l.label_en : l.label)}${l.quantity > 1 ? ` × ${l.quantity}` : ''}</span><span>${l.unit_price === null ? '—' : money(l.amount, b.currency)}</span></li>`).join('') +
+    const lines = b.lines.map(l => `<li><span>${esc(EN ? l.label_en : l.label)}${l.quantity > 1 && !l.qty_in_label ? ` × ${l.quantity}` : ''}</span><span>${l.unit_price === null ? '—' : money(l.amount, b.currency)}</span></li>`).join('') +
       b.discounts.map(d => `<li class="is-discount"><span>${esc(d.label)}</span><span>− ${money(d.amount, b.currency)}</span></li>`).join('');
     const wa = `https://wa.me/258847121666?text=${encodeURIComponent((EN ? 'Hello Maputo Blue, I have a question about booking ' : 'Olá Maputo Blue, tenho uma questão sobre a reserva ') + b.reference)}`;
     root.innerHTML = `

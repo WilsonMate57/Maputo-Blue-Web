@@ -215,3 +215,33 @@ Ver [FACTURACAO.md](FACTURACAO.md): fluxo de emissão a partir da referência da
   - `server/scripts/baseline-shots.js <pasta>` guarda capturas comparáveis (1440×900 e 390×844, primeiro ecrã e página inteira);
   - `server/scripts/overflow-check.js <url> <largura>` detecta scroll horizontal;
   - `server/scripts/audit.js` faz a auditoria de acessibilidade e SEO.
+
+## 13. Pedidos de cotação
+
+### Fluxo
+
+1. **Pedido do cliente** (`pages/custom-tour.html`, botão «Pedir cotação» da navbar). O cliente:
+   - escolhe passeios, alojamentos e serviços privados num catálogo com filtros e pesquisa;
+   - indica a data preferida de cada item, as datas da viagem, o grupo e as preferências;
+   - pode pré-seleccionar um pacote com `?package=<id>`.
+   O servidor valida os itens (só pacotes publicados e serviços conhecidos) e guarda um snapshot dos títulos em `custom_requests.items`.
+2. **Gerar a cotação no painel** (Pedidos de cotação → «Gerar cotação»). As linhas vêm de `GET /api/admin/requests/:id/quote-suggestion`:
+   - cada pacote é calculado com as regras de preço actuais, para a data e o grupo pedidos;
+   - os serviços sem preço de catálogo e as opções por escolher ficam assinalados para a equipa preencher;
+   - tudo pode ser editado antes de enviar.
+3. **Envio pelos canais escolhidos:**
+   - **e-mail**;
+   - **WhatsApp** — abre `wa.me` com a mensagem e o link prontos;
+   - **link** — para copiar e partilhar noutro canal.
+   Os canais usados ficam em `quotes.channels` e no histórico. Cada envio gera um link secreto novo (só o hash é guardado) e desactiva os anteriores.
+4. **Resposta do cliente:** pelo link ou na **conta** (separador «Cotações»).
+
+### Quem vê a cotação na conta
+
+A cotação aparece na conta quando o pedido foi feito com sessão iniciada, ou com o mesmo e-mail depois de esse e-mail ter sido **confirmado**. Outros clientes recebem 404.
+
+### Referências
+
+- **Código:** `server/src/lib/quotes.js`, `server/src/routes/admin/requests.js`, `server/src/routes/account.js` e `server/src/routes/public.js`.
+- **Migração:** `004_quote_requests.sql` (só acrescenta).
+- **Testes:** `server/test/quotes.test.js` e os e2e do formulário e do painel.

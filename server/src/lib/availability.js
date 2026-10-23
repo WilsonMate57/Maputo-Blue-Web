@@ -60,14 +60,31 @@ export function quantityFor(pkg, adults, children) {
   return pax;
 }
 
-/** Days a booking occupies: tours → [start]; stays → one row per night. */
-export function stayDays(pkg, start) {
-  const nights = pkg.kind === 'accommodation' ? Math.max(pkg.pricing.nights || 1, 1) : 1;
-  return Array.from({ length: nights }, (_, i) => addDays(start, i));
+/**
+ * Number of nights of a stay. Accommodation: the customer chooses between the
+ * package minimum (pricing.nights, at least 1) and pricing.max_nights; when not
+ * given, the minimum. Tours: 0.
+ */
+export function stayNights(pkg, requested) {
+  if (pkg.kind !== 'accommodation') return 0;
+  const min = Math.max(pkg.pricing.nights || 1, 1);
+  const max = Math.max(pkg.pricing.max_nights || 30, min); // default: up to 30 nights
+  if (requested === undefined || requested === null) return min;
+  if (!Number.isInteger(requested) || requested < min || requested > max) {
+    throw badRequest('invalid_selection', 'Invalid stay length', ['nights_range']);
+  }
+  return requested;
 }
 
-export function endDateFor(pkg, start) {
-  return pkg.kind === 'accommodation' ? addDays(start, Math.max(pkg.pricing.nights || 1, 1)) : start;
+/** Days a booking occupies: tours → [start]; stays → one row per night. */
+export function stayDays(pkg, start, nights) {
+  const n = pkg.kind === 'accommodation' ? stayNights(pkg, nights) : 1;
+  return Array.from({ length: n }, (_, i) => addDays(start, i));
+}
+
+/** Check-out date (accommodation) or the tour date. */
+export function endDateFor(pkg, start, nights) {
+  return pkg.kind === 'accommodation' ? addDays(start, stayNights(pkg, nights)) : start;
 }
 
 /** Rules that do not depend on bookings. Returns a reason code or null. */
@@ -148,10 +165,10 @@ export async function calendar(db, pkg, { from, to, optionKey = null, settings, 
  * allocations to insert. Throws 409 when a day is closed or full.
  * Advisory locks serialise concurrent bookings for the same package/day.
  */
-export async function checkAndLock(client, pkg, { start, optionKey, adults, children, settings, excludeBookingId = null, ignoreStatic = false, now = new Date() }) {
+export async function checkAndLock(client, pkg, { start, nights, optionKey, adults, children, settings, excludeBookingId = null, ignoreStatic = false, now = new Date() }) {
   const rk = resourceKeyFor(pkg, optionKey);
   const qty = quantityFor(pkg, adults, children);
-  const days = stayDays(pkg, start);
+  const days = stayDays(pkg, start, nights);
   for (const d of days) {
     await client.query('select pg_advisory_xact_lock(hashtext($1))', [`${pkg.id}|${rk}|${d}`]);
   }

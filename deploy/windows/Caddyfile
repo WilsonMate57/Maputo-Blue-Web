@@ -1,0 +1,25 @@
+# Caddy — HTTPS proxy for Maputo Blue (automatic Let's Encrypt certificate).
+# Ports 80 and 443 must reach this server and the DNS of both names must point
+# to it. Run as a service: nssm install Caddy C:\caddy\caddy.exe run --config C:\caddy\Caddyfile
+
+# The bare domain redirects to www (the address in PUBLIC_BASE_URL)
+maputoblue.com {
+	redir https://www.maputoblue.com{uri} permanent
+}
+
+www.maputoblue.com {
+	# Node already compresses responses; only proxy
+	reverse_proxy 127.0.0.1:3000
+
+	# Uploads in the admin panel (photos) up to 12 MB each, 20 per request
+	request_body {
+		max_size 250MB
+	}
+
+	log {
+		output file C:\caddy\logs\maputoblue-access.log {
+			roll_size 10MiB
+			roll_keep 10
+		}
+	}
+}

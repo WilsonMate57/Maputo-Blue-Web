@@ -38,7 +38,7 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
     const billTotal = activeInvoice && activeInvoice.doc_status === 'issued' ? Number(activeInvoice.total) : Number(b.total);
     const holdExpired = b.status === 'pending' && (!b.hold_expires_at || new Date(b.hold_expires_at) < new Date());
     const wa = `https://wa.me/${String(b.customer_phone).replace(/\D/g, '')}?text=${encodeURIComponent(`Olá ${b.customer_name}, aqui é a Maputo Blue sobre a reserva ${b.reference}.`)}`;
-    const lines = (q.lines || []).map(l => `<li><span>${esc(l.label)}${l.quantity > 1 ? ` × ${l.quantity}` : ''}${l.unit_price !== null && l.quantity > 1 ? ` <span class="muted small">(${money(l.unit_price, b.currency)})</span>` : ''}</span><span class="mono">${l.unit_price === null ? 'sob consulta' : money(l.amount, b.currency)}</span></li>`).join('')
+    const lines = (q.lines || []).map(l => `<li><span>${esc(l.label)}${l.quantity > 1 && !l.qty_in_label ? ` × ${l.quantity}` : ''}${l.unit_price !== null && l.quantity > 1 ? ` <span class="muted small">(${money(l.unit_price, b.currency)})</span>` : ''}</span><span class="mono">${l.unit_price === null ? 'sob consulta' : money(l.amount, b.currency)}</span></li>`).join('')
       + (q.discounts || []).map(x => `<li class="is-discount"><span>${esc(x.label)}${x.code ? ` (${esc(x.code)})` : ''}</span><span class="mono">− ${money(x.amount, b.currency)}</span></li>`).join('');
 
     main.innerHTML = `

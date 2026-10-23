@@ -15,6 +15,7 @@
     "import:json": "node --env-file-if-exists=.env scripts/import-json.js",
     "import:reviews": "node --env-file-if-exists=.env scripts/import-firestore-reviews.js",
     "create-admin": "node --env-file-if-exists=.env scripts/create-admin.js",
+    "check": "node --env-file-if-exists=.env scripts/check.js",
     "backup": "node --env-file-if-exists=.env scripts/backup.js",
     "test": "node --test --test-concurrency=1 \"test/*.test.js\"",
     "test:e2e": "node --test --test-concurrency=1 \"e2e/*.e2e.js\"",

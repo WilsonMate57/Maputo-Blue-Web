@@ -19,6 +19,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import PDFDocument from 'pdfkit';
+import { brandFonts } from './pdf-fonts.js';
 import sharp from 'sharp';
 import { tx } from '../db.js';
 import { getSetting } from './catalog.js';
@@ -366,25 +367,26 @@ export async function renderInvoicePdf(cfg, inv, { original = false, payments = 
   doc.on('data', ch => chunks.push(ch));
   const done = new Promise(r => doc.on('end', r));
   const W = doc.page.width, M = 50, CW = W - 2 * M;
+  const F = brandFonts(doc);
 
   // Header: logo + issuer (left), document title + number (right)
   let y = 44;
   if (logo) doc.image(logo, M, y, { height: 54 });
   const ix = M + (logo ? 70 : 0);
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(C.navy).text(issuer.name || 'Maputo Blue', ix, y + 2, { width: 250 });
-  doc.font('Helvetica').fontSize(8.5).fillColor(C.muted).text([
+  doc.font(F.bold).fontSize(14).fillColor(C.navy).text(issuer.name || 'Maputo Blue', ix, y + 2, { width: 250 });
+  doc.font(F.regular).fontSize(8.5).fillColor(C.muted).text([
     issuer.legal_name, issuer.address, issuer.phone, issuer.email, issuer.website, issuer.nuit ? `${t.nuit}: ${issuer.nuit}` : null,
   ].filter(Boolean).join('\n'), ix, doc.y + 2, { width: 250, lineGap: 1 });
   const headBottom = doc.y;
 
-  doc.font('Helvetica-Bold').fontSize(24).fillColor(C.navy).text(t.title.toUpperCase(), W - M - 220, y, { width: 220, align: 'right', characterSpacing: 1.5 });
-  doc.font('Helvetica').fontSize(9).fillColor(C.muted).text(t.ref, W - M - 220, y + 32, { width: 220, align: 'right' });
-  doc.font('Helvetica-Bold').fontSize(13).fillColor(C.navy).text(inv.number || t.status.draft, W - M - 220, y + 43, { width: 220, align: 'right' });
+  doc.font(F.heavy).fontSize(24).fillColor(C.navy).text(t.title.toUpperCase(), W - M - 220, y, { width: 220, align: 'right', characterSpacing: 1.5 });
+  doc.font(F.regular).fontSize(9).fillColor(C.muted).text(t.ref, W - M - 220, y + 32, { width: 220, align: 'right' });
+  doc.font(F.bold).fontSize(13).fillColor(C.navy).text(inv.number || t.status.draft, W - M - 220, y + 43, { width: 220, align: 'right' });
   const meta = [[t.issued, fmtDate(inv.issue_date, lang)], inv.due_date ? [t.due, fmtDate(inv.due_date, lang)] : null, [t.booking, bk.reference]].filter(Boolean);
   let my = y + 64;
   for (const [k, v] of meta) {
-    doc.font('Helvetica').fontSize(8.5).fillColor(C.muted).text(`${k}: `, W - M - 220, my, { width: 220, align: 'right', continued: false });
-    doc.font('Helvetica-Bold').fontSize(8.5).fillColor(C.navy).text(v, W - M - 220, my + 10, { width: 220, align: 'right' });
+    doc.font(F.regular).fontSize(8.5).fillColor(C.muted).text(`${k}: `, W - M - 220, my, { width: 220, align: 'right', continued: false });
+    doc.font(F.bold).fontSize(8.5).fillColor(C.navy).text(v, W - M - 220, my + 10, { width: 220, align: 'right' });
     my += 24;
   }
   y = Math.max(headBottom, my) + 10;
@@ -394,25 +396,25 @@ export async function renderInvoicePdf(cfg, inv, { original = false, payments = 
   // Status pill
   const sc = STATUS_COLORS[status] || C.muted;
   const sText = t.status[status] || status;
-  doc.font('Helvetica-Bold').fontSize(9);
+  doc.font(F.bold).fontSize(9);
   const sw = doc.widthOfString(sText) + 24;
   doc.roundedRect(W - M - sw, y, sw, 22, 11).lineWidth(1.4).strokeColor(sc).stroke();
   doc.fillColor(sc).text(sText, W - M - sw, y + 7, { width: sw, align: 'center' });
 
   // Bill to (left) + service (right column)
   const colW = (CW - 24) / 2;
-  doc.font('Helvetica').fontSize(7.5).fillColor(C.muted).text(t.bill_to.toUpperCase(), M, y, { characterSpacing: 0.6 });
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(C.navy).text(cust.name || '—', M, doc.y + 3, { width: colW });
-  doc.font('Helvetica').fontSize(9).fillColor(C.text).text([
+  doc.font(F.regular).fontSize(7.5).fillColor(C.muted).text(t.bill_to.toUpperCase(), M, y, { characterSpacing: 0.6 });
+  doc.font(F.bold).fontSize(11).fillColor(C.navy).text(cust.name || '—', M, doc.y + 3, { width: colW });
+  doc.font(F.regular).fontSize(9).fillColor(C.text).text([
     cust.address, cust.country, cust.email, cust.nuit ? `${t.nuit}: ${cust.nuit}` : null,
   ].filter(Boolean).join('\n'), M, doc.y + 2, { width: colW, lineGap: 1 });
   const leftBottom = doc.y;
   const sx = M + colW + 24;
   let sy = y + 30;
-  doc.font('Helvetica').fontSize(7.5).fillColor(C.muted).text(t.service.toUpperCase(), sx, sy, { characterSpacing: 0.6 });
-  doc.font('Helvetica-Bold').fontSize(10).fillColor(C.navy).text(lang === 'en' ? bk.title_en : bk.title, sx, doc.y + 3, { width: colW });
+  doc.font(F.regular).fontSize(7.5).fillColor(C.muted).text(t.service.toUpperCase(), sx, sy, { characterSpacing: 0.6 });
+  doc.font(F.bold).fontSize(10).fillColor(C.navy).text(lang === 'en' ? bk.title_en : bk.title, sx, doc.y + 3, { width: colW });
   const when = bk.end_date && bk.end_date !== bk.start_date ? `${fmtDate(bk.start_date, lang)} – ${fmtDate(bk.end_date, lang)}` : fmtDate(bk.start_date, lang);
-  doc.font('Helvetica').fontSize(9).fillColor(C.text).text(`${t.service_date}: ${when}`, sx, doc.y + 2, { width: colW })
+  doc.font(F.regular).fontSize(9).fillColor(C.text).text(`${t.service_date}: ${when}`, sx, doc.y + 2, { width: colW })
     .text(`${t.guests}: ${bk.adults} ${t.adults}${bk.children ? `, ${bk.children} ${t.children}` : ''}`, sx, doc.y + 1, { width: colW });
   y = Math.max(leftBottom, doc.y) + 20;
 
@@ -421,14 +423,14 @@ export async function renderInvoicePdf(cfg, inv, { original = false, payments = 
   const header = () => {
     doc.rect(M, y, CW, 22).fillColor(C.navy).fill();
     let x = M + 8;
-    doc.font('Helvetica-Bold').fontSize(8).fillColor('#FFFFFF');
+    doc.font(F.bold).fontSize(8).fillColor('#FFFFFF');
     for (const c of cols) { doc.text(t[c.k].toUpperCase(), x, y + 7, { width: c.w - 12, align: c.a || 'left', characterSpacing: 0.4 }); x += c.w; }
     y += 22;
   };
   header();
   for (const l of inv.lines || []) {
     const desc = lang === 'en' ? l.description_en || l.description : l.description;
-    doc.font('Helvetica').fontSize(9.5);
+    doc.font(F.regular).fontSize(9.5);
     const h = Math.max(doc.heightOfString(desc, { width: cols[0].w - 12 }), 11) + 12;
     if (y + h > doc.page.height - 200) { doc.addPage(); y = 56; header(); }
     let x = M + 8;
@@ -443,7 +445,7 @@ export async function renderInvoicePdf(cfg, inv, { original = false, payments = 
   const tx0 = W - M - 250;
   const trow = (label, value, o = {}) => {
     if (y > doc.page.height - 120) { doc.addPage(); y = 56; }
-    doc.font(o.bold ? 'Helvetica-Bold' : 'Helvetica').fontSize(o.size || 9.5).fillColor(o.color || C.text);
+    doc.font(o.bold ? F.bold : F.regular).fontSize(o.size || 9.5).fillColor(o.color || C.text);
     doc.text(label, tx0, y, { width: 140 }).text(value, tx0 + 140, y, { width: 110, align: 'right' });
     y += (o.size || 9.5) + 8;
   };
@@ -462,8 +464,8 @@ export async function renderInvoicePdf(cfg, inv, { original = false, payments = 
     if (!body) return;
     if (y > doc.page.height - 140) { doc.addPage(); y = 56; }
     y += 8;
-    doc.font('Helvetica-Bold').fontSize(9.5).fillColor(C.navy).text(title, M, y, { width: CW });
-    doc.font('Helvetica').fontSize(9).fillColor(color).text(body, M, doc.y + 3, { width: CW, lineGap: 1.5 });
+    doc.font(F.bold).fontSize(9.5).fillColor(C.navy).text(title, M, y, { width: CW });
+    doc.font(F.regular).fontSize(9).fillColor(color).text(body, M, doc.y + 3, { width: CW, lineGap: 1.5 });
     y = doc.y + 4;
   };
   if (!original) {
@@ -487,7 +489,7 @@ export async function renderInvoicePdf(cfg, inv, { original = false, payments = 
     const fy = doc.page.height - 44;
     doc.moveTo(M, fy - 8).lineTo(W - M, fy - 8).lineWidth(0.6).strokeColor(C.line).stroke();
     const foot = [issuer.name, issuer.nuit ? `${t.nuit} ${issuer.nuit}` : null, issuer.phone, issuer.email].filter(Boolean).join('  ·  ');
-    doc.font('Helvetica').fontSize(7.5).fillColor(C.muted).text(foot, M, fy, { width: CW - 70, lineBreak: false });
+    doc.font(F.regular).fontSize(7.5).fillColor(C.muted).text(foot, M, fy, { width: CW - 70, lineBreak: false });
     const note = lang === 'en' ? inv.footer_note_en : inv.footer_note;
     if (note) doc.text(note, M, fy + 11, { width: CW - 70, lineBreak: false });
     doc.text(`${original ? t.original + ' · ' : ''}${t.page} ${i + 1}/${range.count}`, W - M - 90, fy, { width: 90, align: 'right', lineBreak: false });

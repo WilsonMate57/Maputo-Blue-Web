@@ -21,6 +21,8 @@
 
   const T = EN ? {
     date: 'Date', checkin: 'Check-in date', pick: 'Choose a date to see the exact price.',
+    stayDates: 'Check-in and check-out', pickIn: 'Choose your check-in date.', pickOut: 'Now choose your check-out date (or keep the selected stay).',
+    nights: n => (n === 1 ? '1 night' : `${n} nights`), stayRange: (a, b, n) => `${n === 1 ? '1 night' : `${n} nights`} · ${a} → ${b}`,
     available: 'Available', limited: 'Few places', full: 'Full', closed: 'Unavailable',
     left: n => (n === 1 ? '1 place left' : `${n} places left`),
     extras: 'Optional extras', transfer: 'Private transfer', noTransfer: 'No transfer',
@@ -42,6 +44,8 @@
     wd: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   } : {
     date: 'Data', checkin: 'Data de check-in', pick: 'Escolha uma data para ver o preço exacto.',
+    stayDates: 'Entrada e saída', pickIn: 'Escolha a data de entrada.', pickOut: 'Agora escolha a data de saída (ou mantenha a estadia seleccionada).',
+    nights: n => (n === 1 ? '1 noite' : `${n} noites`), stayRange: (a, b, n) => `${n === 1 ? '1 noite' : `${n} noites`} · ${a} → ${b}`,
     available: 'Disponível', limited: 'Poucos lugares', full: 'Esgotado', closed: 'Indisponível',
     left: n => (n === 1 ? 'Resta 1 lugar' : `Restam ${n} lugares`),
     extras: 'Extras opcionais', transfer: 'Transfer privado', noTransfer: 'Sem transfer',
@@ -77,13 +81,36 @@
     const title = (EN ? item.title_en || item.name_en : item.title || item.name) || item.title || item.name;
 
     const state = {
-      date: null, month: null, days: new Map(), extras: new Set(), transfer: null, promo: null,
+      date: null, nights: null, picking: false, month: null, days: new Map(), extras: new Set(), transfer: null, promo: null,
       quote: null, idem: null, user: null, quoteSeq: 0,
     };
 
     /* ── Calendar ───────────────────────────────────────────── */
     const label = card.querySelector('label[for="booking-date"]');
-    if (label && cfg.kind === 'accommodation') label.textContent = T.checkin;
+    // Stays: the customer picks check-in, then check-out (several nights)
+    const STAY = cfg.kind === 'accommodation';
+    const MIN_N = Math.max(cfg.nights || 1, 1);
+    const MAX_N = Math.max(cfg.max_nights || 30, MIN_N);
+    const addD = (key, n) => { const d = new Date(key + 'T12:00:00'); d.setDate(d.getDate() + n); return ymd(d); };
+    const nightsBetween = (a, b) => Math.round((new Date(b + 'T12:00:00') - new Date(a + 'T12:00:00')) / 864e5);
+    const openDay = key => { const i = state.days.get(key); return !!i && (i.status === 'open' || i.status === 'limited'); };
+    /** Valid check-out: within the stay limits and every night before it available. */
+    const validCheckout = key => {
+      if (!state.date || key <= state.date) return false;
+      const n = nightsBetween(state.date, key);
+      if (n < MIN_N || n > MAX_N) return false;
+      for (let i = 0; i < n; i++) if (!openDay(addD(state.date, i))) return false;
+      return true;
+    };
+    const checkout = () => (state.date ? addD(state.date, state.nights || MIN_N) : null);
+    const shortDate = key => new Date(key + 'T12:00:00').toLocaleDateString(EN ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'short' });
+    function stayHint() {
+      if (!STAY) return;
+      if (!state.date) { calHint.textContent = T.pickIn; return; }
+      const n = state.nights || MIN_N;
+      calHint.textContent = `${T.stayRange(shortDate(state.date), shortDate(checkout()), n)}${state.picking ? ` — ${T.pickOut}` : ''}`;
+    }
+    if (label && STAY) label.textContent = T.stayDates;
     dateInput.hidden = true;
     const cal = document.createElement('div');
     cal.className = 'mb-cal';
@@ -122,9 +149,8 @@
       grid.setAttribute('aria-busy', 'true');
       try {
         const res = await API.get(`/availability/${encodeURIComponent(item.id)}?from=${from}&to=${to}${opt ? `&option=${encodeURIComponent(opt)}` : ''}`);
-        state.days = new Map(res.days.map(d => [d.day, d]));
+        res.days.forEach(d => state.days.set(d.day, d));
       } catch (err) {
-        state.days = new Map();
         calHint.textContent = API.errorText(err);
       }
       grid.removeAttribute('aria-busy');
@@ -141,12 +167,15 @@
         const key = `${m.getFullYear()}-${pad(m.getMonth() + 1)}-${pad(d)}`;
         const info = state.days.get(key) || { status: 'closed' };
         const st = info.status === 'full' ? 'closed' : info.status;
-        const selectable = info.status === 'open' || info.status === 'limited';
+        const canOut = STAY && state.picking && validCheckout(key);
+        const selectable = info.status === 'open' || info.status === 'limited' || canOut;
+        const inStay = STAY && state.date && key > state.date && key < checkout();
+        const isOut = STAY && state.date && key === checkout();
         const extra = info.remaining !== undefined && selectable ? ` — ${T.left(info.remaining)}` : '';
         const statusText = { open: T.available, limited: T.limited, full: T.full }[info.status] || T.closed;
         const lbl = `${new Date(key + 'T12:00:00').toLocaleDateString(EN ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long' })} — ${statusText}${extra}`;
-        html += `<button type="button" class="mb-cal__day mb-cal__day--${st}${state.date === key ? ' is-selected' : ''}"
-          data-day="${key}" ${selectable ? '' : 'disabled'} aria-label="${esc(lbl)}" aria-pressed="${state.date === key}">${d}</button>`;
+        html += `<button type="button" class="mb-cal__day mb-cal__day--${st}${state.date === key ? ' is-selected' : ''}${inStay ? ' is-in-stay' : ''}${isOut ? ' is-checkout' : ''}${canOut ? ' is-checkout-option' : ''}"
+          data-day="${key}" ${selectable ? '' : 'disabled'} aria-label="${esc(lbl)}" aria-pressed="${state.date === key || isOut}">${d}</button>`;
       }
       grid.innerHTML = html;
       const prev = cal.querySelector('[data-step="-1"]');
@@ -162,14 +191,31 @@
       }
       const day = e.target.closest('.mb-cal__day');
       if (!day || day.disabled) return;
+      if (STAY && state.picking && validCheckout(day.dataset.day)) {
+        state.nights = nightsBetween(state.date, day.dataset.day);
+        state.picking = false;
+        stayHint();
+        drawMonth();
+        requote();
+        return;
+      }
+      if (STAY) { state.nights = MIN_N; state.picking = true; }
       state.date = day.dataset.day;
       dateInput.value = state.date;
       dateInput.dispatchEvent(new Event('change', { bubbles: true })); // keeps the legacy price logic in sync
       const info = state.days.get(state.date);
       calHint.textContent = info && info.remaining !== undefined ? T.left(info.remaining) : '';
+      stayHint();
       drawMonth();
+      // Check-out may be in the next month: make sure its availability is loaded
+      if (STAY && checkout().slice(0, 7) !== state.date.slice(0, 7)) {
+        const next = new Date(state.month.getFullYear(), state.month.getMonth() + 1, 1);
+        const from = ymd(next), to = ymd(new Date(next.getFullYear(), next.getMonth() + 1, 0));
+        API.get(`/availability/${encodeURIComponent(item.id)}?from=${from}&to=${to}`).then(r => { r.days.forEach(d => state.days.set(d.day, d)); drawMonth(); }).catch(() => {});
+      }
       requote();
     });
+    if (STAY) stayHint();
 
     /* ── Extras / transfer / promo ─────────────────────────── */
     const perLabel = per => (per === 'person' ? T.perPerson : per === 'night' ? T.perNight : T.perBooking);
@@ -214,7 +260,7 @@
       if (b) b.addEventListener('click', () => setTimeout(requote, 0));
     });
     const boats = document.getElementById('boat-selector-wrap');
-    if (boats) boats.addEventListener('click', () => setTimeout(() => { if (cfg.per_option) loadMonth(); requote(); }, 0));
+    if (boats) boats.addEventListener('click', () => setTimeout(() => { if (cfg.per_option) { state.days.clear(); loadMonth(); } requote(); }, 0));
 
     function guests() {
       const a = parseInt((document.getElementById('adults-count') || {}).textContent, 10);
@@ -225,7 +271,7 @@
 
     function selection() {
       const g = guests();
-      return { package_id: item.id, date: state.date, adults: g.adults, children: g.children, option_key: optionKey(),
+      return { package_id: item.id, date: state.date, ...(STAY ? { nights: state.nights || MIN_N } : {}), adults: g.adults, children: g.children, option_key: optionKey(),
         extras: [...state.extras], transfer_key: state.transfer, promo_code: state.promo };
     }
 
@@ -270,13 +316,13 @@
       if (!q) return false;
       const extras = q.lines.filter(l => l.type === 'extra').map(l => l.key).sort().join();
       const transfer = (q.lines.find(l => l.type === 'transfer') || {}).key || null;
-      return q.date === s.date && q.adults === s.adults && q.children === s.children &&
+      return q.date === s.date && (!STAY || q.nights === s.nights) && q.adults === s.adults && q.children === s.children &&
         (q.option_key || null) === (s.option_key || null) &&
         extras === [...s.extras].sort().join() && transfer === (s.transfer_key || null);
     }
 
     function renderQuote(q) {
-      const lines = q.lines.map(l => `<li><span>${esc(EN ? l.label_en : l.label)}${l.quantity > 1 ? ` × ${l.quantity}` : ''}</span>
+      const lines = q.lines.map(l => `<li><span>${esc(EN ? l.label_en : l.label)}${l.quantity > 1 && !l.qty_in_label ? ` × ${l.quantity}` : ''}</span>
         <span>${l.unit_price === null ? '—' : money(l.amount, q.currency)}</span></li>`);
       q.discounts.forEach(d => lines.push(`<li class="is-discount"><span>${esc(d.label_en && EN ? d.label_en : d.label || T.discount)}</span><span>− ${money(d.amount, q.currency)}</span></li>`));
       breakdown.innerHTML = lines.join('');
@@ -357,7 +403,7 @@
           <p class="mb-dialog__intro">${T.formIntro}</p>
           <div class="mb-summary">
             <strong>${esc(title)}</strong>
-            <span><i class='bx bx-calendar'></i>${esc(API.date(state.date))}</span>
+            <span><i class='bx bx-calendar'></i>${esc(API.date(state.date))}${STAY ? ` → ${esc(API.date(checkout()))} (${T.nights(state.nights || MIN_N)})` : ''}</span>
             <span><i class='bx bx-group'></i>${q.adults} ${T.adults}${q.children ? `, ${q.children} ${T.children}` : ''}</span>
             <span class="mb-summary__total">${T.total}: ${money(q.total, q.currency)}</span>
           </div>

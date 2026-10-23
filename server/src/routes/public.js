@@ -14,6 +14,8 @@ import { badRequest, conflict, notFound } from '../lib/errors.js';
 import { reference, sha256 } from '../lib/security.js';
 import { tx } from '../db.js';
 import { guestBooking } from './tickets.js';
+import { normalizeRequestItems, publicQuote, respondToQuote } from '../lib/quotes.js';
+import { loadQuoteForPdf, quoteFilename, renderQuotePdf } from '../lib/quote-pdf.js';
 
 const date = { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$' };
 const id = { type: 'string', pattern: '^[a-z0-9][a-z0-9-]{1,80}$' };
@@ -25,6 +27,7 @@ const selection = {
   date,
   adults: { type: 'integer', minimum: 0, maximum: 100 },
   children: { type: 'integer', minimum: 0, maximum: 100 },
+  nights: { type: 'integer', minimum: 1, maximum: 60 },
   option_key: { type: ['string', 'null'], maxLength: 64 },
   extras: { type: 'array', maxItems: 20, items: { type: 'string', maxLength: 64 } },
   transfer_key: { type: ['string', 'null'], maxLength: 64 },
@@ -179,6 +182,16 @@ export default async function publicRoutes(app) {
           activities: { type: 'string', maxLength: 1000 },
           budget: { type: ['number', 'null'], minimum: 0, maximum: 1e9 }, budget_currency: { type: 'string', enum: ['MZN', 'USD', 'ZAR', 'EUR'] },
           special_requests: { type: 'string', maxLength: 2000 },
+          items: { type: 'array', maxItems: 20, items: { type: 'object', properties: {
+            package_id: { type: 'string', maxLength: 90, pattern: '^[a-z0-9][a-z0-9-]{1,80}$' },
+            service_key: { type: 'string', maxLength: 40 },
+            date,
+            notes: { type: 'string', maxLength: 300 } } } },
+          // Request on behalf of a company (optional)
+          billing: { type: ['object', 'null'], required: ['company_name'], properties: {
+            company_name: { type: 'string', minLength: 2, maxLength: 160 },
+            nuit: { type: 'string', maxLength: 20, pattern: '^[0-9 ]{9,15}$' },
+            address: { type: 'string', maxLength: 300 } } },
           idempotency_key: { type: 'string', minLength: 16, maxLength: 80, pattern: '^[A-Za-z0-9_-]+$' },
           consent: { type: 'boolean', const: true },
           website: { type: 'string', maxLength: 200 },
@@ -193,19 +206,28 @@ export default async function publicRoutes(app) {
     if (b.date_from && b.date_from < todayLocal()) throw badRequest('invalid_date');
     const existing = await pool.query('select id, reference, status from custom_requests where idempotency_key = $1', [b.idempotency_key]);
     if (existing.rows[0]) return { request: existing.rows[0], duplicate: true };
+    if ((b.items || []).some(i => !i.package_id === !i.service_key)) throw badRequest('invalid_selection');
+    const items = await normalizeRequestItems(pool, b.items || []);
+    const billing = b.billing ? {
+      company_name: b.billing.company_name.trim(),
+      nuit: (b.billing.nuit || '').replace(/\s+/g, '') || null,
+      address: (b.billing.address || '').trim() || null,
+    } : null;
+    if (billing && billing.nuit && billing.nuit.length !== 9) throw badRequest('invalid_nuit', 'The NUIT has 9 digits');
+    const categories = [...new Set([...(b.categories || []), ...items.filter(i => i.kind === 'package').map(i => i.package_kind === 'accommodation' ? 'accommodation' : i.category)])];
 
     const row = await tx(pool, async c => {
       let r;
       for (let i = 0; i < 5 && !r; i++) {
         ({ rows: [r] } = await c.query(
           `insert into custom_requests (reference, user_id, name, email, phone, locale, destination, categories, date_from, date_to,
-             flexible_dates, adults, children, accommodation, transport, activities, budget, budget_currency, special_requests, idempotency_key)
-           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
+             flexible_dates, adults, children, accommodation, transport, activities, budget, budget_currency, special_requests, idempotency_key, items, billing)
+           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22)
            on conflict (reference) do nothing returning *`,
           [reference('TR'), req.user ? req.user.id : null, b.name.trim(), b.email.toLowerCase(), b.phone, b.locale || 'pt',
-           b.destination || null, b.categories || [], b.date_from || null, b.date_to || null, !!b.flexible_dates,
+           b.destination || null, categories, b.date_from || null, b.date_to || null, !!b.flexible_dates,
            b.adults, b.children || 0, b.accommodation || null, b.transport || null, b.activities || null,
-           b.budget ?? null, b.budget_currency || null, b.special_requests || null, b.idempotency_key]));
+           b.budget ?? null, b.budget_currency || null, b.special_requests || null, b.idempotency_key, JSON.stringify(items), billing ? JSON.stringify(billing) : null]));
       }
       await audit(c, req.user, 'request', r.id, 'created', { reference: r.reference });
       await enqueueMail(c, { key: `request:${r.id}:received`, to: r.email, template: 'request_received', locale: r.locale, data: r });
@@ -226,34 +248,23 @@ export default async function publicRoutes(app) {
     return rows[0];
   }
   const tokenParams = { type: 'object', required: ['token'], properties: { token: { type: 'string', minLength: 20, maxLength: 100 } } };
-  const publicQuote = q => ({
-    reference: q.reference, name: q.name, items: q.items, inclusions: q.inclusions, exclusions: q.exclusions, message: q.message,
-    currency: q.currency, total: q.total, valid_until: q.valid_until,
-    status: q.status === 'sent' && q.valid_until < todayLocal() ? 'expired' : q.status,
-  });
-
   app.get('/quotes/:token', { schema: { params: tokenParams } }, async req => publicQuote(await quoteByToken(pool, req.params.token)));
+
+  app.get('/quotes/:token/pdf', { config: { rateLimit: { max: 20, timeWindow: '10 minutes' } }, schema: { params: tokenParams } }, async (req, reply) => {
+    const q = await quoteByToken(pool, req.params.token);
+    const full = await loadQuoteForPdf(pool, q.id);
+    reply.header('Content-Type', 'application/pdf');
+    reply.header('Content-Disposition', `attachment; filename="${quoteFilename(full)}"`);
+    return reply.send(await renderQuotePdf(pool, cfg, full));
+  });
 
   app.post('/quotes/:token/respond', {
     config: { rateLimit: { max: 10, timeWindow: '10 minutes' } },
     schema: { params: tokenParams, body: { type: 'object', required: ['decision'], properties: { decision: { type: 'string', enum: ['accept', 'decline'] } } } },
   }, async req => tx(pool, async c => {
     const q = await quoteByToken(c, req.params.token, true);
-    if (q.status !== 'sent') throw conflict('quote_closed', 'This quotation can no longer be changed');
-    if (q.valid_until < todayLocal()) {
-      await c.query(`update quotes set status='expired' where id=$1`, [q.id]);
-      throw conflict('quote_expired', 'This quotation has expired');
-    }
-    const accepted = req.body.decision === 'accept';
-    await c.query(`update quotes set status=$2, responded_at=now() where id=$1`, [q.id, accepted ? 'accepted' : 'declined']);
-    if (accepted) {
-      await c.query(`update custom_requests set status='accepted', updated_at=now() where id=$1`, [q.req_id]);
-      await enqueueMail(c, { key: `quote:${q.id}:accepted`, to: q.email, template: 'quote_accepted', locale: q.locale, data: { ...q } });
-      await enqueueAdminMail(c, { key: `quote:${q.id}:admin_accepted`, template: 'admin_quote_accepted',
-        data: { ...q, admin_url: `${cfg.publicBaseUrl}/admin/#/requests/${q.req_id}` } });
-    }
-    await audit(c, null, 'request', q.req_id, accepted ? 'quote_accepted' : 'quote_declined', { quote_id: q.id });
-    return publicQuote({ ...q, status: accepted ? 'accepted' : 'declined' });
+    const status = await respondToQuote(c, cfg, { quote: q, decision: req.body.decision, actor: req.user || null });
+    return publicQuote({ ...q, status });
   }));
 
 }

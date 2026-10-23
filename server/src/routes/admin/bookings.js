@@ -214,6 +214,7 @@ export default async function bookingRoutes(app) {
                 customer_phone: { type: 'string', minLength: 6, maxLength: 30 },
                 customer_country: { type: ['string', 'null'], maxLength: 60 },
                 date, adults: { type: 'integer', minimum: 0, maximum: 200 }, children: { type: 'integer', minimum: 0, maximum: 200 },
+                nights: { type: 'integer', minimum: 1, maximum: 60 },
                 option_key: { type: ['string', 'null'], maxLength: 64 },
                 keep_price: { type: 'boolean' },
                 total_override: { type: ['number', 'null'], minimum: 0, maximum: 1e9 },

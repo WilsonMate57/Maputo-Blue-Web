@@ -3,7 +3,8 @@
 // The server is the only place a booking total is computed; whatever the
 // browser shows is a preview fetched from POST /api/quote.
 // ─────────────────────────────────────────────────────────────────────────────
-import { weekday } from './dates.js';
+import { addDays, weekday } from './dates.js';
+import { stayNights } from './availability.js';
 import { badRequest } from './errors.js';
 
 const round2 = n => Math.round(n * 100) / 100;
@@ -97,32 +98,66 @@ export function computeQuote({ pkg, rules, input, promotions = [], loyalty = nul
   if (errors.length) throw badRequest('invalid_selection', 'Invalid selection', errors);
 
   const { adult, child, rule, option } = unitPrices(p, rules, input.date, optionKey);
-  const nights = p.nights || 0;
-  const nightMul = p.unit === 'per_night' ? Math.max(nights, 1) : 1;
+  // Stays: the customer chooses the number of nights (within the package limits)
+  const nights = pkg.kind === 'accommodation' ? stayNights(pkg, input.nights) : (p.nights || 0);
+  const stay = pkg.kind === 'accommodation';
+  const nightMul = stay || p.unit === 'per_night' ? Math.max(nights, 1) : 1;
   const lines = [];
   const notes = [];
   let childOnRequest = false;
 
+  // Stays: every night is priced with the rule of that night (season, weekend…);
+  // consecutive nights with the same prices share one line.
+  const groups = [];
+  for (let i = 0; i < nightMul; i++) {
+    const day = addDays(input.date, i);
+    const u = i === 0 ? { adult, child } : unitPrices(p, rules, day, optionKey);
+    const last = groups[groups.length - 1];
+    if (last && last.adult === u.adult && last.child === u.child) { last.n++; last.to = day; }
+    else groups.push({ adult: u.adult, child: u.child, n: 1, from: day, to: day });
+  }
+  const span = g => (groups.length > 1 ? ` (${g.from.slice(8, 10)}/${g.from.slice(5, 7)}${g.n > 1 ? `–${g.to.slice(8, 10)}/${g.to.slice(5, 7)}` : ''})` : '');
+  // Stay lines describe themselves ("2 adultos × 3 noites"): screens must not append the quantity again
+  const NOUN = { Adultos: ['adulto', 'adultos', 'adult', 'adults'], Crianças: ['criança', 'crianças', 'child', 'children'] };
+  const perNight = (pt, en, g, count) => {
+    if (!stay) return { label: pt, label_en: en };
+    const [s1, sN, e1, eN] = NOUN[pt];
+    return { label: `${count} ${count === 1 ? s1 : sN} × ${g.n} ${g.n === 1 ? 'noite' : 'noites'}${span(g)}`,
+      label_en: `${count} ${count === 1 ? e1 : eN} × ${g.n} ${g.n === 1 ? 'night' : 'nights'}${span(g)}`, qty_in_label: true };
+  };
+
   if (p.unit === 'per_person') {
-    lines.push({ type: 'adult', label: 'Adultos', label_en: 'Adults', quantity: adults, unit_price: adult, amount: round2(adults * adult) });
+    // Price per person (per night for stays)
+    for (const g of groups) {
+      lines.push({ type: 'adult', ...perNight('Adultos', 'Adults', g, adults), quantity: adults * g.n, unit_price: g.adult, amount: round2(adults * g.n * g.adult) });
+    }
     if (children > 0) {
       if (child === 'on_request') {
         childOnRequest = true;
-        lines.push({ type: 'child', label: 'Crianças (preço sob consulta)', label_en: 'Children (price on request)', quantity: children, unit_price: null, amount: 0 });
+        lines.push({ type: 'child', label: 'Crianças (preço sob consulta)', label_en: 'Children (price on request)', quantity: children * nightMul, unit_price: null, amount: 0 });
         notes.push('child_price_on_request');
       } else {
-        const cp = typeof child === 'number' ? child : adult;
-        lines.push({ type: 'child', label: 'Crianças', label_en: 'Children', quantity: children, unit_price: cp, amount: round2(children * cp) });
+        for (const g of groups) {
+          const cp = typeof g.child === 'number' ? g.child : g.adult;
+          lines.push({ type: 'child', ...perNight('Crianças', 'Children', g, children), quantity: children * g.n, unit_price: cp, amount: round2(children * g.n * cp) });
+        }
       }
     }
   } else if (p.unit === 'per_group') {
     const name = option ? option.name : 'Embarcação privada';
     const name_en = option ? (option.name_en || option.name) : 'Private charter';
     lines.push({ type: 'group', label: name, label_en: name_en, quantity: 1, unit_price: adult, amount: round2(adult) });
-  } else { // per_night — price per unit per night
-    lines.push({ type: 'night', label: option ? option.name : 'Alojamento', label_en: option ? (option.name_en || option.name) : 'Accommodation', quantity: nightMul, unit_price: adult, amount: round2(nightMul * adult) });
-    if (children > 0 && typeof child === 'number') {
-      lines.push({ type: 'child', label: 'Crianças', label_en: 'Children', quantity: children * nightMul, unit_price: child, amount: round2(children * nightMul * child) });
+  } else { // per_night — price per room/unit per night
+    const base = option ? option.name : 'Alojamento';
+    const baseEn = option ? (option.name_en || option.name) : 'Accommodation';
+    for (const g of groups) {
+      lines.push({ type: 'night', label: base + span(g), label_en: baseEn + span(g), quantity: g.n, unit_price: g.adult, amount: round2(g.n * g.adult) });
+    }
+    if (children > 0) {
+      for (const g of groups) {
+        if (typeof g.child !== 'number') continue;
+        lines.push({ type: 'child', label: 'Crianças' + span(g), label_en: 'Children' + span(g), quantity: children * g.n, unit_price: g.child, amount: round2(children * g.n * g.child) });
+      }
     }
   }
 
@@ -180,6 +215,7 @@ export function computeQuote({ pkg, rules, input, promotions = [], loyalty = nul
     unit: p.unit,
     date: input.date,
     nights,
+    end_date: pkg.kind === 'accommodation' ? addDays(input.date, nights) : input.date,
     adults, children,
     option_key: optionKey,
     price_rule: rule,

@@ -49,3 +49,5 @@ const shutdown = async () => {
 };
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+// Keep serving after a stray rejected promise, but leave a trace in the log
+process.on('unhandledRejection', err => app.log.error(err));

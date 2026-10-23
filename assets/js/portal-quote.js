@@ -21,7 +21,7 @@
     title: 'Your personalised quotation', ref: 'Request', valid: 'Valid until', item: 'Item', qty: 'Qty', price: 'Price', amount: 'Amount',
     total: 'Total', incl: 'Included', excl: 'Not included', accept: 'Accept quotation', decline: 'Decline',
     confirmAccept: 'Accept this quotation? Our team will contact you to finalise the booking and payment.',
-    confirmDecline: 'Decline this quotation?',
+    confirmDecline: 'Decline this quotation?', pdf: 'Download PDF',
     accepted: 'Thank you! You accepted this quotation. Our team will contact you shortly to finalise everything.',
     declined: 'You declined this quotation. If you would like a different proposal, just reply to our e-mail.',
     expired: 'This quotation has expired. Contact us for an updated proposal.', withdrawn: 'This quotation is no longer valid.',
@@ -30,7 +30,7 @@
     title: 'A sua cotação personalizada', ref: 'Pedido', valid: 'Válida até', item: 'Item', qty: 'Qtd.', price: 'Preço', amount: 'Valor',
     total: 'Total', incl: 'Incluído', excl: 'Não incluído', accept: 'Aceitar cotação', decline: 'Recusar',
     confirmAccept: 'Aceitar esta cotação? A nossa equipa vai contactá-lo para finalizar a reserva e o pagamento.',
-    confirmDecline: 'Recusar esta cotação?',
+    confirmDecline: 'Recusar esta cotação?', pdf: 'Descarregar PDF',
     accepted: 'Obrigado! Aceitou esta cotação. A nossa equipa vai contactá-lo em breve para finalizar tudo.',
     declined: 'Recusou esta cotação. Se quiser uma proposta diferente, basta responder ao nosso e-mail.',
     expired: 'Esta cotação expirou. Contacte-nos para uma proposta actualizada.', withdrawn: 'Esta cotação já não é válida.',
@@ -62,6 +62,7 @@
         ${q.status === 'sent' ? `<div class="mb-form-actions">
           <button type="button" class="btn-primary-mb" data-decision="accept"><i class='bx bx-check'></i>${T.accept}</button>
           <button type="button" class="btn-outline-mb" data-decision="decline">${T.decline}</button></div>` : ''}
+        <p style="margin:16px 0 0;"><a class="mb-link" href="/api/quotes/${encodeURIComponent(token)}/pdf" download><i class='bx bx-download'></i> ${T.pdf}</a></p>
       </div>`;
     root.querySelectorAll('[data-decision]').forEach(btn => btn.addEventListener('click', async () => {
       const accept = btn.dataset.decision === 'accept';

@@ -106,11 +106,19 @@ test('ticket: from the confirmation to the ticket page, PDF download and QR veri
 
 test('custom tour request: steps → summary → reference', async () => {
   const page = await open('/en/custom-tour.html');
-  await page.waitForSelector('#portal-root form');
-  await page.type('input[name=destination]', 'Inhaca & Kruger');
-  await page.click('.mb-chip input[value=safaris] + span');
+  await page.waitForSelector('.qp-card[data-key="sunset-cruise-maputo-bay"]');
+  // Nothing chosen and no idea described → asked to choose
+  await page.click('button[type=submit]');
+  await page.waitForSelector('.mb-form-msg .mb-alert');
+  await page.click('.qp-card[data-key="sunset-cruise-maputo-bay"]');
+  await page.click('.qp-card[data-key="svc:boat-charter"]');
+  assert.equal(await page.$eval('.qp__count', el => el.textContent), '2 selected');
+  await page.type('textarea[name=activities]', 'Inhaca & Kruger');
+  // Viewport only: a full-page capture of the image grid makes headless Chrome fail to capture
+  await page.screenshot({ path: path.join(SHOTS, 'quote-picker.png') });
   await page.click('button[type=submit]');
   await page.waitForSelector('input[name=adults]');
+  assert.equal(await page.$$eval('[data-item-date]', els => els.length), 2);
   await page.click('button[type=submit]');
   await page.waitForSelector('input[name=accommodation]');
   await page.type('input[name=accommodation]', 'Beach lodge');
@@ -121,6 +129,7 @@ test('custom tour request: steps → summary → reference', async () => {
   await page.type('input[name=phone]', '+27 82 000 0000');
   await page.click('button[type=submit]');
   await page.waitForSelector('.mb-detail');
+  assert.equal(await page.$$eval('.qp-sum li', els => els.length), 2);
   await page.click('input[name=consent]');
   await page.click('button[type=submit]');
   await page.waitForSelector('.mb-ref', { timeout: 15000 });

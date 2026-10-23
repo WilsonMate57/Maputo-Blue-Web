@@ -56,13 +56,13 @@ export default async function dashboard(main, _params, { user }) {
       [a.pending, 'pendentes', '#/bookings?status=pending', true],
       [a.overdue_invoices, 'facturas vencidas', '#/invoices?status=overdue', true],
       [a.open_invoices, 'facturas em aberto', '#/invoices?status=unpaid', false],
-      [a.new_requests, 'pedidos novos', '#/requests', false],
+      [a.new_requests, 'pedidos de cotação', '#/requests', false],
     ].map(([n, t, href, hot]) => `<a class="hello__chip${hot && n ? ' hello__chip--hot' : ''}" href="${href}"><b>${n || 0}</b>${t}</a>`).join('');
     const attention = [
       [a.pending, 'Pedidos pendentes por responder', '#/bookings?status=pending', 'bx-time-five'],
       [a.pending_hold_expired, 'Pendentes com bloqueio de 48h expirado', '#/bookings?status=pending', 'bx-error'],
       [a.cancel_requests, 'Pedidos de cancelamento', '#/bookings?cancel_requested=1', 'bx-x-circle'],
-      [a.new_requests, 'Novos pedidos personalizados', '#/requests', 'bx-map-alt'],
+      [a.new_requests, 'Novos pedidos de cotação', '#/requests', 'bx-message-square-detail'],
       [a.overdue_invoices, 'Facturas vencidas por cobrar', '#/invoices?status=overdue', 'bx-receipt'],
       [a.failed_mail, 'E-mails que falharam', '#/mail', 'bx-envelope'],
     ].filter(x => x[0] > 0);

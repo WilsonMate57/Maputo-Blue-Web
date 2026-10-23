@@ -40,7 +40,7 @@
       [L.customer, d.customer_name],
       d.meeting_point ? [L.meeting, d.meeting_point] : null,
     ].filter(Boolean);
-    const lines = d.lines.map(l => `<li><span>${esc(l.label)}${l.quantity > 1 ? ` × ${l.quantity}` : ''}</span><span>${l.amount === null ? esc(L.onRequest) : money(l.amount, d.currency)}</span></li>`).join('') +
+    const lines = d.lines.map(l => `<li><span>${esc(l.label)}${l.quantity > 1 && !l.qty_in_label ? ` × ${l.quantity}` : ''}</span><span>${l.amount === null ? esc(L.onRequest) : money(l.amount, d.currency)}</span></li>`).join('') +
       d.discounts.map(x => `<li class="is-discount"><span>${esc(L.discount)}: ${esc(x.label)}</span><span>- ${money(x.amount, d.currency)}</span></li>`).join('');
     const notice = d.status === 'pending' ? `<p class="ticket__notice ticket__notice--pending">${esc(L.pendingNote)}</p>`
       : (d.status === 'cancelled' || d.status === 'rejected') ? `<p class="ticket__notice ticket__notice--cancelled">${esc(L.cancelNote)}</p>` : '';

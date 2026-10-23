@@ -42,6 +42,14 @@ function toText(title, intro, rows, extra = '') {
   return [title, '', intro.replace(/<[^>]+>/g, ''), '', ...rows.map(([k, v]) => `${k}: ${v}`), extra ? '\n' + extra : ''].join('\n');
 }
 
+/** Company details of a request made on behalf of a company. */
+function billingRows(b, L) {
+  if (!b || !b.company_name) return [];
+  const en = L === 'en';
+  return [[en ? 'Company' : 'Empresa', b.company_name], ...(b.nuit ? [['NUIT', b.nuit]] : []),
+    ...(b.address ? [[en ? 'Billing address' : 'Morada de facturação', b.address]] : [])];
+}
+
 function bookingRows(d, L) {
   const en = L === 'en';
   const rows = [
@@ -126,16 +134,21 @@ const T = {
   },
   request_received(d, L) {
     const en = L === 'en';
-    const title = en ? 'We received your custom tour request' : 'Recebemos o seu pedido de tour personalizado';
-    const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.name)}, ${en ? 'our team will review your request and send you a personalised quotation.' : 'a nossa equipa vai analisar o seu pedido e enviar-lhe uma cotação personalizada.'}`;
-    const rows = [[en ? 'Reference' : 'Referência', d.reference], [en ? 'Destination' : 'Destino', d.destination || '—'], [en ? 'Guests' : 'Participantes', `${d.adults} + ${d.children}`]];
+    const title = en ? 'We received your quote request' : 'Recebemos o seu pedido de cotação';
+    const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.name)}, ${en ? 'our team will review your request and send you a personalised quotation. Nothing is booked or charged yet.' : 'a nossa equipa vai analisar o seu pedido e enviar-lhe uma cotação personalizada. Nada foi reservado nem cobrado.'}`;
+    const rows = [[en ? 'Reference' : 'Referência', d.reference],
+      ...(d.items || []).map(i => [en ? i.title_en : i.title, i.date ? fmtDate(i.date, L) : (en ? 'Trip dates' : 'Datas da viagem')]),
+      ...(d.destination ? [[en ? 'Destination' : 'Destino', d.destination]] : []),
+      [en ? 'Dates' : 'Datas', [d.date_from, d.date_to].filter(Boolean).map(x => fmtDate(x, L)).join(' → ') || (en ? 'Flexible' : 'Flexíveis')],
+      [en ? 'Guests' : 'Participantes', `${d.adults} + ${d.children}`],
+      ...billingRows(d.billing, L)];
     return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, locale: L }), text: toText(title, intro, rows) };
   },
   quote_issued(d, L) {
     const en = L === 'en';
     const title = en ? 'Your personalised quotation' : 'A sua cotação personalizada';
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.name)}, ${en ? 'please find your quotation below. It is valid until' : 'segue a sua cotação. É válida até'} <strong>${esc(fmtDate(d.valid_until, L))}</strong>.`;
-    const rows = (d.items || []).map(i => [`${i.description} × ${i.quantity}`, fmtMoney(i.quantity * i.unit_price, d.currency)]);
+    const rows = (d.items || []).map(i => [`${i.description}${Number(i.quantity) !== 1 ? ` × ${i.quantity}` : ''}`, fmtMoney(i.quantity * i.unit_price, d.currency)]);
     rows.push(['Total', fmtMoney(d.total, d.currency)]);
     const body = [
       d.message ? `<p>${esc(d.message)}</p>` : '',
@@ -178,9 +191,9 @@ const T = {
     return { subject: title, html: layout({ title, intro, rows, cta: d.admin_url ? { url: d.admin_url, label: 'Abrir no painel' } : null, locale: 'pt' }), text: toText(title, intro, rows) };
   },
   admin_new_request(d) {
-    const title = `Novo pedido de tour personalizado ${d.reference}`;
+    const title = `Novo pedido de cotação ${d.reference}`;
     const intro = `De <strong>${esc(d.name)}</strong> (${esc(d.email)}, ${esc(d.phone)}).`;
-    const rows = [['Destino', d.destination || '—'], ['Datas', [d.date_from, d.date_to].filter(Boolean).join(' → ') || 'Flexível'], ['Participantes', `${d.adults} adultos, ${d.children} crianças`], ['Orçamento', d.budget ? fmtMoney(d.budget, d.budget_currency || 'MZN') : '—']];
+    const rows = [...(d.items || []).map(i => [i.title, i.date ? fmtDate(i.date, 'pt') : 'datas da viagem']), ['Destino / ideias', [d.destination, d.activities].filter(Boolean).join(' · ') || '—'], ['Datas', [d.date_from, d.date_to].filter(Boolean).join(' → ') || 'Flexível'], ['Participantes', `${d.adults} adultos, ${d.children} crianças`], ['Orçamento', d.budget ? fmtMoney(d.budget, d.budget_currency || 'MZN') : '—'], ...billingRows(d.billing, 'pt')];
     return { subject: title, html: layout({ title, intro, rows, cta: d.admin_url ? { url: d.admin_url, label: 'Abrir no painel' } : null, locale: 'pt' }), text: toText(title, intro, rows) };
   },
   admin_quote_accepted(d) {

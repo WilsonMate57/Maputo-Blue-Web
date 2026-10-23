@@ -27,8 +27,8 @@
     verifyBanner: 'Please confirm your e-mail address to unlock your full booking history and loyalty benefits.',
     resend: 'Resend e-mail', resent: 'Confirmation e-mail sent.',
     hello: n => `Hello, ${n}`, logout: 'Sign out',
-    tabs: { bookings: 'My bookings', invoices: 'Invoices', requests: 'Custom requests', loyalty: 'Loyalty', profile: 'Profile' },
-    noBookings: 'You have no bookings yet.', explore: 'Explore experiences', noRequests: 'You have not requested a custom tour yet.',
+    tabs: { bookings: 'My bookings', invoices: 'Invoices', requests: 'Quotes', loyalty: 'Loyalty', profile: 'Profile' },
+    noBookings: 'You have no bookings yet.', explore: 'Explore experiences', noRequests: 'You have not requested a quotation yet.',
     newRequest: 'Request a custom tour', guests: 'guests', ref: 'Reference', total: 'Total', paid: 'Paid',
     details: 'Details', hide: 'Hide', ticket: 'Ticket', cancel: 'Cancel request', requestCancel: 'Request cancellation',
     confirmCancel: 'Cancel this booking request?', confirmRequestCancel: 'Ask Maputo Blue to cancel this confirmed booking? Our cancellation policy applies.',
@@ -45,6 +45,10 @@
     stepRequested: 'Requested', stepConfirmed: 'Confirmed', stepTrip: 'Trip', stepDone: 'Completed',
     payProgress: (p, t) => `${p} of ${t} paid`, upcoming: 'Upcoming', past: 'Past and cancelled', memberSince: 'Signed in as',
     paidNote: 'Paid in full — thank you!',
+    viewQuote: 'View quotation', hideQuote: 'Hide quotation', accept: 'Accept quotation', decline: 'Decline',
+    confirmAccept: 'Accept this quotation? Our team will contact you to confirm the bookings and payment.', confirmDecline: 'Decline this quotation?',
+    included: 'Included', notIncluded: 'Not included', quoteValid: 'Valid until', quoteWaiting: 'Our team is preparing your quotation.',
+    quoteAccepted: 'You accepted this quotation — our team will contact you.', newQuote: 'Request a quote', quotePdf: 'Download PDF',
   } : {
     login: 'Entrar', register: 'Criar conta', forgot: 'Esqueceu a palavra-passe?', email: 'E-mail', password: 'Palavra-passe',
     name: 'Nome completo', phone: 'Telefone (opcional)', country: 'País (opcional)', pwHint: 'Pelo menos 10 caracteres',
@@ -55,8 +59,8 @@
     verifyBanner: 'Confirme o seu endereço de e-mail para ver todo o histórico de reservas e aceder aos benefícios de fidelização.',
     resend: 'Reenviar e-mail', resent: 'E-mail de confirmação enviado.',
     hello: n => `Olá, ${n}`, logout: 'Terminar sessão',
-    tabs: { bookings: 'As minhas reservas', invoices: 'Facturas', requests: 'Pedidos personalizados', loyalty: 'Fidelização', profile: 'Perfil' },
-    noBookings: 'Ainda não tem reservas.', explore: 'Explorar experiências', noRequests: 'Ainda não pediu nenhum tour personalizado.',
+    tabs: { bookings: 'As minhas reservas', invoices: 'Facturas', requests: 'Cotações', loyalty: 'Fidelização', profile: 'Perfil' },
+    noBookings: 'Ainda não tem reservas.', explore: 'Explorar experiências', noRequests: 'Ainda não pediu nenhuma cotação.',
     newRequest: 'Pedir tour personalizado', guests: 'pessoas', ref: 'Referência', total: 'Total', paid: 'Pago',
     details: 'Detalhes', hide: 'Ocultar', ticket: 'Ticket', cancel: 'Cancelar pedido', requestCancel: 'Pedir cancelamento',
     confirmCancel: 'Cancelar este pedido de reserva?', confirmRequestCancel: 'Pedir à Maputo Blue o cancelamento desta reserva confirmada? Aplica-se a nossa política de cancelamento.',
@@ -73,6 +77,10 @@
     stepRequested: 'Pedido', stepConfirmed: 'Confirmada', stepTrip: 'Viagem', stepDone: 'Concluída',
     payProgress: (p, t) => `${p} de ${t} pagos`, upcoming: 'Próximas', past: 'Anteriores e canceladas', memberSince: 'Sessão iniciada como',
     paidNote: 'Paga na totalidade — obrigado!',
+    viewQuote: 'Ver cotação', hideQuote: 'Ocultar cotação', accept: 'Aceitar cotação', decline: 'Recusar',
+    confirmAccept: 'Aceitar esta cotação? A nossa equipa vai contactá-lo para confirmar as reservas e o pagamento.', confirmDecline: 'Recusar esta cotação?',
+    included: 'Incluído', notIncluded: 'Não incluído', quoteValid: 'Válida até', quoteWaiting: 'A nossa equipa está a preparar a sua cotação.',
+    quoteAccepted: 'Aceitou esta cotação — a nossa equipa vai contactá-lo.', newQuote: 'Pedir cotação', quotePdf: 'Descarregar PDF',
   };
 
   const params = new URLSearchParams(location.search);
@@ -194,7 +202,7 @@
   }
 
   /* ── Signed-in dashboard ──────────────────────────────────── */
-  const TAB_ICONS = { bookings: 'bx-calendar-check', invoices: 'bx-receipt', requests: 'bx-map-alt', loyalty: 'bx-award', profile: 'bx-user' };
+  const TAB_ICONS = { bookings: 'bx-calendar-check', invoices: 'bx-receipt', requests: 'bx-message-square-detail', loyalty: 'bx-award', profile: 'bx-user' };
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Maputo' }).format(new Date());
 
   /** Requested → Confirmed → Trip → Completed, with the current step highlighted. */
@@ -224,7 +232,7 @@
     const canRequest = b.status === 'confirmed' && !b.cancel_requested;
     const owed = b.invoice ? b.invoice.total : b.total;
     const paidPct = owed > 0 ? Math.min(100, Math.round((b.amount_paid / owed) * 100)) : 0;
-    const lines = b.lines.map(l => `<li><span>${esc(EN ? l.label_en : l.label)}${l.quantity > 1 ? ` × ${l.quantity}` : ''}</span><span>${l.unit_price === null ? '—' : money(l.amount, b.currency)}</span></li>`).join('') +
+    const lines = b.lines.map(l => `<li><span>${esc(EN ? l.label_en : l.label)}${l.quantity > 1 && !l.qty_in_label ? ` × ${l.quantity}` : ''}</span><span>${l.unit_price === null ? '—' : money(l.amount, b.currency)}</span></li>`).join('') +
       b.discounts.map(d => `<li class="is-discount"><span>${esc(d.label)}</span><span>− ${money(d.amount, b.currency)}</span></li>`).join('');
     const d = new Date(b.start_date + 'T12:00:00');
     return `
@@ -318,19 +326,55 @@
     try {
       const list = await API.get('/account/requests');
       if (!list.length) {
-        pane.innerHTML = `<div class="mb-empty"><i class='bx bx-map-alt'></i><p>${T.noRequests}</p><a class="btn-primary-mb" href="${PAGE}/custom-tour.html">${T.newRequest}</a></div>`;
+        pane.innerHTML = `<div class="mb-empty"><i class='bx bx-map-alt'></i><p>${T.noRequests}</p><a class="btn-primary-mb" href="${PAGE}/custom-tour.html">${T.newQuote}</a></div>`;
         return;
       }
       pane.innerHTML = `<div class="mb-booking-list">${list.map(r => `
-        <article class="mb-booking-item">
-          <div><h3>${esc(r.destination || r.reference)}</h3>
+        <article class="mb-booking-item" data-req="${r.id}">
+          <div><h3>${esc((r.items && r.items.length ? r.items.map(i => (EN ? i.title_en : i.title)).slice(0, 2).join(' + ') + (r.items.length > 2 ? ` +${r.items.length - 2}` : '') : '') || r.destination || r.reference)}</h3>
             <div class="mb-booking-item__meta"><span><i class='bx bx-hash'></i>${esc(r.reference)}</span>
             ${r.date_from ? `<span><i class='bx bx-calendar'></i>${esc(API.date(r.date_from))}${r.date_to ? ` → ${esc(API.date(r.date_to))}` : ''}</span>` : ''}
             <span><i class='bx bx-group'></i>${r.adults + r.children} ${T.guests}</span></div>
-            ${r.quote ? `<p class="mb-booking-item__meta" style="margin-top:6px;">${T.quote}: <strong>${money(r.quote.total, r.quote.currency)}</strong> — ${T.validUntil} ${esc(API.date(r.quote.valid_until))}</p>` : ''}
+            ${r.items && r.items.length ? `<div class="rq-items">${r.items.map(i => `<span>${esc(EN ? i.title_en : i.title)}${i.date ? ` · ${esc(API.date(i.date))}` : ''}</span>`).join('')}</div>` : ''}
           </div>
           <div class="mb-booking-item__side"><span class="mb-status mb-status--${r.status}">${API.statusLabel(r.status)}</span></div>
+          ${r.quote ? `<div class="rq-quote">
+              <div class="rq-quote__head"><span><span class="mb-status mb-status--${r.quote.status}">${API.statusLabel(r.quote.status)}</span>
+                <small style="margin-left:8px;color:var(--text-muted);">${T.quoteValid} ${esc(API.date(r.quote.valid_until))}</small></span>
+                <span class="rq-quote__total">${money(r.quote.total, r.quote.currency)}</span></div>
+              <div data-quote-body hidden></div>
+              <div class="rq-quote__actions"><button type="button" class="mb-btn-sm" data-view-quote="${r.quote.id}" aria-expanded="false"><i class='bx bx-file'></i>${T.viewQuote}</button>
+                <a class="mb-btn-sm" href="/api/account/quotes/${encodeURIComponent(r.quote.id)}/pdf" download><i class='bx bx-download'></i>${T.quotePdf}</a></div>
+            </div>` : `<p class="mb-booking-item__meta" style="grid-column:1/-1;margin:0;">${T.quoteWaiting}</p>`}
         </article>`).join('')}</div>`;
+      pane.querySelectorAll('[data-view-quote]').forEach(btn => btn.addEventListener('click', async () => {
+        const box = btn.closest('.rq-quote').querySelector('[data-quote-body]');
+        if (!box.hidden) { box.hidden = true; btn.setAttribute('aria-expanded', 'false'); btn.lastChild.textContent = T.viewQuote; return; }
+        btn.disabled = true;
+        try {
+          const q = await API.get(`/account/quotes/${btn.dataset.viewQuote}`);
+          box.innerHTML = `
+            <ul class="booking-breakdown">${q.items.map(i => `<li><span>${esc(i.description)}${i.quantity !== 1 ? ` × ${i.quantity}` : ''}</span><span>${money(i.quantity * i.unit_price, q.currency)}</span></li>`).join('')}
+              <li><strong>${T.total}</strong><strong>${money(q.total, q.currency)}</strong></li></ul>
+            ${q.inclusions ? `<p class="rq-quote__text"><strong>${T.included}:</strong> ${esc(q.inclusions)}</p>` : ''}
+            ${q.exclusions ? `<p class="rq-quote__text"><strong>${T.notIncluded}:</strong> ${esc(q.exclusions)}</p>` : ''}
+            ${q.message ? `<p class="rq-quote__text">${esc(q.message)}</p>` : ''}
+            ${q.status === 'sent' ? `<div class="rq-quote__actions"><button type="button" class="btn-primary-mb" data-answer="accept"><i class='bx bx-check'></i>${T.accept}</button>
+              <button type="button" class="btn-outline-mb" data-answer="decline">${T.decline}</button></div>`
+              : q.status === 'accepted' ? `<p class="mb-alert mb-alert--success" style="margin-top:12px;">${T.quoteAccepted}</p>` : ''}`;
+          box.hidden = false;
+          btn.setAttribute('aria-expanded', 'true');
+          btn.lastChild.textContent = T.hideQuote;
+          box.querySelectorAll('[data-answer]').forEach(a => a.addEventListener('click', async () => {
+            const accept = a.dataset.answer === 'accept';
+            if (!confirm(accept ? T.confirmAccept : T.confirmDecline)) return;
+            a.disabled = true;
+            try { await API.post(`/account/quotes/${q.id}/respond`, { decision: a.dataset.answer }); loadRequests(pane); }
+            catch (err) { a.disabled = false; alert(API.errorText(err)); }
+          }));
+        } catch (err) { alert(API.errorText(err)); }
+        finally { btn.disabled = false; }
+      }));
     } catch (err) { pane.innerHTML = alertBox(esc(API.errorText(err))); }
   }
 

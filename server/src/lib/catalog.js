@@ -61,6 +61,7 @@ export function publicRecord(pkg, rules, rating) {
       kind: pkg.kind,
       unit: p.unit,
       nights: p.nights,
+      max_nights: p.nights > 0 ? Math.max(p.max_nights || 30, p.nights) : 0,
       child: p.child,
       options: p.options.filter(o => o.active !== false).map(o => ({
         key: o.key, name: o.name, name_en: o.name_en, price: o.price, max_pax: o.max_pax || null,

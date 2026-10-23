@@ -128,10 +128,12 @@
   const STATUS = {
     pt: { pending: 'Pendente', confirmed: 'Confirmada', rejected: 'Rejeitada', cancelled: 'Cancelada', completed: 'Concluída',
           new: 'Novo', under_review: 'Em análise', quote_sent: 'Cotação enviada', accepted: 'Aceite', closed: 'Fechado',
+          sent: 'Por responder', declined: 'Recusada', expired: 'Expirada',
           unpaid: 'Por pagar', partial: 'Pago parcialmente', paid: 'Pago', refunded: 'Reembolsado',
           partially_paid: 'Parcialmente paga', overdue: 'Vencida', issued: 'Emitida' },
     en: { pending: 'Pending', confirmed: 'Confirmed', rejected: 'Rejected', cancelled: 'Cancelled', completed: 'Completed',
           new: 'New', under_review: 'Under review', quote_sent: 'Quotation sent', accepted: 'Accepted', closed: 'Closed',
+          sent: 'Awaiting your answer', declined: 'Declined', expired: 'Expired',
           unpaid: 'Unpaid', partial: 'Partially paid', paid: 'Paid', refunded: 'Refunded',
           partially_paid: 'Partially paid', overdue: 'Overdue', issued: 'Issued' },
   };

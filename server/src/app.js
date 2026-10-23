@@ -88,6 +88,7 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
     reply.header('X-Content-Type-Options', 'nosniff');
     reply.header('Referrer-Policy', 'strict-origin-when-cross-origin');
     reply.header('X-Frame-Options', 'SAMEORIGIN');
+    if (cfg.env === 'production' && cfg.cookieSecure) reply.header('Strict-Transport-Security', 'max-age=31536000');
     const url = request.url.split('?')[0];
     if (NOINDEX.test(url)) reply.header('X-Robots-Tag', 'noindex, nofollow');
     if (url.startsWith('/api/') || url.startsWith('/admin/')) reply.header('Cache-Control', 'no-store');

@@ -31,3 +31,6 @@ backups/
 # Local screenshots
 temporary screenshots/
 server/.cache/
+
+# Server logs (NSSM)
+logs/
