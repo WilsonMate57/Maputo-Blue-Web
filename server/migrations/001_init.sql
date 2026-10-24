@@ -4,7 +4,8 @@
 -- requests, reviews, media, e-mail outbox and audit log.
 -- ─────────────────────────────────────────────────────────────────────────────
 
-create extension if not exists pgcrypto;
+-- No extensions needed (gen_random_uuid and the rest are core since PG 13), so
+-- a plain database owner on managed hosting (Plesk) can run every migration.
 
 -- ── Settings (key → JSON value) ─────────────────────────────────────────────
 create table settings (
