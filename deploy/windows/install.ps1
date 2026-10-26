@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # install.ps1 - First installation of Maputo Blue on Windows Server.
 #
-#   .\deploy\windows\install.ps1 -Domain www.maputoblue.com
+#   .\deploy\windows\install.ps1 -Domain maputoblue.co.mz
 #
 # Installs the Node dependencies, creates server\.env (with random secrets) if
 # it does not exist yet and registers the Windows service with NSSM.

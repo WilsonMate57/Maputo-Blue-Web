@@ -2,12 +2,12 @@
 # Ports 80 and 443 must reach this server and the DNS of both names must point
 # to it. Run as a service: nssm install Caddy C:\caddy\caddy.exe run --config C:\caddy\Caddyfile
 
-# The bare domain redirects to www (the address in PUBLIC_BASE_URL)
-maputoblue.com {
-	redir https://www.maputoblue.com{uri} permanent
+# www redirects to the bare domain (the address in PUBLIC_BASE_URL)
+www.maputoblue.co.mz {
+	redir https://maputoblue.co.mz{uri} permanent
 }
 
-www.maputoblue.com {
+maputoblue.co.mz {
 	# Node already compresses responses; only proxy
 	reverse_proxy 127.0.0.1:3000
 

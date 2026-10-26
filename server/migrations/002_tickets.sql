@@ -29,7 +29,7 @@ insert into settings (key, value) values ('company', '{
   "phone": "+258 84 712 1666",
   "whatsapp": "+258847121666",
   "email": "maputoblue.info@gmail.com",
-  "website": "www.maputoblue.com",
+  "website": "www.maputoblue.co.mz",
   "address": "Marina de Maputo, Av. 25 de Setembro, Maputo, Moçambique",
   "nuit": "",
   "licence": ""

@@ -122,7 +122,7 @@ insert into settings (key, value) values ('invoicing', '{
     "phone": "+258 (84) 712 1666",
     "email": "maputoblue.info@gmail.com",
     "nuit": "154 559 620",
-    "website": "www.maputoblue.com"
+    "website": "www.maputoblue.co.mz"
   },
   "tax": { "enabled": false, "label": "IVA", "rate": null, "mode": "inclusive" },
   "payment_instructions": "",

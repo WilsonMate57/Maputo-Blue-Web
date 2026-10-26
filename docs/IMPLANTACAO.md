@@ -10,7 +10,7 @@ Este guia é para quem vai instalar e manter a plataforma no servidor próprio (
 |---|---|---|
 | 1 | Instalar Node 22+, PostgreSQL 17, Git, NSSM e Caddy (ou IIS) | secção 1 |
 | 2 | Criar a base de dados UTF-8 | secção 2 |
-| 3 | Clonar o repositório e instalar | `deploy\windows\install.ps1 -Domain www.maputoblue.com` |
+| 3 | Clonar o repositório e instalar | `deploy\windows\install.ps1 -Domain maputoblue.co.mz` |
 | 4 | Migrar os dados e criar o administrador | secção 4 |
 | 5 | Verificar tudo | `npm run check` (em `server\`) |
 | 6 | Arrancar o serviço | `nssm start MaputoBlue` |
@@ -50,7 +50,7 @@ cd D:\sites
 git clone https://github.com/WilsonMate57/Maputo-Blue-Web.git maputoblue
 cd maputoblue
 git checkout main
-.\deploy\windows\install.ps1 -Domain www.maputoblue.com
+.\deploy\windows\install.ps1 -Domain maputoblue.co.mz
 ```
 
 Use a branch ou tag aprovada para produção (por exemplo, `main` depois de juntar a `UI/UX-improvements`).
@@ -67,12 +67,12 @@ Variáveis do `.env`:
 | Variável | Valor |
 |---|---|
 | `DATABASE_URL` | `postgres://maputoblue:SENHA@127.0.0.1:5432/maputoblue` |
-| `PUBLIC_BASE_URL` | `https://www.maputoblue.com`, sem barra no fim. Usado nos links dos e-mails e na protecção CSRF |
+| `PUBLIC_BASE_URL` | `https://maputoblue.co.mz`, sem barra no fim. Usado nos links dos e-mails e na protecção CSRF |
 | `PORT` / `HOST` | `3000` / `127.0.0.1` |
 | `TRUST_PROXY` | `true` atrás de IIS ou Caddy |
 | `COOKIE_SECURE` | `true`, porque o site serve só HTTPS |
 | `RESEND_API_KEY` | ver a secção 6 |
-| `MAIL_FROM` | ex.: `Maputo Blue <reservas@maputoblue.com>`, num domínio verificado no Resend |
+| `MAIL_FROM` | ex.: `Maputo Blue <reservas@maputoblue.co.mz>`, num domínio verificado no Resend |
 | `MAIL_REPLY_TO` | caixa que recebe as respostas dos clientes |
 | `IP_HASH_SALT` | texto aleatório longo: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
 | `TICKET_SECRET` | **obrigatório em produção**, com pelo menos 32 caracteres (sem ele o servidor não arranca). Texto aleatório longo, gerado da mesma forma. Assina os QR codes dos tickets. **Nunca o altere depois de emitir tickets**, porque todos os QR já emitidos deixariam de ser válidos |
@@ -89,7 +89,7 @@ npm run import:json
 npm run import:reviews -- --dry-run
 npm run import:reviews
 $env:ADMIN_PASSWORD = 'palavra-passe-forte-com-10+-caracteres'
-npm run create-admin -- admin@maputoblue.com "Nome do Administrador"
+npm run create-admin -- admin@maputoblue.co.mz "Nome do Administrador"
 Remove-Item Env:ADMIN_PASSWORD
 ```
 
@@ -149,7 +149,7 @@ Para confirmar que está a funcionar: `curl http://127.0.0.1:3000/api/health`.
 
 ## 6. HTTPS (proxy reverso)
 
-**Opção A — Caddy (mais simples, certificado automático).** Use `deploy\windows\Caddyfile`: redirecciona `maputoblue.com` para `www.maputoblue.com`, faz o proxy para o Node e guarda o registo de acessos. Copie-o para `C:\caddy\` e instale o Caddy como serviço:
+**Opção A — Caddy (mais simples, certificado automático).** Use `deploy\windows\Caddyfile`: redirecciona `www.maputoblue.co.mz` para `maputoblue.co.mz`, faz o proxy para o Node e guarda o registo de acessos. Copie-o para `C:\caddy\` e instale o Caddy como serviço:
 
 ```powershell
 nssm install Caddy C:\caddy\caddy.exe run --config C:\caddy\Caddyfile
@@ -161,10 +161,10 @@ O certificado é emitido automaticamente quando o DNS dos dois nomes apontar par
 **Opção B — IIS.** Use `deploy\windows\web.config`:
 1. Instale URL Rewrite e Application Request Routing, e active «Enable proxy» no ARR.
 2. Corra os dois comandos `appcmd` indicados no topo do `web.config` (preservar o cabeçalho Host e permitir `X-Forwarded-Proto`).
-3. Crie um site IIS para `www.maputoblue.com` e `maputoblue.com` numa pasta vazia e copie para lá o `web.config`. Ele redirecciona HTTP → HTTPS e o domínio sem `www`, e envia o resto para o Node.
+3. Crie um site IIS para `www.maputoblue.co.mz` e `maputoblue.co.mz` numa pasta vazia e copie para lá o `web.config`. Ele redirecciona HTTP → HTTPS e o `www` para o domínio sem `www`, e envia o resto para o Node.
 4. Configure o certificado com win-acme (Let's Encrypt).
 
-Se o domínio final não for `www.maputoblue.com`, altere-o no `Caddyfile`/`web.config` e no `PUBLIC_BASE_URL`.
+Se o domínio final não for `maputoblue.co.mz`, altere-o no `Caddyfile`/`web.config` e no `PUBLIC_BASE_URL`.
 
 Com `NODE_ENV=production` o site envia o cabeçalho HSTS: depois de o abrirem em HTTPS, os navegadores recusam HTTP durante um ano. Arranque em produção só com o certificado a funcionar.
 
@@ -173,7 +173,7 @@ Com `NODE_ENV=production` o site envia o cabeçalho HSTS: depois de o abrirem em
 ## 7. E-mail (Resend)
 
 1. Crie uma conta em resend.com. O plano gratuito permite 3.000 e-mails por mês, com um máximo de 100 por dia; ao atingir o limite, o envio pára, sem cobrança.
-2. Em Domains, adicione `maputoblue.com` e crie os registos DNS indicados (SPF, DKIM e, opcionalmente, DMARC) no fornecedor de DNS. Espere que o domínio fique «Verified».
+2. Em Domains, adicione `maputoblue.co.mz` e crie os registos DNS indicados (SPF, DKIM e, opcionalmente, DMARC) no fornecedor de DNS. Espere que o domínio fique «Verified».
 3. Em API Keys, crie uma chave **só de envio** e coloque-a em `RESEND_API_KEY` no `.env`.
 4. Reinicie o serviço: `nssm restart MaputoBlue`.
 5. No painel, em **E-mails**, reenvie os que estão como «Falhou».
@@ -270,7 +270,7 @@ Antes de cada actualização, corra `npm test` e `npm run test:e2e` numa máquin
 - [ ] `assets\images` incluído no backup de ficheiros
 
 **SEO:**
-- [ ] Sitemap submetido no Google Search Console: `https://www.maputoblue.com/sitemap.xml`
+- [ ] Sitemap submetido no Google Search Console: `https://maputoblue.co.mz/sitemap.xml`
 
 **Tickets:**
 - [ ] `TICKET_SECRET` definido e guardado num local seguro, porque é preciso para os QR continuarem válidos após uma reinstalação

@@ -31,7 +31,7 @@ function layout({ title, intro, rows = [], body = '', cta, footerNote, locale })
       </td></tr>
       <tr><td style="background:#071B2E;padding:18px 28px;color:#94A3B8;font-size:12px;line-height:1.6;">
         Maputo Blue · Maputo, Moçambique · WhatsApp +258 84 712 1666<br>
-        ${locale === 'en' ? 'You received this e-mail because of a request made on maputoblue.com.' : 'Recebeu este e-mail devido a um pedido feito em maputoblue.com.'}
+        ${locale === 'en' ? 'You received this e-mail because of a request made on maputoblue.co.mz.' : 'Recebeu este e-mail devido a um pedido feito em maputoblue.co.mz.'}
       </td></tr>
     </table>
   </td></tr></table>

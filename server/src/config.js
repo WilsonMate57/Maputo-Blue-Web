@@ -29,7 +29,7 @@ export function loadConfig(overrides = {}) {
     jobs:           bool(env.RUN_JOBS, true),
     mail: {
       resendApiKey: env.RESEND_API_KEY || '',
-      from:         env.MAIL_FROM || 'Maputo Blue <reservas@maputoblue.com>',
+      from:         env.MAIL_FROM || 'Maputo Blue <reservas@maputoblue.co.mz>',
       replyTo:      env.MAIL_REPLY_TO || 'maputoblue.info@gmail.com',
     },
     ipHashSalt:     env.IP_HASH_SALT || 'dev-salt-change-me',
