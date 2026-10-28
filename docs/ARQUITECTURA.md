@@ -245,3 +245,24 @@ A cotação aparece na conta quando o pedido foi feito com sessão iniciada, ou 
 - **Código:** `server/src/lib/quotes.js`, `server/src/routes/admin/requests.js`, `server/src/routes/account.js` e `server/src/routes/public.js`.
 - **Migração:** `004_quote_requests.sql` (só acrescenta).
 - **Testes:** `server/test/quotes.test.js` e os e2e do formulário e do painel.
+
+## 14. Avisos por WhatsApp e estatísticas do site
+
+**Avisos à equipa por WhatsApp** (`server/src/lib/whatsapp.js`, guia em [WHATSAPP.md](WHATSAPP.md)):
+- Os avisos à equipa passam por `notifyTeam`, que envia o e-mail e, se houver números configurados em Definições, coloca o aviso na fila `whatsapp_outbox`.
+- O envio usa a WhatsApp Cloud API da Meta, com modelos aprovados: `alerta_equipa` e `alerta_reserva`. O `alerta_reserva` tem o botão «Conversar com o cliente», que abre `/wa/<número>` no próprio site; o site reencaminha para `wa.me`.
+
+**Estatísticas do site** (aba «Estatísticas do site» no painel):
+- **Recolha:** `assets/js/analytics.js`, carregado pelo `main.js`, envia para `POST /api/t` as páginas vistas, o tempo com a página visível, a rolagem e os cliques (posição e texto do botão).
+- **Privacidade:**
+  - não usa cookies;
+  - o visitante é um hash diário de (sal, dia, IP, navegador), por isso não é seguido entre dias;
+  - a sessão é um identificador aleatório guardado só no separador;
+  - nada do que é escrito nos formulários é lido;
+  - respeita Do Not Track / GPC.
+- **Exclusões:** robôs, o próprio `/admin` e administradores com sessão iniciada não contam.
+- **Armazenamento:** tabelas `analytics_pageviews` e `analytics_clicks`. A manutenção horária apaga os cliques com mais de 6 meses e as visitas com mais de 25 meses.
+- **Mapa de cliques:**
+  - as posições são guardadas como fracção da largura da página e píxeis desde o topo;
+  - são agrupadas por largura do ecrã (telemóvel < 768 px, tablet < 1200 px, computador);
+  - o painel desenha-as sobre a página real, carregada num iframe com `?mb_noanalytics=1`.

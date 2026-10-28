@@ -12,6 +12,7 @@ import customers from './customers.js';
 import media from './media.js';
 import system from './system.js';
 import invoices from './invoices.js';
+import analytics from './analytics.js';
 
 export default async function adminRoutes(app) {
   app.addHook('onRequest', requireAdmin);
@@ -24,4 +25,5 @@ export default async function adminRoutes(app) {
   await app.register(media);
   await app.register(system);
   await app.register(invoices);
+  await app.register(analytics);
 }

@@ -16,6 +16,7 @@ import adminRoutes from './routes/admin/index.js';
 import seoRoutes from './routes/seo.js';
 import ticketRoutes from './routes/tickets.js';
 import imageRoutes from './routes/images.js';
+import analyticsRoutes from './routes/analytics.js';
 
 // Only these top-level paths of the site folder are ever served.
 const STATIC_ALLOW = /^\/(index\.html|logo\.webp|robots\.txt|sitemap\.xml|favicon\.ico|(assets|components|data|pages|en|admin)\/.*)?$/;
@@ -110,6 +111,7 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
 
   await app.register(publicRoutes, { prefix: '/api' });
   await app.register(ticketRoutes, { prefix: '/api' });
+  await app.register(analyticsRoutes, { prefix: '/api' });
   await app.register(authRoutes, { prefix: '/api/auth' });
   await app.register(accountRoutes, { prefix: '/api/account' });
   await app.register(adminRoutes, { prefix: '/api/admin' });

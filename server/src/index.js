@@ -43,6 +43,9 @@ if (cfg.jobs) {
       await runBookingMaintenance(pool, cfg);
       await pool.query(`delete from sessions where expires_at < now()`);
       await pool.query(`delete from auth_tokens where expires_at < now() - interval '7 days'`);
+      // Visit statistics: clicks (heatmaps) for 6 months, page views for 25 months
+      await pool.query(`delete from analytics_clicks where at < now() - interval '6 months'`);
+      await pool.query(`delete from analytics_pageviews where at < now() - interval '25 months'`);
     } catch (e) { app.log.error(e); } finally { maintBusy = false; }
   };
   timers.push(setInterval(maintenance, 60 * 60_000));

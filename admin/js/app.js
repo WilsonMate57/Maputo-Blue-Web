@@ -7,6 +7,7 @@ import { $, $$, ApiError, errorText, get, post, setUnauthorizedHandler, toast } 
 
 const ROUTES = [
   { re: /^\/dashboard$/, key: 'dashboard', title: 'Visão geral', load: () => import('./views/dashboard.js') },
+  { re: /^\/analytics$/, key: 'analytics', title: 'Estatísticas do site', load: () => import('./views/analytics.js') },
   { re: /^\/bookings$/, key: 'bookings', title: 'Reservas', load: () => import('./views/bookings.js') },
   { re: /^\/bookings\/([0-9a-f-]{36})$/, key: 'bookings', title: 'Reserva', load: () => import('./views/booking-detail.js') },
   { re: /^\/invoices$/, key: 'invoices', title: 'Facturas', load: () => import('./views/invoices.js') },
