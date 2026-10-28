@@ -6,7 +6,10 @@
 // Messages started by the business must use a template approved by Meta. One
 // generic "utility" template with three body parameters covers every alert:
 //   {{1}} title · {{2}} summary · {{3}} link to the admin panel
-// (text to submit in docs/WHATSAPP.md). Same outbox pattern as mailer.js: alerts
+// (text to submit in docs/WHATSAPP.md). Booking alerts use a second template
+// (WHATSAPP_TEMPLATE_CHAT) with the same body plus a "Conversar com o cliente"
+// URL button https://wa.me/{{1}}, when the customer's number can be read.
+// Same outbox pattern as mailer.js: alerts
 // are enqueued inside the business transaction and delivered with retries, so
 // a WhatsApp failure never affects a booking.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -20,6 +23,24 @@ export function normalizePhone(value) {
   const m = /^\+?(\d{8,15})$/.exec(String(value || '').replace(/[\s().-]/g, ''));
   return m ? m[1] : null;
 }
+
+/**
+ * Customer number for a wa.me link, from what the customer typed (free text):
+ * "+258 84…" / "00258 84…" as given; a 9-digit Mozambican mobile ("84 123 4567")
+ * gets the 258 country code. Anything else (local numbers of other countries,
+ * typos) → null, and the alert goes without the chat button.
+ */
+export function chatPhone(value) {
+  const raw = String(value || '').replace(/[\s().-]/g, '');
+  if (/^\+\d{8,15}$/.test(raw)) return raw.slice(1);
+  if (/^00\d{8,15}$/.test(raw)) return raw.slice(2);
+  if (/^8[2-7]\d{7}$/.test(raw)) return `258${raw}`;
+  if (/^258\d{9}$/.test(raw)) return raw;
+  return null;
+}
+
+// Alerts about a booking get the "Conversar com o cliente" button
+const CHAT_TEMPLATES = new Set(['admin_new_booking', 'admin_cancel_request']);
 
 const fmtMoney = (n, cur) => `${cur || 'MZN'} ${Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
 const fmtDate = d => (d ? `${d.slice(8, 10)}/${d.slice(5, 7)}/${d.slice(0, 4)}` : '');
@@ -70,11 +91,12 @@ export async function enqueueAdminWhatsApp(db, { key, template, data }) {
   const phones = ((rows[0] && rows[0].value.admin_whatsapp) || []).map(normalizePhone).filter(Boolean);
   const params = phones.length ? alertParams(template, data) : null;
   if (!params) return 0;
+  const chat = CHAT_TEMPLATES.has(template) ? chatPhone(data.customer_phone) : null;
   for (const phone of phones) {
     await db.query(
-      `insert into whatsapp_outbox (idempotency_key, to_phone, template, params) values ($1,$2,$3,$4)
+      `insert into whatsapp_outbox (idempotency_key, to_phone, template, params, chat_phone) values ($1,$2,$3,$4,$5)
        on conflict (idempotency_key) do nothing`,
-      [`${key}:wa:${phone}`, phone, template, JSON.stringify(params)]);
+      [`${key}:wa:${phone}`, phone, template, JSON.stringify(params), chat]);
   }
   return phones.length;
 }
@@ -84,17 +106,19 @@ const RETRYABLE_CODES = new Set([1, 2, 4, 17, 80007, 130429, 131000, 131016, 131
 
 /** Transport: Meta WhatsApp Cloud API (Graph API). */
 export function cloudApiTransport(wa) {
-  return async ({ to, params }) => {
+  return async ({ to, params, chatPhone: chat }) => {
     if (!wa.token || !wa.phoneNumberId) {
       throw Object.assign(new Error('WhatsApp not configured (WHATSAPP_TOKEN / WHATSAPP_PHONE_NUMBER_ID)'), { retryable: false });
     }
+    const withButton = !!(chat && wa.templateChat);
+    const components = [{ type: 'body', parameters: params.map(text => ({ type: 'text', text })) }];
+    if (withButton) components.push({ type: 'button', sub_type: 'url', index: '0', parameters: [{ type: 'text', text: chat }] });
     const res = await fetch(`https://graph.facebook.com/${wa.apiVersion}/${encodeURIComponent(wa.phoneNumberId)}/messages`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${wa.token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         messaging_product: 'whatsapp', recipient_type: 'individual', to, type: 'template',
-        template: { name: wa.template, language: { code: wa.language },
-          components: [{ type: 'body', parameters: params.map(text => ({ type: 'text', text })) }] },
+        template: { name: withButton ? wa.templateChat : wa.template, language: { code: wa.language }, components },
       }),
       signal: AbortSignal.timeout(15000),
     });
@@ -132,7 +156,7 @@ export async function processWhatsAppOutbox(pool, transport, { limit = 20, log =
   const stats = { sent: 0, failed: 0, retried: 0 };
   for (const job of jobs) {
     try {
-      const providerId = await transport({ to: job.to_phone, params: job.params, template: job.template });
+      const providerId = await transport({ to: job.to_phone, params: job.params, template: job.template, chatPhone: job.chat_phone });
       await pool.query(`update whatsapp_outbox set status='sent', sent_at=now(), provider_id=$2, last_error=null where id=$1`, [job.id, providerId]);
       stats.sent++;
     } catch (err) {

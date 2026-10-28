@@ -59,7 +59,7 @@ export default async function systemRoutes(app) {
     mail_configured: !!cfg.mail.resendApiKey,
     mail_from: cfg.mail.from,
     whatsapp_configured: whatsappConfigured(cfg),
-    whatsapp_template: `${cfg.whatsapp.template} (${cfg.whatsapp.language})`,
+    whatsapp_template: `${cfg.whatsapp.template}${cfg.whatsapp.templateChat ? ` + ${cfg.whatsapp.templateChat} (reservas, com botão)` : ''} · ${cfg.whatsapp.language}`,
   }));
 
   for (const key of Object.keys(SETTING_SCHEMAS)) {

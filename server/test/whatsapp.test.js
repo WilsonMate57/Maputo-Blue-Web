@@ -3,7 +3,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { setup, client, adminClient, bookingBody } from './helpers.js';
-import { alertParams, cloudApiTransport, normalizePhone, processWhatsAppOutbox } from '../src/lib/whatsapp.js';
+import { alertParams, chatPhone, cloudApiTransport, normalizePhone, processWhatsAppOutbox } from '../src/lib/whatsapp.js';
 
 let ctx, admin;
 before(async () => {
@@ -19,6 +19,16 @@ test('phone numbers: international format only', () => {
   assert.equal(normalizePhone('(+258) 84-712-1666'), '258847121666');
   assert.equal(normalizePhone('84 712'), null);
   assert.equal(normalizePhone('abc'), null);
+});
+
+test('customer number for the chat button (free text typed by the customer)', () => {
+  assert.equal(chatPhone('+258 84 123 4567'), '258841234567');
+  assert.equal(chatPhone('00351 912 345 678'), '351912345678');
+  assert.equal(chatPhone('84 123 4567'), '258841234567', 'Mozambican mobile without country code');
+  assert.equal(chatPhone('258841234567'), '258841234567');
+  assert.equal(chatPhone('021 123 456'), null, 'landline / unknown country → no button');
+  assert.equal(chatPhone('912345678'), null);
+  assert.equal(chatPhone(''), null);
 });
 
 test('template parameters: three, no line breaks, link last', () => {
@@ -54,6 +64,9 @@ test('a new booking queues one alert per team number, delivered by the worker', 
   assert.equal(rows[0].template, 'admin_new_booking');
   assert.match(rows[0].params[0], new RegExp(`Nova reserva ${r.body.booking.reference}`));
   assert.match(rows[0].params[2], /\/admin\/#\/bookings\//);
+  assert.ok(rows.every(x => x.chat_phone === '258840000000'), 'booking alerts carry the customer number');
+  const t = await ctx.pool.query(`select chat_phone from whatsapp_outbox where template = 'test'`);
+  assert.ok(t.rows.every(x => x.chat_phone === null));
 
   const calls = [];
   const stats = await processWhatsAppOutbox(ctx.pool, async msg => { calls.push(msg); return `wamid.${calls.length}`; });
@@ -90,6 +103,19 @@ test('Cloud API request: template with body parameters; errors classified', asyn
     assert.equal(req.headers.Authorization, 'Bearer T');
     assert.deepEqual(req.body.template, { name: 'alerta_equipa', language: { code: 'pt_PT' },
       components: [{ type: 'body', parameters: [{ type: 'text', text: 'a' }, { type: 'text', text: 'b' }, { type: 'text', text: 'c' }] }] });
+
+    // Booking alert with a customer number → chat template with the URL button
+    const chat = cloudApiTransport({ ...wa, templateChat: 'alerta_reserva' });
+    globalThis.fetch = async (url, opts) => { req = { body: JSON.parse(opts.body) }; return new Response(JSON.stringify({ messages: [{ id: 'wamid.Y' }] }), { status: 200 }); };
+    await chat({ to: '258847121666', params: ['a', 'b', 'c'], chatPhone: '258841234567' });
+    assert.equal(req.body.template.name, 'alerta_reserva');
+    assert.deepEqual(req.body.template.components[1], { type: 'button', sub_type: 'url', index: '0', parameters: [{ type: 'text', text: '258841234567' }] });
+    // …no customer number, or no chat template configured → plain template, no button
+    await chat({ to: '258847121666', params: ['a', 'b', 'c'], chatPhone: null });
+    assert.equal(req.body.template.name, 'alerta_equipa');
+    assert.equal(req.body.template.components.length, 1);
+    await cloudApiTransport(wa)({ to: '258847121666', params: ['a', 'b', 'c'], chatPhone: '258841234567' });
+    assert.equal(req.body.template.name, 'alerta_equipa');
 
     globalThis.fetch = async () => new Response(JSON.stringify({ error: { code: 132001, message: 'Template name does not exist' } }), { status: 400 });
     await assert.rejects(cloudApiTransport(wa)({ to: '1', params: [] }), e => e.retryable === false && /132001/.test(e.message));

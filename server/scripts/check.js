@@ -34,7 +34,7 @@ cfg.trustProxy ? ok('TRUST_PROXY activo (atrás de Caddy/IIS)') : warn('TRUST_PR
 cfg.mail.resendApiKey ? ok('RESEND_API_KEY definido') : warn('RESEND_API_KEY vazio: os e-mails ficam na fila até ser configurado');
 if (cfg.whatsapp.token || cfg.whatsapp.phoneNumberId) {
   cfg.whatsapp.token && cfg.whatsapp.phoneNumberId
-    ? ok(`WhatsApp configurado (modelo ${cfg.whatsapp.template}, ${cfg.whatsapp.language})`)
+    ? ok(`WhatsApp configurado (modelo ${cfg.whatsapp.template}${cfg.whatsapp.templateChat ? `, reservas: ${cfg.whatsapp.templateChat}` : ''}, ${cfg.whatsapp.language})`)
     : fail('WhatsApp incompleto: defina WHATSAPP_TOKEN e WHATSAPP_PHONE_NUMBER_ID');
 }
 if (cfg.host !== '127.0.0.1' && cfg.host !== 'localhost') warn(`HOST=${cfg.host}: em produção o Node deve escutar só em 127.0.0.1, atrás do proxy`);

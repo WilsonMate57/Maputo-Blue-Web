@@ -37,8 +37,10 @@ export function loadConfig(overrides = {}) {
       token:         env.WHATSAPP_TOKEN || '',
       phoneNumberId: env.WHATSAPP_PHONE_NUMBER_ID || '',
       template:      env.WHATSAPP_TEMPLATE || 'alerta_equipa',
+      // Same body + "Conversar com o cliente" button; empty → booking alerts use the plain template
+      templateChat:  env.WHATSAPP_TEMPLATE_CHAT || '',
       language:      env.WHATSAPP_TEMPLATE_LANG || 'pt_PT',
-      apiVersion:    env.WHATSAPP_API_VERSION || 'v23.0',
+      apiVersion:    env.WHATSAPP_API_VERSION || 'v25.0',
     },
     ipHashSalt:     env.IP_HASH_SALT || 'dev-salt-change-me',
     // Signs ticket QR codes. Changing it invalidates every issued QR code.

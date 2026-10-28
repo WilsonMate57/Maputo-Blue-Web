@@ -68,6 +68,27 @@ Anote o **Phone number ID**, que aparece em API Setup. Não é o número de tele
 
 Se usar outro nome ou idioma, indique-os nas variáveis `WHATSAPP_TEMPLATE` e `WHATSAPP_TEMPLATE_LANG`. O modelo tem de ter **exactamente 3 variáveis no corpo**.
 
+#### Segundo modelo: reservas com o botão «Conversar com o cliente»
+Os avisos de **nova reserva** e de **pedido de cancelamento** usam um segundo modelo. O corpo é igual ao primeiro, mas tem um botão que abre a conversa de WhatsApp com o cliente (`https://wa.me/<número do cliente>`).
+
+1. Crie outro modelo na categoria **Serviços / Utility**:
+   - **Nome:** `alerta_reserva`;
+   - **Idioma:** Português (POR);
+   - **Tipo de variável:** Número;
+   - **Corpo e exemplos:** iguais aos do `alerta_equipa`.
+2. Em **Botões → Adicionar botão**, escolha **Visitar website**:
+   - **Texto do botão:** `Conversar com o cliente`;
+   - **Tipo de URL:** **Dinâmico**;
+   - **URL:** `https://wa.me/{{1}}`;
+   - **Exemplo:** `https://wa.me/258841234567`.
+3. Submeta.
+
+O número do cliente vem do que ele escreveu no formulário:
+- com `+` ou `00` e o indicativo, é usado como está;
+- um telemóvel moçambicano de 9 algarismos (`84 123 4567`) recebe o indicativo 258.
+
+Se não for possível interpretar o número, o aviso segue pelo modelo `alerta_equipa`, sem botão, e o telefone continua visível no texto.
+
 ### 4. Token permanente
 O token temporário de API Setup expira em 24 h. Para produção:
 1. Em **business.facebook.com → Settings → Users → System users → Add**, crie um utilizador de sistema com a função Admin.
@@ -85,8 +106,11 @@ No Plesk, abra o **File Manager**, edite `maputoblue-app/server/.env` e acrescen
 WHATSAPP_TOKEN=o_token_permanente
 WHATSAPP_PHONE_NUMBER_ID=o_phone_number_id
 WHATSAPP_TEMPLATE=alerta_equipa
+WHATSAPP_TEMPLATE_CHAT=alerta_reserva
 WHATSAPP_TEMPLATE_LANG=pt_PT
 ```
+
+Enquanto o `alerta_reserva` não estiver aprovado, deixe `WHATSAPP_TEMPLATE_CHAT` vazio. Os avisos de reserva saem pelo `alerta_equipa`, sem botão.
 
 Depois:
 1. **Node.js → Restart App.**
