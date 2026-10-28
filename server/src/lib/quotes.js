@@ -9,7 +9,7 @@
 // A quotation is never a booking and never charges anything.
 // ─────────────────────────────────────────────────────────────────────────────
 import { audit } from './audit.js';
-import { enqueueMail, enqueueAdminMail } from './mailer.js';
+import { enqueueMail, notifyTeam } from './mailer.js';
 import { loadPackage } from './catalog.js';
 import { computeQuote } from './pricing.js';
 import { addDays, todayLocal } from './dates.js';
@@ -144,7 +144,7 @@ export async function respondToQuote(c, cfg, { quote: q, decision, actor }) {
   if (accepted) {
     await c.query(`update custom_requests set status='accepted', updated_at=now() where id=$1`, [q.req_id]);
     await enqueueMail(c, { key: `quote:${q.id}:accepted`, to: q.email, template: 'quote_accepted', locale: q.locale, data: { ...q } });
-    await enqueueAdminMail(c, { key: `quote:${q.id}:admin_accepted`, template: 'admin_quote_accepted',
+    await notifyTeam(c, { key: `quote:${q.id}:admin_accepted`, template: 'admin_quote_accepted',
       data: { ...q, admin_url: `${cfg.publicBaseUrl}/admin/#/requests/${q.req_id}` } });
   }
   await audit(c, actor || null, 'request', q.req_id, accepted ? 'quote_accepted' : 'quote_declined', { quote_id: q.id });

@@ -5,6 +5,7 @@
 // The idempotency key makes enqueueing safe to repeat.
 // ─────────────────────────────────────────────────────────────────────────────
 import { renderTemplate } from './mail-templates.js';
+import { enqueueAdminWhatsApp } from './whatsapp.js';
 
 const MAX_ATTEMPTS = 6;
 
@@ -19,11 +20,12 @@ export async function enqueueMail(db, { key, to, template, locale = 'pt', data =
   }
 }
 
-/** Notify every administrator e-mail configured in settings.notifications. */
-export async function enqueueAdminMail(db, { key, template, data }) {
+/** Notify the team configured in settings.notifications: e-mail and, when set, WhatsApp. */
+export async function notifyTeam(db, { key, template, data }) {
   const { rows } = await db.query(`select value from settings where key = 'notifications'`);
   const emails = (rows[0] && rows[0].value.admin_emails) || [];
   if (emails.length) await enqueueMail(db, { key, to: emails, template, locale: 'pt', data });
+  await enqueueAdminWhatsApp(db, { key, template, data });
 }
 
 /** Default transport: Resend HTTP API. */

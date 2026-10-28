@@ -1,5 +1,5 @@
 // Settings: booking policy, loyalty programme, notifications.
-import { $, CATEGORY_LABELS, busy, esc, formValues, get, put } from '../core.js';
+import { $, $$, CATEGORY_LABELS, badge, busy, dateTime, esc, formValues, get, post, put } from '../core.js';
 
 export default async function settings(main) {
   const [s, cats] = await Promise.all([get('/admin/settings'), get('/admin/categories')]);
@@ -39,6 +39,8 @@ export default async function settings(main) {
       <form class="card" id="f-notifications" novalidate><div class="card__head"><h2>Notificações</h2></div><div class="card__body">
         <label class="field"><span>E-mails da equipa <small>(um por linha)</small></span><textarea name="admin_emails" rows="3">${esc((n.admin_emails || []).join('\n'))}</textarea>
           <span class="field__hint">Recebem avisos de novos pedidos, cancelamentos e cotações aceites.</span></label>
+        <label class="field" style="margin-top:12px;"><span>WhatsApp da equipa <small>(um por linha, formato internacional)</small></span><textarea name="admin_whatsapp" rows="2" placeholder="+258 84 123 4567">${esc((n.admin_whatsapp || []).join('\n'))}</textarea>
+          <span class="field__hint">Recebem os mesmos avisos por WhatsApp (até 5 números). Requer a configuração do WhatsApp no servidor.</span></label>
         <label class="field" style="margin-top:12px;"><span>Lembrete ao cliente (dias antes da viagem)</span><input type="number" name="reminder_days_before" min="0" max="30" value="${n.reminder_days_before ?? 2}"><span class="field__hint">0 = não enviar lembretes.</span></label>
         <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
       </div></form>
@@ -93,6 +95,13 @@ export default async function settings(main) {
         ${s.mail_configured ? `<p class="alert alert--success" style="margin:0;">Configurado. Remetente: ${esc(s.mail_from)}</p>`
           : '<p class="alert alert--warn" style="margin:0;">Não configurado. Defina RESEND_API_KEY e MAIL_FROM no ficheiro server/.env do servidor e reinicie o serviço (ver docs/IMPLANTACAO.md).</p>'}
       </div></div>
+
+      <div class="card"><div class="card__head"><h2>WhatsApp</h2></div><div class="card__body">
+        ${s.whatsapp_configured ? `<p class="alert alert--success" style="margin:0;">Configurado. Modelo: ${esc(s.whatsapp_template)}</p>`
+          : '<p class="alert alert--warn" style="margin:0;">Não configurado. Defina WHATSAPP_TOKEN e WHATSAPP_PHONE_NUMBER_ID no ficheiro server/.env e reinicie a aplicação (ver docs/WHATSAPP.md).</p>'}
+        <div class="form-actions"><button type="button" class="btn btn--ghost" id="wa-test"><i class='bx bxl-whatsapp'></i>Enviar mensagem de teste</button></div>
+        <div id="wa-log"></div>
+      </div></div>
     </div>`;
 
   const wire = (id, key, map) => $(id, main).addEventListener('submit', async e => {
@@ -111,5 +120,30 @@ export default async function settings(main) {
   }));
   wire('#f-loyalty', 'loyalty', v => ({ ...v, categories: v.categories.length ? v.categories : null }));
   wire('#f-company', 'company', v => Object.fromEntries(Object.entries(v).map(([k, x]) => [k, String(x || '').trim()])));
-  wire('#f-notifications', 'notifications', v => ({ admin_emails: v.admin_emails.split(/[\n,;]+/).map(x => x.trim()).filter(Boolean), reminder_days_before: v.reminder_days_before ?? 0 }));
+  wire('#f-notifications', 'notifications', v => ({ admin_emails: v.admin_emails.split(/[\n,;]+/).map(x => x.trim()).filter(Boolean),
+    admin_whatsapp: v.admin_whatsapp.split(/[\n,;]+/).map(x => x.trim()).filter(Boolean), reminder_days_before: v.reminder_days_before ?? 0 }));
+
+  // WhatsApp: recent alerts, retry and test message
+  const WA_TYPES = { admin_new_booking: 'Nova reserva', admin_new_request: 'Novo pedido de cotação', admin_cancel_request: 'Pedido de cancelamento', admin_quote_accepted: 'Cotação aceite', test: 'Teste' };
+  async function loadWa() {
+    const box = $('#wa-log', main);
+    const r = await get('/admin/whatsapp');
+    box.innerHTML = r.items.length ? `<div class="table-wrap" style="margin-top:14px;"><table class="table"><thead><tr><th>Aviso</th><th>Número</th><th>Estado</th><th>Data</th><th></th></tr></thead><tbody>
+      ${r.items.map(m => `<tr><td class="t-strong">${esc(WA_TYPES[m.template] || m.template)}</td><td class="nowrap">+${esc(m.to_phone)}</td>
+        <td>${badge(m.status)}${m.last_error ? `<span class="t-sub" style="color:var(--danger)">${esc(m.last_error)}</span>` : ''}</td>
+        <td class="nowrap muted">${dateTime(m.sent_at || m.created_at)}</td>
+        <td>${m.status === 'failed' ? `<button type="button" class="btn btn--ghost btn--sm" data-wa-retry="${m.id}">Tentar de novo</button>` : ''}</td></tr>`).join('')}
+      </tbody></table></div>` : '<p class="muted" style="margin:14px 0 0;">Ainda não foram enviados avisos por WhatsApp.</p>';
+    $$('[data-wa-retry]', box).forEach(b => b.addEventListener('click', async () => {
+      try { await busy(b, () => post(`/admin/whatsapp/${b.dataset.waRetry}/retry`), 'Mensagem colocada de novo na fila.'); loadWa(); } catch { /* toast */ }
+    }));
+  }
+  $('#wa-test', main).addEventListener('click', async e => {
+    try {
+      await busy(e.currentTarget, () => post('/admin/whatsapp/test'), 'Mensagem de teste na fila: chega dentro de cerca de 20 segundos.');
+      setTimeout(loadWa, 25000);
+      loadWa();
+    } catch { /* toast */ }
+  });
+  await loadWa();
 }

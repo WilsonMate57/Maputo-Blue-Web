@@ -9,6 +9,7 @@ import { processOutbox, resendTransport } from './lib/mailer.js';
 import { runBookingMaintenance } from './lib/bookings.js';
 import { ticketAttachments } from './lib/tickets.js';
 import { invoiceAttachments } from './lib/invoices.js';
+import { cloudApiTransport, processWhatsAppOutbox, whatsappConfigured } from './lib/whatsapp.js';
 
 const cfg = loadConfig();
 const pool = createPool(cfg.databaseUrl);
@@ -19,6 +20,7 @@ const app = await buildApp({ cfg, pool, mailTransport: transport, logger: { leve
 await app.listen(typeof cfg.port === 'number' ? { port: cfg.port, host: cfg.host } : { path: cfg.port });
 console.log(`\n  ✦ Maputo Blue server  ➜  ${typeof cfg.port === 'number' ? `http://${cfg.host}:${cfg.port}` : cfg.port}  (${cfg.env})`);
 if (!cfg.mail.resendApiKey) console.log('  ! RESEND_API_KEY not set — e-mails stay in the outbox as "failed" until configured.');
+if (!whatsappConfigured(cfg)) console.log('  · WhatsApp alerts off (WHATSAPP_TOKEN / WHATSAPP_PHONE_NUMBER_ID not set).');
 
 const timers = [];
 if (cfg.jobs) {
@@ -28,6 +30,12 @@ if (cfg.jobs) {
   timers.push(setInterval(async () => {
     if (mailBusy) return; mailBusy = true;
     try { await processOutbox(pool, transport, { log: m => app.log.warn(m), attachments: mailAttachments }); } catch (e) { app.log.error(e); } finally { mailBusy = false; }
+  }, 20_000));
+  let waBusy = false;
+  const waTransport = cloudApiTransport(cfg.whatsapp);
+  timers.push(setInterval(async () => {
+    if (waBusy) return; waBusy = true;
+    try { await processWhatsAppOutbox(pool, waTransport, { log: m => app.log.warn(m) }); } catch (e) { app.log.error(e); } finally { waBusy = false; }
   }, 20_000));
   const maintenance = async () => {
     if (maintBusy) return; maintBusy = true;

@@ -32,11 +32,20 @@ export function loadConfig(overrides = {}) {
       from:         env.MAIL_FROM || 'Maputo Blue <reservas@maputoblue.co.mz>',
       replyTo:      env.MAIL_REPLY_TO || 'maputoblue.info@gmail.com',
     },
+    // Team alerts on WhatsApp (Meta Cloud API); off while the token is empty
+    whatsapp: {
+      token:         env.WHATSAPP_TOKEN || '',
+      phoneNumberId: env.WHATSAPP_PHONE_NUMBER_ID || '',
+      template:      env.WHATSAPP_TEMPLATE || 'alerta_equipa',
+      language:      env.WHATSAPP_TEMPLATE_LANG || 'pt_PT',
+      apiVersion:    env.WHATSAPP_API_VERSION || 'v23.0',
+    },
     ipHashSalt:     env.IP_HASH_SALT || 'dev-salt-change-me',
     // Signs ticket QR codes. Changing it invalidates every issued QR code.
     ticketSecret:   env.TICKET_SECRET || '',
   };
-  const out = { ...cfg, ...overrides, mail: { ...cfg.mail, ...(overrides.mail || {}) } };
+  const out = { ...cfg, ...overrides, mail: { ...cfg.mail, ...(overrides.mail || {}) },
+    whatsapp: { ...cfg.whatsapp, ...(overrides.whatsapp || {}) } };
   if (out.env === 'production') {
     const problems = productionProblems(out, env);
     if (problems.length) {

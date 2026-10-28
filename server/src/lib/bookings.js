@@ -15,7 +15,7 @@ import { checkAndLock, endDateFor } from './availability.js';
 import { diffDays } from './dates.js';
 import { loyaltyStatus } from './loyalty.js';
 import { audit } from './audit.js';
-import { enqueueMail, enqueueAdminMail } from './mailer.js';
+import { enqueueMail, notifyTeam } from './mailer.js';
 import { isDateString, todayLocal } from './dates.js';
 import { badRequest, conflict, forbidden, notFound } from './errors.js';
 import { randomToken, reference, sha256 } from './security.js';
@@ -125,7 +125,7 @@ export async function createBooking(pool, cfg, { input, user }) {
     await audit(c, user, 'booking', row.id, 'created', { reference: row.reference, total: row.total, status: 'pending' });
     const data = mailData(row, cfg, { status_url: statusUrl(cfg, row, token), attach_ticket_booking: row.id });
     await enqueueMail(c, { key: `booking:${row.id}:received`, to: row.customer_email, template: 'booking_received', locale: row.locale, data });
-    await enqueueAdminMail(c, { key: `booking:${row.id}:admin_new`, template: 'admin_new_booking', data: { ...data, attach_ticket_booking: undefined } });
+    await notifyTeam(c, { key: `booking:${row.id}:admin_new`, template: 'admin_new_booking', data: { ...data, attach_ticket_booking: undefined } });
     return row;
   }).catch(async err => {
     // Two identical requests racing: the unique idempotency key decides the winner
@@ -183,7 +183,7 @@ export async function requestCancellation(pool, cfg, { bookingId, user, reason }
     if (b.cancel_requested_at) return b;
     const { rows: [u] } = await c.query('update bookings set cancel_requested_at = now(), updated_at = now() where id = $1 returning *', [b.id]);
     await audit(c, user, 'booking', b.id, 'cancel_requested', { reason: reason || null });
-    await enqueueAdminMail(c, { key: `booking:${b.id}:cancel_request`, template: 'admin_cancel_request', data: mailData(u, cfg, { reason }) });
+    await notifyTeam(c, { key: `booking:${b.id}:cancel_request`, template: 'admin_cancel_request', data: mailData(u, cfg, { reason }) });
     return u;
   });
 }

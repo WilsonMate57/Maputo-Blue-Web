@@ -7,7 +7,7 @@
 import { getPublic, getSetting, listPublic, loadPackage } from '../lib/catalog.js';
 import { calendar } from '../lib/availability.js';
 import { createBooking, publicBooking, quoteFor } from '../lib/bookings.js';
-import { enqueueAdminMail, enqueueMail } from '../lib/mailer.js';
+import { notifyTeam, enqueueMail } from '../lib/mailer.js';
 import { audit } from '../lib/audit.js';
 import { addDays, todayLocal } from '../lib/dates.js';
 import { badRequest, conflict, notFound } from '../lib/errors.js';
@@ -231,7 +231,7 @@ export default async function publicRoutes(app) {
       }
       await audit(c, req.user, 'request', r.id, 'created', { reference: r.reference });
       await enqueueMail(c, { key: `request:${r.id}:received`, to: r.email, template: 'request_received', locale: r.locale, data: r });
-      await enqueueAdminMail(c, { key: `request:${r.id}:admin_new`, template: 'admin_new_request',
+      await notifyTeam(c, { key: `request:${r.id}:admin_new`, template: 'admin_new_request',
         data: { ...r, admin_url: `${cfg.publicBaseUrl}/admin/#/requests/${r.id}` } });
       return r;
     });

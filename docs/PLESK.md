@@ -74,6 +74,7 @@ No mesmo ecrã, em **Custom environment variables**, acrescente:
 | `RESEND_API_KEY` | a chave de envio do Resend (ver IMPLANTACAO.md §7); pode ficar vazia até ter a conta |
 | `MAIL_FROM` | ex.: `Maputo Blue <reservas@maputoblue.co.mz>`, num domínio verificado no Resend |
 | `MAIL_REPLY_TO` | caixa que recebe as respostas dos clientes |
+| `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_TEMPLATE`, `WHATSAPP_TEMPLATE_LANG` | opcionais: avisos à equipa por WhatsApp (ver [WHATSAPP.md](WHATSAPP.md)) |
 | `SERVE_STATIC` | `true` |
 | `RUN_JOBS` | `true` |
 

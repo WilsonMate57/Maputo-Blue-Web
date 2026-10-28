@@ -32,6 +32,11 @@ const problems = productionProblems(cfg);
 problems.length ? problems.forEach(fail) : ok('Variáveis de produção (.env) preenchidas');
 cfg.trustProxy ? ok('TRUST_PROXY activo (atrás de Caddy/IIS)') : warn('TRUST_PROXY=false: active-o se o site estiver atrás de Caddy ou IIS');
 cfg.mail.resendApiKey ? ok('RESEND_API_KEY definido') : warn('RESEND_API_KEY vazio: os e-mails ficam na fila até ser configurado');
+if (cfg.whatsapp.token || cfg.whatsapp.phoneNumberId) {
+  cfg.whatsapp.token && cfg.whatsapp.phoneNumberId
+    ? ok(`WhatsApp configurado (modelo ${cfg.whatsapp.template}, ${cfg.whatsapp.language})`)
+    : fail('WhatsApp incompleto: defina WHATSAPP_TOKEN e WHATSAPP_PHONE_NUMBER_ID');
+}
 if (cfg.host !== '127.0.0.1' && cfg.host !== 'localhost') warn(`HOST=${cfg.host}: em produção o Node deve escutar só em 127.0.0.1, atrás do proxy`);
 
 // Folders the server writes to

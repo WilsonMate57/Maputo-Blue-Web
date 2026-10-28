@@ -4,6 +4,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { getSetting } from '../../lib/catalog.js';
 import { retryMail } from '../../lib/mailer.js';
+import { enqueueAdminWhatsApp, normalizePhone, retryWhatsApp, whatsappConfigured } from '../../lib/whatsapp.js';
 import { audit } from '../../lib/audit.js';
 import { badRequest, notFound } from '../../lib/errors.js';
 import { CATEGORIES } from './packages.js';
@@ -42,6 +43,7 @@ const SETTING_SCHEMAS = {
     payment_instructions: str(1500), payment_instructions_en: str(1500), footer_note: str(300), footer_note_en: str(300) } },
   notifications: { type: 'object', properties: {
     admin_emails: { type: 'array', items: email, maxItems: 10 },
+    admin_whatsapp: { type: 'array', items: { type: 'string', maxLength: 25 }, maxItems: 5 },
     reminder_days_before: { type: 'integer', minimum: 0, maximum: 30 } } },
 };
 
@@ -56,6 +58,8 @@ export default async function systemRoutes(app) {
     invoicing: await getSetting(pool, 'invoicing'),
     mail_configured: !!cfg.mail.resendApiKey,
     mail_from: cfg.mail.from,
+    whatsapp_configured: whatsappConfigured(cfg),
+    whatsapp_template: `${cfg.whatsapp.template} (${cfg.whatsapp.language})`,
   }));
 
   for (const key of Object.keys(SETTING_SCHEMAS)) {
@@ -73,6 +77,12 @@ export default async function systemRoutes(app) {
         const all = [...CATEGORIES.tour, ...CATEGORIES.accommodation];
         if (next.categories && next.categories.some(c => !all.includes(c))) throw badRequest('invalid_setting', 'Unknown category');
         if (next.categories && !next.categories.length) next.categories = null;
+      }
+      if (key === 'notifications' && req.body.admin_whatsapp) {
+        const phones = req.body.admin_whatsapp.map(p => [p, normalizePhone(p)]);
+        const bad = phones.filter(([, n]) => !n).map(([p]) => p);
+        if (bad.length) throw badRequest('invalid_setting', `Invalid WhatsApp number (use international format, e.g. +258 84 123 4567): ${bad.join(', ')}`);
+        next.admin_whatsapp = [...new Set(phones.map(([, n]) => `+${n}`))];
       }
       const { rows: [before] } = await pool.query('select value from settings where key = $1', [key]);
       await pool.query(
@@ -102,6 +112,27 @@ export default async function systemRoutes(app) {
   app.post('/mail/:id/retry', { schema: { params: { type: 'object', properties: { id: uuid } } } }, async req => {
     if (!(await retryMail(pool, req.params.id))) throw notFound('mail_not_found', 'E-mail not found or already sent');
     await audit(pool, req.user, 'mail', req.params.id, 'retry');
+    return { ok: true };
+  });
+
+  app.get('/whatsapp', async () => {
+    const { rows } = await pool.query(
+      `select id, template, to_phone, status, attempts, last_error, sent_at, created_at
+         from whatsapp_outbox order by created_at desc limit 20`);
+    return { items: rows };
+  });
+
+  app.post('/whatsapp/test', async req => {
+    const n = await enqueueAdminWhatsApp(pool, { key: `test:${Date.now()}`, template: 'test',
+      data: { admin_url: `${cfg.publicBaseUrl}/admin/` } });
+    if (!n) throw badRequest('no_whatsapp_numbers', 'Add at least one WhatsApp number in Notifications first');
+    await audit(pool, req.user, 'whatsapp', 'test', 'queued', { recipients: n });
+    return { queued: n };
+  });
+
+  app.post('/whatsapp/:id/retry', { schema: { params: { type: 'object', properties: { id: uuid } } } }, async req => {
+    if (!(await retryWhatsApp(pool, req.params.id))) throw notFound('whatsapp_not_found', 'Message not found or already sent');
+    await audit(pool, req.user, 'whatsapp', req.params.id, 'retry');
     return { ok: true };
   });
 
