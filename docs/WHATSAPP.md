@@ -69,7 +69,7 @@ Anote o **Phone number ID**, que aparece em API Setup. Não é o número de tele
 Se usar outro nome ou idioma, indique-os nas variáveis `WHATSAPP_TEMPLATE` e `WHATSAPP_TEMPLATE_LANG`. O modelo tem de ter **exactamente 3 variáveis no corpo**.
 
 #### Segundo modelo: reservas com o botão «Conversar com o cliente»
-Os avisos de **nova reserva** e de **pedido de cancelamento** usam um segundo modelo. O corpo é igual ao primeiro, mas tem um botão que abre a conversa de WhatsApp com o cliente (`https://wa.me/<número do cliente>`).
+Os avisos de **nova reserva** e de **pedido de cancelamento** usam um segundo modelo. O corpo é igual ao primeiro, mas tem um botão que abre a conversa de WhatsApp com o cliente. A Meta não aceita links `wa.me` em botões, por isso o botão aponta para `https://maputoblue.co.mz/wa/<número>`, e o site reencaminha para `https://wa.me/<número>`.
 
 1. Crie outro modelo na categoria **Serviços / Utility**:
    - **Nome:** `alerta_reserva`;
@@ -79,8 +79,8 @@ Os avisos de **nova reserva** e de **pedido de cancelamento** usam um segundo mo
 2. Em **Botões → Adicionar botão**, escolha **Visitar website**:
    - **Texto do botão:** `Conversar com o cliente`;
    - **Tipo de URL:** **Dinâmico**;
-   - **URL:** `https://wa.me/{{1}}`;
-   - **Exemplo:** `https://wa.me/258841234567`.
+   - **URL:** `https://maputoblue.co.mz/wa/{{1}}`;
+   - **Exemplo:** `https://maputoblue.co.mz/wa/258841234567`.
 3. Submeta.
 
 O número do cliente vem do que ele escreveu no formulário:

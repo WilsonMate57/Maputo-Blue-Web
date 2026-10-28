@@ -118,6 +118,12 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
 
   app.all('/api/*', async (request, reply) => reply.code(404).send({ error: 'not_found' }));
 
+  // WhatsApp template buttons cannot link to wa.me directly: the "Conversar com o
+  // cliente" button opens /wa/<number> on our domain, which forwards to the chat.
+  app.get('/wa/:phone', { schema: { params: { type: 'object', properties: { phone: { type: 'string', pattern: '^\\d{8,15}$' } } } } },
+    async (req, reply) => reply.header('X-Robots-Tag', 'noindex').header('Cache-Control', 'no-store')
+      .redirect(`https://wa.me/${req.params.phone}`));
+
   if (cfg.serveStatic) {
     await app.register(fastifyStatic, {
       root: cfg.siteRoot,

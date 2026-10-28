@@ -8,7 +8,7 @@
 //   {{1}} title · {{2}} summary · {{3}} link to the admin panel
 // (text to submit in docs/WHATSAPP.md). Booking alerts use a second template
 // (WHATSAPP_TEMPLATE_CHAT) with the same body plus a "Conversar com o cliente"
-// URL button https://wa.me/{{1}}, when the customer's number can be read.
+// URL button <site>/wa/{{1}} (forwards to wa.me), when the customer's number can be read.
 // Same outbox pattern as mailer.js: alerts
 // are enqueued inside the business transaction and delivered with retries, so
 // a WhatsApp failure never affects a booking.

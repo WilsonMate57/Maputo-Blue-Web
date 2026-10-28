@@ -31,6 +31,16 @@ test('customer number for the chat button (free text typed by the customer)', ()
   assert.equal(chatPhone(''), null);
 });
 
+test('chat button link /wa/<number> forwards to wa.me; anything else is refused', async () => {
+  const r = await ctx.app.inject({ method: 'GET', url: '/wa/258841234567' });
+  assert.equal(r.statusCode, 302);
+  assert.equal(r.headers.location, 'https://wa.me/258841234567');
+  assert.equal(r.headers['x-robots-tag'], 'noindex');
+  for (const bad of ['/wa/abc', '/wa/123', '/wa/https%3A%2F%2Fevil.example']) {
+    assert.equal((await ctx.app.inject({ method: 'GET', url: bad })).statusCode, 400, bad);
+  }
+});
+
 test('template parameters: three, no line breaks, link last', () => {
   const p = alertParams('admin_new_request', { reference: 'TR-1', name: 'Ana\nSilva', phone: '+258 84', adults: 2, children: 0,
     items: [{ title: 'Inhaca' }, { title: 'Sunset    cruise' }], admin_url: 'https://x/admin/#/requests/1' });
