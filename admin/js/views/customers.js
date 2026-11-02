@@ -6,7 +6,7 @@ export default async function customers(main) {
   main.innerHTML = `
     <div class="card"><div class="filters">
       <label class="field field--search"><span>Pesquisar</span><input type="search" id="cq" placeholder="Nome, e-mail ou telefone"></label>
-      <label class="field"><span>Tipo</span><select id="cr"><option value="">Todos</option><option value="customer">Clientes</option><option value="admin">Administradores</option></select></label>
+      <label class="field"><span>Tipo</span><select id="cr"><option value="">Todos</option><option value="customer">Clientes</option><option value="staff">Equipa</option></select></label>
     </div><div id="clist"></div></div>
     <p class="muted small" style="margin-top:12px;">Clientes que reservam sem conta aparecem apenas nas reservas. Ao criarem conta e confirmarem o e-mail, as reservas anteriores ficam associadas automaticamente.</p>`;
 

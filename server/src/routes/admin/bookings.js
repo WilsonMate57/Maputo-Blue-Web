@@ -69,6 +69,25 @@ export default async function bookingRoutes(app) {
   const { pool, cfg } = app;
 
   // ── Dashboard ──────────────────────────────────────────────────────────────
+  // What needs attention (sidebar badges): open to every staff role.
+  async function attention() {
+    const [{ rows: [b] }, { rows: [reqs] }, { rows: [mail] }, { rows: [inv] }] = await Promise.all([
+      pool.query(
+        `select count(*) filter (where status = 'pending')::int as pending,
+                count(*) filter (where status = 'pending' and (hold_expires_at is null or hold_expires_at <= now()))::int as pending_hold_expired,
+                count(*) filter (where cancel_requested_at is not null and status in ('pending','confirmed'))::int as cancel_requests
+           from bookings`),
+      pool.query(`select count(*) filter (where status = 'new')::int as new_requests from custom_requests`),
+      pool.query(`select count(*) filter (where status = 'failed')::int as failed_mail from mail_outbox`),
+      pool.query(
+        `select count(*) filter (where pay_status in ('unpaid','partially_paid') and due_date < $1)::int as overdue_invoices,
+                count(*) filter (where pay_status in ('unpaid','partially_paid'))::int as open_invoices
+           from invoices where doc_status = 'issued'`, [todayLocal()]),
+    ]);
+    return { ...b, ...reqs, ...mail, ...inv };
+  }
+  app.get('/attention', attention);
+
   app.get('/dashboard', { schema: { querystring: { type: 'object', properties: { from: date, to: date, package_id: { type: 'string', maxLength: 90 } } } } }, async req => {
     const today = todayLocal();
     const from = req.query.from || addDays(today, -30);
@@ -76,7 +95,7 @@ export default async function bookingRoutes(app) {
     const pkg = req.query.package_id || null;
     const range = `(b.created_at at time zone 'Africa/Maputo')::date between $1 and $2 and ($3::text is null or b.package_id = $3)`;
 
-    const [counts, money, upcoming, recent, popular, limited, attention] = await Promise.all([
+    const [counts, money, upcoming, recent, popular, limited, needs] = await Promise.all([
       pool.query(`select b.status, count(*)::int n from bookings b where ${range} group by b.status`, [from, to, pkg]),
       pool.query(
         `select b.currency,
@@ -112,27 +131,15 @@ export default async function bookingRoutes(app) {
           having d.capacity - coalesce(sum(a.quantity) filter (where bk.status = 'confirmed'
                    or (bk.status = 'pending' and bk.hold_expires_at > now())), 0) <= greatest(2, ceil(d.capacity * 0.2))
           order by d.day limit 20`, [today]),
-      pool.query(
-        `select count(*) filter (where status = 'pending')::int as pending,
-                count(*) filter (where status = 'pending' and (hold_expires_at is null or hold_expires_at <= now()))::int as pending_hold_expired,
-                count(*) filter (where cancel_requested_at is not null and status in ('pending','confirmed'))::int as cancel_requests
-           from bookings`),
+      attention(),
     ]);
-    const [{ rows: [reqs] }, { rows: [mail] }] = await Promise.all([
-      pool.query(`select count(*) filter (where status = 'new')::int as new_requests from custom_requests`),
-      pool.query(`select count(*) filter (where status = 'failed')::int as failed_mail from mail_outbox`),
-    ]);
-    const { rows: [inv] } = await pool.query(
-      `select count(*) filter (where pay_status in ('unpaid','partially_paid') and due_date < $1)::int as overdue_invoices,
-              count(*) filter (where pay_status in ('unpaid','partially_paid'))::int as open_invoices
-         from invoices where doc_status = 'issued'`, [today]);
     const byStatus = Object.fromEntries(STATUSES.map(s => [s, 0]));
     counts.rows.forEach(r => { byStatus[r.status] = r.n; });
     return {
       range: { from, to },
       counts: { ...byStatus, total: Object.values(byStatus).reduce((a, b) => a + b, 0) },
       money: money.rows,
-      attention: { ...attention.rows[0], ...reqs, ...mail, ...inv },
+      attention: needs,
       upcoming: upcoming.rows, recent: recent.rows, popular: popular.rows, limited: limited.rows,
     };
   });

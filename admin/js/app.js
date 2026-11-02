@@ -1,7 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // app.js — Admin shell: authentication gate, hash router, sidebar badges.
-// The server enforces the admin role on every /api/admin call; this file only
-// decides what to show.
+// The server enforces the staff roles on every /api/admin call; this file only
+// decides what to show: managers see bookings, availability, packages, invoices
+// and customers; only the super-administrator sees Team.
 // ─────────────────────────────────────────────────────────────────────────────
 import { $, $$, ApiError, errorText, get, post, setUnauthorizedHandler, toast } from './core.js';
 
@@ -25,17 +26,25 @@ const ROUTES = [
   { re: /^\/mail$/, key: 'mail', title: 'E-mails', load: () => import('./views/mail.js') },
   { re: /^\/settings$/, key: 'settings', title: 'Definições', load: () => import('./views/settings.js') },
   { re: /^\/audit$/, key: 'audit', title: 'Registo de actividade', load: () => import('./views/audit.js') },
+  { re: /^\/team$/, key: 'team', title: 'Equipa', load: () => import('./views/team.js') },
 ];
+
+const STAFF = ['manager', 'admin', 'superadmin'];
+const MANAGER_AREAS = new Set(['bookings', 'calendar', 'invoices', 'packages', 'customers']);
+const ROLE_NAMES = { superadmin: 'Superadministrador', admin: 'Administrador', manager: 'Gestor' };
+const mayOpen = key => (key === 'team' ? user.role === 'superadmin' : user.role !== 'manager' || MANAGER_AREAS.has(key));
+const home = () => (user.role === 'manager' ? '/bookings' : '/dashboard');
 
 const main = $('#main');
 let user = null;
 let renderSeq = 0;
 
 /* ── Auth gate ─────────────────────────────────────────────────────────── */
-function showLogin(message) {
+function showLogin(message, kind) {
   $('#app').hidden = true;
   $('#login').hidden = false;
   const alert = $('#login-form .alert');
+  alert.classList.toggle('alert--success', kind === 'success');
   alert.hidden = !message;
   alert.textContent = message || '';
   $('#login-form [name=email]').focus();
@@ -48,7 +57,7 @@ $('#login-form').addEventListener('submit', async e => {
   btn.disabled = true;
   try {
     const r = await post('/auth/login', { email: f.email.value.trim(), password: f.password.value });
-    if (r.user.role !== 'admin') {
+    if (!STAFF.includes(r.user.role)) {
       await post('/auth/logout').catch(() => {});
       return showLogin('Esta conta não tem acesso de administrador.');
     }
@@ -86,9 +95,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && sidebar.cl
 async function render() {
   if (!user) return;
   const seq = ++renderSeq;
-  const path = (location.hash.replace(/^#/, '') || '/dashboard').split('?')[0];
+  const path = location.hash.replace(/^#/, '').split('?')[0];
+  if (!path) { location.hash = '#' + home(); return; }
   const route = ROUTES.find(r => r.re.test(path));
-  if (!route) { location.hash = '#/dashboard'; return; }
+  if (!route || !mayOpen(route.key)) { location.hash = '#' + home(); return; }
   const params = path.match(route.re).slice(1);
   $$('.sidebar__nav a').forEach(a => a.classList.toggle('is-active', a.dataset.route === route.key));
   $('#page-title').textContent = route.title;
@@ -118,12 +128,12 @@ async function render() {
 
 async function refreshBadges() {
   try {
-    const d = await get('/admin/dashboard');
+    const a = await get('/admin/attention');
     const set = (id, n) => { const el = $(id); el.hidden = !n; el.textContent = n; };
-    set('#badge-pending', d.attention.pending);
-    set('#badge-requests', d.attention.new_requests);
-    set('#badge-mail', d.attention.failed_mail);
-    set('#badge-overdue', d.attention.overdue_invoices);
+    set('#badge-pending', a.pending);
+    set('#badge-requests', a.new_requests);
+    set('#badge-mail', a.failed_mail);
+    set('#badge-overdue', a.overdue_invoices);
   } catch { /* badges are best-effort */ }
 }
 
@@ -132,6 +142,14 @@ function start() {
   $('#app').hidden = false;
   $('#user-name').textContent = user.name;
   $('#user-initials').textContent = user.name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'MB';
+  $('#user-role').textContent = ROLE_NAMES[user.role];
+  // Show only the areas this role may open; hide group titles left empty.
+  $$('.sidebar__nav a').forEach(a => { a.hidden = !mayOpen(a.dataset.route); });
+  $$('.sidebar__nav .sidebar__group').forEach(g => {
+    let el = g.nextElementSibling, any = false;
+    while (el && !el.classList.contains('sidebar__group')) { if (!el.hidden) any = true; el = el.nextElementSibling; }
+    g.hidden = !any;
+  });
   render();
   refreshBadges();
 }
@@ -158,10 +176,45 @@ $('#gsearch').addEventListener('submit', async e => {
 window.addEventListener('hashchange', render);
 setInterval(() => { if (user && document.visibilityState === 'visible') refreshBadges(); }, 60_000);
 
+/* ── Invitation link (?invite=…): the new team member chooses a password ── */
+function showInvite(token) {
+  $('#app').hidden = true;
+  $('#login').hidden = false;
+  $('#login-form').hidden = true;
+  const f = $('#invite-form');
+  f.hidden = false;
+  const alert = f.querySelector('.alert');
+  f.addEventListener('submit', async e => {
+    e.preventDefault();
+    const problem = f.password.value.length < 10 ? 'A palavra-passe tem de ter pelo menos 10 caracteres.'
+      : f.password.value !== f.confirm.value ? 'As duas palavras-passe não são iguais.' : '';
+    alert.hidden = !problem;
+    alert.textContent = problem;
+    if (problem) return;
+    const btn = f.querySelector('button[type=submit]');
+    btn.disabled = true;
+    try {
+      await post('/auth/reset-password', { token, password: f.password.value });
+      history.replaceState(null, '', location.pathname);
+      f.hidden = true;
+      $('#login-form').hidden = false;
+      showLogin('Palavra-passe guardada. Já pode entrar com o seu e-mail.', 'success');
+    } catch (err) {
+      alert.hidden = false;
+      alert.textContent = errorText(err);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+  f.password.focus();
+}
+
 (async function boot() {
+  const invite = new URLSearchParams(location.search).get('invite');
+  if (invite) return showInvite(invite);
   try {
     const r = await get('/auth/me');
-    if (r.user && r.user.role === 'admin') { user = r.user; start(); }
+    if (r.user && STAFF.includes(r.user.role)) { user = r.user; start(); }
     else showLogin(r.user ? 'Esta conta não tem acesso de administrador.' : '');
   } catch (err) {
     showLogin(errorText(err));

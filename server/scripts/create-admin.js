@@ -1,8 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// create-admin.js — The only way to create the first administrator.
+// create-admin.js — Creates (or restores) the super-administrator, who then
+// creates the rest of the team in the panel (Equipa).
 // Run on the server itself:  npm run create-admin -- admin@example.com "Full Name"
 // The password is read from the ADMIN_PASSWORD environment variable or prompted.
-// An existing account with that e-mail is promoted to admin (password kept
+// An existing account with that e-mail is promoted to superadmin (password kept
 // unless ADMIN_PASSWORD is given).
 // ─────────────────────────────────────────────────────────────────────────────
 import readline from 'node:readline/promises';
@@ -37,17 +38,17 @@ try {
     if (problem) { console.error('Password must be at least 10 characters.'); process.exit(1); }
   }
   if (existing) {
-    await pool.query(`update users set role='admin', email_verified_at=coalesce(email_verified_at, now()),
+    await pool.query(`update users set role='superadmin', email_verified_at=coalesce(email_verified_at, now()),
                       password_hash = coalesce($2, password_hash), disabled_at = null, updated_at=now() where id=$1`,
       [existing.id, password ? await hashPassword(password) : null]);
     await pool.query(`insert into audit_log (actor_type, entity_type, entity_id, action, data) values ('system','user',$1,'promoted_to_admin','{"via":"create-admin"}')`, [existing.id]);
-    console.log(`✓ ${email} is now an administrator.`);
+    console.log(`✓ ${email} is now the super-administrator.`);
   } else {
     const { rows: [u] } = await pool.query(
-      `insert into users (email, password_hash, name, role, email_verified_at) values ($1,$2,$3,'admin', now()) returning id`,
+      `insert into users (email, password_hash, name, role, email_verified_at) values ($1,$2,$3,'superadmin', now()) returning id`,
       [email.toLowerCase(), await hashPassword(password), name]);
     await pool.query(`insert into audit_log (actor_type, entity_type, entity_id, action, data) values ('system','user',$1,'admin_created','{"via":"create-admin"}')`, [u.id]);
-    console.log(`✓ Administrator ${email} created.`);
+    console.log(`✓ Super-administrator ${email} created.`);
   }
 } finally {
   await pool.end();

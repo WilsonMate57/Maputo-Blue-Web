@@ -15,6 +15,7 @@ import { checkAndLock, endDateFor } from './availability.js';
 import { diffDays } from './dates.js';
 import { loyaltyStatus } from './loyalty.js';
 import { audit } from './audit.js';
+import { isStaff } from './auth.js';
 import { enqueueMail, notifyTeam } from './mailer.js';
 import { isDateString, todayLocal } from './dates.js';
 import { badRequest, conflict, forbidden, notFound } from './errors.js';
@@ -145,7 +146,7 @@ export async function transitionBooking(pool, cfg, { bookingId, to, actor, messa
     const { rows } = await c.query('select * from bookings where id = $1 for update', [bookingId]);
     const b = rows[0];
     if (!b) throw notFound('booking_not_found');
-    const isAdmin = actor && actor.role === 'admin';
+    const isAdmin = isStaff(actor);
     const isSystem = actor === 'system';
     if (!isAdmin && !isSystem) {
       // Customers may only cancel their own *pending* request

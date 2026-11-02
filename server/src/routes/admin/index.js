@@ -1,8 +1,14 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// routes/admin/index.js — Everything under /api/admin requires an
-// authenticated user whose role (read from the database) is 'admin'.
+// routes/admin/index.js — Everything under /api/admin requires a staff account
+// (role read from the database):
+//   superadmin  everything, plus the team's accounts (team.js);
+//   admin       everything except the team's accounts;
+//   manager     only the routes in MANAGER_ROUTES: bookings, availability,
+//               packages, invoices and customers. Any route not listed there
+//               is refused, so new features stay closed to managers by default.
 // ─────────────────────────────────────────────────────────────────────────────
-import { requireAdmin } from '../../lib/auth.js';
+import { requireStaff } from '../../lib/auth.js';
+import { forbidden } from '../../lib/errors.js';
 import bookings from './bookings.js';
 import packages from './packages.js';
 import availability from './availability.js';
@@ -12,9 +18,33 @@ import customers from './customers.js';
 import media from './media.js';
 import system from './system.js';
 import invoices from './invoices.js';
+import team from './team.js';
+
+// "METHOD /path" as declared in the route files (prefix /api/admin removed).
+const MANAGER_ROUTES = [
+  /^GET \/attention$/,
+  /^(GET|POST|PATCH) \/bookings(\.csv|\/.*)?$/,
+  /^POST \/mail\/:id\/retry$/,                         // resend a booking e-mail
+  /^(GET|PUT) \/availability\/:id(\/days)?$/,
+  /^GET \/categories$/,
+  /^(GET|POST|PUT) \/packages(\/.*)?$/,
+  /^(PUT|DELETE) \/rules\/:ruleId$/,
+  /^GET \/media(\/folders)?$/, /^POST \/media\/upload$/, /^PATCH \/media$/,   // package photos
+  /^(GET|POST|PATCH|DELETE) \/invoices(\.csv|\/.*)?$/,
+  /^GET \/customers(\/:id)?$/, /^POST \/customers\/:id\/notes$/,
+];
+
+export function managerMayUse(method, url) {
+  const key = `${method} ${url.replace(/^\/api\/admin/, '')}`;
+  return MANAGER_ROUTES.some(re => re.test(key));
+}
 
 export default async function adminRoutes(app) {
-  app.addHook('onRequest', requireAdmin);
+  app.addHook('onRequest', requireStaff);
+  app.addHook('onRequest', async req => {
+    if (req.user.role === 'manager' && !managerMayUse(req.method, req.routeOptions.url || ''))
+      throw forbidden('role_forbidden', 'Your account does not have access to this area');
+  });
   await app.register(bookings);
   await app.register(packages);
   await app.register(availability);
@@ -24,4 +54,5 @@ export default async function adminRoutes(app) {
   await app.register(media);
   await app.register(system);
   await app.register(invoices);
+  await app.register(team);
 }

@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// routes/admin/customers.js — Customer accounts, loyalty adjustments, roles,
-// and review moderation.
+// routes/admin/customers.js — Customer accounts, loyalty adjustments, access,
+// and review moderation. Team accounts and roles are managed in team.js.
 // ─────────────────────────────────────────────────────────────────────────────
 import { loyaltyStatus } from '../../lib/loyalty.js';
 import { publicBooking } from '../../lib/bookings.js';
@@ -14,11 +14,11 @@ export default async function customerRoutes(app) {
 
   app.get('/customers', {
     schema: { querystring: { type: 'object', properties: { q: { type: 'string', maxLength: 100 }, page: { type: 'string', pattern: '^\\d{1,5}$' },
-      role: { type: 'string', enum: ['customer', 'admin'] } } } },
+      role: { type: 'string', enum: ['customer', 'staff'] } } } },
   }, async req => {
     const params = [], where = [];
     if (req.query.q) { params.push(`%${req.query.q.replace(/[%_\\]/g, m => '\\' + m)}%`); where.push(`(u.email ilike $${params.length} or u.name ilike $${params.length} or u.phone ilike $${params.length})`); }
-    if (req.query.role) { params.push(req.query.role); where.push(`u.role = $${params.length}`); }
+    if (req.query.role) where.push(req.query.role === 'staff' ? `u.role <> 'customer'` : `u.role = 'customer'`);
     const sql = where.length ? 'where ' + where.join(' and ') : '';
     const page = Math.max(Number(req.query.page || 1), 1);
     const [{ rows }, { rows: [{ n }] }] = await Promise.all([
@@ -75,20 +75,21 @@ export default async function customerRoutes(app) {
     return n;
   });
 
-  // Role / access changes (audited). An admin cannot demote or disable themselves.
+  // Disable / reactivate a customer account (audited). Team accounts are
+  // changed only by the super-administrator, in team.js.
   app.patch('/customers/:id', {
     schema: { params: { type: 'object', properties: { id: uuid } },
-              body: { type: 'object', properties: { role: { type: 'string', enum: ['customer', 'admin'] }, disabled: { type: 'boolean' } } } },
+              body: { type: 'object', required: ['disabled'], properties: { disabled: { type: 'boolean' } } } },
   }, async req => {
     if (req.params.id === req.user.id) throw badRequest('cannot_change_self', 'You cannot change your own role or access');
-    const { rows: [old] } = await pool.query('select id, role, disabled_at from users where id = $1', [req.params.id]);
+    const { rows: [old] } = await pool.query('select id, role from users where id = $1', [req.params.id]);
     if (!old) throw notFound('user_not_found');
-    const role = req.body.role ?? old.role;
-    const disabled = req.body.disabled === undefined ? old.disabled_at : (req.body.disabled ? new Date() : null);
+    if (old.role !== 'customer') throw badRequest('staff_account', 'Team accounts are managed in Team');
     const { rows: [u] } = await pool.query(
-      `update users set role=$2, disabled_at=$3, updated_at=now() where id=$1 returning id, email, name, role, disabled_at`, [old.id, role, disabled]);
-    if (req.body.disabled || role !== old.role) await pool.query('delete from sessions where user_id = $1', [old.id]);
-    await audit(pool, req.user, 'user', old.id, 'access_changed', { role_before: old.role, role_after: role, disabled: !!disabled });
+      `update users set disabled_at=$2, updated_at=now() where id=$1 returning id, email, name, role, disabled_at`,
+      [old.id, req.body.disabled ? new Date() : null]);
+    if (req.body.disabled) await pool.query('delete from sessions where user_id = $1', [old.id]);
+    await audit(pool, req.user, 'user', old.id, 'access_changed', { disabled: req.body.disabled });
     return u;
   });
 

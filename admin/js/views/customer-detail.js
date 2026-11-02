@@ -1,4 +1,5 @@
 // Customer detail: bookings, loyalty status & audited adjustments, notes, access.
+// Managers see it read-only apart from notes; team accounts are changed in Team.
 import { $, badge, busy, confirmAction, date, dateTime, esc, get, modal, money, patch, post, toast } from '../core.js';
 
 export default async function customerDetail(main, [id], { setTitle, user: me }) {
@@ -6,15 +7,16 @@ export default async function customerDetail(main, [id], { setTitle, user: me })
     const d = await get(`/admin/customers/${id}`);
     const u = d.user, l = d.loyalty;
     setTitle(u.name);
-    const self = u.id === me.id;
+    const staff = u.role !== 'customer';
+    const canManage = me.role !== 'manager' && !staff && u.id !== me.id;
     main.innerHTML = `
       <div class="page-head">
         <div><a class="link small" href="#/customers"><i class='bx bx-arrow-back'></i> Clientes</a>
           <h2 style="margin-top:4px;">${esc(u.name)} ${badge(u.role)} ${u.disabled_at ? '<span class="badge badge--disabled">Desactivada</span>' : ''}</h2>
           <p class="muted small" style="margin:4px 0 0;">${esc(u.email)} · registo em ${date(u.created_at)} · ${u.email_verified_at ? 'e-mail confirmado' : 'e-mail por confirmar'}</p></div>
-        ${self ? '' : `<div class="status-actions">
-          <button type="button" class="btn btn--ghost" id="role">${u.role === 'admin' ? 'Retirar acesso de administrador' : 'Tornar administrador'}</button>
-          <button type="button" class="btn ${u.disabled_at ? 'btn--ghost' : 'btn--danger'}" id="disable">${u.disabled_at ? 'Reactivar conta' : 'Desactivar conta'}</button></div>`}
+        ${canManage ? `<div class="status-actions">
+          <button type="button" class="btn ${u.disabled_at ? 'btn--ghost' : 'btn--danger'}" id="disable">${u.disabled_at ? 'Reactivar conta' : 'Desactivar conta'}</button></div>`
+          : staff && me.role === 'superadmin' && u.id !== me.id ? `<a class="btn btn--ghost" href="#/team"><i class='bx bx-group'></i>Gerir em Equipa</a>` : ''}
       </div>
       <div class="cols">
         <div class="card"><div class="card__head"><h2>Reservas</h2></div><div class="card__body table-wrap">
@@ -23,7 +25,7 @@ export default async function customerDetail(main, [id], { setTitle, user: me })
               <td class="right mono">${money(b.total, b.currency)}</td><td>${badge(b.status)}</td></tr>`).join('')}</tbody></table>` : '<p class="muted" style="margin:0;">Sem reservas associadas.</p>'}
         </div></div>
         <div class="stack">
-          <div class="card"><div class="card__head"><h2>Fidelização</h2><button type="button" class="btn btn--ghost btn--sm" id="adjust"><i class='bx bx-plus-circle'></i>Ajustar</button></div><div class="card__body">
+          <div class="card"><div class="card__head"><h2>Fidelização</h2>${me.role === 'manager' ? '' : `<button type="button" class="btn btn--ghost btn--sm" id="adjust"><i class='bx bx-plus-circle'></i>Ajustar</button>`}</div><div class="card__body">
             ${l.enabled ? `<p style="margin:0 0 6px;"><strong class="mono" style="font-size:20px;">${l.completed}</strong> de ${l.required} viagens concluídas ${l.eligible ? '<span class="badge badge--confirmed">Elegível</span>' : ''}</p>
               ${l.reason === 'email_not_verified' ? '<p class="muted small">Só conta depois de o cliente confirmar o e-mail.</p>' : ''}` : '<p class="muted" style="margin:0;">O programa de fidelização está desactivado (Definições).</p>'}
             ${d.adjustments.length ? `<ul class="list-plain" style="margin-top:8px;">${d.adjustments.map(a => `<li><span>${a.delta > 0 ? '+' : ''}${a.delta} · ${esc(a.reason)}<span class="t-sub">${esc(a.created_by_name || '')} · ${dateTime(a.created_at)}</span></span></li>`).join('')}</ul>` : ''}
@@ -39,7 +41,7 @@ export default async function customerDetail(main, [id], { setTitle, user: me })
         </div>
       </div>`;
 
-    $('#adjust', main).addEventListener('click', async () => {
+    $('#adjust', main)?.addEventListener('click', async () => {
       const r = await modal({
         title: 'Ajuste de fidelização',
         body: `<p class="muted">Adicione ou retire viagens concluídas que contam para a fidelização. Fica registado com o seu nome.</p>
@@ -57,14 +59,7 @@ export default async function customerDetail(main, [id], { setTitle, user: me })
       if (!f.body.value.trim()) return;
       try { await busy(f.querySelector('button'), () => post(`/admin/customers/${u.id}/notes`, { body: f.body.value.trim() }), 'Nota adicionada.'); load(); } catch { /* toast */ }
     });
-    if (!self) {
-      $('#role', main).addEventListener('click', async e => {
-        const toAdmin = u.role !== 'admin';
-        if (!(await confirmAction({ title: toAdmin ? 'Dar acesso de administrador' : 'Retirar acesso de administrador',
-          text: toAdmin ? `<strong>${esc(u.name)}</strong> passará a ter acesso total ao painel (reservas, preços, clientes). Continuar?` : `Retirar o acesso de administrador a <strong>${esc(u.name)}</strong>?`,
-          confirm: toAdmin ? 'Dar acesso' : 'Retirar acesso', kind: 'danger-solid' }))) return;
-        try { await busy(e.currentTarget, () => patch(`/admin/customers/${u.id}`, { role: toAdmin ? 'admin' : 'customer' }), 'Acesso actualizado.'); load(); } catch { /* toast */ }
-      });
+    if (canManage) {
       $('#disable', main).addEventListener('click', async e => {
         const dis = !u.disabled_at;
         if (dis && !(await confirmAction({ title: 'Desactivar conta', text: 'A pessoa deixa de conseguir iniciar sessão e as sessões abertas terminam. As reservas mantêm-se.', confirm: 'Desactivar', kind: 'danger-solid' }))) return;

@@ -5,7 +5,7 @@
 // secret token from the e-mail link, or reference + the booking e-mail.
 // Credentials travel in POST bodies, never in URLs. The public verification
 // endpoint returns only the minimum needed to check a booking and can never
-// change it; staff (admin session) additionally see the customer name and
+// change it; staff (staff session) additionally see the customer name and
 // can register a check-in through the protected admin API.
 // ─────────────────────────────────────────────────────────────────────────────
 import { checkSignature, qrSvg, renderTicketPdf, ticketData, verificationView } from '../lib/tickets.js';
@@ -14,6 +14,7 @@ import { enqueueMail } from '../lib/mailer.js';
 import { audit } from '../lib/audit.js';
 import { badRequest, notFound } from '../lib/errors.js';
 import { sha256 } from '../lib/security.js';
+import { isStaff } from '../lib/auth.js';
 
 const REF = { type: 'string', maxLength: 20, pattern: '^MB-[A-Z0-9]{4,10}$' };
 const credentials = {
@@ -94,7 +95,7 @@ export default async function ticketRoutes(app) {
   }, async req => {
     const ref = String(req.query.r).toUpperCase();
     const ipHash = sha256(cfg.ipHashSalt + req.ip);
-    const staff = req.user && req.user.role === 'admin' ? req.user : null;
+    const staff = isStaff(req.user) ? req.user : null;
     const { rows: [b] } = /^MB-[A-Z0-9]{4,10}$/.test(ref) ? await pool.query('select * from bookings where reference = $1', [ref]) : { rows: [] };
     const log = (result, id) => pool.query(`insert into ticket_scans (booking_id, reference, result, staff_id, ip_hash) values ($1,$2,$3,$4,$5)`,
       [id || null, ref.slice(0, 20), result, staff ? staff.id : null, ipHash]);

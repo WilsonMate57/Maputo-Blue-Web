@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // routes/auth.js — Registration, login/logout, e-mail verification and
-// password reset. Registration always creates a *customer*; administrator
-// rights can only be granted by `npm run create-admin` or another admin.
+// password reset. Registration always creates a *customer*; staff accounts are
+// created by `npm run create-admin` or by the super-administrator (admin/team.js).
 // ─────────────────────────────────────────────────────────────────────────────
 import { createSession, destroySession, publicUser } from '../lib/auth.js';
 import { enqueueMail } from '../lib/mailer.js';
@@ -14,7 +14,7 @@ const email = { type: 'string', maxLength: 200, pattern: '^[^\\s@]+@[^\\s@]+\\.[
 const password = { type: 'string', minLength: 1, maxLength: 200 };
 const token = { type: 'string', minLength: 20, maxLength: 100 };
 
-async function issueToken(c, userId, purpose, hours) {
+export async function issueToken(c, userId, purpose, hours) {
   const t = randomToken(32);
   await c.query(`delete from auth_tokens where user_id = $1 and purpose = $2 and used_at is null`, [userId, purpose]);
   await c.query(`insert into auth_tokens (token_hash, user_id, purpose, expires_at) values ($1,$2,$3, now() + make_interval(hours => $4))`,

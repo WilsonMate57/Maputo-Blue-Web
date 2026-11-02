@@ -177,6 +177,12 @@ const T = {
     const intro = en ? 'We received a request to reset your password. The link is valid for 1 hour. If you did not ask for this, ignore this e-mail.' : 'Recebemos um pedido para redefinir a sua palavra-passe. O link é válido por 1 hora. Se não fez este pedido, ignore este e-mail.';
     return { subject: `${title} — Maputo Blue`, html: layout({ title, intro, cta: { url: d.url, label: title }, locale: L }), text: toText(title, intro, [], d.url) };
   },
+  // ── Team (always Portuguese) ──
+  staff_invite(d) {
+    const title = 'Acesso ao painel Maputo Blue';
+    const intro = `Olá ${esc(d.name)}, foi criada para si uma conta de <strong>${esc(d.role_label)}</strong> no painel de gestão da Maputo Blue. Defina a sua palavra-passe no botão abaixo. O link é válido por 72 horas. Depois, entre em ${esc(d.admin_url)} com este e-mail.`;
+    return { subject: title, html: layout({ title, intro, cta: { url: d.url, label: 'Definir palavra-passe' }, locale: 'pt' }), text: toText(title, intro, [], d.url) };
+  },
   // ── Administrator notifications (always Portuguese) ──
   admin_new_booking(d) {
     const title = `Novo pedido de reserva ${d.reference}`;

@@ -99,7 +99,7 @@ O que cada comando faz:
 3. `npm run import:json` faz primeiro um backup em `backups\` e depois importa os 21 pacotes, guardando o registo JSON original na versão 1.
 4. `npm run import:reviews -- --dry-run` mostra quantas avaliações do Firestore serão importadas.
 5. `npm run import:reviews` importa-as. Um documento vazio no Firestore é ignorado e indicado no relatório.
-6. `npm run create-admin` cria o primeiro administrador. É a **única** forma de o fazer.
+6. `npm run create-admin` cria o **superadministrador**. As restantes contas da equipa (administradores e gestores) são criadas por ele no painel, em **Equipa**.
 
 Sobre a importação:
 - Pode repetir `import:json` sem risco: os pacotes que já existem são ignorados, e só `--force` os substitui.

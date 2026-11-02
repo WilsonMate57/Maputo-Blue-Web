@@ -113,7 +113,11 @@ Navegador ──HTTPS──► Proxy (IIS ou Caddy, certificado TLS)
 
 ## 6. Segurança
 
-- **Papéis:** o papel `admin` existe só na base de dados e é atribuído por `npm run create-admin` ou por outro administrador. Esta mudança fica auditada, e ninguém pode alterar o próprio papel. O registo cria sempre um cliente.
+- **Papéis:** os papéis existem só na base de dados. O registo no site cria sempre um cliente. A equipa tem três níveis:
+  - **Superadministrador:** criado por `npm run create-admin` (a migração 010 promoveu o administrador mais antigo). É o único que vê **Equipa** (`/api/admin/team`), onde cria contas, muda níveis, desactiva ou retira acesso. Cada pessoa nova recebe um e-mail com um link (válido 72 h) para escolher a própria palavra-passe em `/admin/?invite=…`. Se o e-mail já tiver conta de cliente, a conta é promovida e mantém a palavra-passe.
+  - **Administrador:** tudo, menos a gestão da equipa.
+  - **Gestor:** só as rotas de `MANAGER_ROUTES` em `routes/admin/index.js`: reservas, disponibilidade, pacotes (e as imagens desses pacotes), facturas e clientes (consulta e notas). Qualquer rota que não esteja nessa lista é recusada, por isso as funcionalidades novas ficam fechadas aos gestores até serem acrescentadas.
+  - Mudar o nível ou desactivar uma conta termina as sessões dessa pessoa. Ninguém altera o próprio nível, e a conta do superadministrador não se altera no painel. Tudo fica no registo de actividade.
 - **Sessões:** o cookie `mb_session` é `HttpOnly` e `SameSite=Lax`, e `Secure` em produção. Na base de dados guarda-se só o SHA-256 do token. Repor a palavra-passe, ou desactivar ou mudar o papel de um utilizador, termina as sessões abertas.
 - **CSRF:** pedidos de escrita com um `Origin` diferente são recusados, e só se aceita JSON ou multipart. Assim, um formulário de outro site recebe 415.
 - **Isolamento entre clientes:** todas as consultas da conta usam o `user_id` da sessão, por isso mudar um ID no URL devolve 404. Os convidados acompanham a reserva com um token secreto (enviado por e-mail) ou com referência + e-mail, com limite de tentativas.

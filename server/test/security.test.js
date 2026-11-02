@@ -145,7 +145,7 @@ test('login: wrong password and unknown e-mail give the same answer; sessions en
 test('admin cannot demote themselves; disabling a user ends their sessions', async () => {
   const c = await customer('disable@example.com');
   const { rows: [me] } = await ctx.pool.query(`select id from users where email = 'admin@test.local'`);
-  assert.equal((await admin.patch(`/api/admin/customers/${me.id}`, { role: 'customer' })).status, 400);
+  assert.equal((await admin.patch(`/api/admin/customers/${me.id}`, { disabled: true })).status, 400);
   const { rows: [u] } = await ctx.pool.query(`select id from users where email = 'disable@example.com'`);
   assert.equal((await admin.patch(`/api/admin/customers/${u.id}`, { disabled: true })).status, 200);
   assert.equal((await c.get('/api/account/bookings')).status, 401);

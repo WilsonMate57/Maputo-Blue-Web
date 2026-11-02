@@ -68,8 +68,10 @@ try {
 
   if (applied.size) {
     const one = async sql => (await pool.query(sql)).rows[0];
-    const { n: admins } = await one(`select count(*)::int n from users where role = 'admin'`);
+    const { n: admins } = await one(`select count(*)::int n from users where role in ('admin','superadmin') and disabled_at is null`);
     admins ? ok(`${admins} administrador(es)`) : fail('Nenhum administrador: corra npm run create-admin');
+    const { n: supers } = await one(`select count(*)::int n from users where role = 'superadmin' and disabled_at is null`);
+    if (!supers) warn('Nenhum super-administrador: corra npm run create-admin -- <o seu e-mail>');
     const { n: pkgs } = await one(`select count(*)::int n from packages`);
     pkgs ? ok(`${pkgs} pacotes no catálogo`) : fail('Catálogo vazio: corra npm run import:json');
     const { n: tests } = await one(`select count(*)::int n from users where email like '%@maputoblue.local' or email like '%@example.%'`);

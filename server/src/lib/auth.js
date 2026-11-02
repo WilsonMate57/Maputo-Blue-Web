@@ -1,7 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // auth.js — Cookie sessions. The cookie holds a random token; only its SHA-256
 // hash is stored. Roles come exclusively from the users table, which only the
-// create-admin script (or an existing admin) can change.
+// create-admin script (or the super-administrator, in the Team page) can change.
+// Staff roles: superadmin > admin > manager (see routes/admin/index.js).
 // ─────────────────────────────────────────────────────────────────────────────
 import { randomToken, sha256 } from './security.js';
 import { forbidden, unauthorized } from './errors.js';
@@ -43,9 +44,17 @@ export async function requireUser(request) {
   if (!request.user) throw unauthorized();
 }
 
-export async function requireAdmin(request) {
+export const STAFF_ROLES = ['manager', 'admin', 'superadmin'];
+export const isStaff = u => !!u && STAFF_ROLES.includes(u.role);
+
+export async function requireStaff(request) {
   if (!request.user) throw unauthorized();
-  if (request.user.role !== 'admin') throw forbidden('admin_only', 'Administrator access required');
+  if (!isStaff(request.user)) throw forbidden('admin_only', 'Administrator access required');
+}
+
+export async function requireSuperadmin(request) {
+  if (!request.user) throw unauthorized();
+  if (request.user.role !== 'superadmin') throw forbidden('superadmin_only', 'Super-administrator access required');
 }
 
 export function publicUser(u) {
