@@ -6,29 +6,18 @@
 // changed here (only with `npm run create-admin`).
 // ─────────────────────────────────────────────────────────────────────────────
 import { requireSuperadmin } from '../../lib/auth.js';
-import { issueToken } from '../auth.js';
-import { enqueueMail } from '../../lib/mailer.js';
+import { NO_PASSWORD, sendStaffInvite } from '../../lib/staff.js';
 import { audit } from '../../lib/audit.js';
 import { badRequest, conflict, notFound } from '../../lib/errors.js';
-import { sha256 } from '../../lib/security.js';
 import { tx } from '../../db.js';
 
 const uuid = { type: 'string', pattern: '^[0-9a-f-]{36}$' };
-const ROLE_LABELS = { manager: 'Gestor', admin: 'Administrador' };
-// Accounts created here have no usable password until the invitation is used.
-const NO_PASSWORD = '!invited';
-const INVITE_HOURS = 72;
 
 export default async function teamRoutes(app) {
   const { pool, cfg } = app;
   app.addHook('onRequest', requireSuperadmin);
 
-  async function sendInvite(c, u) {
-    const t = await issueToken(c, u.id, 'reset_password', INVITE_HOURS);
-    await enqueueMail(c, { key: `invite:${sha256(t)}`, to: u.email, template: 'staff_invite', locale: 'pt', data: {
-      name: u.name, role_label: ROLE_LABELS[u.role], admin_url: `${cfg.publicBaseUrl}/admin/`,
-      url: `${cfg.publicBaseUrl}/admin/?invite=${encodeURIComponent(t)}` } });
-  }
+  const sendInvite = (c, u) => sendStaffInvite(c, cfg, u);
 
   app.get('/team', async () => {
     const { rows } = await pool.query(
@@ -93,7 +82,7 @@ export default async function teamRoutes(app) {
   app.post('/team/:id/invite', { schema: { params: { type: 'object', properties: { id: uuid } } } }, async req => {
     await tx(pool, async c => {
       const { rows: [u] } = await c.query('select id, email, name, role, disabled_at from users where id = $1', [req.params.id]);
-      if (!u || !ROLE_LABELS[u.role]) throw notFound('user_not_found');
+      if (!u || u.role === 'customer' || u.role === 'superadmin') throw notFound('user_not_found');
       if (u.disabled_at) throw badRequest('user_disabled', 'Reactivate the account first');
       await sendInvite(c, u);
       await audit(c, req.user, 'user', u.id, 'staff_invited', { role: u.role, resent: true });

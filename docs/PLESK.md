@@ -107,13 +107,13 @@ npm run import:json -- --dry-run      # só mostra o relatório
 npm run import:json
 npm run import:reviews -- --dry-run
 npm run import:reviews
-npm run create-admin -- admin@maputoblue.co.mz "Nome do Administrador"   # pede a senha (10+ caracteres)
+npm run create-admin -- o-seu-email@exemplo.com "O Seu Nome"   # envia um convite por e-mail para escolher a senha
 npm run check
 ```
 
 O `read -s` não mostra o que escreve nem o guarda no histórico. Se o Node não estiver no PATH do SSH, use o caminho que o ecrã Node.js do Plesk indica (por exemplo `/opt/plesk/node/22/bin/npm`).
 
-Sem SSH, use **Run script** no ecrã Node.js com `migrate`, `import:json`, `import:reviews` e `check`. Para o administrador, acrescente temporariamente a variável `ADMIN_PASSWORD`, corra `create-admin -- admin@maputoblue.co.mz "Nome"` e **apague a variável a seguir**.
+Sem SSH, use **Run script** no ecrã Node.js com `migrate`, `import:json`, `import:reviews` e `check`. Para o superadministrador, corra `create-admin -- o-seu-email@exemplo.com "O Seu Nome"`: recebe um e-mail com um link (válido 72 h) para escolher a palavra-passe, sem a escrever em lado nenhum. Só existe um superadministrador: se já houver outro, passa a administrador e pode depois mudar-lhe o nível em **Equipa**.
 
 Leia os avisos dos relatórios de importação (IMPLANTACAO.md §4) e depois configure no painel `/admin/` → **Definições**: e-mails da equipa, dados da empresa e facturação.
 

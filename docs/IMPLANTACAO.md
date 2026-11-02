@@ -88,9 +88,7 @@ npm run import:json -- --dry-run
 npm run import:json
 npm run import:reviews -- --dry-run
 npm run import:reviews
-$env:ADMIN_PASSWORD = 'palavra-passe-forte-com-10+-caracteres'
-npm run create-admin -- admin@maputoblue.co.mz "Nome do Administrador"
-Remove-Item Env:ADMIN_PASSWORD
+npm run create-admin -- o-seu-email@exemplo.com "O Seu Nome"   # convite por e-mail para escolher a senha
 ```
 
 O que cada comando faz:
@@ -99,7 +97,7 @@ O que cada comando faz:
 3. `npm run import:json` faz primeiro um backup em `backups\` e depois importa os 21 pacotes, guardando o registo JSON original na versão 1.
 4. `npm run import:reviews -- --dry-run` mostra quantas avaliações do Firestore serão importadas.
 5. `npm run import:reviews` importa-as. Um documento vazio no Firestore é ignorado e indicado no relatório.
-6. `npm run create-admin` cria o **superadministrador**. As restantes contas da equipa (administradores e gestores) são criadas por ele no painel, em **Equipa**.
+6. `npm run create-admin` cria o **superadministrador** e envia-lhe um convite por e-mail (com `ADMIN_PASSWORD` definido, usa essa palavra-passe). Só existe um: um superadministrador anterior passa a administrador. As restantes contas da equipa (administradores e gestores) são criadas por ele no painel, em **Equipa**.
 
 Sobre a importação:
 - Pode repetir `import:json` sem risco: os pacotes que já existem são ignorados, e só `--force` os substitui.
