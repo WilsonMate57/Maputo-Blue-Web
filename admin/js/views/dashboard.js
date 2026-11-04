@@ -63,6 +63,7 @@ export default async function dashboard(main, _params, { user }) {
       [a.pending_hold_expired, 'Pendentes com bloqueio de 48h expirado', '#/bookings?status=pending', 'bx-error'],
       [a.cancel_requests, 'Pedidos de cancelamento', '#/bookings?cancel_requested=1', 'bx-x-circle'],
       [a.new_requests, 'Novos pedidos de cotação', '#/requests', 'bx-message-square-detail'],
+      [a.quote_actions, 'Cotações aceites ou com alteração pedida', '#/quotations?status=accepted', 'bx-file'],
       [a.overdue_invoices, 'Facturas vencidas por cobrar', '#/invoices?status=overdue', 'bx-receipt'],
       [a.failed_mail, 'E-mails que falharam', '#/mail', 'bx-envelope'],
     ].filter(x => x[0] > 0);

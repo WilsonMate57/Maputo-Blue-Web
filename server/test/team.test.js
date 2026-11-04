@@ -48,10 +48,10 @@ test('invited member chooses their own password, then signs in as manager', asyn
   assert.equal((await owner.post('/api/admin/team', { name: 'Again', email: 'gestora@test.local', role: 'admin' })).status, 409);
 
   // Allowed areas
-  for (const url of ['/api/admin/attention', '/api/admin/bookings', '/api/admin/invoices', '/api/admin/packages', '/api/admin/customers', '/api/admin/media/folders'])
+  for (const url of ['/api/admin/attention', '/api/admin/bookings', '/api/admin/invoices', '/api/admin/packages', '/api/admin/customers', '/api/admin/media/folders', '/api/admin/requests', '/api/admin/quotations'])
     assert.equal((await m.get(url)).status, 200, url);
   // Everything else is refused
-  for (const url of ['/api/admin/dashboard', '/api/admin/settings', '/api/admin/promotions', '/api/admin/requests', '/api/admin/reviews', '/api/admin/mail', '/api/admin/audit', '/api/admin/team', '/api/admin/whatsapp'])
+  for (const url of ['/api/admin/dashboard', '/api/admin/settings', '/api/admin/promotions', '/api/admin/reviews', '/api/admin/mail', '/api/admin/audit', '/api/admin/team', '/api/admin/whatsapp'])
     assert.equal((await m.get(url)).status, 403, url);
   const someone = await userId('admin@test.local');
   assert.equal((await m.patch(`/api/admin/customers/${someone}`, { disabled: true })).status, 403);

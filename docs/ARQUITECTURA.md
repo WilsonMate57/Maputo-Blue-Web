@@ -116,7 +116,7 @@ Navegador ──HTTPS──► Proxy (IIS ou Caddy, certificado TLS)
 - **Papéis:** os papéis existem só na base de dados. O registo no site cria sempre um cliente. A equipa tem três níveis:
   - **Superadministrador:** criado por `npm run create-admin` (a migração 010 promoveu o administrador mais antigo). É o único que vê **Equipa** (`/api/admin/team`), onde cria contas, muda níveis, desactiva ou retira acesso. Cada pessoa nova recebe um e-mail com um link (válido 72 h) para escolher a própria palavra-passe em `/admin/?invite=…`. Se o e-mail já tiver conta de cliente, a conta é promovida e mantém a palavra-passe.
   - **Administrador:** tudo, menos a gestão da equipa.
-  - **Gestor:** só as rotas de `MANAGER_ROUTES` em `routes/admin/index.js`: reservas, disponibilidade, pacotes (e as imagens desses pacotes), facturas e clientes (consulta e notas). Qualquer rota que não esteja nessa lista é recusada, por isso as funcionalidades novas ficam fechadas aos gestores até serem acrescentadas.
+  - **Gestor:** só as rotas de `MANAGER_ROUTES` em `routes/admin/index.js`: reservas, disponibilidade, pedidos de cotação e cotações, pacotes (e as imagens desses pacotes), facturas e clientes (consulta e notas). Qualquer rota que não esteja nessa lista é recusada, por isso as funcionalidades novas ficam fechadas aos gestores até serem acrescentadas.
   - Mudar o nível ou desactivar uma conta termina as sessões dessa pessoa. Ninguém altera o próprio nível, e a conta do superadministrador não se altera no painel. Tudo fica no registo de actividade.
 - **Sessões:** o cookie `mb_session` é `HttpOnly` e `SameSite=Lax`, e `Secure` em produção. Na base de dados guarda-se só o SHA-256 do token. Repor a palavra-passe, ou desactivar ou mudar o papel de um utilizador, termina as sessões abertas.
 - **CSRF:** pedidos de escrita com um `Origin` diferente são recusados, e só se aceita JSON ou multipart. Assim, um formulário de outro site recebe 415.
@@ -220,16 +220,57 @@ Ver [FACTURACAO.md](FACTURACAO.md): fluxo de emissão a partir da referência da
   - `server/scripts/overflow-check.js <url> <largura>` detecta scroll horizontal;
   - `server/scripts/audit.js` faz a auditoria de acessibilidade e SEO.
 
-## 13. Pedidos de cotação
+## 13. Cotações e propostas
 
-### Fluxo
+Secção **Cotações e propostas** do painel. Uma cotação pode nascer de um pedido do site ou directamente da equipa, para quem nunca passou pelo site.
+
+### Ciclo de vida
+
+```
+draft ──► issued ──► sent ──► viewed ──► accepted ──► converted (reserva)
+                                 ├─► declined
+                                 └─► revision_requested ──► nova versão
+```
+
+- `expired`: passa-se de forma automática (tarefa de hora a hora) em `issued`, `sent`, `viewed` e `revision_requested`. Cotações aceites mantêm a resposta.
+- `withdrawn`: cancelada pela equipa; o link deixa de funcionar.
+- `superseded`: substituída por uma versão emitida depois. O link antigo avisa disso.
+
+### Regras
+
+- **Número:** `COT-AAAA-NNNN`, partilhado pelas versões (`group_id`); `v2`, `v3` na mesma cotação. **Duplicar** cria número novo.
+- **Só os rascunhos mudam.** Ao emitir, os dados da empresa ficam fixos em `quotes.issuer` e o PDF em `quote_documents`. Qualquer alteração passa por nova versão, mesmo numa cotação aceite: a aceitação só deixa de valer quando a nova versão é emitida.
+- **Valores:** `lib/quote-totals.js`, em cêntimos inteiros, sempre recalculados no servidor. O painel só mostra uma pré-visualização.
+- **Moedas:** MZN, USD, ZAR e EUR, sem conversão. Os indicadores nunca somam moedas diferentes.
+- **Clientes:** `quotes.customer` guarda os dados da cotação; `contacts` guarda quem não tem conta, por e-mail. A conta só fica ligada se o e-mail estiver confirmado.
+- **Link público:** derivado por HMAC de `TICKET_SECRET`, o id e `token_nonce`, com só o hash guardado. A equipa pode copiar o mesmo link as vezes que precisar, e enviar de novo não o muda. Para desactivar um link, cancele a cotação e duplique-a. Mudar `TICKET_SECRET` faz o botão «Copiar link» mostrar um link que já não abre.
+- **Página pública:** `publicQuote()` define o que o cliente vê. Observações internas, contactos, tokens e equipa ficam de fora.
+- **Respostas:** aceitar, recusar (motivo opcional) e pedir alterações (mensagem obrigatória). A equipa recebe e-mail e WhatsApp pelo modelo `alerta_equipa`, sem novo modelo na Meta, e pode registar respostas dadas por telefone.
+- **Visualizações:** contam quando a página abre no browser; contas da equipa não contam. Não prova quem abriu.
+
+### Conversão em reserva (`lib/quote-conversion.js`)
+
+- Só de `accepted`, e a equipa confirma depois de ver a disponibilidade de cada serviço.
+- Cria **uma** reserva `confirmed`, ligada ao pacote interno `proposta-personalizada` (arquivado, escondido do painel e do site), com todas as linhas em `price_snapshot`. Bilhete e factura lêem daí, por isso uma cotação dá uma factura.
+- A capacidade é verificada e ocupada em cada serviço do catálogo com data. Serviços personalizados e privados não têm capacidade: a equipa confirma-os à mão.
+- `bookings.quote_id` é único: não há duas reservas da mesma cotação.
+- Datas e grupo destas reservas não se editam na reserva (`booking_from_quote`), porque a capacidade e o preço vêm das linhas da cotação.
+- Uma cotação nunca é pagamento, factura ou receita. A receita só aparece com a reserva, e pelos pagamentos verificados.
+
+### Definições
+
+**Definições → Cotações** guarda validade, depósito e textos sugeridos (PT/EN). Vêm vazios de propósito: são dados comerciais da empresa.
+
+### Pedidos de cotação
+
+#### Fluxo
 
 1. **Pedido do cliente** (`pages/custom-tour.html`, botão «Pedir cotação» da navbar). O cliente:
    - escolhe passeios, alojamentos e serviços privados num catálogo com filtros e pesquisa;
    - indica a data preferida de cada item, as datas da viagem, o grupo e as preferências;
    - pode pré-seleccionar um pacote com `?package=<id>`.
    O servidor valida os itens (só pacotes publicados e serviços conhecidos) e guarda um snapshot dos títulos em `custom_requests.items`.
-2. **Gerar a cotação no painel** (Pedidos de cotação → «Gerar cotação»). As linhas vêm de `GET /api/admin/requests/:id/quote-suggestion`:
+2. **Gerar a cotação no painel** (Pedidos de cotação → «Gerar cotação» abre o construtor, já preenchido). As linhas vêm de `GET /api/admin/requests/:id/quote-suggestion`:
    - cada pacote é calculado com as regras de preço actuais, para a data e o grupo pedidos;
    - os serviços sem preço de catálogo e as opções por escolher ficam assinalados para a equipa preencher;
    - tudo pode ser editado antes de enviar.
@@ -237,15 +278,15 @@ Ver [FACTURACAO.md](FACTURACAO.md): fluxo de emissão a partir da referência da
    - **e-mail**;
    - **WhatsApp** — abre `wa.me` com a mensagem e o link prontos;
    - **link** — para copiar e partilhar noutro canal.
-   Os canais usados ficam em `quotes.channels` e no histórico. Cada envio gera um link secreto novo (só o hash é guardado) e desactiva os anteriores.
+   Os canais usados ficam em `quotes.channels` e no histórico.
 4. **Resposta do cliente:** pelo link ou na **conta** (separador «Cotações»).
 
-### Quem vê a cotação na conta
+#### Quem vê a cotação na conta
 
-A cotação aparece na conta quando o pedido foi feito com sessão iniciada, ou com o mesmo e-mail depois de esse e-mail ter sido **confirmado**. Outros clientes recebem 404.
+A cotação aparece na conta quando o pedido foi feito com sessão iniciada, ou com o mesmo e-mail depois de esse e-mail ter sido **confirmado**. O mesmo vale para cotações feitas sem pedido. Outros clientes recebem 404.
 
 ### Referências
 
-- **Código:** `server/src/lib/quotes.js`, `server/src/routes/admin/requests.js`, `server/src/routes/account.js` e `server/src/routes/public.js`.
-- **Migração:** `004_quote_requests.sql` (só acrescenta).
-- **Testes:** `server/test/quotes.test.js` e os e2e do formulário e do painel.
+- **Código:** `server/src/lib/quotes.js`, `quote-totals.js`, `quote-pdf.js`, `quote-conversion.js`, `server/src/routes/admin/quotations.js`, `requests.js`, `server/src/routes/account.js` e `public.js`; `admin/js/views/quotations.js`, `quotation-edit.js`, `quotation-detail.js`; `assets/js/portal-quote.js`.
+- **Migrações:** `004_quote_requests.sql` e `011_proposals.sql` (só acrescentam; as cotações antigas recebem número e dados do pedido).
+- **Testes:** `server/test/quotes.test.js`, `server/test/proposals.test.js` e os e2e do formulário e do painel.

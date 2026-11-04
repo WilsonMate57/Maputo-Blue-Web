@@ -5,7 +5,7 @@ import { $, $$, badge, busy, confirmAction, dateTime, esc, get, modal, patch, po
 const LEVELS = `
   <ul class="list-plain small">
     <li><span>${badge('admin')}</span>Tudo no painel, menos a gestão da equipa.</li>
-    <li><span>${badge('manager')}</span>Reservas, disponibilidade, pacotes, facturas e clientes (só consulta e notas).</li>
+    <li><span>${badge('manager')}</span>Reservas, disponibilidade, cotações, pacotes, facturas e clientes (só consulta e notas).</li>
   </ul>`;
 
 const roleSelect = (value = 'manager') => `<select name="role">

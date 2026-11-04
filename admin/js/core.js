@@ -45,13 +45,30 @@ const ERR = {
   invalid_due_date: 'A data de vencimento não pode ser anterior a hoje.',
   future_payment_date: 'A data do pagamento não pode ser no futuro.',
   invalid_setting: 'Valor inválido.',
+  quote_incomplete: 'A cotação ainda não pode ser emitida',
+  quote_locked: 'Uma cotação emitida não se altera: crie uma nova versão.',
+  quote_not_open: 'Esta cotação já não está em aberto.',
+  quote_converted: 'Esta cotação já deu origem a uma reserva.',
+  quote_already_converted: 'Esta cotação já foi convertida em reserva.',
+  quote_not_accepted: 'Só uma cotação aceite pode ser convertida.',
+  quote_unavailable: 'Há serviços sem disponibilidade',
+  quote_closed: 'Esta cotação já não aceita respostas.',
+  quote_expired: 'Esta cotação expirou.',
+  message_required: 'Indique o que deve ser alterado.',
+  trip_dates_required: 'Indique as datas da viagem numa nova versão.',
+  booking_from_quote: 'Esta reserva veio de uma cotação: datas e grupo mudam com uma nova cotação.',
   internal: 'Erro inesperado no servidor.',
+};
+
+const DETAILS = {
+  customer_name: 'falta o nome do cliente', customer_email: 'falta o e-mail do cliente', customer_phone: 'falta o telefone do cliente',
+  no_items: 'não tem serviços', price_missing: 'há serviços sem preço', validity_past: 'a validade já passou',
 };
 
 export function errorText(err) {
   if (!(err instanceof ApiError)) return ERR.internal;
   const base = ERR[err.code] || err.message || ERR.internal;
-  const det = Array.isArray(err.details) && err.details.length && typeof err.details[0] === 'string' ? `: ${err.details.join('; ')}` : '';
+  const det = Array.isArray(err.details) && err.details.length && typeof err.details[0] === 'string' ? `: ${err.details.map(d => DETAILS[d] || d).join('; ')}` : '';
   return base + det;
 }
 
@@ -108,7 +125,8 @@ export const LABELS = {
   pending: 'Pendente', confirmed: 'Confirmada', rejected: 'Rejeitada', cancelled: 'Cancelada', completed: 'Concluída',
   unpaid: 'Por pagar', partial: 'Parcial', paid: 'Pago', refunded: 'Reembolsado',
   new: 'Novo', under_review: 'Em análise', quote_sent: 'Cotação enviada', accepted: 'Aceite', closed: 'Fechado',
-  draft: 'Rascunho', sent: 'Enviada', declined: 'Recusada', expired: 'Expirada', withdrawn: 'Retirada',
+  draft: 'Rascunho', sent: 'Enviada', viewed: 'Visualizada', declined: 'Recusada', expired: 'Expirada', withdrawn: 'Cancelada',
+  revision_requested: 'Alteração pedida', converted: 'Convertida', superseded: 'Substituída',
   published: 'Publicado', archived: 'Arquivado', hidden: 'Oculta', queued: 'Em fila', sending: 'A enviar', failed: 'Falhou',
   tour: 'Tour', accommodation: 'Alojamento', superadmin: 'Superadministrador', admin: 'Administrador', manager: 'Gestor', customer: 'Cliente',
   per_person: 'Por pessoa', per_group: 'Por grupo / barco', per_night: 'Por noite',

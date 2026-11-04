@@ -46,7 +46,7 @@
     payProgress: (p, t) => `${p} of ${t} paid`, upcoming: 'Upcoming', past: 'Past and cancelled', memberSince: 'Signed in as',
     paidNote: 'Paid in full — thank you!',
     viewQuote: 'View quotation', hideQuote: 'Hide quotation', accept: 'Accept quotation', decline: 'Decline',
-    confirmAccept: 'Accept this quotation? Our team will contact you to confirm the bookings and payment.', confirmDecline: 'Decline this quotation?',
+    confirmAccept: 'Accept this quotation? Our team will contact you to confirm the bookings and payment.', confirmDecline: 'Decline this quotation?', requestChanges: 'Request changes', whatToChange: 'What would you like to change?',
     included: 'Included', notIncluded: 'Not included', quoteValid: 'Valid until', quoteWaiting: 'Our team is preparing your quotation.',
     quoteAccepted: 'You accepted this quotation — our team will contact you.', newQuote: 'Request a quote', quotePdf: 'Download PDF',
   } : {
@@ -78,7 +78,7 @@
     payProgress: (p, t) => `${p} de ${t} pagos`, upcoming: 'Próximas', past: 'Anteriores e canceladas', memberSince: 'Sessão iniciada como',
     paidNote: 'Paga na totalidade — obrigado!',
     viewQuote: 'Ver cotação', hideQuote: 'Ocultar cotação', accept: 'Aceitar cotação', decline: 'Recusar',
-    confirmAccept: 'Aceitar esta cotação? A nossa equipa vai contactá-lo para confirmar as reservas e o pagamento.', confirmDecline: 'Recusar esta cotação?',
+    confirmAccept: 'Aceitar esta cotação? A nossa equipa vai contactá-lo para confirmar as reservas e o pagamento.', confirmDecline: 'Recusar esta cotação?', requestChanges: 'Pedir alterações', whatToChange: 'O que gostaria de alterar?',
     included: 'Incluído', notIncluded: 'Não incluído', quoteValid: 'Válida até', quoteWaiting: 'A nossa equipa está a preparar a sua cotação.',
     quoteAccepted: 'Aceitou esta cotação — a nossa equipa vai contactá-lo.', newQuote: 'Pedir cotação', quotePdf: 'Descarregar PDF',
   };
@@ -324,7 +324,8 @@
   async function loadRequests(pane) {
     pane.innerHTML = '<div class="mb-skeleton-line"></div>';
     try {
-      const list = await API.get('/account/requests');
+      const [requests, proposals] = await Promise.all([API.get('/account/requests'), API.get('/account/proposals')]);
+      const list = [...requests, ...proposals].sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
       if (!list.length) {
         pane.innerHTML = `<div class="mb-empty"><i class='bx bx-map-alt'></i><p>${T.noRequests}</p><a class="btn-primary-mb" href="${PAGE}/custom-tour.html">${T.newQuote}</a></div>`;
         return;
@@ -354,22 +355,25 @@
         try {
           const q = await API.get(`/account/quotes/${btn.dataset.viewQuote}`);
           box.innerHTML = `
-            <ul class="booking-breakdown">${q.items.map(i => `<li><span>${esc(i.description)}${i.quantity !== 1 ? ` × ${i.quantity}` : ''}</span><span>${money(i.quantity * i.unit_price, q.currency)}</span></li>`).join('')}
+            <ul class="booking-breakdown">${q.items.map(i => `<li><span>${esc(i.description)}${i.quantity !== 1 ? ` × ${i.quantity}` : ''}</span><span>${money(i.amount, q.currency)}</span></li>`).join('')}
+              ${q.fees.map(f => `<li><span>${esc(f.label)}</span><span>${money(f.amount, q.currency)}</span></li>`).join('')}
               <li><strong>${T.total}</strong><strong>${money(q.total, q.currency)}</strong></li></ul>
             ${q.inclusions ? `<p class="rq-quote__text"><strong>${T.included}:</strong> ${esc(q.inclusions)}</p>` : ''}
             ${q.exclusions ? `<p class="rq-quote__text"><strong>${T.notIncluded}:</strong> ${esc(q.exclusions)}</p>` : ''}
             ${q.message ? `<p class="rq-quote__text">${esc(q.message)}</p>` : ''}
-            ${q.status === 'sent' ? `<div class="rq-quote__actions"><button type="button" class="btn-primary-mb" data-answer="accept"><i class='bx bx-check'></i>${T.accept}</button>
+            ${['sent', 'viewed', 'revision_requested'].includes(q.status) ? `<div class="rq-quote__actions"><button type="button" class="btn-primary-mb" data-answer="accept"><i class='bx bx-check'></i>${T.accept}</button>
+              <button type="button" class="btn-outline-mb" data-answer="revision">${T.requestChanges}</button>
               <button type="button" class="btn-outline-mb" data-answer="decline">${T.decline}</button></div>`
               : q.status === 'accepted' ? `<p class="mb-alert mb-alert--success" style="margin-top:12px;">${T.quoteAccepted}</p>` : ''}`;
           box.hidden = false;
           btn.setAttribute('aria-expanded', 'true');
           btn.lastChild.textContent = T.hideQuote;
           box.querySelectorAll('[data-answer]').forEach(a => a.addEventListener('click', async () => {
-            const accept = a.dataset.answer === 'accept';
-            if (!confirm(accept ? T.confirmAccept : T.confirmDecline)) return;
+            const decision = a.dataset.answer;
+            const message = decision === 'revision' ? (prompt(T.whatToChange) || '').trim() : '';
+            if (decision === 'revision' ? !message : !confirm(decision === 'accept' ? T.confirmAccept : T.confirmDecline)) return;
             a.disabled = true;
-            try { await API.post(`/account/quotes/${q.id}/respond`, { decision: a.dataset.answer }); loadRequests(pane); }
+            try { await API.post(`/account/quotes/${q.id}/respond`, { decision, ...(message ? { message } : {}) }); loadRequests(pane); }
             catch (err) { a.disabled = false; alert(API.errorText(err)); }
           }));
         } catch (err) { alert(API.errorText(err)); }

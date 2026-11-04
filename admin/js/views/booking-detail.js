@@ -48,6 +48,7 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
           <span class="eyebrow">Reserva</span>
           <h2 class="detail-hero__title"><span class="mono">${esc(b.reference)}</span> ${badge(b.status)} ${badge(b.payment_status)}</h2>
           <div class="detail-hero__meta">
+            ${b.quote_id ? `<a class="link" href="#/quotations/${b.quote_id}"><i class='bx bx-file'></i>Cotação ${esc(b.quote_number)}${b.quote_version > 1 ? ` v${b.quote_version}` : ''}</a>` : ''}
             <span><i class='bx bx-user'></i>${esc(b.customer_name)}</span>
             <span><i class='bx bx-map'></i>${esc(s.package?.title || b.package_id)}</span>
             <span><i class='bx bx-calendar'></i>${date(b.start_date)}${b.end_date !== b.start_date ? ` → ${date(b.end_date)}` : ''}</span>

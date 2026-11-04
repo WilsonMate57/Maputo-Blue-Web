@@ -9,6 +9,8 @@ import { processOutbox, resendTransport } from './lib/mailer.js';
 import { runBookingMaintenance } from './lib/bookings.js';
 import { ticketAttachments } from './lib/tickets.js';
 import { invoiceAttachments } from './lib/invoices.js';
+import { expireQuotes } from './lib/quotes.js';
+import { quoteAttachments } from './lib/quote-pdf.js';
 import { cloudApiTransport, processWhatsAppOutbox, whatsappConfigured } from './lib/whatsapp.js';
 
 const cfg = loadConfig();
@@ -25,8 +27,8 @@ if (!whatsappConfigured(cfg)) console.log('  · WhatsApp alerts off (WHATSAPP_TO
 const timers = [];
 if (cfg.jobs) {
   let mailBusy = false, maintBusy = false;
-  const tickets = ticketAttachments(pool, cfg), invoices = invoiceAttachments(pool, cfg);
-  const mailAttachments = async job => [...await tickets(job), ...await invoices(job)];
+  const tickets = ticketAttachments(pool, cfg), invoices = invoiceAttachments(pool, cfg), quotes = quoteAttachments(pool, cfg);
+  const mailAttachments = async job => [...await tickets(job), ...await invoices(job), ...await quotes(job)];
   timers.push(setInterval(async () => {
     if (mailBusy) return; mailBusy = true;
     try { await processOutbox(pool, transport, { log: m => app.log.warn(m), attachments: mailAttachments }); } catch (e) { app.log.error(e); } finally { mailBusy = false; }
@@ -41,6 +43,7 @@ if (cfg.jobs) {
     if (maintBusy) return; maintBusy = true;
     try {
       await runBookingMaintenance(pool, cfg);
+      await expireQuotes(pool);
       await pool.query(`delete from sessions where expires_at < now()`);
       await pool.query(`delete from auth_tokens where expires_at < now() - interval '7 days'`);
     } catch (e) { app.log.error(e); } finally { maintBusy = false; }

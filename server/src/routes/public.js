@@ -14,8 +14,8 @@ import { badRequest, conflict, notFound } from '../lib/errors.js';
 import { reference, sha256 } from '../lib/security.js';
 import { tx } from '../db.js';
 import { guestBooking } from './tickets.js';
-import { normalizeRequestItems, publicQuote, respondToQuote } from '../lib/quotes.js';
-import { loadQuoteForPdf, quoteFilename, renderQuotePdf } from '../lib/quote-pdf.js';
+import { PUBLIC_STATUSES, markViewed, normalizeRequestItems, publicQuote, respondToQuote } from '../lib/quotes.js';
+import { quoteFilename, quotePdf } from '../lib/quote-pdf.js';
 
 const date = { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$' };
 const id = { type: 'string', pattern: '^[a-z0-9][a-z0-9-]{1,80}$' };
@@ -242,28 +242,29 @@ export default async function publicRoutes(app) {
   // ── Quotations (link sent by e-mail; token is the credential) ─────────────
   async function quoteByToken(c, token, lock = false) {
     const { rows } = await c.query(
-      `select q.*, r.reference, r.name, r.email, r.locale, r.id as req_id from quotes q join custom_requests r on r.id = q.request_id
-        where q.public_token_hash = $1 and q.status in ('sent','accepted','declined','expired') ${lock ? 'for update of q' : ''}`, [sha256(token)]);
+      `select * from quotes where public_token_hash = $1 and status = any($2) ${lock ? 'for update' : ''}`, [sha256(token), PUBLIC_STATUSES]);
     if (!rows[0]) throw notFound('quote_not_found');
     return rows[0];
   }
   const tokenParams = { type: 'object', required: ['token'], properties: { token: { type: 'string', minLength: 20, maxLength: 100 } } };
-  app.get('/quotes/:token', { schema: { params: tokenParams } }, async req => publicQuote(await quoteByToken(pool, req.params.token)));
+  app.get('/quotes/:token', { schema: { params: tokenParams } }, async req =>
+    publicQuote(await markViewed(pool, await quoteByToken(pool, req.params.token), req.user)));
 
   app.get('/quotes/:token/pdf', { config: { rateLimit: { max: 20, timeWindow: '10 minutes' } }, schema: { params: tokenParams } }, async (req, reply) => {
     const q = await quoteByToken(pool, req.params.token);
-    const full = await loadQuoteForPdf(pool, q.id);
     reply.header('Content-Type', 'application/pdf');
-    reply.header('Content-Disposition', `attachment; filename="${quoteFilename(full)}"`);
-    return reply.send(await renderQuotePdf(pool, cfg, full));
+    reply.header('Content-Disposition', `attachment; filename="${quoteFilename(q)}"`);
+    return reply.send(await quotePdf(pool, cfg, q));
   });
 
   app.post('/quotes/:token/respond', {
     config: { rateLimit: { max: 10, timeWindow: '10 minutes' } },
-    schema: { params: tokenParams, body: { type: 'object', required: ['decision'], properties: { decision: { type: 'string', enum: ['accept', 'decline'] } } } },
+    schema: { params: tokenParams, body: { type: 'object', required: ['decision'], properties: {
+      decision: { type: 'string', enum: ['accept', 'decline', 'revision'] }, message: { type: 'string', maxLength: 3000 } } } },
   }, async req => tx(pool, async c => {
     const q = await quoteByToken(c, req.params.token, true);
-    const status = await respondToQuote(c, cfg, { quote: q, decision: req.body.decision, actor: req.user || null });
+    // The link answers for the customer, whoever is signed in on this browser
+    const status = await respondToQuote(c, cfg, { quote: q, decision: req.body.decision, message: req.body.message, actor: null });
     return publicQuote({ ...q, status });
   }));
 

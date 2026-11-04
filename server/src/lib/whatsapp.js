@@ -75,6 +75,14 @@ export function alertParams(template, d) {
       title = `Cotação aceite ${d.reference || ''}`.trim();
       summary = [`${d.name} aceitou a cotação de ${fmtMoney(d.total, d.currency)}`];
       break;
+    case 'admin_quote_declined':
+      title = `Cotação recusada ${d.reference}`;
+      summary = [`${d.name} recusou a cotação de ${fmtMoney(d.total, d.currency)}`, d.message ? `Motivo: ${d.message}` : null];
+      break;
+    case 'admin_quote_revision':
+      title = `Alteração pedida ${d.reference}`;
+      summary = [`${d.name} pediu alterações à cotação`, d.message];
+      break;
     case 'test':
       title = 'Mensagem de teste';
       summary = ['As notificações de WhatsApp do site estão a funcionar'];

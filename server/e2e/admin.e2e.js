@@ -184,13 +184,19 @@ test('quote request: lines generated from the chosen items, sent by link', async
   const { id } = await page.evaluate(ref => fetch('/api/admin/requests?q=' + ref).then(r => r.json()).then(j => j.items[0]), req.reference);
   await go(`#/requests/${id}`);
   assert.match(await page.$eval('#main', el => el.textContent), /Sunset Cruise[\s\S]*Aluguer de barco privado/);
-  await page.click('#new-quote');
-  await page.waitForSelector('dialog.modal[open] #q-items');
-  const prices = await page.$$eval('dialog.modal [data-k=unit_price]', els => els.map(e => e.value));
+  await page.click('a[href^="#/quotations/new?request="]');
+  await page.waitForSelector('#steps');
+  await page.click('#steps li[data-step="2"]');
+  await page.waitForSelector('[data-f=unit_price]');
+  const prices = await page.$$eval('[data-f=unit_price]', els => els.map(e => e.value));
   assert.ok(Number(prices[0]) > 0, 'catalogue item priced automatically');
   assert.equal(prices[1], '', 'service priced by the team');
   await shot('quote-generate');
-  await page.type('dialog.modal .repeat__row:nth-child(2) [data-k=unit_price]', '20000');
+  await page.type('[data-i="1"] [data-f=unit_price]', '20000');
+  await page.click('#issue');
+  await page.waitForSelector('#send', { timeout: 10000 });
+  await page.click('#send');
+  await page.waitForSelector('dialog.modal[open] [name=ch_link]');
   await page.click('dialog.modal [name=ch_email]');
   await page.click('dialog.modal [name=ch_link]');
   await page.click('dialog.modal button[type=submit]');
@@ -198,7 +204,7 @@ test('quote request: lines generated from the chosen items, sent by link', async
   assert.match(await page.$eval('#q-link', el => el.value), /quote\.html\?t=/);
   await shot('quote-sent');
   await page.click('dialog.modal button[type=submit]');
-  await page.waitForFunction(() => /Link partilhado/.test(document.querySelector('#main').textContent), { timeout: 10000 });
+  await page.waitForFunction(() => /Canais[\s\S]*Link/.test(document.querySelector('#main').textContent), { timeout: 10000 });
 });
 
 test('package editor: change a price, see the preview, save, and restore', async () => {

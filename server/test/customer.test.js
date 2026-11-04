@@ -137,7 +137,7 @@ test('6. custom tour request → admin review → quotation → customer accepts
   const token = await tokenFromMail('joao@example.com', 'quote_issued', 't');
   const view = await g.get(`/api/quotes/${token}`);
   assert.equal(view.body.total, 161000);
-  assert.equal(view.body.status, 'sent');
+  assert.equal(view.body.status, 'viewed');
   const acc = await g.post(`/api/quotes/${token}/respond`, { decision: 'accept' });
   assert.equal(acc.body.status, 'accepted');
   assert.equal((await g.post(`/api/quotes/${token}/respond`, { decision: 'decline' })).status, 409);

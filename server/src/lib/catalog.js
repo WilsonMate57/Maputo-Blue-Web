@@ -11,6 +11,7 @@ const DEFAULT_SETTINGS = {
   loyalty: { enabled: false },
   notifications: { admin_emails: [] },
   company: { trade_name: 'Maputo Blue' },
+  quotes: { validity_days: 14 },
 };
 
 export async function getSetting(db, key) {

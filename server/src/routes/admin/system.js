@@ -41,6 +41,10 @@ const SETTING_SCHEMAS = {
     tax: { type: 'object', properties: {
       enabled: { type: 'boolean' }, label: str(20), rate: { type: ['number', 'null'], minimum: 0, maximum: 100 }, mode: { type: 'string', enum: ['inclusive'] } } },
     payment_instructions: str(1500), payment_instructions_en: str(1500), footer_note: str(300), footer_note_en: str(300) } },
+  quotes: { type: 'object', properties: {
+    validity_days: { type: 'integer', minimum: 1, maximum: 365 }, deposit_percent: { type: ['number', 'null'], minimum: 0, maximum: 100 },
+    payment_terms: str(3000), payment_terms_en: str(3000), cancellation_terms: str(3000), cancellation_terms_en: str(3000),
+    inclusions: str(3000), inclusions_en: str(3000), exclusions: str(3000), exclusions_en: str(3000) } },
   notifications: { type: 'object', properties: {
     admin_emails: { type: 'array', items: email, maxItems: 10 },
     admin_whatsapp: { type: 'array', items: { type: 'string', maxLength: 25 }, maxItems: 5 },
@@ -56,6 +60,7 @@ export default async function systemRoutes(app) {
     notifications: await getSetting(pool, 'notifications'),
     company: await getSetting(pool, 'company'),
     invoicing: await getSetting(pool, 'invoicing'),
+    quotes: await getSetting(pool, 'quotes'),
     mail_configured: !!cfg.mail.resendApiKey,
     mail_from: cfg.mail.from,
     whatsapp_configured: whatsappConfigured(cfg),

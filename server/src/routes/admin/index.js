@@ -14,6 +14,7 @@ import packages from './packages.js';
 import availability from './availability.js';
 import promotions from './promotions.js';
 import requests from './requests.js';
+import quotations from './quotations.js';
 import customers from './customers.js';
 import media from './media.js';
 import system from './system.js';
@@ -32,6 +33,8 @@ const MANAGER_ROUTES = [
   /^GET \/media(\/folders)?$/, /^POST \/media\/upload$/, /^PATCH \/media$/,   // package photos
   /^(GET|POST|PATCH|DELETE) \/invoices(\.csv|\/.*)?$/,
   /^GET \/customers(\/:id)?$/, /^POST \/customers\/:id\/notes$/,
+  /^(GET|POST) \/requests(\/.*)?$/, /^(GET|POST) \/quotes\/.*$/,
+  /^(GET|POST|PATCH) \/quotations(\/.*)?$/, /^GET \/contacts$/,
 ];
 
 export function managerMayUse(method, url) {
@@ -50,6 +53,7 @@ export default async function adminRoutes(app) {
   await app.register(availability);
   await app.register(promotions);
   await app.register(requests);
+  await app.register(quotations);
   await app.register(customers);
   await app.register(media);
   await app.register(system);

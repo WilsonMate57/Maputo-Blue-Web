@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // app.js — Admin shell: authentication gate, hash router, sidebar badges.
 // The server enforces the staff roles on every /api/admin call; this file only
-// decides what to show: managers see bookings, availability, packages, invoices
-// and customers; only the super-administrator sees Team.
+// decides what to show: managers see bookings, availability, quotations, packages,
+// invoices and customers; only the super-administrator sees Team.
 // ─────────────────────────────────────────────────────────────────────────────
 import { $, $$, ApiError, errorText, get, post, setUnauthorizedHandler, toast } from './core.js';
 
@@ -16,6 +16,10 @@ const ROUTES = [
   { re: /^\/calendar$/, key: 'calendar', title: 'Disponibilidade', load: () => import('./views/calendar.js') },
   { re: /^\/requests$/, key: 'requests', title: 'Pedidos de cotação', load: () => import('./views/requests.js') },
   { re: /^\/requests\/([0-9a-f-]{36})$/, key: 'requests', title: 'Pedido de cotação', load: () => import('./views/request-detail.js') },
+  { re: /^\/quotations$/, key: 'quotations', title: 'Cotações e propostas', load: () => import('./views/quotations.js') },
+  { re: /^\/quotations\/new$/, key: 'quotations', title: 'Nova cotação', load: () => import('./views/quotation-edit.js') },
+  { re: /^\/quotations\/([0-9a-f-]{36})\/edit$/, key: 'quotations', title: 'Editar cotação', load: () => import('./views/quotation-edit.js') },
+  { re: /^\/quotations\/([0-9a-f-]{36})$/, key: 'quotations', title: 'Cotação', load: () => import('./views/quotation-detail.js') },
   { re: /^\/packages$/, key: 'packages', title: 'Pacotes e alojamentos', load: () => import('./views/packages.js') },
   { re: /^\/packages\/(new|[a-z0-9-]+)$/, key: 'packages', title: 'Editar pacote', load: () => import('./views/package-edit.js') },
   { re: /^\/promotions$/, key: 'promotions', title: 'Promoções', load: () => import('./views/promotions.js') },
@@ -30,7 +34,7 @@ const ROUTES = [
 ];
 
 const STAFF = ['manager', 'admin', 'superadmin'];
-const MANAGER_AREAS = new Set(['bookings', 'calendar', 'invoices', 'packages', 'customers']);
+const MANAGER_AREAS = new Set(['bookings', 'calendar', 'requests', 'quotations', 'invoices', 'packages', 'customers']);
 const ROLE_NAMES = { superadmin: 'Superadministrador', admin: 'Administrador', manager: 'Gestor' };
 const mayOpen = key => (key === 'team' ? user.role === 'superadmin' : user.role !== 'manager' || MANAGER_AREAS.has(key));
 const home = () => (user.role === 'manager' ? '/bookings' : '/dashboard');
@@ -132,6 +136,7 @@ async function refreshBadges() {
     const set = (id, n) => { const el = $(id); el.hidden = !n; el.textContent = n; };
     set('#badge-pending', a.pending);
     set('#badge-requests', a.new_requests);
+    set('#badge-quotes', a.quote_actions);
     set('#badge-mail', a.failed_mail);
     set('#badge-overdue', a.overdue_invoices);
   } catch { /* badges are best-effort */ }

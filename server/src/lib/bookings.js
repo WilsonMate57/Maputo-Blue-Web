@@ -216,6 +216,8 @@ export async function updateBooking(pool, cfg, { bookingId, actor, patch }) {
       || next.option_key !== b.option_key || next.nights !== prevNights;
     let snapshot = b.price_snapshot, total = b.total, end = b.end_date;
 
+    // Its capacity and price come from the proposal's lines, which this edit cannot recompute
+    if (tripChanged && b.quote_id) throw conflict('booking_from_quote', 'Dates and group of a proposal booking are not edited here');
     if (tripChanged) {
       if (!isDateString(next.start_date)) throw badRequest('invalid_date');
       const { pkg, rules } = await loadPackage(c, b.package_id);

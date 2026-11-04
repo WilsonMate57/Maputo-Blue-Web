@@ -136,7 +136,7 @@ export default async function packageRoutes(app) {
               p.content->'images'->>0 as first_image, p.pricing->>'currency' as currency, (p.pricing->>'adult')::numeric as base_price,
               p.pricing->>'unit' as unit, p.availability->>'default_capacity' as default_capacity,
               (select count(*)::int from bookings b where b.package_id = p.id and b.status in ('pending','confirmed') and b.start_date >= current_date) as upcoming
-         from packages p order by p.kind, p.sort_order, p.id`);
+         from packages p where p.id <> 'proposta-personalizada' order by p.kind, p.sort_order, p.id`);
     return rows;
   });
 

@@ -2,10 +2,9 @@
 // routes/admin/requests.js — Custom tour requests and quotations.
 // ─────────────────────────────────────────────────────────────────────────────
 import { audit } from '../../lib/audit.js';
-import { enqueueMail } from '../../lib/mailer.js';
 import { badRequest, conflict, notFound } from '../../lib/errors.js';
-import { CHANNELS, deliverQuote, suggestQuoteLines } from '../../lib/quotes.js';
-import { loadQuoteForPdf, quoteFilename, renderQuotePdf } from '../../lib/quote-pdf.js';
+import { CHANNELS, cancelQuote, createProposal, deliverQuote, loadQuote, requestCustomer, requestTrip, suggestQuoteLines } from '../../lib/quotes.js';
+import { quoteFilename, quotePdf } from '../../lib/quote-pdf.js';
 import { todayLocal } from '../../lib/dates.js';
 import { tx } from '../../db.js';
 
@@ -45,8 +44,8 @@ export default async function requestRoutes(app) {
     const { rows: [r] } = await pool.query('select * from custom_requests where id = $1', [req.params.id]);
     if (!r) throw notFound('request_not_found');
     const [quotes, notes, history] = await Promise.all([
-      pool.query(`select q.id, q.items, q.inclusions, q.exclusions, q.message, q.currency, q.total, q.valid_until, q.status,
-                         q.sent_at, q.responded_at, q.created_at, q.channels, u.name as created_by_name
+      pool.query(`select q.id, q.number, q.version, q.items, q.inclusions, q.exclusions, q.message, q.currency, q.total, q.valid_until, q.status,
+                         q.sent_at, q.responded_at, q.response_message, q.created_at, q.channels, u.name as created_by_name
                     from quotes q left join users u on u.id = q.created_by where q.request_id = $1 order by q.created_at desc`, [r.id]),
       pool.query(`select n.id, n.body, n.created_at, u.name as author from internal_notes n left join users u on u.id = n.author_id
                    where n.entity_type = 'request' and n.entity_id = $1 order by n.created_at desc`, [r.id]),
@@ -112,22 +111,15 @@ export default async function requestRoutes(app) {
   }, async (req, reply) => {
     const b = req.body;
     if (b.valid_until < todayLocal()) throw badRequest('invalid_date', 'Validity date is in the past');
-    const total = Math.round(b.items.reduce((s, i) => s + i.quantity * i.unit_price, 0) * 100) / 100;
     const result = await tx(pool, async c => {
       const { rows: [r] } = await c.query('select * from custom_requests where id = $1 for update', [req.params.id]);
       if (!r) throw notFound('request_not_found');
       if (['accepted', 'closed'].includes(r.status)) throw conflict('request_closed');
-      const { rows: [q] } = await c.query(
-        `insert into quotes (request_id, items, inclusions, exclusions, message, currency, total, valid_until, status, created_by)
-         values ($1,$2,$3,$4,$5,$6,$7,$8,'draft',$9) returning *`,
-        [r.id, JSON.stringify(b.items), b.inclusions || null, b.exclusions || null, b.message || null, b.currency, total, b.valid_until, req.user.id]);
-      if (!b.send) {
-        await audit(c, req.user, 'request', r.id, 'quote_drafted', { quote_id: q.id, total, currency: b.currency });
-        delete q.public_token_hash;
-        return q;
-      }
-      const delivery = await deliverQuote(c, cfg, { quote: q, request: r, channels: b.channels, actor: req.user });
+      const q = await createProposal(c, { actor: req.user, request: r,
+        body: { ...b, customer: requestCustomer(r), trip: requestTrip(r), locale: r.locale } });
       delete q.public_token_hash;
+      if (!b.send) return q;
+      const delivery = await deliverQuote(c, cfg, { quote: q, channels: b.channels, actor: req.user });
       return { ...q, status: 'sent', delivery };
     });
     reply.code(201);
@@ -135,41 +127,29 @@ export default async function requestRoutes(app) {
   });
 
   const channelsBody = { type: ['object', 'null'], properties: { channels: { type: 'array', minItems: 1, maxItems: 3, items: { type: 'string', enum: CHANNELS } } } };
-  // Lock order: request, then quotation (same as creating a quotation)
-  const loadForDelivery = async (c, quoteId) => {
-    const { rows: [ref] } = await c.query('select request_id from quotes where id = $1', [quoteId]);
-    if (!ref) throw notFound('quote_not_found');
-    const { rows: [r] } = await c.query('select * from custom_requests where id = $1 for update', [ref.request_id]);
-    const { rows: [q] } = await c.query('select * from quotes where id = $1 for update', [quoteId]);
-    return { q, r };
-  };
 
   // Send a draft through the chosen channels
   app.post('/quotes/:quoteId/send', { schema: { params: { type: 'object', properties: { quoteId: uuid } }, body: channelsBody } }, async req => tx(pool, async c => {
-    const { q, r } = await loadForDelivery(c, req.params.quoteId);
+    const q = await loadQuote(c, req.params.quoteId, { lock: true });
     if (q.status !== 'draft') throw conflict('quote_not_draft');
-    return { ok: true, delivery: await deliverQuote(c, cfg, { quote: q, request: r, channels: req.body && req.body.channels, actor: req.user }) };
+    return { ok: true, delivery: await deliverQuote(c, cfg, { quote: q, channels: req.body && req.body.channels, actor: req.user }) };
   }));
 
   // Share a sent quotation again (new link — the previous one stops working)
   app.post('/quotes/:quoteId/share', { schema: { params: { type: 'object', properties: { quoteId: uuid } }, body: channelsBody } }, async req => tx(pool, async c => {
-    const { q, r } = await loadForDelivery(c, req.params.quoteId);
-    if (q.status !== 'sent') throw conflict('quote_not_open');
-    return { ok: true, delivery: await deliverQuote(c, cfg, { quote: q, request: r, channels: req.body && req.body.channels, actor: req.user }) };
+    const q = await loadQuote(c, req.params.quoteId, { lock: true });
+    if (!['sent', 'viewed', 'revision_requested'].includes(q.status)) throw conflict('quote_not_open');
+    return { ok: true, delivery: await deliverQuote(c, cfg, { quote: q, channels: req.body && req.body.channels, actor: req.user, rotate: true }) };
   }));
   app.get('/quotes/:quoteId/pdf', { schema: { params: { type: 'object', properties: { quoteId: uuid } } } }, async (req, reply) => {
-    const full = await loadQuoteForPdf(pool, req.params.quoteId);
-    if (!full) throw notFound('quote_not_found');
+    const q = await loadQuote(pool, req.params.quoteId);
     reply.header('Content-Type', 'application/pdf');
-    reply.header('Content-Disposition', `attachment; filename="${quoteFilename(full)}"`);
-    return reply.send(await renderQuotePdf(pool, cfg, full));
+    reply.header('Content-Disposition', `attachment; filename="${quoteFilename(q)}"`);
+    return reply.send(await quotePdf(pool, cfg, q));
   });
 
-  app.post('/quotes/:quoteId/withdraw', { schema: { params: { type: 'object', properties: { quoteId: uuid } } } }, async req => {
-    const { rows: [q] } = await pool.query(
-      `update quotes set status='withdrawn' where id=$1 and status in ('draft','sent') returning request_id`, [req.params.quoteId]);
-    if (!q) throw conflict('quote_not_open');
-    await audit(pool, req.user, 'request', q.request_id, 'quote_withdrawn', { quote_id: req.params.quoteId });
+  app.post('/quotes/:quoteId/withdraw', { schema: { params: { type: 'object', properties: { quoteId: uuid } } } }, async req => tx(pool, async c => {
+    await cancelQuote(c, { quote: await loadQuote(c, req.params.quoteId, { lock: true }), actor: req.user });
     return { ok: true };
-  });
+  }));
 }

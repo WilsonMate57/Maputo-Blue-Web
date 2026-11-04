@@ -6,6 +6,7 @@ export default async function customerDetail(main, [id], { setTitle, user: me })
   async function load() {
     const d = await get(`/admin/customers/${id}`);
     const u = d.user, l = d.loyalty;
+    const proposals = (await get(`/admin/quotations?customer_email=${encodeURIComponent(u.email)}`)).items;
     setTitle(u.name);
     const staff = u.role !== 'customer';
     const canManage = me.role !== 'manager' && !staff && u.id !== me.id;
@@ -25,6 +26,8 @@ export default async function customerDetail(main, [id], { setTitle, user: me })
               <td class="right mono">${money(b.total, b.currency)}</td><td>${badge(b.status)}</td></tr>`).join('')}</tbody></table>` : '<p class="muted" style="margin:0;">Sem reservas associadas.</p>'}
         </div></div>
         <div class="stack">
+          ${proposals.length ? `<div class="card"><div class="card__head"><h2>Cotações</h2></div><div class="card__body"><ul class="list-plain">
+            ${proposals.map(q => `<li><a class="link mono" href="#/quotations/${q.id}">${esc(q.number)}</a><span>${badge(q.status)} <span class="mono">${money(q.total, q.currency)}</span></span></li>`).join('')}</ul></div></div>` : ''}
           <div class="card"><div class="card__head"><h2>Fidelização</h2>${me.role === 'manager' ? '' : `<button type="button" class="btn btn--ghost btn--sm" id="adjust"><i class='bx bx-plus-circle'></i>Ajustar</button>`}</div><div class="card__body">
             ${l.enabled ? `<p style="margin:0 0 6px;"><strong class="mono" style="font-size:20px;">${l.completed}</strong> de ${l.required} viagens concluídas ${l.eligible ? '<span class="badge badge--confirmed">Elegível</span>' : ''}</p>
               ${l.reason === 'email_not_verified' ? '<p class="muted small">Só conta depois de o cliente confirmar o e-mail.</p>' : ''}` : '<p class="muted" style="margin:0;">O programa de fidelização está desactivado (Definições).</p>'}

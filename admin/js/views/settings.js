@@ -4,7 +4,7 @@ import { $, $$, CATEGORY_LABELS, badge, busy, dateTime, esc, formValues, get, po
 export default async function settings(main) {
   const [s, cats] = await Promise.all([get('/admin/settings'), get('/admin/categories')]);
   const b = s.booking, l = s.loyalty, n = s.notifications, c = s.company || {};
-  const inv = s.invoicing || {}, iss = inv.issuer || {}, tax = inv.tax || {};
+  const inv = s.invoicing || {}, iss = inv.issuer || {}, tax = inv.tax || {}, qt = s.quotes || {};
   const allCats = [...cats.tour, ...cats.accommodation];
 
   main.innerHTML = `
@@ -91,6 +91,24 @@ export default async function settings(main) {
         <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
       </div></form>
 
+      <form class="card span-all" id="f-quotes" novalidate style="grid-column:1/-1;"><div class="card__head"><h2>Cotações</h2><span class="muted">Textos sugeridos em cada cotação nova; podem ser alterados em cada proposta</span></div><div class="card__body">
+        <div class="grid grid--3">
+          <label class="field"><span>Validade (dias)</span><input name="validity_days" type="number" min="1" max="365" value="${qt.validity_days ?? 14}"></label>
+          <label class="field"><span>Depósito (%)</span><input name="deposit_percent" type="number" min="0" max="100" step="0.01" value="${qt.deposit_percent ?? ''}"></label>
+        </div>
+        <div class="grid grid--2" style="margin-top:14px;">
+          <label class="field"><span>Condições de pagamento (PT)</span><textarea name="payment_terms" rows="3" maxlength="3000">${esc(qt.payment_terms || '')}</textarea></label>
+          <label class="field"><span>Payment terms (EN)</span><textarea name="payment_terms_en" rows="3" maxlength="3000">${esc(qt.payment_terms_en || '')}</textarea></label>
+          <label class="field"><span>Política de cancelamento (PT)</span><textarea name="cancellation_terms" rows="3" maxlength="3000">${esc(qt.cancellation_terms || '')}</textarea></label>
+          <label class="field"><span>Cancellation policy (EN)</span><textarea name="cancellation_terms_en" rows="3" maxlength="3000">${esc(qt.cancellation_terms_en || '')}</textarea></label>
+          <label class="field"><span>Serviços incluídos (PT)</span><textarea name="inclusions" rows="2" maxlength="3000">${esc(qt.inclusions || '')}</textarea></label>
+          <label class="field"><span>Included services (EN)</span><textarea name="inclusions_en" rows="2" maxlength="3000">${esc(qt.inclusions_en || '')}</textarea></label>
+          <label class="field"><span>Serviços não incluídos (PT)</span><textarea name="exclusions" rows="2" maxlength="3000">${esc(qt.exclusions || '')}</textarea></label>
+          <label class="field"><span>Services not included (EN)</span><textarea name="exclusions_en" rows="2" maxlength="3000">${esc(qt.exclusions_en || '')}</textarea></label>
+        </div>
+        <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
+      </div></form>
+
       <div class="card"><div class="card__head"><h2>E-mail</h2></div><div class="card__body">
         ${s.mail_configured ? `<p class="alert alert--success" style="margin:0;">Configurado. Remetente: ${esc(s.mail_from)}</p>`
           : '<p class="alert alert--warn" style="margin:0;">Não configurado. Defina RESEND_API_KEY e MAIL_FROM no ficheiro server/.env do servidor e reinicie o serviço (ver docs/IMPLANTACAO.md).</p>'}
@@ -110,6 +128,7 @@ export default async function settings(main) {
     try { await busy(e.currentTarget.querySelector('[type=submit]'), () => put(`/admin/settings/${key}`, map(v)), 'Definições guardadas.'); } catch { /* toast */ }
   });
   wire('#f-booking', 'booking', v => v);
+  wire('#f-quotes', 'quotes', v => ({ ...Object.fromEntries(Object.entries(v).map(([k, x]) => [k, typeof x === 'string' ? x.trim() : x])), validity_days: v.validity_days || 14 }));
   wire('#f-invoicing', 'invoicing', v => ({
     series_prefix: v.series_prefix.trim().toUpperCase(), due_days: v.due_days ?? 0,
     issuer: { name: v.iss_name.trim(), legal_name: v.iss_legal_name.trim(), nuit: v.iss_nuit.trim(), phone: v.iss_phone.trim(),
@@ -124,7 +143,7 @@ export default async function settings(main) {
     admin_whatsapp: v.admin_whatsapp.split(/[\n,;]+/).map(x => x.trim()).filter(Boolean), reminder_days_before: v.reminder_days_before ?? 0 }));
 
   // WhatsApp: recent alerts, retry and test message
-  const WA_TYPES = { admin_new_booking: 'Nova reserva', admin_new_request: 'Novo pedido de cotação', admin_cancel_request: 'Pedido de cancelamento', admin_quote_accepted: 'Cotação aceite', test: 'Teste' };
+  const WA_TYPES = { admin_new_booking: 'Nova reserva', admin_new_request: 'Novo pedido de cotação', admin_cancel_request: 'Pedido de cancelamento', admin_quote_accepted: 'Cotação aceite', admin_quote_declined: 'Cotação recusada', admin_quote_revision: 'Alteração pedida', test: 'Teste' };
   async function loadWa() {
     const box = $('#wa-log', main);
     const r = await get('/admin/whatsapp');

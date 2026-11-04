@@ -148,7 +148,9 @@ const T = {
     const en = L === 'en';
     const title = en ? 'Your personalised quotation' : 'A sua cotação personalizada';
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.name)}, ${en ? 'please find your quotation below. It is valid until' : 'segue a sua cotação. É válida até'} <strong>${esc(fmtDate(d.valid_until, L))}</strong>.`;
-    const rows = (d.items || []).map(i => [`${i.description}${Number(i.quantity) !== 1 ? ` × ${i.quantity}` : ''}`, fmtMoney(i.quantity * i.unit_price, d.currency)]);
+    const rows = (d.items || []).map(i => [`${i.description}${Number(i.quantity) !== 1 ? ` × ${i.quantity}` : ''}`, fmtMoney(i.amount ?? i.quantity * i.unit_price, d.currency)]);
+    if (Number(d.global_discount)) rows.push([en ? 'Discount' : 'Desconto', `- ${fmtMoney(d.global_discount, d.currency)}`]);
+    if (Number(d.fees_total)) rows.push([en ? 'Additional fees' : 'Taxas adicionais', fmtMoney(d.fees_total, d.currency)]);
     rows.push(['Total', fmtMoney(d.total, d.currency)]);
     const body = [
       d.message ? `<p>${esc(d.message)}</p>` : '',
@@ -206,6 +208,18 @@ const T = {
     const title = `Cotação aceite ${d.reference}`;
     const intro = `${esc(d.name)} aceitou a cotação de ${esc(fmtMoney(d.total, d.currency))}.`;
     return { subject: title, html: layout({ title, intro, cta: d.admin_url ? { url: d.admin_url, label: 'Abrir no painel' } : null, locale: 'pt' }), text: toText(title, intro, []) };
+  },
+  admin_quote_declined(d) {
+    const title = `Cotação recusada ${d.reference}`;
+    const intro = `${esc(d.name)} recusou a cotação de ${esc(fmtMoney(d.total, d.currency))}.`;
+    const body = d.message ? `<p>Motivo: ${esc(d.message)}</p>` : '';
+    return { subject: title, html: layout({ title, intro, body, cta: { url: d.admin_url, label: 'Abrir no painel' }, locale: 'pt' }), text: toText(title, intro, [], d.message || '') };
+  },
+  admin_quote_revision(d) {
+    const title = `Alteração pedida na cotação ${d.reference}`;
+    const intro = `${esc(d.name)} pediu alterações à cotação de ${esc(fmtMoney(d.total, d.currency))}.`;
+    const body = `<p>${esc(d.message)}</p>`;
+    return { subject: title, html: layout({ title, intro, body, cta: { url: d.admin_url, label: 'Abrir no painel' }, locale: 'pt' }), text: toText(title, intro, [], d.message) };
   },
 };
 

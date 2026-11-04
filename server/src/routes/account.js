@@ -5,8 +5,8 @@
 import { publicUser, requireUser } from '../lib/auth.js';
 import { ticketResponders } from './tickets.js';
 import { currentInvoicePdf, invoiceFilename, publicInvoice } from '../lib/invoices.js';
-import { publicQuote, respondToQuote } from '../lib/quotes.js';
-import { loadQuoteForPdf, quoteFilename, renderQuotePdf } from '../lib/quote-pdf.js';
+import { PUBLIC_STATUSES, markViewed, publicQuote, quoteRef, respondToQuote } from '../lib/quotes.js';
+import { quoteFilename, quotePdf } from '../lib/quote-pdf.js';
 import { tx } from '../db.js';
 import { publicBooking, requestCancellation, transitionBooking } from '../lib/bookings.js';
 import { loyaltyStatus } from '../lib/loyalty.js';
@@ -83,30 +83,39 @@ export default async function accountRoutes(app) {
     const { rows } = await pool.query(
       `select r.id, r.reference, r.status, r.destination, r.date_from, r.date_to, r.adults, r.children, r.created_at, r.items,
               (select json_build_object('id', q.id, 'total', q.total, 'currency', q.currency, 'valid_until', q.valid_until,
-                      'status', case when q.status = 'sent' and q.valid_until < current_date then 'expired' else q.status end)
-                 from quotes q where q.request_id = r.id and q.status in ('sent','accepted','declined','expired')
+                      'status', case when q.status in ('sent','viewed','revision_requested') and q.valid_until < current_date then 'expired' else q.status end)
+                 from quotes q where q.request_id = r.id and q.status in ('sent','viewed','accepted','declined','revision_requested','expired','converted')
                 order by q.created_at desc limit 1) as quote
          from custom_requests r where ${OWN_REQUEST} order by r.created_at desc limit 100`, ownParams(req));
     return rows;
   });
 
+  // Proposals reach the account the same way: linked to it, or sent to its confirmed e-mail
+  const OWN_QUOTE = `(q.user_id = $1 or ($2::boolean and lower(q.customer->>'email') = lower($3)))`;
+
+  app.get('/proposals', async req => {
+    const { rows } = await pool.query(
+      `select q.* from quotes q where q.request_id is null and q.status = any($4) and q.status <> 'superseded' and ${OWN_QUOTE} order by q.created_at desc limit 100`,
+      [...ownParams(req), PUBLIC_STATUSES]);
+    return rows.map(q => ({ id: q.id, reference: quoteRef(q), destination: q.trip.destination, date_from: q.trip.date_from, date_to: q.trip.date_to, adults: q.trip.adults, children: q.trip.children,
+      created_at: q.created_at, status: 'quote_sent', items: [], quote: { id: q.id, total: q.total, currency: q.currency, valid_until: q.valid_until, status: publicQuote(q).status } }));
+  });
+
   async function ownQuote(c, req, lock = false) {
     const { rows: [q] } = await c.query(
-      `select q.*, r.reference, r.name, r.email, r.locale, r.id as req_id from quotes q join custom_requests r on r.id = q.request_id
-        where q.id = $4 and q.status in ('sent','accepted','declined','expired') and ${OWN_REQUEST} ${lock ? 'for update of q' : ''}`,
-      [...ownParams(req), req.params.id]);
+      `select q.* from quotes q where q.id = $4 and q.status = any($5) and ${OWN_QUOTE} ${lock ? 'for update of q' : ''}`,
+      [...ownParams(req), req.params.id, PUBLIC_STATUSES]);
     if (!q) throw notFound('quote_not_found');
     return q;
   }
 
-  app.get('/quotes/:id', { schema: { params: { type: 'object', properties: { id: uuid } } } }, async req => publicQuote(await ownQuote(pool, req)));
+  app.get('/quotes/:id', { schema: { params: { type: 'object', properties: { id: uuid } } } }, async req => publicQuote(await markViewed(pool, await ownQuote(pool, req), req.user)));
 
   app.get('/quotes/:id/pdf', { schema: { params: { type: 'object', properties: { id: uuid } } } }, async (req, reply) => {
     const q = await ownQuote(pool, req);
-    const full = await loadQuoteForPdf(pool, q.id);
     reply.header('Content-Type', 'application/pdf');
-    reply.header('Content-Disposition', `attachment; filename="${quoteFilename(full)}"`);
-    return reply.send(await renderQuotePdf(pool, cfg, full));
+    reply.header('Content-Disposition', `attachment; filename="${quoteFilename(q)}"`);
+    return reply.send(await quotePdf(pool, cfg, q));
   });
 
   app.post('/quotes/:id/respond', {

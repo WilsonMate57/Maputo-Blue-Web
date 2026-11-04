@@ -162,7 +162,7 @@ test('the customer sees and answers the quotation in the account; nobody else ca
   const pdf = await ctx.app.inject({ method: 'GET', url: `/api/account/quotes/${q.body.id}/pdf`, headers: { cookie: carla.cookie } });
   assert.equal(pdf.statusCode, 200);
   assert.match(pdf.headers['content-type'], /application\/pdf/);
-  assert.match(pdf.headers['content-disposition'], new RegExp(`cotacao-${r.body.request.reference}\.pdf`));
+  assert.match(pdf.headers['content-disposition'], /cotacao-COT-\d{4}-\d{4}\.pdf/);
   assert.equal(pdf.rawPayload.subarray(0, 5).toString(), '%PDF-');
   assert.ok(pdf.rawPayload.length > 5000, 'document with content');
 
