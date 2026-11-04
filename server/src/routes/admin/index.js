@@ -4,8 +4,8 @@
 //   superadmin  everything, plus the team's accounts (team.js);
 //   admin       everything except the team's accounts;
 //   manager     only the routes in MANAGER_ROUTES: bookings, availability,
-//               packages, invoices and customers. Any route not listed there
-//               is refused, so new features stay closed to managers by default.
+//               packages, invoices, customers, quotations and site statistics.
+//               Any route not listed there is refused, so new features stay closed to managers by default.
 // ─────────────────────────────────────────────────────────────────────────────
 import { requireStaff } from '../../lib/auth.js';
 import { forbidden } from '../../lib/errors.js';
@@ -20,6 +20,7 @@ import media from './media.js';
 import system from './system.js';
 import invoices from './invoices.js';
 import team from './team.js';
+import analytics from './analytics.js';
 
 // "METHOD /path" as declared in the route files (prefix /api/admin removed).
 const MANAGER_ROUTES = [
@@ -35,6 +36,7 @@ const MANAGER_ROUTES = [
   /^GET \/customers(\/:id)?$/, /^POST \/customers\/:id\/notes$/,
   /^(GET|POST) \/requests(\/.*)?$/, /^(GET|POST) \/quotes\/.*$/,
   /^(GET|POST|PATCH) \/quotations(\/.*)?$/, /^GET \/contacts$/,
+  /^GET \/analytics(\/heatmap)?$/,
 ];
 
 export function managerMayUse(method, url) {
@@ -59,4 +61,5 @@ export default async function adminRoutes(app) {
   await app.register(system);
   await app.register(invoices);
   await app.register(team);
+  await app.register(analytics);
 }

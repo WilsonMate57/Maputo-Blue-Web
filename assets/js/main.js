@@ -10,6 +10,18 @@
 (function () {
   'use strict';
 
+  // Resolved now: document.currentScript is only set while this file first runs
+  const SCRIPT_SRC = document.currentScript ? document.currentScript.src : '';
+
+  /* ── Visit statistics (first-party, see analytics.js) ───── */
+  function loadAnalytics() {
+    if (!SCRIPT_SRC || location.protocol === 'file:') return;
+    const s = document.createElement('script');
+    s.src = SCRIPT_SRC.replace(/main\.js(\?.*)?$/, 'analytics.js');
+    s.defer = true;
+    document.head.appendChild(s);
+  }
+
   /* ── FAQ Accordion ──────────────────────────────────────── */
   function initFAQ() {
     const accordion = document.querySelector('.faq-accordion');
@@ -219,5 +231,6 @@
     initHeroCarousel();
     initSectionNav();
     initActiveNavFromURL();
+    loadAnalytics();
   });
 })();

@@ -116,7 +116,7 @@ Navegador ──HTTPS──► Proxy (IIS ou Caddy, certificado TLS)
 - **Papéis:** os papéis existem só na base de dados. O registo no site cria sempre um cliente. A equipa tem três níveis:
   - **Superadministrador:** criado por `npm run create-admin` (a migração 010 promoveu o administrador mais antigo). É o único que vê **Equipa** (`/api/admin/team`), onde cria contas, muda níveis, desactiva ou retira acesso. Cada pessoa nova recebe um e-mail com um link (válido 72 h) para escolher a própria palavra-passe em `/admin/?invite=…`. Se o e-mail já tiver conta de cliente, a conta é promovida e mantém a palavra-passe.
   - **Administrador:** tudo, menos a gestão da equipa.
-  - **Gestor:** só as rotas de `MANAGER_ROUTES` em `routes/admin/index.js`: reservas, disponibilidade, pedidos de cotação e cotações, pacotes (e as imagens desses pacotes), facturas e clientes (consulta e notas). Qualquer rota que não esteja nessa lista é recusada, por isso as funcionalidades novas ficam fechadas aos gestores até serem acrescentadas.
+  - **Gestor:** só as rotas de `MANAGER_ROUTES` em `routes/admin/index.js`: reservas, disponibilidade, pedidos de cotação e cotações, pacotes (e as imagens desses pacotes), facturas, clientes (consulta e notas) e estatísticas do site. Qualquer rota que não esteja nessa lista é recusada, por isso as funcionalidades novas ficam fechadas aos gestores até serem acrescentadas.
   - Mudar o nível ou desactivar uma conta termina as sessões dessa pessoa. Ninguém altera o próprio nível, e a conta do superadministrador não se altera no painel. Tudo fica no registo de actividade.
 - **Sessões:** o cookie `mb_session` é `HttpOnly` e `SameSite=Lax`, e `Secure` em produção. Na base de dados guarda-se só o SHA-256 do token. Repor a palavra-passe, ou desactivar ou mudar o papel de um utilizador, termina as sessões abertas.
 - **CSRF:** pedidos de escrita com um `Origin` diferente são recusados, e só se aceita JSON ou multipart. Assim, um formulário de outro site recebe 415.
@@ -290,3 +290,24 @@ A cotação aparece na conta quando o pedido foi feito com sessão iniciada, ou 
 - **Código:** `server/src/lib/quotes.js`, `quote-totals.js`, `quote-pdf.js`, `quote-conversion.js`, `server/src/routes/admin/quotations.js`, `requests.js`, `server/src/routes/account.js` e `public.js`; `admin/js/views/quotations.js`, `quotation-edit.js`, `quotation-detail.js`; `assets/js/portal-quote.js`.
 - **Migrações:** `004_quote_requests.sql` e `011_proposals.sql` (só acrescentam; as cotações antigas recebem número e dados do pedido).
 - **Testes:** `server/test/quotes.test.js`, `server/test/proposals.test.js` e os e2e do formulário e do painel.
+
+## 14. Avisos por WhatsApp e estatísticas do site
+
+**Avisos à equipa por WhatsApp** (`server/src/lib/whatsapp.js`, guia em [WHATSAPP.md](WHATSAPP.md)):
+- Os avisos à equipa passam por `notifyTeam`, que envia o e-mail e, se houver números configurados em Definições, coloca o aviso na fila `whatsapp_outbox`.
+- O envio usa a WhatsApp Cloud API da Meta, com modelos aprovados: `alerta_equipa` e `alerta_reserva`. O `alerta_reserva` tem o botão «Conversar com o cliente», que abre `/wa/<número>` no próprio site; o site reencaminha para `wa.me`.
+
+**Estatísticas do site** (aba «Estatísticas do site» no painel):
+- **Recolha:** `assets/js/analytics.js`, carregado pelo `main.js`, envia para `POST /api/t` as páginas vistas, o tempo com a página visível, a rolagem e os cliques (posição e texto do botão).
+- **Privacidade:**
+  - não usa cookies;
+  - o visitante é um hash diário de (sal, dia, IP, navegador), por isso não é seguido entre dias;
+  - a sessão é um identificador aleatório guardado só no separador;
+  - nada do que é escrito nos formulários é lido;
+  - respeita Do Not Track / GPC.
+- **Exclusões:** robôs, o próprio `/admin` e contas da equipa com sessão iniciada não contam.
+- **Armazenamento:** tabelas `analytics_pageviews` e `analytics_clicks`. A manutenção horária apaga os cliques com mais de 6 meses e as visitas com mais de 25 meses.
+- **Mapa de cliques:**
+  - as posições são guardadas como fracção da largura da página e píxeis desde o topo;
+  - são agrupadas por largura do ecrã (telemóvel < 768 px, tablet < 1200 px, computador);
+  - o painel desenha-as sobre a página real, carregada num iframe com `?mb_noanalytics=1`.

@@ -2,12 +2,13 @@
 // app.js — Admin shell: authentication gate, hash router, sidebar badges.
 // The server enforces the staff roles on every /api/admin call; this file only
 // decides what to show: managers see bookings, availability, quotations, packages,
-// invoices and customers; only the super-administrator sees Team.
+// invoices, customers and site statistics; only the super-administrator sees Team.
 // ─────────────────────────────────────────────────────────────────────────────
 import { $, $$, ApiError, errorText, get, post, setUnauthorizedHandler, toast } from './core.js';
 
 const ROUTES = [
   { re: /^\/dashboard$/, key: 'dashboard', title: 'Visão geral', load: () => import('./views/dashboard.js') },
+  { re: /^\/analytics$/, key: 'analytics', title: 'Estatísticas do site', load: () => import('./views/analytics.js') },
   { re: /^\/bookings$/, key: 'bookings', title: 'Reservas', load: () => import('./views/bookings.js') },
   { re: /^\/bookings\/([0-9a-f-]{36})$/, key: 'bookings', title: 'Reserva', load: () => import('./views/booking-detail.js') },
   { re: /^\/invoices$/, key: 'invoices', title: 'Facturas', load: () => import('./views/invoices.js') },
@@ -34,7 +35,7 @@ const ROUTES = [
 ];
 
 const STAFF = ['manager', 'admin', 'superadmin'];
-const MANAGER_AREAS = new Set(['bookings', 'calendar', 'requests', 'quotations', 'invoices', 'packages', 'customers']);
+const MANAGER_AREAS = new Set(['bookings', 'calendar', 'requests', 'quotations', 'invoices', 'packages', 'customers', 'analytics']);
 const ROLE_NAMES = { superadmin: 'Superadministrador', admin: 'Administrador', manager: 'Gestor' };
 const mayOpen = key => (key === 'team' ? user.role === 'superadmin' : user.role !== 'manager' || MANAGER_AREAS.has(key));
 const home = () => (user.role === 'manager' ? '/bookings' : '/dashboard');
