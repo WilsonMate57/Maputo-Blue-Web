@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { $, $$, ApiError, errorText, get, post, setUnauthorizedHandler, toast } from './core.js';
 import { startHub, stopHub } from './chat-hub.js';
+import { startI18n } from './i18n.js';
 
 const ROUTES = [
   { re: /^\/dashboard$/, key: 'dashboard', title: 'Visão geral', load: () => import('./views/dashboard.js') },
@@ -222,6 +223,7 @@ function showInvite(token) {
 }
 
 (async function boot() {
+  await startI18n();
   const invite = new URLSearchParams(location.search).get('invite');
   if (invite) return showInvite(invite);
   try {

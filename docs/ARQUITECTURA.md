@@ -312,6 +312,16 @@ A cotação aparece na conta quando o pedido foi feito com sessão iniciada, ou 
   - são agrupadas por largura do ecrã (telemóvel < 768 px, tablet < 1200 px, computador);
   - o painel desenha-as sobre a página real, carregada num iframe com `?mb_noanalytics=1`.
 
+## 16. Painel em inglês
+
+O botão PT/EN na barra de topo (e no ecrã de entrada) muda o idioma do painel, e a escolha fica no browser de cada pessoa. É uma camada por cima das vistas, que continuam escritas em português:
+
+- `admin/js/i18n.js` troca os textos à medida que entram no ecrã, e também datas e diálogos do browser. Em português não faz nada nem carrega o dicionário.
+- `admin/js/i18n-en.js` é o dicionário. `{}` representa um valor no meio da frase.
+- Só muda o que está no dicionário. Mensagens, notas e nomes ficam de fora através de `NOT_TEXT`. Para proteger outra zona, acrescente-a aí ou use `data-no-i18n`.
+- **Ao acrescentar texto ao painel, acrescente-o ao dicionário.** `python server/scripts/check-admin-i18n.py`, a partir da raiz, lista o que falta.
+- Não são traduzidos: conteúdo do catálogo, documentos, e-mails e alertas à equipa, nem exportações CSV.
+
 ## 15. Live Chat
 
 Conversas em tempo real entre visitantes do site e a equipa, sem conta e sem serviços externos. Usa PostgreSQL e o servidor actual; o Firebase não é usado.
@@ -331,7 +341,7 @@ Conversas em tempo real entre visitantes do site e a equipa, sem conta e sem ser
 
 **Estados:** `new` (nova), `active` (em atendimento), `waiting` (o visitante escreveu e aguarda resposta da equipa) e `closed`. Responder assume a conversa, se estiver livre. Dois agentes a assumir ao mesmo tempo: um consegue, o outro recebe `chat_taken`. Uma conversa encerrada só volta a aceitar mensagens se a equipa a reabrir; o visitante pode iniciar outra.
 
-**Presença:** o estado é escolhido por cada pessoa no menu lateral e começa em offline. Só conta se o painel tiver enviado sinal nos últimos 90 s (envia a cada 30 s). Fora do horário em **Definições → Live Chat**, o site mostra sempre offline.
+**Presença:** o estado é escolhido por cada pessoa na barra de topo e começa em offline. Só conta se o painel tiver enviado sinal nos últimos 90 s (envia a cada 30 s). Fora do horário em **Definições → Live Chat**, o site mostra sempre offline.
 
 **Avisos:**
 - No painel: cartão que abre a conversa, som opcional e contador no menu.

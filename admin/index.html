@@ -33,7 +33,7 @@
         <label class="field"><span>Palavra-passe</span><input type="password" name="password" required autocomplete="current-password"></label>
         <p class="alert" role="alert" hidden></p>
         <button type="submit" class="btn btn--secondary btn--block" style="min-height:48px;"><i class='bx bx-log-in'></i>Entrar</button>
-        <a class="link" href="../index.html">← Voltar ao site</a>
+        <a class="link" href="../index.html">← Voltar ao site</a> <button type="button" class="lang-toggle" data-lang-toggle>EN</button>
       </form>
       <form class="login__card" id="invite-form" novalidate hidden>
         <img src="../logo.webp" alt="Maputo Blue" class="login__logo">
@@ -81,8 +81,6 @@
         <a href="#/audit" data-route="audit"><i class='bx bx-history'></i>Registo de actividade</a>
       </nav>
       <div class="sidebar__foot">
-        <label class="chat-presence" id="chat-presence" data-status="offline"><span class="chat-presence__dot" aria-hidden="true"></span><span>Live Chat</span>
-          <select aria-label="O seu estado no Live Chat"><option value="online">Online</option><option value="away">Ausente</option><option value="offline">Offline</option></select></label>
         <div class="sidebar__user">
           <span class="sidebar__avatar" id="user-initials" aria-hidden="true">MB</span>
           <span style="min-width:0;"><span class="sidebar__user-name" id="user-name"></span><span class="sidebar__user-role" id="user-role">Administrador</span></span>
@@ -102,6 +100,9 @@
           <input type="search" name="q" placeholder="Ir para MB-… ou FT …" aria-label="Abrir reserva ou factura pela referência" autocomplete="off">
         </form>
         <div class="topbar__user">
+          <label class="chat-presence" id="chat-presence" data-status="offline"><span class="chat-presence__dot" aria-hidden="true"></span><span class="chat-presence__name">Live Chat</span>
+            <select aria-label="O seu estado no Live Chat"><option value="online">Online</option><option value="away">Ausente</option><option value="offline">Offline</option></select></label>
+          <button type="button" class="lang-toggle" data-lang-toggle>EN</button>
           <a class="btn btn--primary" href="#/invoices/new"><i class='bx bx-receipt'></i><span>Emitir factura</span></a>
         </div>
       </header>
