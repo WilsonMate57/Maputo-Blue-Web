@@ -17,6 +17,8 @@ import seoRoutes from './routes/seo.js';
 import ticketRoutes from './routes/tickets.js';
 import imageRoutes from './routes/images.js';
 import analyticsRoutes from './routes/analytics.js';
+import chatRoutes from './routes/chat.js';
+import { createChatBus } from './lib/chat-bus.js';
 
 // Only these top-level paths of the site folder are ever served.
 const STATIC_ALLOW = /^\/(index\.html|logo\.webp|robots\.txt|sitemap\.xml|favicon\.ico|(assets|components|data|pages|en|admin)\/.*)?$/;
@@ -57,6 +59,9 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
   app.decorate('pool', pool);
   app.decorate('cfg', cfg);
   app.decorate('mailTransport', mailTransport);
+  const chatBus = createChatBus({ pool, databaseUrl: cfg.databaseUrl, log: m => app.log.warn(m) });
+  app.decorate('chatBus', chatBus);
+  app.addHook('preClose', () => chatBus.close());   // open streams would hold the server up
 
   // gzip/brotli for HTML, CSS, JS and JSON (images are already compressed)
   await app.register(compress, { global: true, threshold: 1024, encodings: ['br', 'gzip'] });
@@ -112,6 +117,7 @@ export async function buildApp({ cfg, pool, mailTransport, logger = false }) {
   await app.register(publicRoutes, { prefix: '/api' });
   await app.register(ticketRoutes, { prefix: '/api' });
   await app.register(analyticsRoutes, { prefix: '/api' });
+  await app.register(chatRoutes, { prefix: '/api' });
   await app.register(authRoutes, { prefix: '/api/auth' });
   await app.register(accountRoutes, { prefix: '/api/account' });
   await app.register(adminRoutes, { prefix: '/api/admin' });

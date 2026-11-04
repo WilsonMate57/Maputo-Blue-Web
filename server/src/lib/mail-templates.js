@@ -215,6 +215,22 @@ const T = {
     const body = d.message ? `<p>Motivo: ${esc(d.message)}</p>` : '';
     return { subject: title, html: layout({ title, intro, body, cta: { url: d.admin_url, label: 'Abrir no painel' }, locale: 'pt' }), text: toText(title, intro, [], d.message || '') };
   },
+  admin_chat(d) {
+    const title = `Live Chat: ${d.name} aguarda resposta`;
+    const intro = `Há uma conversa no site sem resposta (${esc(d.reference)}).`;
+    const rows = [['Visitante', d.name], ['E-mail', d.email], ['Telefone', d.phone || '—'], ['Assunto', d.subject]];
+    const body = `<p>${esc(d.message)}</p>`;
+    return { subject: title, html: layout({ title, intro, rows, body, cta: { url: d.admin_url, label: 'Abrir a conversa' }, locale: 'pt' }), text: toText(title, intro, rows, `${d.message}\n${d.admin_url}`) };
+  },
+  chat_reply(d, L) {
+    const en = L === 'en';
+    const title = en ? 'You have a reply from Maputo Blue' : 'Tem uma resposta da Maputo Blue';
+    const intro = en ? `Hello ${esc(d.name)}, our team answered your message on the website.` : `Olá ${esc(d.name)}, a nossa equipa respondeu à sua mensagem no site.`;
+    const body = d.messages.map(m => `<p><strong>${esc(m.author || 'Maputo Blue')}:</strong><br>${esc(m.body).replace(/\n/g, '<br>')}</p>`).join('');
+    const footerNote = en ? 'To continue, open the website on the same device or simply reply to this e-mail.' : 'Para continuar, abra o site no mesmo dispositivo ou responda a este e-mail.';
+    const plain = d.messages.map(m => `${m.author || 'Maputo Blue'}: ${m.body}`).join('\n\n');
+    return { subject: `${title} (${d.reference})`, html: layout({ title, intro, body, cta: { url: d.site_url, label: en ? 'Open the website' : 'Abrir o site' }, footerNote, locale: L }), text: toText(title, intro, [], plain) };
+  },
   admin_quote_revision(d) {
     const title = `Alteração pedida na cotação ${d.reference}`;
     const intro = `${esc(d.name)} pediu alterações à cotação de ${esc(fmtMoney(d.total, d.currency))}.`;

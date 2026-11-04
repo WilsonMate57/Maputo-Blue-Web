@@ -45,6 +45,11 @@ const SETTING_SCHEMAS = {
     validity_days: { type: 'integer', minimum: 1, maximum: 365 }, deposit_percent: { type: ['number', 'null'], minimum: 0, maximum: 100 },
     payment_terms: str(3000), payment_terms_en: str(3000), cancellation_terms: str(3000), cancellation_terms_en: str(3000),
     inclusions: str(3000), inclusions_en: str(3000), exclusions: str(3000), exclusions_en: str(3000) } },
+  chat: { type: 'object', properties: {
+    enabled: { type: 'boolean' }, days: { type: 'array', maxItems: 7, items: { type: 'integer', minimum: 0, maximum: 6 } },
+    open: { type: 'string', pattern: '^([01]\\d|2[0-3]):[0-5]\\d$' }, close: { type: 'string', pattern: '^([01]\\d|2[0-3]):[0-5]\\d$' },
+    offline_message: str(500), offline_message_en: str(500),
+    retention_months: { type: 'integer', minimum: 1, maximum: 120 }, alert_minutes: { type: 'integer', minimum: 1, maximum: 240 } } },
   notifications: { type: 'object', properties: {
     admin_emails: { type: 'array', items: email, maxItems: 10 },
     admin_whatsapp: { type: 'array', items: { type: 'string', maxLength: 25 }, maxItems: 5 },
@@ -61,6 +66,7 @@ export default async function systemRoutes(app) {
     company: await getSetting(pool, 'company'),
     invoicing: await getSetting(pool, 'invoicing'),
     quotes: await getSetting(pool, 'quotes'),
+    chat: await getSetting(pool, 'chat'),
     mail_configured: !!cfg.mail.resendApiKey,
     mail_from: cfg.mail.from,
     whatsapp_configured: whatsappConfigured(cfg),
@@ -83,6 +89,7 @@ export default async function systemRoutes(app) {
         if (next.categories && next.categories.some(c => !all.includes(c))) throw badRequest('invalid_setting', 'Unknown category');
         if (next.categories && !next.categories.length) next.categories = null;
       }
+      if (key === 'chat' && next.open >= next.close) throw badRequest('invalid_setting', 'Closing time must be after opening time');
       if (key === 'notifications' && req.body.admin_whatsapp) {
         const phones = req.body.admin_whatsapp.map(p => [p, normalizePhone(p)]);
         const bad = phones.filter(([, n]) => !n).map(([p]) => p);

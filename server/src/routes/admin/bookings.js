@@ -71,7 +71,7 @@ export default async function bookingRoutes(app) {
   // ── Dashboard ──────────────────────────────────────────────────────────────
   // What needs attention (sidebar badges): open to every staff role.
   async function attention() {
-    const [{ rows: [b] }, { rows: [reqs] }, { rows: [mail] }, { rows: [inv] }, { rows: [quo] }] = await Promise.all([
+    const [{ rows: [b] }, { rows: [reqs] }, { rows: [mail] }, { rows: [inv] }, { rows: [quo] }, { rows: [chat] }] = await Promise.all([
       pool.query(
         `select count(*) filter (where status = 'pending')::int as pending,
                 count(*) filter (where status = 'pending' and (hold_expires_at is null or hold_expires_at <= now()))::int as pending_hold_expired,
@@ -84,8 +84,9 @@ export default async function bookingRoutes(app) {
                 count(*) filter (where pay_status in ('unpaid','partially_paid'))::int as open_invoices
            from invoices where doc_status = 'issued'`, [todayLocal()]),
       pool.query(`select count(*) filter (where status in ('accepted','revision_requested'))::int as quote_actions from quotes`),
+      pool.query(`select count(*) filter (where status <> 'closed' and unread_agent > 0)::int as chat_unread from chat_conversations`),
     ]);
-    return { ...b, ...reqs, ...mail, ...inv, ...quo };
+    return { ...b, ...reqs, ...mail, ...inv, ...quo, ...chat };
   }
   app.get('/attention', attention);
 

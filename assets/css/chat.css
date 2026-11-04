@@ -1,0 +1,141 @@
+/**
+ * chat.css
+ * Live chat widget (assets/js/chat.js). Same tokens as main.css: navy for
+ * structure, turquoise for accents, coral for the single primary action.
+ *
+ * @copyright  2026 Maputo Blue. All rights reserved.
+ * @author     Wilson Creative Studio
+ * @license    Proprietary — Unauthorised use or distribution is prohibited.
+ */
+.mbc, .mbc *, .mbc *::before, .mbc *::after { box-sizing: border-box; }
+.mbc { font-family: var(--font-base, 'DM Sans', system-ui, sans-serif); font-size: 15px; line-height: 1.45; color: var(--text-body, #334155); }
+.mbc [hidden] { display: none !important; }
+.mbc button, .mbc input, .mbc select, .mbc textarea { font: inherit; color: inherit; }
+
+/* The scroll-to-top button moves up so both stay reachable */
+body.has-chat .scroll-to-top { bottom: 100px; }
+
+/* ── Launcher ── */
+.mbc-launcher {
+  position: fixed; right: 24px; bottom: 24px; z-index: 1190;
+  width: 60px; height: 60px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center; color: #fff; background: var(--primary, #0A2540);
+  box-shadow: 0 6px 20px rgba(10, 37, 64, .28); transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.mbc-launcher:hover { transform: translateY(-2px); background: #0E3257; box-shadow: 0 10px 26px rgba(10, 37, 64, .32); }
+.mbc-launcher:focus-visible, .mbc-icon-btn:focus-visible, .mbc-send:focus-visible, .mbc-btn:focus-visible, .mbc-link:focus-visible { outline: 3px solid rgba(0, 188, 212, .55); outline-offset: 2px; }
+.mbc-launcher svg { width: 27px; height: 27px; }
+.mbc-launcher::after {   /* two discreet ripples when the page opens, then still */
+  content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--sea-green, #00bcd4);
+  opacity: 0; pointer-events: none; animation: mbc-ripple 2.4s ease-out 1.5s 2;
+}
+@keyframes mbc-ripple { 0% { transform: scale(1); opacity: .65; } 70%, 100% { transform: scale(1.45); opacity: 0; } }
+.mbc-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; background: #94A3B8; }
+.mbc-dot--online { background: #22C55E; }
+.mbc-dot--away { background: #F59E0B; }
+.mbc-launcher .mbc-dot { position: absolute; right: 3px; bottom: 3px; width: 14px; height: 14px; border: 2px solid var(--primary, #0A2540); }
+.mbc-count {
+  position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px;
+  background: var(--accent-coral, #ff8800); color: #1F1300; font-size: 12px; font-weight: 800; line-height: 22px; text-align: center;
+}
+@media (max-width: 991px) {
+  body:has(.mobile-booking-bar:not(.is-hidden)) .mbc-launcher { bottom: 88px; }
+  body.has-chat:has(.mobile-booking-bar:not(.is-hidden)) .scroll-to-top { bottom: 164px; }
+}
+
+/* ── Window ── */
+.mbc-panel {
+  position: fixed; right: 24px; bottom: 96px; z-index: 1200;
+  width: 376px; height: min(600px, calc(100dvh - 120px)); display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface, #fff); border-radius: 18px; border: 1px solid rgba(10, 37, 64, .08);
+  box-shadow: 0 24px 60px rgba(7, 27, 46, .24), 0 8px 20px rgba(7, 27, 46, .1); animation: mbc-in .18s ease-out;
+}
+@keyframes mbc-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.mbc-head {
+  position: relative; flex: none; display: flex; align-items: center; gap: 12px; padding: 14px 12px 14px 16px; color: #fff; background: var(--primary, #0A2540); overflow: hidden;
+}
+.mbc-head svg.mbc-waves { position: absolute; inset: auto 0 0 0; width: 100%; height: 44px; opacity: .14; pointer-events: none; }
+.mbc-head > *:not(.mbc-waves) { position: relative; }
+.mbc-head__logo { width: 38px; height: 38px; flex: none; border-radius: 50%; padding: 5px; background: #fff; object-fit: contain; }
+.mbc-head__text { flex: 1; min-width: 0; }
+.mbc-head__title { display: block; font-weight: 700; font-size: 15.5px; line-height: 1.25; }
+.mbc-head__title b { color: var(--sea-green, #00bcd4); font-weight: 700; }
+.mbc-head__status { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #CBD5E1; }
+.mbc-head__status .mbc-dot { width: 8px; height: 8px; }
+.mbc-icon-btn { width: 36px; height: 36px; padding: 0; flex: none; display: grid; place-items: center; border: 0; border-radius: 10px; background: transparent; color: #fff; cursor: pointer; }
+.mbc-icon-btn:hover { background: rgba(255, 255, 255, .12); }
+.mbc-icon-btn svg { width: 20px; height: 20px; }
+
+.mbc-notice { flex: none; margin: 0; padding: 9px 16px; font-size: 13px; color: #7C4A03; background: #FFF7ED; border-bottom: 1px solid #FED7AA; }
+.mbc-offline-line { flex: none; margin: 0; padding: 7px 16px; font-size: 12.5px; color: var(--text-muted, #64748B); background: var(--surface-alt, #F8FAFC); border-bottom: 1px solid var(--border-light, #E2E8F0); }
+
+/* ── First contact form ── */
+.mbc-form { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 11px; }
+.mbc-form__intro { margin: 0 0 2px; color: var(--text-strong, #0A2540); font-weight: 600; }
+.mbc-field { display: grid; gap: 4px; font-size: 13px; font-weight: 600; color: var(--text-strong, #0A2540); }
+.mbc-field small { font-weight: 400; color: var(--text-muted, #64748B); }
+.mbc-field input, .mbc-field select, .mbc-field textarea {
+  width: 100%; padding: 9px 11px; border: 1px solid var(--border-strong, #CBD5E1); border-radius: 10px; background: #fff; font-size: 16px; font-weight: 400; color: var(--text-body, #334155);
+}
+.mbc-field textarea { resize: none; min-height: 72px; }
+.mbc-field input:focus, .mbc-field select:focus, .mbc-field textarea:focus { outline: none; border-color: var(--sea-green, #00bcd4); box-shadow: 0 0 0 3px rgba(0, 188, 212, .22); }
+.mbc-field [aria-invalid="true"] { border-color: #DC2626; }
+.mbc-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.mbc-legal { margin: 0; font-size: 12px; color: var(--text-muted, #64748B); }
+.mbc-legal a { color: var(--sea-green-text, #007A87); }
+.mbc-error { margin: 0; padding: 8px 11px; border-radius: 9px; font-size: 13px; color: #B91C1C; background: #FEF2F2; }
+.mbc .mbc-btn {
+  min-height: 44px; padding: 10px 18px; border: 0; border-radius: 999px; cursor: pointer; font-weight: 700;
+  color: #1F1300; background: var(--accent-coral, #ff8800); transition: background-color .15s ease;
+}
+.mbc .mbc-btn:hover { background: var(--accent-coral-hover, #EB7A00); }
+.mbc .mbc-btn:disabled { opacity: .6; cursor: default; }
+
+/* ── Conversation ── */
+.mbc-log { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 14px 6px; display: flex; flex-direction: column; gap: 3px; background: var(--surface-alt, #F8FAFC); overscroll-behavior: contain; }
+.mbc-msg { max-width: 84%; display: flex; flex-direction: column; margin-top: 7px; }
+.mbc-msg--visitor { align-self: flex-end; align-items: flex-end; }
+.mbc-msg--agent { align-self: flex-start; align-items: flex-start; }
+.mbc-msg__who { font-size: 12px; font-weight: 600; color: var(--text-muted, #64748B); margin: 0 0 2px 3px; }
+.mbc-bubble { padding: 8px 12px; border-radius: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.mbc-msg--visitor .mbc-bubble { color: #fff; background: var(--primary, #0A2540); border-bottom-right-radius: 5px; }
+.mbc-msg--agent .mbc-bubble { color: var(--text-strong, #0A2540); background: #fff; border: 1px solid var(--border-light, #E2E8F0); border-bottom-left-radius: 5px; }
+.mbc-meta { display: inline-flex; align-items: center; gap: 4px; margin: 2px 3px 0; font-size: 11.5px; color: var(--text-muted, #64748B); }
+.mbc-meta svg { width: 15px; height: 15px; }
+.mbc-meta--read svg { color: var(--sea-green-text, #007A87); }
+.mbc-sys { align-self: center; max-width: 92%; margin: 9px 0 3px; padding: 5px 11px; border-radius: 10px; font-size: 12.5px; text-align: center; color: var(--text-muted, #64748B); background: #EEF2F7; white-space: pre-wrap; }
+.mbc-link { padding: 0; border: 0; background: none; color: #B91C1C; font-size: 11.5px; font-weight: 600; text-decoration: underline; cursor: pointer; }
+.mbc-typing { flex: none; height: 22px; padding: 0 16px; display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted, #64748B); background: var(--surface-alt, #F8FAFC); }
+.mbc-typing i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: mbc-blink 1.2s infinite both; }
+.mbc-typing i:nth-child(2) { animation-delay: .15s; }
+.mbc-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes mbc-blink { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+.mbc-composer { flex: none; display: flex; align-items: flex-end; gap: 8px; padding: 10px 12px; background: #fff; border-top: 1px solid var(--border-light, #E2E8F0); }
+.mbc-composer textarea {
+  flex: 1; min-width: 0; max-height: 120px; padding: 9px 12px; resize: none; border: 1px solid var(--border-strong, #CBD5E1); border-radius: 14px; background: #fff; font-size: 16px; line-height: 1.35;
+}
+.mbc-composer textarea:focus { outline: none; border-color: var(--sea-green, #00bcd4); box-shadow: 0 0 0 3px rgba(0, 188, 212, .22); }
+.mbc-send { width: 42px; height: 42px; padding: 0; flex: none; display: grid; place-items: center; border: 0; border-radius: 50%; color: #1F1300; background: var(--accent-coral, #ff8800); cursor: pointer; }
+.mbc-send:hover { background: var(--accent-coral-hover, #EB7A00); }
+.mbc-send:disabled { opacity: .45; cursor: default; }
+.mbc-send svg { width: 20px; height: 20px; }
+.mbc-ended { flex: none; display: grid; gap: 8px; padding: 12px 14px; background: #fff; border-top: 1px solid var(--border-light, #E2E8F0); text-align: center; font-size: 13.5px; }
+.mbc-ended p { margin: 0; color: var(--text-muted, #64748B); }
+.mbc-loading { flex: 1; display: grid; place-items: center; color: var(--text-muted, #64748B); font-size: 13.5px; }
+
+/* ── Phones: the conversation takes the whole screen ── */
+@media (max-width: 575px) {
+  .mbc-launcher { right: 16px; bottom: 16px; width: 56px; height: 56px; }
+  body.has-chat .scroll-to-top { bottom: 84px; right: 20px; }
+  .mbc-panel { inset: 0 auto auto 0; width: 100%; height: var(--mbc-vh, 100dvh); border-radius: 0; border: 0; }
+  body.mbc-locked { overflow: hidden; }
+  .mbc-head { padding-top: max(14px, env(safe-area-inset-top)); }
+  .mbc-composer, .mbc-ended { padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mbc-launcher, .mbc-btn { transition: none; }
+  .mbc-launcher::after, .mbc-panel, .mbc-typing i { animation: none; }
+  .mbc-launcher::after { display: none; }
+}
+@media print { .mbc { display: none; } }

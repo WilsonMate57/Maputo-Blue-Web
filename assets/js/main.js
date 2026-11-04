@@ -22,6 +22,19 @@
     document.head.appendChild(s);
   }
 
+  /* ── Live chat (see chat.js) ────────────────────────────── */
+  function loadChat() {
+    if (!SCRIPT_SRC || location.protocol === 'file:') return;
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = SCRIPT_SRC.replace(/js\/main\.js(\?.*)?$/, 'css/chat.css');
+    document.head.appendChild(css);
+    const s = document.createElement('script');
+    s.src = SCRIPT_SRC.replace(/main\.js(\?.*)?$/, 'chat.js');
+    s.defer = true;
+    document.head.appendChild(s);
+  }
+
   /* ── FAQ Accordion ──────────────────────────────────────── */
   function initFAQ() {
     const accordion = document.querySelector('.faq-accordion');
@@ -232,5 +245,6 @@
     initSectionNav();
     initActiveNavFromURL();
     loadAnalytics();
+    loadChat();
   });
 })();

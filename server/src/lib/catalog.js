@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS = {
   notifications: { admin_emails: [] },
   company: { trade_name: 'Maputo Blue' },
   quotes: { validity_days: 14 },
+  chat: { enabled: true, days: [0, 1, 2, 3, 4, 5, 6], open: '07:00', close: '17:30', retention_months: 12, alert_minutes: 5 },
 };
 
 export async function getSetting(db, key) {

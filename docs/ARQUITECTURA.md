@@ -116,7 +116,7 @@ Navegador ──HTTPS──► Proxy (IIS ou Caddy, certificado TLS)
 - **Papéis:** os papéis existem só na base de dados. O registo no site cria sempre um cliente. A equipa tem três níveis:
   - **Superadministrador:** criado por `npm run create-admin` (a migração 010 promoveu o administrador mais antigo). É o único que vê **Equipa** (`/api/admin/team`), onde cria contas, muda níveis, desactiva ou retira acesso. Cada pessoa nova recebe um e-mail com um link (válido 72 h) para escolher a própria palavra-passe em `/admin/?invite=…`. Se o e-mail já tiver conta de cliente, a conta é promovida e mantém a palavra-passe.
   - **Administrador:** tudo, menos a gestão da equipa.
-  - **Gestor:** só as rotas de `MANAGER_ROUTES` em `routes/admin/index.js`: reservas, disponibilidade, pedidos de cotação e cotações, pacotes (e as imagens desses pacotes), facturas, clientes (consulta e notas) e estatísticas do site. Qualquer rota que não esteja nessa lista é recusada, por isso as funcionalidades novas ficam fechadas aos gestores até serem acrescentadas.
+  - **Gestor:** só as rotas de `MANAGER_ROUTES` em `routes/admin/index.js`: reservas, disponibilidade, pedidos de cotação e cotações, pacotes (e as imagens desses pacotes), facturas, clientes (consulta e notas), Live Chat e estatísticas do site. Qualquer rota que não esteja nessa lista é recusada, por isso as funcionalidades novas ficam fechadas aos gestores até serem acrescentadas.
   - Mudar o nível ou desactivar uma conta termina as sessões dessa pessoa. Ninguém altera o próprio nível, e a conta do superadministrador não se altera no painel. Tudo fica no registo de actividade.
 - **Sessões:** o cookie `mb_session` é `HttpOnly` e `SameSite=Lax`, e `Secure` em produção. Na base de dados guarda-se só o SHA-256 do token. Repor a palavra-passe, ou desactivar ou mudar o papel de um utilizador, termina as sessões abertas.
 - **CSRF:** pedidos de escrita com um `Origin` diferente são recusados, e só se aceita JSON ou multipart. Assim, um formulário de outro site recebe 415.
@@ -311,3 +311,35 @@ A cotação aparece na conta quando o pedido foi feito com sessão iniciada, ou 
   - as posições são guardadas como fracção da largura da página e píxeis desde o topo;
   - são agrupadas por largura do ecrã (telemóvel < 768 px, tablet < 1200 px, computador);
   - o painel desenha-as sobre a página real, carregada num iframe com `?mb_noanalytics=1`.
+
+## 15. Live Chat
+
+Conversas em tempo real entre visitantes do site e a equipa, sem conta e sem serviços externos. Usa PostgreSQL e o servidor actual; o Firebase não é usado.
+
+**Peças:**
+- **Site:** `assets/js/chat.js` e `assets/css/chat.css`, carregados pelo `main.js` em todas as páginas públicas. Rotas em `server/src/routes/chat.js`.
+- **Painel:** `admin/js/views/chat.js` (lista, conversa, informações) e `admin/js/chat-hub.js` (ligação, presença e notificações em qualquer página). Rotas em `server/src/routes/admin/chat.js`.
+- **Regras:** `server/src/lib/chat.js`. **Tempo real:** `server/src/lib/chat-bus.js`. **Migração:** `012_live_chat.sql`.
+
+**Tempo real:**
+- O browser recebe por Server-Sent Events e envia por `POST`.
+- Os eventos passam por `NOTIFY` do PostgreSQL, por isso chegam a todos os processos Node. Só dizem o que mudou; as mensagens são lidas da base.
+- Se o evento `ready` não chegar em 6 s (por exemplo, um proxy que retém a resposta), o cliente passa a consultar a cada 4 ou 5 s.
+- Ao voltar a ligar, o `Last-Event-ID` recupera o que ficou para trás. O `client_id` de cada mensagem impede duplicados.
+
+**Visitantes:** o cookie `mb_chat` (`HttpOnly`, 30 dias) guarda um token aleatório, e só o hash fica na base. O cookie só é criado ao iniciar uma conversa e dá acesso apenas a essa conversa. As notas internas nunca saem das rotas do painel.
+
+**Estados:** `new` (nova), `active` (em atendimento), `waiting` (o visitante escreveu e aguarda resposta da equipa) e `closed`. Responder assume a conversa, se estiver livre. Dois agentes a assumir ao mesmo tempo: um consegue, o outro recebe `chat_taken`. Uma conversa encerrada só volta a aceitar mensagens se a equipa a reabrir; o visitante pode iniciar outra.
+
+**Presença:** o estado é escolhido por cada pessoa no menu lateral e começa em offline. Só conta se o painel tiver enviado sinal nos últimos 90 s (envia a cada 30 s). Fora do horário em **Definições → Live Chat**, o site mostra sempre offline.
+
+**Avisos:**
+- No painel: cartão que abre a conversa, som opcional e contador no menu.
+- E-mail e WhatsApp à equipa (`alerta_equipa`): conversa nova sem ninguém online, ou sem resposta ao fim dos minutos definidos. Um aviso por espera, não por mensagem.
+- E-mail ao visitante: resposta que ficou por ler ao fim de 2 minutos, com o texto da resposta.
+
+**Associações:** reserva, cotação, pacote e cliente são ligados pela equipa. Uma conta só se liga sozinha a partir da sua própria sessão, com o e-mail confirmado. O mesmo e-mail aparece apenas como sugestão, porque foi escrito pelo visitante.
+
+**Retenção:** conversas sem actividade há 30 dias são encerradas; as encerradas são apagadas ao fim do prazo definido (12 meses por omissão).
+
+**Testes:** `server/test/chat.test.js`.

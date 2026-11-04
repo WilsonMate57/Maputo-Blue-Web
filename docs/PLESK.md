@@ -134,6 +134,10 @@ Em **Websites & Domains → Scheduled Tasks → Add Task**:
 - Tipo: **Fetch a URL**: `https://maputoblue.co.mz/api/health`
 - Frequência: a cada 5 minutos (`*/5 * * * *`)
 
+Esta tarefa também faz funcionar os avisos do Live Chat sobre conversas sem resposta.
+
+**Live Chat e o Passenger:** o chat recebe as mensagens por uma ligação que fica aberta (Server-Sent Events). Se o site as atrasar, o chat continua a funcionar por consulta periódica, com 4 a 5 segundos de atraso. Para o confirmar, abra em `https://maputoblue.co.mz/api/chat/state` e teste uma conversa: se as mensagens chegarem de imediato, a ligação directa funciona.
+
 ## 8. Actualizações
 
 1. **Backup** (Plesk → Backup Manager → Back Up), incluindo bases de dados e ficheiros.

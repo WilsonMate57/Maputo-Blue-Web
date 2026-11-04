@@ -1,7 +1,7 @@
 // Audit log viewer.
 import { $, dateTime, emptyState, esc, get, qs } from '../core.js';
 
-const ENTITY = { booking: 'Reserva', package: 'Pacote', availability: 'Disponibilidade', promotion: 'Promoção', request: 'Pedido', quote: 'Cotação', user: 'Utilizador', review: 'Avaliação', media: 'Imagem', settings: 'Definições', mail: 'E-mail', catalog: 'Catálogo' };
+const ENTITY = { booking: 'Reserva', package: 'Pacote', availability: 'Disponibilidade', promotion: 'Promoção', request: 'Pedido', quote: 'Cotação', chat: 'Live Chat', user: 'Utilizador', review: 'Avaliação', media: 'Imagem', settings: 'Definições', mail: 'E-mail', catalog: 'Catálogo' };
 const LINK = { booking: id => `#/bookings/${id}`, package: id => `#/packages/${id}`, request: id => `#/requests/${id}`, user: id => `#/customers/${id}` };
 
 export default async function audit(main) {

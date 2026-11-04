@@ -32,7 +32,7 @@ test('every e-mail template renders in PT and EN and escapes user input', () => 
     reference: 'MB-ABC123', customer_name: '<script>x</script>', name: '<b>João</b>', email: 'a@b.c', phone: '+258',
     package_title: 'Sunset', start_date: '2026-11-01', end_date: '2026-11-01', adults: 2, children: 1, total: 3600, currency: 'MZN',
     status: 'confirmed', event: 'confirmed', message: '<img src=x onerror=1>', url: 'https://x/y', items: [{ description: 'Safari', quantity: 2, unit_price: 100 }],
-    valid_until: '2026-12-01', destination: 'Inhaca',
+    valid_until: '2026-12-01', destination: 'Inhaca', messages: [{ author: '<script>x</script>', body: '<img src=x onerror=1>' }],
   };
   for (const name of TEMPLATE_NAMES) {
     for (const locale of ['pt', 'en']) {

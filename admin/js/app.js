@@ -2,9 +2,10 @@
 // app.js — Admin shell: authentication gate, hash router, sidebar badges.
 // The server enforces the staff roles on every /api/admin call; this file only
 // decides what to show: managers see bookings, availability, quotations, packages,
-// invoices, customers and site statistics; only the super-administrator sees Team.
+// invoices, customers, live chat and site statistics; only the super-administrator sees Team.
 // ─────────────────────────────────────────────────────────────────────────────
 import { $, $$, ApiError, errorText, get, post, setUnauthorizedHandler, toast } from './core.js';
+import { startHub, stopHub } from './chat-hub.js';
 
 const ROUTES = [
   { re: /^\/dashboard$/, key: 'dashboard', title: 'Visão geral', load: () => import('./views/dashboard.js') },
@@ -17,6 +18,8 @@ const ROUTES = [
   { re: /^\/calendar$/, key: 'calendar', title: 'Disponibilidade', load: () => import('./views/calendar.js') },
   { re: /^\/requests$/, key: 'requests', title: 'Pedidos de cotação', load: () => import('./views/requests.js') },
   { re: /^\/requests\/([0-9a-f-]{36})$/, key: 'requests', title: 'Pedido de cotação', load: () => import('./views/request-detail.js') },
+  { re: /^\/chat$/, key: 'chat', title: 'Live Chat', load: () => import('./views/chat.js') },
+  { re: /^\/chat\/([0-9a-f-]{36})$/, key: 'chat', title: 'Live Chat', load: () => import('./views/chat.js') },
   { re: /^\/quotations$/, key: 'quotations', title: 'Cotações e propostas', load: () => import('./views/quotations.js') },
   { re: /^\/quotations\/new$/, key: 'quotations', title: 'Nova cotação', load: () => import('./views/quotation-edit.js') },
   { re: /^\/quotations\/([0-9a-f-]{36})\/edit$/, key: 'quotations', title: 'Editar cotação', load: () => import('./views/quotation-edit.js') },
@@ -35,7 +38,7 @@ const ROUTES = [
 ];
 
 const STAFF = ['manager', 'admin', 'superadmin'];
-const MANAGER_AREAS = new Set(['bookings', 'calendar', 'requests', 'quotations', 'invoices', 'packages', 'customers', 'analytics']);
+const MANAGER_AREAS = new Set(['bookings', 'calendar', 'requests', 'quotations', 'invoices', 'packages', 'customers', 'analytics', 'chat']);
 const ROLE_NAMES = { superadmin: 'Superadministrador', admin: 'Administrador', manager: 'Gestor' };
 const mayOpen = key => (key === 'team' ? user.role === 'superadmin' : user.role !== 'manager' || MANAGER_AREAS.has(key));
 const home = () => (user.role === 'manager' ? '/bookings' : '/dashboard');
@@ -76,9 +79,10 @@ $('#login-form').addEventListener('submit', async e => {
   }
 });
 
-setUnauthorizedHandler(() => { user = null; showLogin('A sessão terminou. Inicie sessão novamente.'); });
+setUnauthorizedHandler(() => { user = null; stopHub(); showLogin('A sessão terminou. Inicie sessão novamente.'); });
 
 $('#logout').addEventListener('click', async () => {
+  stopHub();
   await post('/auth/logout').catch(() => {});
   user = null;
   showLogin();
@@ -140,6 +144,7 @@ async function refreshBadges() {
     set('#badge-quotes', a.quote_actions);
     set('#badge-mail', a.failed_mail);
     set('#badge-overdue', a.overdue_invoices);
+    set('#badge-chat', a.chat_unread);
   } catch { /* badges are best-effort */ }
 }
 
@@ -158,6 +163,7 @@ function start() {
   });
   render();
   refreshBadges();
+  startHub({ refreshBadges, element: $('#chat-presence') });
 }
 
 /* ── Quick jump: MB-XXXX opens the booking, "FT 2026/0001" the invoice ── */

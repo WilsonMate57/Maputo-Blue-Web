@@ -83,6 +83,10 @@ export function alertParams(template, d) {
       title = `Alteração pedida ${d.reference}`;
       summary = [`${d.name} pediu alterações à cotação`, d.message];
       break;
+    case 'admin_chat':
+      title = `Live Chat ${d.reference}`;
+      summary = [`${d.name} aguarda resposta (${d.subject})`, d.message];
+      break;
     case 'test':
       title = 'Mensagem de teste';
       summary = ['As notificações de WhatsApp do site estão a funcionar'];

@@ -4,7 +4,7 @@ import { $, $$, CATEGORY_LABELS, badge, busy, dateTime, esc, formValues, get, po
 export default async function settings(main) {
   const [s, cats] = await Promise.all([get('/admin/settings'), get('/admin/categories')]);
   const b = s.booking, l = s.loyalty, n = s.notifications, c = s.company || {};
-  const inv = s.invoicing || {}, iss = inv.issuer || {}, tax = inv.tax || {}, qt = s.quotes || {};
+  const inv = s.invoicing || {}, iss = inv.issuer || {}, tax = inv.tax || {}, qt = s.quotes || {}, ch = s.chat || {};
   const allCats = [...cats.tour, ...cats.accommodation];
 
   main.innerHTML = `
@@ -109,6 +109,23 @@ export default async function settings(main) {
         <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
       </div></form>
 
+      <form class="card span-all" id="f-chat" novalidate style="grid-column:1/-1;"><div class="card__head"><h2>Live Chat</h2><span class="muted">Fora do horário, os visitantes vêem a equipa como offline e deixam mensagem</span></div><div class="card__body">
+        <label class="check"><input type="checkbox" name="enabled" ${ch.enabled !== false ? 'checked' : ''}> Mostrar o Live Chat no site</label>
+        <p class="muted small" style="margin:14px 0 6px;">Dias de atendimento</p>
+        <div class="chips">${['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((d, i) => `<label class="check"><input type="checkbox" name="days" data-multi value="${i}" ${(ch.days || []).includes(i) ? 'checked' : ''}> ${d}</label>`).join('')}</div>
+        <div class="grid grid--4" style="margin-top:14px;">
+          <label class="field"><span>Abre às</span><input name="open" type="time" value="${esc(ch.open || '07:00')}"></label>
+          <label class="field"><span>Fecha às</span><input name="close" type="time" value="${esc(ch.close || '17:30')}"></label>
+          <label class="field"><span>Alertar ao fim de (minutos)</span><input name="alert_minutes" type="number" min="1" max="240" value="${ch.alert_minutes ?? 5}"></label>
+          <label class="field"><span>Apagar encerradas ao fim de (meses)</span><input name="retention_months" type="number" min="1" max="120" value="${ch.retention_months ?? 12}"></label>
+        </div>
+        <div class="grid grid--2" style="margin-top:14px;">
+          <label class="field"><span>Mensagem com a equipa offline (PT)</span><textarea name="offline_message" rows="3" maxlength="500">${esc(ch.offline_message || '')}</textarea></label>
+          <label class="field"><span>Offline message (EN)</span><textarea name="offline_message_en" rows="3" maxlength="500">${esc(ch.offline_message_en || '')}</textarea></label>
+        </div>
+        <div class="form-actions"><button type="submit" class="btn btn--secondary">Guardar</button></div>
+      </div></form>
+
       <div class="card"><div class="card__head"><h2>E-mail</h2></div><div class="card__body">
         ${s.mail_configured ? `<p class="alert alert--success" style="margin:0;">Configurado. Remetente: ${esc(s.mail_from)}</p>`
           : '<p class="alert alert--warn" style="margin:0;">Não configurado. Defina RESEND_API_KEY e MAIL_FROM no ficheiro server/.env do servidor e reinicie o serviço (ver docs/IMPLANTACAO.md).</p>'}
@@ -129,6 +146,7 @@ export default async function settings(main) {
   });
   wire('#f-booking', 'booking', v => v);
   wire('#f-quotes', 'quotes', v => ({ ...Object.fromEntries(Object.entries(v).map(([k, x]) => [k, typeof x === 'string' ? x.trim() : x])), validity_days: v.validity_days || 14 }));
+  wire('#f-chat', 'chat', v => ({ ...v, days: v.days.map(Number), open: v.open || '07:00', close: v.close || '17:30', alert_minutes: v.alert_minutes || 5, retention_months: v.retention_months || 12, offline_message: v.offline_message.trim(), offline_message_en: v.offline_message_en.trim() }));
   wire('#f-invoicing', 'invoicing', v => ({
     series_prefix: v.series_prefix.trim().toUpperCase(), due_days: v.due_days ?? 0,
     issuer: { name: v.iss_name.trim(), legal_name: v.iss_legal_name.trim(), nuit: v.iss_nuit.trim(), phone: v.iss_phone.trim(),
@@ -143,7 +161,7 @@ export default async function settings(main) {
     admin_whatsapp: v.admin_whatsapp.split(/[\n,;]+/).map(x => x.trim()).filter(Boolean), reminder_days_before: v.reminder_days_before ?? 0 }));
 
   // WhatsApp: recent alerts, retry and test message
-  const WA_TYPES = { admin_new_booking: 'Nova reserva', admin_new_request: 'Novo pedido de cotação', admin_cancel_request: 'Pedido de cancelamento', admin_quote_accepted: 'Cotação aceite', admin_quote_declined: 'Cotação recusada', admin_quote_revision: 'Alteração pedida', test: 'Teste' };
+  const WA_TYPES = { admin_new_booking: 'Nova reserva', admin_new_request: 'Novo pedido de cotação', admin_cancel_request: 'Pedido de cancelamento', admin_quote_accepted: 'Cotação aceite', admin_quote_declined: 'Cotação recusada', admin_quote_revision: 'Alteração pedida', admin_chat: 'Live Chat', test: 'Teste' };
   async function loadWa() {
     const box = $('#wa-log', main);
     const r = await get('/admin/whatsapp');

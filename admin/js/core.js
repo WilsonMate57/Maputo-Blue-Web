@@ -57,6 +57,13 @@ const ERR = {
   message_required: 'Indique o que deve ser alterado.',
   trip_dates_required: 'Indique as datas da viagem numa nova versão.',
   booking_from_quote: 'Esta reserva veio de uma cotação: datas e grupo mudam com uma nova cotação.',
+  chat_not_found: 'Esta conversa já não existe.',
+  chat_closed: 'Esta conversa está encerrada. Reabra-a para responder.',
+  chat_taken: 'Esta conversa já foi assumida',
+  invalid_agent: 'Escolha um membro activo da equipa.',
+  quote_not_found: 'Não existe nenhuma cotação com este número.',
+  package_not_found: 'Este pacote já não existe.',
+  customer_not_found: 'Este cliente já não existe.',
   internal: 'Erro inesperado no servidor.',
 };
 

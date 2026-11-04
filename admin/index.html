@@ -62,6 +62,7 @@
         <p class="sidebar__group">Operação</p>
         <a href="#/bookings" data-route="bookings"><i class='bx bx-calendar-check'></i>Reservas<span class="sidebar__badge" id="badge-pending" hidden></span></a>
         <a href="#/calendar" data-route="calendar"><i class='bx bx-calendar'></i>Disponibilidade</a>
+        <a href="#/chat" data-route="chat"><i class='bx bx-conversation'></i>Live Chat<span class="sidebar__badge" id="badge-chat" hidden></span></a>
         <a href="#/requests" data-route="requests"><i class='bx bx-message-square-detail'></i>Pedidos de cotação<span class="sidebar__badge" id="badge-requests" hidden></span></a>
         <a href="#/quotations" data-route="quotations"><i class='bx bx-file'></i>Cotações e propostas<span class="sidebar__badge" id="badge-quotes" hidden></span></a>
         <p class="sidebar__group">Finanças</p>
@@ -80,6 +81,8 @@
         <a href="#/audit" data-route="audit"><i class='bx bx-history'></i>Registo de actividade</a>
       </nav>
       <div class="sidebar__foot">
+        <label class="chat-presence" id="chat-presence" data-status="offline"><span class="chat-presence__dot" aria-hidden="true"></span><span>Live Chat</span>
+          <select aria-label="O seu estado no Live Chat"><option value="online">Online</option><option value="away">Ausente</option><option value="offline">Offline</option></select></label>
         <div class="sidebar__user">
           <span class="sidebar__avatar" id="user-initials" aria-hidden="true">MB</span>
           <span style="min-width:0;"><span class="sidebar__user-name" id="user-name"></span><span class="sidebar__user-role" id="user-role">Administrador</span></span>

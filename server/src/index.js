@@ -11,6 +11,7 @@ import { ticketAttachments } from './lib/tickets.js';
 import { invoiceAttachments } from './lib/invoices.js';
 import { expireQuotes } from './lib/quotes.js';
 import { quoteAttachments } from './lib/quote-pdf.js';
+import { purgeChats, runChatAlerts } from './lib/chat.js';
 import { cloudApiTransport, processWhatsAppOutbox, whatsappConfigured } from './lib/whatsapp.js';
 
 const cfg = loadConfig();
@@ -39,6 +40,11 @@ if (cfg.jobs) {
     if (waBusy) return; waBusy = true;
     try { await processWhatsAppOutbox(pool, waTransport, { log: m => app.log.warn(m) }); } catch (e) { app.log.error(e); } finally { waBusy = false; }
   }, 20_000));
+  let chatBusy = false;
+  timers.push(setInterval(async () => {
+    if (chatBusy) return; chatBusy = true;
+    try { await runChatAlerts(pool, cfg); } catch (e) { app.log.error(e); } finally { chatBusy = false; }
+  }, 60_000));
   const maintenance = async () => {
     if (maintBusy) return; maintBusy = true;
     try {
@@ -49,6 +55,7 @@ if (cfg.jobs) {
       // Visit statistics: clicks (heatmaps) for 6 months, page views for 25 months
       await pool.query(`delete from analytics_clicks where at < now() - interval '6 months'`);
       await pool.query(`delete from analytics_pageviews where at < now() - interval '25 months'`);
+      await purgeChats(pool);
     } catch (e) { app.log.error(e); } finally { maintBusy = false; }
   };
   timers.push(setInterval(maintenance, 60 * 60_000));
