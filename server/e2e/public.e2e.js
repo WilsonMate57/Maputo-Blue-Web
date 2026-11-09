@@ -58,7 +58,11 @@ test('package page: calendar → server quote → booking request → reference'
   await page.waitForSelector('dialog .mb-ref', { timeout: 15000 });
   const ref = await page.$eval('dialog .mb-ref', el => el.textContent.trim());
   assert.match(ref, /^MB-[A-Z0-9]{6}$/);
-  booking = { ref, statusHref: await page.$eval('dialog .mb-dialog__actions a[href*="booking-status"]', a => a.href), ticketHref: await page.$eval('dialog .mb-dialog__actions a[href*="ticket.html"]', a => a.href) };
+  // No ticket before the trip is paid: the confirmation only offers to track the request
+  assert.equal(await page.$('dialog .mb-dialog__actions a[href*="ticket.html"]'), null);
+  const statusHref = await page.$eval('dialog .mb-dialog__actions a[href*="booking-status"]', a => a.href);
+  const token = new URL(statusHref).searchParams.get('token');
+  booking = { ref, statusHref, ticketHref: `${BASE}/pages/ticket.html?ref=${encodeURIComponent(ref)}&token=${encodeURIComponent(token)}` };
   await page.screenshot({ path: path.join(SHOTS, 'booking-success.png') });
   await page.close();
 });
@@ -73,12 +77,13 @@ test('booking status page shows the pending booking from the e-mail link', async
   await page.close();
 });
 
-test('ticket: from the confirmation to the ticket page, PDF download and QR verification', async () => {
+test('booking document: a receipt without a QR code until the trip is paid; PDF download', async () => {
   const page = await open(new URL(booking.ticketHref).pathname + new URL(booking.ticketHref).search);
   await page.waitForSelector('.ticket', { timeout: 15000 });
   assert.equal(await page.$eval('.ticket__ref strong', el => el.textContent.trim()), booking.ref);
   assert.match(await page.$eval('.ticket .mb-status', el => el.textContent), /Pendente/);
-  assert.ok(await page.$('.ticket__qr svg'), 'QR rendered');
+  assert.equal(await page.$('.ticket__qr svg'), null, 'no QR code on a receipt');
+  assert.match(await page.$eval('.ticket__noqr', el => el.textContent), /NÃO É BILHETE/);
   // The PDF endpoint used by the download button returns a real PDF
   const pdf = await page.evaluate(async (ref, token) => {
     const r = await fetch('/api/bookings/ticket.pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: ref, token }) });
@@ -93,15 +98,10 @@ test('ticket: from the confirmation to the ticket page, PDF download and QR veri
   assert.equal(await page.$eval('.ticket-wrap .mb-alert, #portal-root > .mb-alert', el => el.hidden).catch(() => true), true);
   // Copy reference
   await page.click('[data-act=copy]');
-  // QR → verification page shows the live (pending) status and no personal data
+  // The receipt carries no verification link
   const verifyHref = await page.evaluate(async (ref, token) => (await (await fetch('/api/bookings/ticket', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: ref, token }) })).json()).ticket.verify_url, booking.ref, new URL(booking.statusHref).searchParams.get('token'));
-  const v = await open(new URL(verifyHref).pathname + new URL(verifyHref).search, { mobile: true });
-  await v.waitForSelector('.verify__result');
-  assert.match(await v.$eval('.verify__result h2', el => el.textContent), /pendente/i);
-  assert.ok(!(await v.$eval('.verify', el => el.textContent)).includes('Teste E2E'), 'no customer name on the public page');
-  assert.ok(await noHorizontalScroll(v));
-  await v.screenshot({ path: path.join(SHOTS, 'verify-mobile.png') });
-  await page.close(); await v.close();
+  assert.equal(verifyHref, null);
+  await page.close();
 });
 
 test('custom tour request: steps → summary → reference', async () => {

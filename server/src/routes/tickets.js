@@ -15,6 +15,7 @@ import { audit } from '../lib/audit.js';
 import { badRequest, notFound } from '../lib/errors.js';
 import { sha256 } from '../lib/security.js';
 import { isStaff } from '../lib/auth.js';
+import { amountDue, boardingState } from '../lib/boarding.js';
 
 const REF = { type: 'string', maxLength: 20, pattern: '^MB-[A-Z0-9]{4,10}$' };
 const credentials = {
@@ -39,7 +40,7 @@ export function ticketResponders(app) {
   return {
     async json(b) {
       const data = await ticketData(pool, cfg, b);
-      return { ticket: data, qr_svg: await qrSvg(data.verify_url) };
+      return { ticket: data, qr_svg: data.verify_url ? await qrSvg(data.verify_url) : null };
     },
     async pdf(b, reply) {
       const data = await ticketData(pool, cfg, b);
@@ -52,7 +53,7 @@ export function ticketResponders(app) {
     async email(b, actor) {
       const bucket = Math.floor(Date.now() / 600000);
       await enqueueMail(pool, { key: `booking:${b.id}:ticket:${bucket}`, to: b.customer_email, template: 'booking_ticket', locale: b.locale,
-        data: { reference: b.reference, customer_name: b.customer_name, status: b.status, attach_ticket_booking: b.id } });
+        data: { reference: b.reference, customer_name: b.customer_name, status: b.status, state: boardingState(b), amount_due: amountDue(b), currency: b.currency, attach_ticket_booking: b.id } });
       await audit(pool, actor, 'booking', b.id, 'ticket_emailed', {});
       return { ok: true };
     },
@@ -109,7 +110,7 @@ export default async function ticketRoutes(app) {
       await log(revoked ? 'revoked' : 'invalid', b.id);
       return { result: revoked ? 'revoked' : 'invalid' };
     }
-    await log(b.status, b.id);
+    await log(b.status === 'confirmed' && boardingState(b) !== 'boarding' ? 'unpaid' : b.status, b.id);
     const view = verificationView(b, b.price_snapshot || {});
     if (!staff) return { result: b.status, booking: view };
     const { rows: scans } = await pool.query(
@@ -117,7 +118,8 @@ export default async function ticketRoutes(app) {
     return {
       result: b.status, staff: true,
       booking: { ...view, id: b.id, customer_name: b.customer_name, customer_phone: b.customer_phone,
-        option_key: b.option_key, checked_in_at: b.checked_in_at, total: b.total, currency: b.currency, amount_paid: b.amount_paid },
+        option_key: b.option_key, checked_in_at: b.checked_in_at, total: b.total, currency: b.currency, amount_paid: b.amount_paid,
+        amount_due: amountDue(b), boarding_override_reason: b.boarding_override_reason },
       scans,
     };
   });

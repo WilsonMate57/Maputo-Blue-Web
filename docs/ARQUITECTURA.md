@@ -175,18 +175,35 @@ Navegador ──HTTPS──► Proxy (IIS ou Caddy, certificado TLS)
 
 ## 9. Tickets de reserva e verificação por QR code
 
+**Regra de embarque:** o cliente só embarca com a viagem **paga na totalidade**. Antes disso recebe um documento que diz, em letras grandes, que não é bilhete, sem QR code. A equipa pode autorizar uma excepção, sempre com motivo registado. A regra está em `server/src/lib/boarding.js`:
+
+| Estado (`boardingState`) | Quando | O cliente recebe |
+|---|---|---|
+| `request` | Pedido pendente | «Comprovativo de pedido de reserva», sem QR, com «NÃO É BILHETE» |
+| `unpaid` | Confirmada, falta dinheiro, sem excepção | «Reserva confirmada — pagamento pendente», sem QR, com o valor em falta e como pagar (Definições → Facturação → instruções de pagamento; sem elas, os contactos da empresa) |
+| `boarding` | Confirmada e paga na totalidade, ou autorizada pela equipa | «Bilhete» (ou «Voucher de alojamento») com QR |
+| `closed` | Cancelada, rejeitada ou concluída | Aviso de que não é válida |
+
+- O QR, o check-in e a verificação seguem o mesmo estado. Um QR impresso antes continua a dizer «NÃO pode embarcar» enquanto faltar pagamento.
+- Quando um pagamento completa o valor, o bilhete segue por e-mail: junto com a factura paga, se houver factura, ou sozinho.
+- Os e-mails automáticos só levam o PDF quando ele já é um bilhete. Pedido pelo cliente, segue o documento do momento.
+- **Excepção:** `POST /api/admin/bookings/:id/boarding` com `{ allow: true, reason }`, que fica no registo de actividade, ou `{ allow: false }` para a retirar.
+- Migração `013_boarding.sql`: `boarding_override_at`, `_by`, `_reason`.
+
+**Telefone:** guardado sempre em formato internacional (`server/src/lib/phone.js`, com as mesmas regras em `assets/js/api.js`). Para Moçambique só é aceite um telemóvel: 9 dígitos começados por 82 a 87. Nos outros países, indicativo e 8 a 15 dígitos. O formulário de reserva pergunta se o número tem WhatsApp e aceita outro número para o WhatsApp (`customer_has_whatsapp`, `customer_whatsapp`); o botão «Conversar com o cliente» dos alertas usa esse número. As reservas antigas não foram alteradas.
+
 | Peça | Implementação |
 |---|---|
 | Dados | Gerados sempre a partir da reserva gravada (`price_snapshot`). Uma alteração de preço posterior não muda o ticket. |
-| Título do documento | Depende do estado real. *Pendente*: «Comprovativo de pedido de reserva», com aviso de que **não** é confirmação. *Confirmada*: «Confirmação de reserva». *Cancelada* ou *rejeitada*: aviso de que não é válida. O pagamento aparece separado («Por pagar», «Pago parcialmente», «Pago»). O rodapé diz sempre que o documento **não é recibo nem documento fiscal**. |
+| Título do documento | Depende do estado de embarque (tabela acima). O pagamento aparece separado («Por pagar», «Pago parcialmente», «Pago»). O rodapé diz sempre que o documento **não é recibo nem documento fiscal**. |
 | PDF | `server/src/lib/tickets.js` gera um A4 com pdfkit. O texto é seleccionável, o logótipo vem do disco (não de um URL remoto) e o QR é desenhado em vector, sem imagem. |
 | HTML | `pages/ticket.html` e `en/ticket.html`, com `assets/js/ticket-view.js`. Inclui CSS de impressão que esconde menus e botões. |
 | QR | Contém só `…/pages/verify.html?r=<referência>&k=<assinatura>`. A assinatura é um HMAC-SHA256 de `referência\|ticket_version` com o `TICKET_SECRET`, truncado a 128 bits. O QR não contém dados pessoais. |
 | Verificação pública | `GET /api/tickets/verify`. É só de leitura e devolve referência, experiência, data, nº de pessoas, estado e pagamento. Não mostra o nome nem os contactos do cliente. Cada leitura fica registada em `ticket_scans`. |
-| Vista da equipa | Se quem lê o QR tiver sessão de administrador, vê também o nome e o telefone do cliente e um botão de check-in. O check-in passa pela API de administração (`POST /api/admin/bookings/:id/check-in`), só funciona em reservas confirmadas e só uma vez. |
+| Vista da equipa | Se quem lê o QR tiver sessão de administrador, vê também o nome e o telefone do cliente, o valor em falta e um botão de check-in. O check-in passa pela API de administração (`POST /api/admin/bookings/:id/check-in`), só funciona quando a reserva pode embarcar e só uma vez. |
 | Revogação | No painel, «Invalidar QR» incrementa `ticket_version`. Os QR antigos passam a dar «Ticket substituído». |
 | Acesso ao ticket | **Convidado:** referência + token do e-mail, ou referência + e-mail, sempre por POST e nunca no URL. **Cliente com conta:** pela sessão, e só às suas próprias reservas. **Administrador:** download, reenvio por e-mail, invalidação e check-in. |
-| E-mails | O PDF vai em anexo no «pedido recebido» e na «confirmação», gerado no momento do envio. O ticket pode ser reenviado a pedido, no máximo uma vez a cada 10 minutos, sem duplicar mensagens. |
+| E-mails | O PDF só vai em anexo automaticamente quando já é um bilhete (confirmada e paga), gerado no momento do envio. O documento pode ser reenviado a pedido, no máximo uma vez a cada 10 minutos, sem duplicar mensagens. |
 | Dados da empresa | Em Definições → «Dados da empresa» (`settings.company`). Os campos vazios não são impressos. A denominação legal, o NUIT e o alvará ficam por configurar e nunca são inventados. |
 
 Migração `002_tickets.sql` (só acrescenta, sem apagar nada): `bookings.ticket_version`, `checked_in_at`, `checked_in_by`, a tabela `ticket_scans` e a definição `company`.

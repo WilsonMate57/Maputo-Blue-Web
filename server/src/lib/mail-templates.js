@@ -38,6 +38,8 @@ function layout({ title, intro, rows = [], body = '', cta, footerNote, locale })
 </body></html>`;
 }
 
+const plain = html => String(html || '').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&');
+
 function toText(title, intro, rows, extra = '') {
   return [title, '', intro.replace(/<[^>]+>/g, ''), '', ...rows.map(([k, v]) => `${k}: ${v}`), extra ? '\n' + extra : ''].join('\n');
 }
@@ -48,6 +50,15 @@ function billingRows(b, L) {
   const en = L === 'en';
   return [[en ? 'Company' : 'Empresa', b.company_name], ...(b.nuit ? [['NUIT', b.nuit]] : []),
     ...(b.address ? [[en ? 'Billing address' : 'Morada de facturação', b.address]] : [])];
+}
+
+/** Boarding needs the trip paid in full: say so wherever money is still missing. */
+function payToBoard(d, L) {
+  const en = L === 'en';
+  const due = d.amount_due > 0 ? ` ${en ? 'Outstanding' : 'Em falta'}: <strong>${esc(fmtMoney(d.amount_due, d.currency))}</strong>.` : '';
+  return `<p style="background:#FEF2F2;border-left:3px solid #B91C1C;padding:12px 14px;margin:16px 0 0;color:#7F1D1D;">${en
+    ? `<strong>Boarding requires full payment.</strong>${due} Your ticket with its QR code is e-mailed as soon as the payment is confirmed. Booking documents sent before that are not tickets.`
+    : `<strong>Só pode embarcar com a viagem paga na totalidade.</strong>${due} O bilhete com código QR é enviado por e-mail assim que o pagamento for confirmado. Os documentos recebidos antes disso não são bilhetes.`}</p>`;
 }
 
 function bookingRows(d, L) {
@@ -69,11 +80,12 @@ const T = {
     const en = L === 'en';
     const title = en ? 'We received your booking request' : 'Recebemos o seu pedido de reserva';
     const intro = en
-      ? `Hello ${esc(d.customer_name)}, thank you for choosing Maputo Blue. Your request is <strong>pending</strong>: our team will check availability and confirm shortly. This is not yet a confirmation.`
-      : `Olá ${esc(d.customer_name)}, obrigado por escolher a Maputo Blue. O seu pedido está <strong>pendente</strong>: a nossa equipa vai verificar a disponibilidade e confirmar em breve. Isto ainda não é uma confirmação.`;
+      ? `Hello ${esc(d.customer_name)}, thank you for choosing Maputo Blue. Your request is <strong>pending</strong>: our team will check availability and confirm shortly. This is not a confirmation and <strong>not a ticket</strong>.`
+      : `Olá ${esc(d.customer_name)}, obrigado por escolher a Maputo Blue. O seu pedido está <strong>pendente</strong>: a nossa equipa vai verificar a disponibilidade e confirmar em breve. Isto não é uma confirmação nem um <strong>bilhete</strong>.`;
     const rows = bookingRows(d, L);
+    const body = payToBoard({ ...d, amount_due: 0 }, L);
     const cta = d.status_url ? { url: d.status_url, label: en ? 'Track your booking' : 'Acompanhar a reserva' } : null;
-    return { subject: `${en ? 'Booking request' : 'Pedido de reserva'} ${d.reference} — Maputo Blue`, html: layout({ title, intro, rows, cta, locale: L }), text: toText(title, intro, rows, d.status_url || '') };
+    return { subject: `${en ? 'Booking request' : 'Pedido de reserva'} ${d.reference} — Maputo Blue`, html: layout({ title, intro, rows, body, cta, locale: L }), text: toText(title, intro, rows, [d.status_url, plain(body)].filter(Boolean).join('\n\n')) };
   },
   booking_status(d, L) {
     const en = L === 'en';
@@ -87,20 +99,25 @@ const T = {
     const [title, msg] = map[d.event] || map.updated;
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${msg}`;
     const rows = bookingRows(d, L);
-    const body = d.message ? `<p style="background:#F8FAFC;border-left:3px solid #00bcd4;padding:12px 14px;margin:0;">${esc(d.message)}</p>` : '';
+    const unpaid = d.state === 'unpaid' && (d.event === 'confirmed' || d.event === 'updated');
+    const body = (d.message ? `<p style="background:#F8FAFC;border-left:3px solid #00bcd4;padding:12px 14px;margin:0;">${esc(d.message)}</p>` : '')
+      + (unpaid ? payToBoard(d, L) : '');
     const cta = d.status_url ? { url: d.status_url, label: en ? 'View booking' : 'Ver reserva' } : null;
-    return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, body, cta, locale: L }), text: toText(title, intro, rows, d.message || '') };
+    return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, body, cta, locale: L }), text: toText(title, intro, rows, [d.message, unpaid ? plain(payToBoard(d, L)) : ''].filter(Boolean).join('\n\n')) };
   },
   booking_ticket(d, L) {
     const en = L === 'en';
-    const title = en ? 'Your booking document' : 'O seu documento de reserva';
-    const statusNote = d.status === 'pending'
-      ? (en ? 'Your request is still <strong>pending</strong>: this document is a receipt of the request, not a confirmation.' : 'O seu pedido ainda está <strong>pendente</strong>: este documento comprova o pedido, mas não é uma confirmação.')
-      : d.status === 'confirmed' ? (en ? 'Your booking is <strong>confirmed</strong>. Please bring this document (printed or on your phone).' : 'A sua reserva está <strong>confirmada</strong>. Apresente este documento (impresso ou no telemóvel).')
+    const ticket = d.state === 'boarding';
+    const title = ticket ? (en ? 'Your ticket' : 'O seu bilhete') : (en ? 'Your booking document' : 'O seu documento de reserva');
+    const statusNote = ticket
+      ? (en ? 'Your booking is <strong>confirmed and ready for boarding</strong>. Please show the QR code at the meeting point (printed or on your phone).' : 'A sua reserva está <strong>confirmada e pronta para o embarque</strong>. Apresente o código QR no ponto de encontro (impresso ou no telemóvel).')
+      : d.state === 'unpaid' || d.status === 'pending'
+        ? (en ? 'This document is <strong>not a ticket</strong> and does not give access to boarding.' : 'Este documento <strong>não é um bilhete</strong> e não dá acesso ao embarque.')
         : (en ? 'Please check the current status of your booking in the attached document.' : 'Consulte o estado actual da sua reserva no documento em anexo.');
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${en ? 'attached is the document for booking' : 'em anexo segue o documento da reserva'} <strong>${esc(d.reference)}</strong>. ${statusNote}`;
-    return { subject: `${title} ${d.reference} — Maputo Blue`, html: layout({ title, intro, locale: L,
-      footerNote: en ? 'This document is not a receipt or a tax document.' : 'Este documento não é um recibo nem um documento fiscal.' }), text: toText(title, intro, []) };
+    const body = d.state === 'unpaid' || d.status === 'pending' ? payToBoard({ ...d, amount_due: d.state === 'unpaid' ? d.amount_due : 0 }, L) : '';
+    return { subject: `${title} ${d.reference} — Maputo Blue`, html: layout({ title, intro, body, locale: L,
+      footerNote: en ? 'This document is not a receipt or a tax document.' : 'Este documento não é um recibo nem um documento fiscal.' }), text: toText(title, intro, [], plain(body)) };
   },
   invoice_issued(d, L) {
     const en = L === 'en';
@@ -119,8 +136,8 @@ const T = {
     const en = L === 'en';
     const title = en ? `Payment received — invoice ${d.number}` : `Pagamento recebido — factura ${d.number}`;
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${en
-      ? 'we have verified your payment. Your invoice is now <strong>PAID</strong>. The updated invoice is attached.'
-      : 'confirmámos o seu pagamento. A sua factura está agora <strong>PAGA</strong>. Segue em anexo a factura actualizada.'}`;
+      ? 'we have verified your payment. Your invoice is now <strong>PAID</strong>. The updated invoice is attached, together with your ticket when the booking is confirmed.'
+      : 'confirmámos o seu pagamento. A sua factura está agora <strong>PAGA</strong>. Seguem em anexo a factura actualizada e, com a reserva confirmada, o seu bilhete.'}`;
     const rows = [[en ? 'Invoice' : 'Factura', d.number], [en ? 'Booking' : 'Reserva', d.reference], [en ? 'Amount paid' : 'Valor pago', fmtMoney(d.amount_paid, d.currency)]];
     return { subject: `${title} — Maputo Blue`, html: layout({ title, intro, rows, locale: L }), text: toText(title, intro, rows) };
   },
@@ -130,7 +147,8 @@ const T = {
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${en ? 'a friendly reminder of your upcoming experience with Maputo Blue.' : 'um lembrete da sua próxima experiência com a Maputo Blue.'}`;
     const rows = bookingRows(d, L);
     if (d.meeting_point) rows.push([en ? 'Meeting point' : 'Ponto de encontro', d.meeting_point]);
-    return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, locale: L }), text: toText(title, intro, rows) };
+    const body = d.state === 'unpaid' ? payToBoard(d, L) : '';
+    return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, body, locale: L }), text: toText(title, intro, rows, plain(body)) };
   },
   request_received(d, L) {
     const en = L === 'en';

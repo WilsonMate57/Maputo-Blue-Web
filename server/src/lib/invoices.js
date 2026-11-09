@@ -305,7 +305,8 @@ export async function queueInvoiceMail(db, inv, template, actor) {
   await enqueueMail(db, { key: `invoice:${inv.id}:${template}:${bucket}`, to: inv.customer.email, template, locale: inv.locale,
     data: { number: inv.number, reference: inv.booking_snapshot.reference, customer_name: inv.customer.name,
       total: Number(inv.total), amount_paid: Number(inv.amount_paid), currency: inv.currency,
-      due_date: inv.due_date, pay_status: inv.pay_status, attach_invoice: inv.id } });
+      due_date: inv.due_date, pay_status: inv.pay_status, attach_invoice: inv.id,
+      ...(template === 'invoice_paid' ? { attach_ticket_booking: inv.booking_id } : {}) } });
   if (actor !== undefined) await audit(db, actor, 'invoice', inv.id, 'emailed', { template });
 }
 

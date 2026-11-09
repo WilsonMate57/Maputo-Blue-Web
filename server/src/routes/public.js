@@ -4,6 +4,7 @@
 // Unknown body properties are stripped by the schemas (removeAdditional), so a
 // client can never inject prices, totals, statuses or discounts.
 // ─────────────────────────────────────────────────────────────────────────────
+import { normalizeCustomerPhone } from '../lib/phone.js';
 import { getPublic, getSetting, listPublic, loadPackage } from '../lib/catalog.js';
 import { calendar } from '../lib/availability.js';
 import { createBooking, publicBooking, quoteFor } from '../lib/bookings.js';
@@ -100,7 +101,8 @@ export default async function publicRoutes(app) {
           package_id: id, ...selection,
           customer: {
             type: 'object', required: ['name', 'email', 'phone'],
-            properties: { name: shortText(120), email, phone, country: { type: 'string', maxLength: 60 } },
+            properties: { name: shortText(120), email, phone, country: { type: 'string', maxLength: 60 },
+              has_whatsapp: { type: 'boolean' }, whatsapp: { type: 'string', maxLength: 30 } },
           },
           notes: { type: 'string', maxLength: 1500 },
           locale: { type: 'string', enum: ['pt', 'en'] },
@@ -113,7 +115,16 @@ export default async function publicRoutes(app) {
   }, async (req, reply) => {
     assertHuman(req.body);
     if (req.body.consent !== true) throw badRequest('consent_required');
-    const { booking, token, duplicate } = await createBooking(pool, cfg, { input: req.body, user: req.user });
+    const c = req.body.customer;
+    const phone = normalizeCustomerPhone(c.phone);
+    if (!phone) throw badRequest('invalid_phone', 'Enter a mobile number with its country code, e.g. +258 84 123 4567', ['phone']);
+    let whatsapp = null;
+    if (c.has_whatsapp === false && c.whatsapp && c.whatsapp.trim()) {
+      whatsapp = normalizeCustomerPhone(c.whatsapp);
+      if (!whatsapp) throw badRequest('invalid_phone', 'Enter the WhatsApp number with its country code', ['whatsapp']);
+    }
+    const input = { ...req.body, customer: { ...c, phone, has_whatsapp: c.has_whatsapp !== false, whatsapp } };
+    const { booking, token, duplicate } = await createBooking(pool, cfg, { input, user: req.user });
     reply.code(duplicate ? 200 : 201);
     return { booking: publicBooking(booking), ...(token ? { token } : {}), duplicate };
   });
@@ -199,6 +210,9 @@ export default async function publicRoutes(app) {
       },
     },
   }, async (req, reply) => {
+    const phoneOk = normalizeCustomerPhone(req.body.phone);
+    if (!phoneOk) throw badRequest('invalid_phone', 'Enter a mobile number with its country code, e.g. +258 84 123 4567', ['phone']);
+    req.body.phone = phoneOk;
     assertHuman(req.body);
     const b = req.body;
     if (b.consent !== true) throw badRequest('consent_required');

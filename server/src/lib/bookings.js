@@ -8,6 +8,7 @@
 //                ├──► rejected└──► cancelled
 //                └──► cancelled
 // ─────────────────────────────────────────────────────────────────────────────
+import { amountDue, boardingState } from './boarding.js';
 import { tx } from '../db.js';
 import { getSetting, loadPackage } from './catalog.js';
 import { computeQuote } from './pricing.js';
@@ -72,6 +73,9 @@ export function mailData(b, cfg, extra = {}) {
     child_price_on_request: !!(s.quote && s.quote.child_price_on_request),
     meeting_point: s.package?.meeting_point ? [s.package.meeting_point.name, s.package.meeting_point.address].filter(Boolean).join(' — ') : null,
     admin_url: `${cfg.publicBaseUrl}/admin/#/bookings/${b.id}`,
+    // The number the team's "chat with the customer" button opens (none when the customer has no WhatsApp)
+    chat_phone: b.customer_whatsapp || (b.customer_has_whatsapp === false ? null : b.customer_phone),
+    payment_status: b.payment_status, amount_due: amountDue(b), state: boardingState(b),
     ...extra,
   };
 }
@@ -104,15 +108,15 @@ export async function createBooking(pool, cfg, { input, user }) {
       const { rows } = await c.query(
         `insert into bookings (reference, package_id, user_id, customer_name, customer_email, customer_phone, customer_country,
             locale, start_date, end_date, adults, children, option_key, extras, transfer_key, customer_notes, currency, total,
-            price_snapshot, hold_expires_at, idempotency_key, lookup_token_hash)
+            price_snapshot, hold_expires_at, idempotency_key, lookup_token_hash, customer_has_whatsapp, customer_whatsapp)
          values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,
-                 case when $20::int > 0 then now() + make_interval(hours => $20::int) end, $21, $22)
+                 case when $20::int > 0 then now() + make_interval(hours => $20::int) end, $21, $22, $23, $24)
          on conflict (reference) do nothing returning *`,
         [reference('MB'), pkg.id, user ? user.id : null, input.customer.name, input.customer.email.toLowerCase(), input.customer.phone,
          input.customer.country || null, input.locale === 'en' ? 'en' : 'pt', input.date, endDateFor(pkg, input.date, quote.nights || undefined),
          quote.adults, quote.children, quote.option_key, JSON.stringify(quote.lines.filter(l => l.type === 'extra').map(l => l.key)),
          input.transfer_key || null, input.notes || null, quote.currency, quote.total, snapshotOf(pkg, quote), holdHours,
-         input.idempotency_key || null, sha256(token)]);
+         input.idempotency_key || null, sha256(token), input.customer.has_whatsapp !== false, input.customer.whatsapp || null]);
       row = rows[0];
     }
     if (!row) throw new Error('Could not allocate a unique booking reference');

@@ -24,7 +24,7 @@
     confirmed: 'Your booking is confirmed. See you soon!', rejected: 'We could not confirm this booking. Please contact us to find an alternative.',
     cancelled: 'This booking was cancelled.', completed: 'We hope you enjoyed it! Leave a review on the experience page.',
     childReq: 'Children price on request — our team will confirm it.',
-    help: 'Questions about this booking?', ticket: 'View / download ticket', whatsapp: 'Message us on WhatsApp', account: 'Create an account to see all your bookings in one place',
+    help: 'Questions about this booking?', ticket: 'View ticket', doc: 'View booking document', whatsapp: 'Message us on WhatsApp', account: 'Create an account to see all your bookings in one place',
     invoice: 'Invoice', invTotal: 'Total', invPaid: 'Paid', invBalance: 'Balance due', invDownload: 'Download invoice (PDF)', issued: 'Issued',
     steps: ['Requested', 'Confirmed', 'Trip', 'Completed'],
   } : {
@@ -35,7 +35,7 @@
     confirmed: 'A sua reserva está confirmada. Até breve!', rejected: 'Não foi possível confirmar esta reserva. Contacte-nos para encontrarmos uma alternativa.',
     cancelled: 'Esta reserva foi cancelada.', completed: 'Esperamos que tenha gostado! Deixe a sua avaliação na página da experiência.',
     childReq: 'Preço das crianças sob consulta — a nossa equipa vai confirmá-lo.',
-    help: 'Dúvidas sobre esta reserva?', ticket: 'Ver / descarregar ticket', whatsapp: 'Fale connosco pelo WhatsApp', account: 'Crie uma conta para ver todas as suas reservas num só lugar',
+    help: 'Dúvidas sobre esta reserva?', ticket: 'Ver bilhete', doc: 'Ver documento da reserva', whatsapp: 'Fale connosco pelo WhatsApp', account: 'Crie uma conta para ver todas as suas reservas num só lugar',
     invoice: 'Factura', invTotal: 'Total', invPaid: 'Pago', invBalance: 'Saldo em dívida', invDownload: 'Descarregar factura (PDF)', issued: 'Emitida',
     steps: ['Pedido', 'Confirmada', 'Viagem', 'Concluída'],
   };
@@ -98,7 +98,7 @@
         <div data-invoice></div>
         <div class="mb-form-actions" style="margin-top:24px;">
           <a class="btn-outline-mb" href="${wa}" target="_blank" rel="noopener"><i class='bx bxl-whatsapp'></i>${T.whatsapp}</a>
-          ${window.MBTicket ? `<button type="button" class="btn-primary-mb" data-ticket><i class='bx bx-receipt'></i>${T.ticket}</button>` : ''}
+          ${window.MBTicket ? `<button type="button" class="btn-primary-mb" data-ticket><i class='bx bx-receipt'></i>${b.status === 'confirmed' && b.payment_status === 'paid' ? T.ticket : T.doc}</button>` : ''}
           <button type="button" class="mb-link" data-another>${T.another}</button>
         </div>
         <p style="margin-top:14px;font-size:.875rem;"><a class="mb-link" href="${ROOT}${EN ? 'en' : 'pages'}/account.html?tab=register">${T.account}</a></p>

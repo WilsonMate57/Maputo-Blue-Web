@@ -7,7 +7,9 @@
 // base64url, 128 bits. It is unguessable, carries no personal data, can be
 // regenerated for any (re)download, and is revoked by bumping ticket_version.
 // Every value printed comes from the persisted booking (price snapshot), never
-// from the current package price.
+// from the current package price. Only a booking that may board (boarding.js)
+// gets a ticket with a QR code; any other state prints a receipt that says it
+// is not a ticket.
 // ─────────────────────────────────────────────────────────────────────────────
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -17,6 +19,7 @@ import { brandFonts } from './pdf-fonts.js';
 import QRCode from 'qrcode';
 import sharp from 'sharp';
 import { getSetting } from './catalog.js';
+import { amountDue, boardingState } from './boarding.js';
 
 export function ticketSignature(cfg, reference, version) {
   return crypto.createHmac('sha256', cfg.ticketSecret).update(`${reference}|${version}`).digest('base64url').slice(0, 22);
@@ -36,15 +39,20 @@ export function verifyUrl(cfg, b) {
 const L = {
   pt: {
     doc: { pending: 'Comprovativo de pedido de reserva', confirmed: 'Confirmação de reserva', completed: 'Reserva concluída',
-           cancelled: 'Reserva cancelada', rejected: 'Pedido de reserva não aceite' },
-    status: { pending: 'Pendente — a aguardar confirmação', confirmed: 'Confirmada', completed: 'Concluída', cancelled: 'Cancelada', rejected: 'Rejeitada' },
+           cancelled: 'Reserva cancelada', rejected: 'Pedido de reserva não aceite',
+           unpaid: 'Reserva confirmada — pagamento pendente', ticket: 'Bilhete', voucher: 'Voucher de alojamento' },
+    notTicket: 'NÃO É BILHETE', noQr: 'Sem código QR: este documento não dá acesso ao embarque.',
+    requestNote: 'Este documento NÃO é um bilhete e não dá acesso ao embarque. O pedido ainda não está confirmado nem pago.',
+    unpaidNote: due => `Este documento NÃO é um bilhete. A reserva está confirmada, mas só pode embarcar depois de pagar o valor total. Em falta: ${due}. O bilhete com código QR é enviado por e-mail assim que o pagamento for confirmado.`,
+    overrideNote: 'Embarque autorizado pela equipa da Maputo Blue.',
+    due: 'Em falta', howToPay: 'Como pagar', payContact: contact => `Para pagar, contacte a Maputo Blue: ${contact}.`,
+    status: { pending: 'Pendente — a aguardar confirmação', confirmed: 'Confirmada', unpaid: 'Confirmada — pagamento pendente', completed: 'Concluída', cancelled: 'Cancelada', rejected: 'Rejeitada' },
     pay: { unpaid: 'Por pagar', partial: 'Pago parcialmente', paid: 'Pago', refunded: 'Reembolsado' },
     ref: 'Referência', issued: 'Emitido em', customer: 'Cliente', contact: 'Contacto', experience: 'Experiência',
     date: 'Data', checkin: 'Check-in', checkout: 'Check-out', guests: 'Participantes', adults: 'adulto(s)', children: 'criança(s)',
     option: 'Opção', details: 'Detalhe do preço', subtotal: 'Subtotal', discount: 'Desconto', total: 'Total', status_l: 'Estado da reserva',
     payment: 'Pagamento', paid_amount: 'Valor pago', meeting: 'Ponto de encontro', duration: 'Duração', notes: 'Observações do cliente',
     conditions: 'Informações importantes', scan: 'Digitalize para verificar a validade desta reserva.',
-    pendingNote: 'Este pedido ainda NÃO está confirmado. Receberá um e-mail quando a disponibilidade for confirmada.',
     cancelNote: 'Esta reserva não é válida para utilização.',
     childOnRequest: 'Preço das crianças sob consulta — a confirmar pela equipa.',
     disclaimer: 'Este documento comprova os dados da reserva. Não é um recibo nem um documento fiscal.',
@@ -52,15 +60,20 @@ const L = {
   },
   en: {
     doc: { pending: 'Booking request receipt', confirmed: 'Booking confirmation', completed: 'Booking completed',
-           cancelled: 'Booking cancelled', rejected: 'Booking request not accepted' },
-    status: { pending: 'Pending — awaiting confirmation', confirmed: 'Confirmed', completed: 'Completed', cancelled: 'Cancelled', rejected: 'Rejected' },
+           cancelled: 'Booking cancelled', rejected: 'Booking request not accepted',
+           unpaid: 'Booking confirmed — payment pending', ticket: 'Ticket', voucher: 'Accommodation voucher' },
+    notTicket: 'NOT A TICKET', noQr: 'No QR code: this document does not give access to boarding.',
+    requestNote: 'This document is NOT a ticket and does not give access to boarding. The request is not confirmed or paid yet.',
+    unpaidNote: due => `This document is NOT a ticket. Your booking is confirmed, but you can only board once the full amount is paid. Outstanding: ${due}. The ticket with its QR code is e-mailed as soon as the payment is confirmed.`,
+    overrideNote: 'Boarding authorised by the Maputo Blue team.',
+    due: 'Outstanding', howToPay: 'How to pay', payContact: contact => `To pay, contact Maputo Blue: ${contact}.`,
+    status: { pending: 'Pending — awaiting confirmation', confirmed: 'Confirmed', unpaid: 'Confirmed — payment pending', completed: 'Completed', cancelled: 'Cancelled', rejected: 'Rejected' },
     pay: { unpaid: 'Unpaid', partial: 'Partially paid', paid: 'Paid', refunded: 'Refunded' },
     ref: 'Reference', issued: 'Issued on', customer: 'Customer', contact: 'Contact', experience: 'Experience',
     date: 'Date', checkin: 'Check-in', checkout: 'Check-out', guests: 'Guests', adults: 'adult(s)', children: 'child(ren)',
     option: 'Option', details: 'Price details', subtotal: 'Subtotal', discount: 'Discount', total: 'Total', status_l: 'Booking status',
     payment: 'Payment', paid_amount: 'Amount paid', meeting: 'Meeting point', duration: 'Duration', notes: 'Customer notes',
     conditions: 'Important information', scan: 'Scan to verify that this booking is valid.',
-    pendingNote: 'This request is NOT confirmed yet. You will receive an e-mail once availability is confirmed.',
     cancelNote: 'This booking is not valid for use.',
     childOnRequest: 'Children price on request — to be confirmed by our team.',
     disclaimer: 'This document confirms the booking details. It is not a receipt or a tax document.',
@@ -86,6 +99,9 @@ export async function ticketData(db, cfg, b) {
   const snap = b.price_snapshot || {};
   const q = snap.quote || {};
   const company = await getSetting(db, 'company');
+  const invoicing = await getSetting(db, 'invoicing');
+  const state = boardingState(b);
+  const due = amountDue(b);
   const { rows: [pkg] } = await db.query('select kind, content from packages where id = $1', [b.package_id]);
   const content = (pkg && pkg.content) || {};
   const pick = (o, k) => (lang === 'en' ? o[`${k}_en`] || o[k] : o[k]);
@@ -101,8 +117,19 @@ export async function ticketData(db, cfg, b) {
     company: Object.fromEntries(Object.entries(company).filter(([, v]) => v)),
     reference: b.reference,
     issued_at: new Date().toISOString(),
-    status: b.status, status_label: t.status[b.status] || b.status,
-    doc_title: t.doc[b.status] || t.doc.pending,
+    status: b.status, status_label: state === 'unpaid' ? t.status.unpaid : t.status[b.status] || b.status,
+    state,
+    doc_title: state === 'boarding' ? ((snap.package?.kind || (pkg && pkg.kind)) === 'accommodation' ? t.doc.voucher : t.doc.ticket)
+      : state === 'unpaid' ? t.doc.unpaid : t.doc[b.status] || t.doc.pending,
+    // What the customer must read first, in this document's own words
+    notice: state === 'request' ? t.requestNote : state === 'unpaid' ? t.unpaidNote(money(due, b.currency))
+      : ['cancelled', 'rejected'].includes(b.status) ? t.cancelNote : null,
+    boarding_authorised: state === 'boarding' && !!b.boarding_override_at && b.payment_status !== 'paid',
+    amount_due: due,
+    how_to_pay: state === 'unpaid'
+      ? ((lang === 'en' ? invoicing.payment_instructions_en || invoicing.payment_instructions : invoicing.payment_instructions)
+        || t.payContact([company.phone, company.email].filter(Boolean).join(' · ')))
+      : null,
     payment_status: b.payment_status, payment_label: t.pay[b.payment_status] || b.payment_status,
     amount_paid: Number(b.amount_paid) || 0,
     customer_name: b.customer_name, customer_phone_masked: maskPhone(b.customer_phone),
@@ -124,7 +151,8 @@ export async function ticketData(db, cfg, b) {
     customer_notes: b.customer_notes || null,
     conditions: Array.isArray(info) && info.length ? info.slice(0, 6) : null,
     checked_in_at: b.checked_in_at || null,
-    verify_url: verifyUrl(cfg, b),
+    // No QR code unless the booking may board
+    verify_url: state === 'boarding' ? verifyUrl(cfg, b) : null,
   };
 }
 
@@ -148,7 +176,7 @@ const STATUS_COLORS = { confirmed: '#047857', completed: '#1D4ED8', pending: '#B
 /** Render an A4 PDF (selectable text, vector QR). Returns a Buffer. */
 export async function renderTicketPdf(cfg, d) {
   const t = d.labels;
-  const qr = QRCode.create(d.verify_url, { errorCorrectionLevel: 'M' });
+  const qr = d.verify_url ? QRCode.create(d.verify_url, { errorCorrectionLevel: 'M' }) : null;
   const logo = await logoPng(cfg);
   const doc = new PDFDocument({ size: 'A4', bufferPages: true, margins: { top: 48, bottom: 56, left: 50, right: 50 },
     info: { Title: `${d.doc_title} ${d.reference}`, Author: d.company.trade_name || 'Maputo Blue', Subject: d.package_title || '' } });
@@ -178,7 +206,7 @@ export async function renderTicketPdf(cfg, d) {
 
   // Document title + status
   doc.font(F.heavy).fontSize(17).fillColor(C.navy).text(d.doc_title, M, y, { width: CW });
-  const sc = STATUS_COLORS[d.status] || C.muted;
+  const sc = d.state === 'unpaid' ? STATUS_COLORS.pending : STATUS_COLORS[d.status] || C.muted;
   const statusText = d.status_label.toUpperCase();
   y = doc.y + 6;
   doc.font(F.bold).fontSize(8.5);
@@ -186,13 +214,16 @@ export async function renderTicketPdf(cfg, d) {
   doc.roundedRect(M, y, sw, 20, 10).lineWidth(1.2).strokeColor(sc).stroke();
   doc.fillColor(sc).text(statusText, M, y + 6, { width: sw, align: 'center' });
   y += 32;
-  if (d.status === 'pending' || d.status === 'cancelled' || d.status === 'rejected') {
-    const note = d.status === 'pending' ? t.pendingNote : t.cancelNote;
-    doc.font(F.regular).fontSize(9.5);
-    const h = doc.heightOfString(note, { width: CW - 24 }) + 16;
-    doc.roundedRect(M, y, CW, h, 6).fillColor(d.status === 'pending' ? '#FFF7ED' : '#FEF2F2').fill();
-    doc.fillColor(sc).text(note, M + 12, y + 8, { width: CW - 24 });
+  if (d.notice) {
+    doc.font(F.bold).fontSize(10.5);
+    const h = doc.heightOfString(d.notice, { width: CW - 28 }) + 20;
+    doc.roundedRect(M, y, CW, h, 6).fillColor('#FEF2F2').fill();
+    doc.roundedRect(M, y, CW, h, 6).lineWidth(1.5).strokeColor('#B91C1C').stroke();
+    doc.fillColor('#991B1B').text(d.notice, M + 14, y + 10, { width: CW - 28 });
     y += h + 12;
+  } else if (d.boarding_authorised) {
+    doc.font(F.bold).fontSize(9.5).fillColor('#047857').text(t.overrideNote, M, y, { width: CW });
+    y = doc.y + 10;
   }
 
   // Booking details (left) + QR (right)
@@ -214,13 +245,20 @@ export async function renderTicketPdf(cfg, d) {
     doc.font(F.bold).fontSize(10.5).fillColor(C.navy).text(String(v || '—'), M, doc.y + 1, { width: colW });
     y = doc.y + 7;
   }
-  // QR as vector modules
-  const n = qr.modules.size, cell = (qrSize - 12) / n;
-  doc.roundedRect(qrX, top, qrSize, qrSize, 8).lineWidth(1).strokeColor(C.line).stroke();
-  // One path filled once: no hairline seams between modules
-  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.modules.get(r, c)) doc.rect(qrX + 6 + c * cell, top + 6 + r * cell, cell, cell);
-  doc.fillColor(C.navy).fill();
-  doc.font(F.regular).fontSize(7.5).fillColor(C.muted).text(t.scan, qrX - 6, top + qrSize + 6, { width: qrSize + 12, align: 'center' });
+  if (qr) {
+    // QR as vector modules
+    const n = qr.modules.size, cell = (qrSize - 12) / n;
+    doc.roundedRect(qrX, top, qrSize, qrSize, 8).lineWidth(1).strokeColor(C.line).stroke();
+    // One path filled once: no hairline seams between modules
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.modules.get(r, c)) doc.rect(qrX + 6 + c * cell, top + 6 + r * cell, cell, cell);
+    doc.fillColor(C.navy).fill();
+    doc.font(F.regular).fontSize(7.5).fillColor(C.muted).text(t.scan, qrX - 6, top + qrSize + 6, { width: qrSize + 12, align: 'center' });
+  } else {
+    // Where a ticket has its QR code, this one says what it is not
+    doc.roundedRect(qrX, top, qrSize, qrSize, 8).lineWidth(2).dash(5, { space: 4 }).strokeColor('#B91C1C').stroke().undash();
+    doc.font(F.heavy).fontSize(19).fillColor('#B91C1C').text(t.notTicket, qrX + 8, top + qrSize / 2 - 24, { width: qrSize - 16, align: 'center' });
+    doc.font(F.regular).fontSize(7.5).fillColor(C.muted).text(t.noQr, qrX - 6, top + qrSize + 6, { width: qrSize + 12, align: 'center' });
+  }
   y = Math.max(y, doc.y) + 10;
 
   // Price table
@@ -249,7 +287,8 @@ export async function renderTicketPdf(cfg, d) {
   doc.font(F.bold).fontSize(12).fillColor(C.navy).text(t.total, M + 10, y + 13);
   doc.text(money(d.total, d.currency), W - M - 200, y + 13, { width: 190, align: 'right' });
   y += 44;
-  const payLine = `${t.payment}: ${d.payment_label}${d.amount_paid > 0 && d.payment_status !== 'paid' ? ` — ${t.paid_amount} ${money(d.amount_paid, d.currency)}` : ''}`;
+  const payLine = `${t.payment}: ${d.payment_label}${d.amount_paid > 0 && d.payment_status !== 'paid' ? ` — ${t.paid_amount} ${money(d.amount_paid, d.currency)}` : ''}`
+    + (d.state === 'unpaid' ? ` — ${t.due} ${money(d.amount_due, d.currency)}` : '');
   doc.font(F.regular).fontSize(9.5).fillColor(C.text).text(payLine, M, y, { width: CW });
   y = doc.y + 4;
   if (d.child_price_on_request) { doc.fillColor(C.coral).text(t.childOnRequest, M, y, { width: CW }); y = doc.y + 4; }
@@ -262,6 +301,7 @@ export async function renderTicketPdf(cfg, d) {
     doc.font(F.regular).fontSize(9).fillColor(C.text).text(body, M, doc.y + 3, { width: CW, lineGap: 1.5 });
     y = doc.y;
   };
+  if (d.how_to_pay) block(t.howToPay, d.how_to_pay);
   if (d.customer_notes) block(t.notes, d.customer_notes);
   if (d.conditions) block(t.conditions, d.conditions.map(c => `• ${c}`).join('\n'));
 
@@ -269,6 +309,13 @@ export async function renderTicketPdf(cfg, d) {
   const range = doc.bufferedPageRange();
   for (let i = range.start; i < range.start + range.count; i++) {
     doc.switchToPage(i);
+    if (!d.verify_url && d.status !== 'completed') {
+      // Across every page, so a printout or a screenshot cannot pass for a ticket
+      doc.save().rotate(-32, { origin: [W / 2, doc.page.height / 2] });
+      doc.font(F.heavy).fontSize(68).fillColor('#B91C1C').fillOpacity(0.09)
+        .text(t.notTicket, 0, doc.page.height / 2 - 40, { width: W, align: 'center', lineBreak: false });
+      doc.restore().fillOpacity(1);
+    }
     // Writing inside the bottom margin would make pdfkit add a blank page
     const bottom = doc.page.margins.bottom;
     doc.page.margins.bottom = 0;
@@ -295,6 +342,8 @@ export function ticketAttachments(pool, cfg) {
     if (!id) return [];
     const { rows: [b] } = await pool.query('select * from bookings where id = $1', [id]);
     if (!b) return [];
+    // Automatic e-mails carry the PDF only once it is a real ticket; asked for, it goes as it is
+    if (job.template !== 'booking_ticket' && boardingState(b) !== 'boarding') return [];
     const pdf = await renderTicketPdf(cfg, await ticketData(pool, cfg, b));
     return [{ filename: `maputo-blue-${b.reference}.pdf`, content: pdf.toString('base64') }];
   };
@@ -308,6 +357,7 @@ export function verificationView(b, snap, lang = 'pt') {
     start_date: b.start_date, end_date: b.end_date,
     guests: b.adults + b.children, adults: b.adults, children: b.children,
     status: b.status, payment_status: b.payment_status,
+    may_board: boardingState(b) === 'boarding',
     checked_in: !!b.checked_in_at,
   };
 }

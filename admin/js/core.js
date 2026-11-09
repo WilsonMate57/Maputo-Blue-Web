@@ -64,6 +64,9 @@ const ERR = {
   quote_not_found: 'Não existe nenhuma cotação com este número.',
   package_not_found: 'Este pacote já não existe.',
   customer_not_found: 'Este cliente já não existe.',
+  payment_pending: 'A viagem ainda não está paga na totalidade',
+  reason_required: 'Indique o motivo.',
+  not_confirmed: 'Só reservas confirmadas.',
   internal: 'Erro inesperado no servidor.',
 };
 

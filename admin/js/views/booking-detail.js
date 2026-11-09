@@ -5,7 +5,7 @@ import { paymentDialog, paymentList, reversalDialog } from '../payments-ui.js';
 const ACTIONS = {
   created: 'Pedido criado', status_changed: 'Estado alterado', updated: 'Reserva editada', payment_recorded: 'Pagamento registado',
   cancel_requested: 'Cliente pediu cancelamento', email_resent: 'E-mail reenviado', ticket_emailed: 'Ticket enviado por e-mail',
-  ticket_downloaded: 'Ticket descarregado (equipa)', ticket_revoked: 'QR code invalidado', checked_in: 'Check-in registado',
+  ticket_downloaded: 'Ticket descarregado (equipa)', boarding_authorised: 'Embarque autorizado sem pagamento total', boarding_authorisation_removed: 'Autorização de embarque retirada', ticket_revoked: 'QR code invalidado', checked_in: 'Check-in registado',
   refund_recorded: 'Reembolso registado', payment_reversed: 'Pagamento estornado', invoice_issued: 'Factura emitida', invoice_cancelled: 'Factura anulada',
 };
 const TEMPLATES = { booking_received: 'Pedido recebido', booking_ticket: 'Ticket (PDF)', booking_status: 'Actualização de estado', invoice_issued: 'Factura (PDF)', invoice_paid: 'Factura paga', trip_reminder: 'Lembrete da viagem', admin_new_booking: 'Aviso à equipa', admin_cancel_request: 'Aviso de cancelamento' };
@@ -37,7 +37,11 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
     // With an issued invoice, the invoice total is what is owed
     const billTotal = activeInvoice && activeInvoice.doc_status === 'issued' ? Number(activeInvoice.total) : Number(b.total);
     const holdExpired = b.status === 'pending' && (!b.hold_expires_at || new Date(b.hold_expires_at) < new Date());
-    const wa = `https://wa.me/${String(b.customer_phone).replace(/\D/g, '')}?text=${encodeURIComponent(`Olá ${b.customer_name}, aqui é a Maputo Blue sobre a reserva ${b.reference}.`)}`;
+    const waNumber = b.customer_whatsapp || (b.customer_has_whatsapp === false ? null : b.customer_phone);
+    const wa = waNumber ? `https://wa.me/${String(waNumber).replace(/\D/g, '')}?text=${encodeURIComponent(`Olá ${b.customer_name}, aqui é a Maputo Blue sobre a reserva ${b.reference}.`)}` : null;
+    const paid = b.payment_status === 'paid' || (Number(b.total) > 0 && Number(b.amount_paid) >= Number(b.total));
+    const mayBoard = b.status === 'confirmed' && (paid || !!b.boarding_override_at);
+    const due = Math.max(0, Number(b.total) - Number(b.amount_paid));
     const lines = (q.lines || []).map(l => `<li><span>${esc(l.label)}${l.quantity > 1 && !l.qty_in_label ? ` × ${l.quantity}` : ''}${l.unit_price !== null && l.quantity > 1 ? ` <span class="muted small">(${money(l.unit_price, b.currency)})</span>` : ''}</span><span class="mono">${l.unit_price === null ? 'sob consulta' : money(l.amount, b.currency)}</span></li>`).join('')
       + (q.discounts || []).map(x => `<li class="is-discount"><span>${esc(x.label)}${x.code ? ` (${esc(x.code)})` : ''}</span><span class="mono">− ${money(x.amount, b.currency)}</span></li>`).join('');
 
@@ -106,24 +110,32 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
             <ul class="list-plain">
               <li><a class="link" href="mailto:${esc(b.customer_email)}"><i class='bx bx-envelope'></i> ${esc(b.customer_email)}</a></li>
               <li><a class="link" href="tel:${esc(b.customer_phone)}"><i class='bx bx-phone'></i> ${esc(b.customer_phone)}</a>
-                <a class="btn btn--ghost btn--sm" href="${wa}" target="_blank" rel="noopener"><i class='bx bxl-whatsapp'></i>WhatsApp</a></li>
+                ${wa ? `<a class="btn btn--ghost btn--sm" href="${wa}" target="_blank" rel="noopener"><i class='bx bxl-whatsapp'></i>WhatsApp</a>` : ''}</li>
+              ${b.customer_whatsapp ? `<li><span><i class='bx bxl-whatsapp'></i> ${esc(b.customer_whatsapp)}</span><span class="muted">WhatsApp</span></li>` : ''}
+              ${!waNumber ? `<li><span class="muted"><i class='bx bxl-whatsapp'></i> O cliente indicou que não tem WhatsApp</span></li>` : ''}
               ${b.customer_country ? `<li><span><i class='bx bx-globe'></i> ${esc(b.customer_country)}</span></li>` : ''}
               <li><span class="muted">Idioma dos e-mails</span><span>${b.locale === 'en' ? 'Inglês' : 'Português'}</span></li>
               ${b.user_id ? `<li><a class="link" href="#/customers/${b.user_id}">Ver conta do cliente</a></li>` : ''}
             </ul>
           </div></div>
 
-          <div class="card"><div class="card__head"><h2>Ticket e QR code</h2></div><div class="card__body">
+          <div class="card"><div class="card__head"><h2>Bilhete e embarque</h2></div><div class="card__body">
+            ${b.status === 'pending' ? `<p class="alert alert--warn" style="margin:0 0 12px;">Pedido por confirmar: o cliente só tem um comprovativo, sem QR code.</p>`
+              : b.status !== 'confirmed' ? ''
+              : mayBoard ? `<p class="alert alert--success" style="margin:0 0 12px;"><strong>Pode embarcar.</strong> ${paid ? 'Viagem paga na totalidade.' : `Autorizado sem pagamento total: ${esc(b.boarding_override_reason || '')}`}</p>`
+              : `<p class="alert" style="margin:0 0 12px;"><strong>Não pode embarcar.</strong> Falta pagar ${esc(money(due, b.currency))}. O cliente tem um documento sem QR code até o pagamento estar completo.</p>`}
             <div class="status-actions">
               <a class="btn btn--ghost btn--sm" href="/api/admin/bookings/${b.id}/ticket.pdf" download><i class='bx bx-download'></i>PDF</a>
               <button type="button" class="btn btn--ghost btn--sm" data-ticket-email><i class='bx bx-envelope'></i>Enviar ao cliente</button>
               <a class="btn btn--ghost btn--sm" href="${esc(d.verify_url)}" target="_blank" rel="noopener"><i class='bx bx-qr-scan'></i>Página de verificação</a>
-              ${b.status === 'confirmed' && !b.checked_in_at ? `<button type="button" class="btn btn--success btn--sm" data-checkin><i class='bx bx-log-in-circle'></i>Check-in</button>` : ''}
+              ${mayBoard && !b.checked_in_at ? `<button type="button" class="btn btn--success btn--sm" data-checkin><i class='bx bx-log-in-circle'></i>Check-in</button>` : ''}
+              ${b.status === 'confirmed' && !paid && !b.boarding_override_at ? `<button type="button" class="btn btn--ghost btn--sm" data-board="1"><i class='bx bx-check-shield'></i>Autorizar embarque sem pagamento total</button>` : ''}
+              ${b.boarding_override_at && !paid ? `<button type="button" class="btn btn--ghost btn--sm" data-board="0"><i class='bx bx-undo'></i>Retirar autorização</button>` : ''}
               <button type="button" class="btn btn--danger btn--sm" data-revoke><i class='bx bx-block'></i>Invalidar QR</button>
             </div>
             ${b.checked_in_at ? `<p class="alert alert--success">Check-in registado em ${dateTime(b.checked_in_at)}.</p>` : ''}
             <p class="muted small" style="margin:10px 0 0;">O ticket é sempre gerado a partir dos dados guardados desta reserva (versão ${b.ticket_version}). “Invalidar QR” torna inválidos todos os tickets já emitidos; o próximo download gera um QR novo.</p>
-            ${d.scans.length ? `<ul class="list-plain" style="margin-top:8px;">${d.scans.map(x => `<li><span>${esc(({ confirmed: 'Válida (confirmada)', pending: 'Pendente', cancelled: 'Cancelada', rejected: 'Rejeitada', completed: 'Concluída', revoked: 'QR substituído', invalid: 'Inválido' })[x.result] || x.result)}<span class="t-sub">${dateTime(x.at)}${x.staff_name ? ` · ${esc(x.staff_name)}` : ' · visitante'}</span></span></li>`).join('')}</ul>` : '<p class="muted small" style="margin:6px 0 0;">O QR ainda não foi lido.</p>'}
+            ${d.scans.length ? `<ul class="list-plain" style="margin-top:8px;">${d.scans.map(x => `<li><span>${esc(({ confirmed: 'Válida (pode embarcar)', unpaid: 'Não pode embarcar (falta pagamento)', pending: 'Pendente', cancelled: 'Cancelada', rejected: 'Rejeitada', completed: 'Concluída', revoked: 'QR substituído', invalid: 'Inválido' })[x.result] || x.result)}<span class="t-sub">${dateTime(x.at)}${x.staff_name ? ` · ${esc(x.staff_name)}` : ' · visitante'}</span></span></li>`).join('')}</ul>` : '<p class="muted small" style="margin:6px 0 0;">O QR ainda não foi lido.</p>'}
           </div></div>
 
           <div class="card"><div class="card__head"><h2>Factura</h2></div><div class="card__body">
@@ -201,6 +213,17 @@ export default async function bookingDetail(main, [id], { setTitle, refreshBadge
       if (!(await confirmAction({ title: 'Invalidar QR code', text: 'Todos os tickets já emitidos para esta reserva deixam de ser aceites na verificação. Use isto se um ticket foi partilhado indevidamente. Depois, reenvie o ticket ao cliente.', confirm: 'Invalidar', kind: 'danger-solid' }))) return;
       try { await busy(e.currentTarget, () => post(`/admin/bookings/${b.id}/ticket/revoke`), 'QR invalidado. Reenvie o ticket ao cliente.'); load(); } catch { /* toast */ }
     });
+    main.querySelectorAll('[data-board]').forEach(btn => btn.addEventListener('click', async e => {
+      const allow = btn.dataset.board === '1';
+      const r = allow
+        ? await modal({ title: 'Autorizar embarque', body: `<p style="margin:0 0 10px;">A regra é embarcar só com a viagem paga na totalidade. Esta excepção fica registada com o seu nome e o cliente passa a receber o bilhete com QR code.</p>
+            <label class="field"><span>Motivo</span><input name="reason" maxlength="300" required placeholder="Ex.: agência com pagamento ao fim do mês"></label>`,
+            actions: [{ label: 'Cancelar', value: null }, { label: 'Autorizar', kind: 'primary', value: 'ok', submit: true,
+              validate: v => (v.reason.trim().length < 3 ? 'Indique o motivo.' : '') }] })
+        : await confirmAction({ title: 'Retirar autorização', text: 'O cliente volta a não poder embarcar até pagar o valor total. Os bilhetes já descarregados deixam de dar acesso.', confirm: 'Retirar' });
+      if (!r) return;
+      try { await busy(e.currentTarget, () => post(`/admin/bookings/${b.id}/boarding`, allow ? { allow: true, reason: r.values.reason.trim() } : { allow: false }), allow ? 'Embarque autorizado.' : 'Autorização retirada.'); load(); } catch { /* toast */ }
+    }));
     const ci = main.querySelector('[data-checkin]');
     if (ci) ci.addEventListener('click', async e => {
       if (!(await confirmAction({ title: 'Registar check-in', text: 'Confirma que o cliente se apresentou para esta experiência?', confirm: 'Registar check-in', kind: 'success' }))) return;

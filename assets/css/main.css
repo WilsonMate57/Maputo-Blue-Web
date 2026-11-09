@@ -4232,3 +4232,16 @@ html { scroll-padding-top: calc(var(--navbar-h) + 16px); }
 .mb-cal__day.is-checkout { background: var(--white); color: var(--primary); box-shadow: inset 0 0 0 2px var(--primary); font-weight: 800; }
 .mb-cal__day.is-checkout-option { text-decoration: none; color: var(--primary); cursor: pointer; }
 .mb-cal__day.is-checkout-option:hover { background: rgba(0, 188, 212, .2); }
+
+/* ── Phone with country code (api.js phoneField) ── */
+.mb-phone__row { display: flex; gap: 8px; }
+.mb-phone__row select { flex: 0 0 auto; width: auto; max-width: 46%; }
+.mb-phone__row input { flex: 1 1 auto; min-width: 0; }
+/* ── Receipt vs ticket (ticket-view.js) ── */
+.ticket__notice--stop { background: #FEF2F2; color: #991B1B; border: 1.5px solid #B91C1C; font-weight: 600; }
+.ticket__notice--ok { background: #ECFDF5; color: #065F46; }
+.ticket__noqr { display: grid; place-content: center; gap: 6px; min-height: 170px; padding: 14px; text-align: center; border: 2px dashed #B91C1C; border-radius: var(--radius-sm); color: #991B1B; }
+.ticket__noqr strong { font-size: 1.5rem; font-weight: 800; letter-spacing: .02em; }
+.ticket__noqr span { font-size: .8125rem; color: var(--text-muted); }
+.ticket__howto { white-space: pre-line; }
+@media (max-width: 575px) { .ticket__noqr { order: -1; min-height: 120px; } }

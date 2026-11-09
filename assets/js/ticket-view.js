@@ -17,11 +17,11 @@
   const { LANG, esc } = API;
   const EN = LANG === 'en';
   const T = EN ? {
-    download: 'Download PDF', print: 'Print', copy: 'Copy reference', copied: 'Reference copied', email: 'E-mail me the ticket',
+    download: 'Download PDF', print: 'Print', copy: 'Copy reference', copied: 'Reference copied', email: 'E-mail me this document', howToPay: 'How to pay',
     emailed: 'Sent! Check your inbox in a few minutes.', working: 'Please wait…', total: 'Total', payment: 'Payment',
     scanHint: 'Show this QR code to our team. It only confirms that the booking is valid.', checkedIn: 'Checked in',
   } : {
-    download: 'Descarregar PDF', print: 'Imprimir', copy: 'Copiar referência', copied: 'Referência copiada', email: 'Enviar ticket por e-mail',
+    download: 'Descarregar PDF', print: 'Imprimir', copy: 'Copiar referência', copied: 'Referência copiada', email: 'Enviar este documento por e-mail', howToPay: 'Como pagar',
     emailed: 'Enviado! Verifique a sua caixa de correio dentro de alguns minutos.', working: 'Aguarde…', total: 'Total', payment: 'Pagamento',
     scanHint: 'Mostre este QR code à nossa equipa. Serve apenas para confirmar que a reserva é válida.', checkedIn: 'Check-in efectuado',
   };
@@ -42,8 +42,8 @@
     ].filter(Boolean);
     const lines = d.lines.map(l => `<li><span>${esc(l.label)}${l.quantity > 1 && !l.qty_in_label ? ` × ${l.quantity}` : ''}</span><span>${l.amount === null ? esc(L.onRequest) : money(l.amount, d.currency)}</span></li>`).join('') +
       d.discounts.map(x => `<li class="is-discount"><span>${esc(L.discount)}: ${esc(x.label)}</span><span>- ${money(x.amount, d.currency)}</span></li>`).join('');
-    const notice = d.status === 'pending' ? `<p class="ticket__notice ticket__notice--pending">${esc(L.pendingNote)}</p>`
-      : (d.status === 'cancelled' || d.status === 'rejected') ? `<p class="ticket__notice ticket__notice--cancelled">${esc(L.cancelNote)}</p>` : '';
+    const notice = d.notice ? `<p class="ticket__notice ticket__notice--stop" role="note">${esc(d.notice)}</p>`
+      : d.boarding_authorised ? `<p class="ticket__notice ticket__notice--ok">${esc(L.overrideNote)}</p>` : '';
     const c = d.company;
 
     container.innerHTML = `
@@ -65,16 +65,18 @@
             <small>${esc(L.issued)} ${new Date(d.issued_at).toLocaleString(EN ? 'en-GB' : 'pt-PT', { dateStyle: 'medium', timeStyle: 'short' })}</small></div>
         </header>
         <h2 class="ticket__title">${esc(d.doc_title)}</h2>
-        <span class="mb-status mb-status--${esc(d.status)}">${esc(d.status_label)}</span>
+        <span class="mb-status mb-status--${esc(d.state === 'unpaid' ? 'pending' : d.status)}">${esc(d.status_label)}</span>
         ${d.checked_in_at ? `<span class="mb-status mb-status--completed">${T.checkedIn}</span>` : ''}
         ${notice}
         <div class="ticket__body">
           <dl class="ticket__details">${rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v || '—')}</dd></div>`).join('')}</dl>
-          <figure class="ticket__qr">${payload.qr_svg}<figcaption>${T.scanHint}</figcaption></figure>
+          ${payload.qr_svg ? `<figure class="ticket__qr">${payload.qr_svg}<figcaption>${T.scanHint}</figcaption></figure>`
+            : `<div class="ticket__noqr"><strong>${esc(L.notTicket)}</strong><span>${esc(L.noQr)}</span></div>`}
         </div>
         <h3 class="ticket__sub">${esc(L.details)}</h3>
         <ul class="booking-breakdown ticket__lines">${lines}<li class="ticket__total"><strong>${T.total}</strong><strong>${money(d.total, d.currency)}</strong></li></ul>
-        <p class="ticket__pay">${T.payment}: <strong>${esc(d.payment_label)}</strong>${d.amount_paid > 0 && d.payment_status !== 'paid' ? ` — ${esc(L.paid_amount)} ${money(d.amount_paid, d.currency)}` : ''}</p>
+        <p class="ticket__pay">${T.payment}: <strong>${esc(d.payment_label)}</strong>${d.amount_paid > 0 && d.payment_status !== 'paid' ? ` — ${esc(L.paid_amount)} ${money(d.amount_paid, d.currency)}` : ''}${d.state === 'unpaid' ? ` — ${esc(L.due)} <strong>${money(d.amount_due, d.currency)}</strong>` : ''}</p>
+        ${d.how_to_pay ? `<h3 class="ticket__sub">${T.howToPay}</h3><p class="ticket__pay ticket__howto">${esc(d.how_to_pay)}</p>` : ''}
         ${d.child_price_on_request ? `<p class="ticket__pay">${esc(L.childOnRequest)}</p>` : ''}
         ${d.customer_notes ? `<h3 class="ticket__sub">${esc(L.notes)}</h3><p class="ticket__pay">${esc(d.customer_notes)}</p>` : ''}
         ${d.conditions ? `<h3 class="ticket__sub">${esc(L.conditions)}</h3><ul class="ticket__conditions">${d.conditions.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}

@@ -1,7 +1,7 @@
 // Tickets (JSON/PDF), QR verification, revocation, check-in and e-mail attachments.
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { setup, client, adminClient, bookingBody } from './helpers.js';
+import { setup, client, adminClient, bookingBody, idem } from './helpers.js';
 import { processOutbox } from '../src/lib/mailer.js';
 import { ticketAttachments } from '../src/lib/tickets.js';
 
@@ -17,6 +17,11 @@ after(async () => ctx && ctx.close());
 
 const creds = () => ({ reference: booking.reference, token });
 const qrParams = url => Object.fromEntries(new URL(url).searchParams);
+// A ticket with a QR code exists only once the booking is confirmed and paid in full (boarding.test.js)
+async function makeBoardable() {
+  await admin.post(`/api/admin/bookings/${booking.id}/status`, { to: 'confirmed', notify: false });
+  await admin.post(`/api/admin/bookings/${booking.id}/payments`, { amount: Number(booking.total), method: 'cash', verified: true, idempotency_key: idem() });
+}
 
 test('guest ticket matches the persisted booking exactly; wrong credentials are refused', async () => {
   const g = client(ctx.app);
@@ -34,12 +39,8 @@ test('guest ticket matches the persisted booking exactly; wrong credentials are 
   assert.equal(t.customer_notes, 'Vegetariano');
   assert.ok(!JSON.stringify(t).includes('ana@example.com'), 'e-mail is not printed');
   assert.match(t.customer_phone_masked, /•/);
-  assert.match(r.body.qr_svg, /^<svg/);
-  // QR carries only the verification URL (reference + signature)
-  const q = qrParams(t.verify_url);
-  assert.deepEqual(Object.keys(q).sort(), ['k', 'r']);
-  assert.equal(q.r, booking.reference);
-  assert.equal(q.k.length, 22);
+  assert.equal(r.body.qr_svg, null, 'a request has no QR code');
+  assert.equal(t.verify_url, null);
   assert.equal((await g.post('/api/bookings/ticket', { reference: booking.reference, token: 'x'.repeat(32) })).status, 404);
   assert.equal((await g.post('/api/bookings/ticket', { reference: booking.reference, email: 'other@example.com' })).status, 404);
   assert.equal((await g.post('/api/bookings/ticket', { reference: booking.reference })).status, 400);
@@ -69,18 +70,22 @@ test('ticket keeps the agreed prices after the package price changes', async () 
 
 test('QR verification reflects the live status, shows minimal data and never modifies the booking', async () => {
   const g = client(ctx.app);
-  const t = (await g.post('/api/bookings/ticket', creds())).body.ticket;
+  await makeBoardable();
+  const res = await g.post('/api/bookings/ticket', creds());
+  const t = res.body.ticket;
+  assert.match(res.body.qr_svg, /^<svg/);
+  // QR carries only the verification URL (reference + signature)
   const { r, k } = qrParams(t.verify_url);
+  assert.deepEqual(Object.keys(qrParams(t.verify_url)).sort(), ['k', 'r']);
+  assert.equal(r, booking.reference);
+  assert.equal(k.length, 22);
   const verify = (rr, kk, c = g) => c.get(`/api/tickets/verify?r=${encodeURIComponent(rr)}&k=${encodeURIComponent(kk)}`);
 
-  let v = await verify(r, k);
-  assert.equal(v.body.result, 'pending');
+  const v = await verify(r, k);
+  assert.equal(v.body.result, 'confirmed');
+  assert.equal(v.body.booking.may_board, true);
   for (const leak of ['customer_name', 'customer_email', 'customer_phone', 'total', 'id']) assert.ok(!(leak in v.body.booking), `public view leaks ${leak}`);
   assert.ok(!JSON.stringify(v.body).includes('Ana'));
-
-  await admin.post(`/api/admin/bookings/${booking.id}/status`, { to: 'confirmed' });
-  v = await verify(r, k);
-  assert.equal(v.body.result, 'confirmed');
 
   // Tampered or unknown values
   assert.equal((await verify(r, k.slice(0, -1) + (k.endsWith('A') ? 'B' : 'A'))).body.result, 'invalid');
@@ -88,8 +93,8 @@ test('QR verification reflects the live status, shows minimal data and never mod
   assert.equal((await verify('not-a-ref', k)).body.result, 'invalid');
   // Another booking's signature cannot be reused
   const other = await g.post('/api/bookings', bookingBody({ customer: { name: 'Outro', email: 'outro@example.com', phone: '+258840000077' } }));
-  const ot = (await g.post('/api/bookings/ticket', { reference: other.body.booking.reference, token: other.body.token })).body.ticket;
-  assert.equal((await verify(r, qrParams(ot.verify_url).k)).body.result, 'invalid');
+  const { ticketSignature } = await import('../src/lib/tickets.js');
+  assert.equal((await verify(r, ticketSignature(ctx.cfg, other.body.booking.reference, 1))).body.result, 'invalid');
 
   // No write access through the public page
   assert.equal((await g.post(`/api/tickets/verify?r=${r}&k=${k}`, {})).status, 404);
@@ -138,8 +143,13 @@ test('cancelled bookings verify as cancelled; tickets say so', async () => {
   const t = (await g.post('/api/bookings/ticket', { reference: res.body.booking.reference, token: res.body.token })).body.ticket;
   assert.equal(t.status, 'cancelled');
   assert.match(t.doc_title, /cancelada/i);
-  const { r, k } = qrParams(t.verify_url);
-  assert.equal((await g.get(`/api/tickets/verify?r=${r}&k=${k}`)).body.result, 'cancelled');
+  assert.equal(t.verify_url, null, 'no QR code');
+  // A QR code printed before the cancellation now says so
+  const { ticketSignature } = await import('../src/lib/tickets.js');
+  const k = ticketSignature(ctx.cfg, res.body.booking.reference, 1);
+  const v = (await g.get(`/api/tickets/verify?r=${res.body.booking.reference}&k=${k}`)).body;
+  assert.equal(v.result, 'cancelled');
+  assert.equal(v.booking.may_board, false);
 });
 
 test('account owner gets the ticket; other customers cannot', async () => {
@@ -160,13 +170,13 @@ test('ticket e-mails carry the PDF; repeated requests do not duplicate e-mails',
   const g = client(ctx.app);
   assert.equal((await g.post('/api/bookings/ticket/email', creds())).status, 200);
   assert.equal((await g.post('/api/bookings/ticket/email', creds())).status, 200);
-  const { rows } = await ctx.pool.query(`select count(*)::int n from mail_outbox where template = 'booking_ticket' and data->>'attach_ticket_booking' = $1`, [booking.id]);
-  assert.equal(rows[0].n, 1);
+  const { rows } = await ctx.pool.query(`select count(*)::int n from mail_outbox where template = 'booking_ticket' and data->>'attach_ticket_booking' = $1 and idempotency_key not like '%:ticket:paid'`, [booking.id]);
+  assert.equal(rows[0].n, 1, 'asked twice, sent once (the ticket sent on payment is separate)');
   ctx.sent.length = 0;
   const captured = [];
   await processOutbox(ctx.pool, async m => { captured.push(m); return 'id'; }, { attachments: ticketAttachments(ctx.pool, ctx.cfg) });
   const withPdf = captured.filter(m => m.attachments && m.attachments.length);
-  assert.ok(withPdf.some(m => /ticket|documento/i.test(m.subject)), 'ticket e-mail sent');
+  assert.ok(withPdf.some(m => /bilhete|ticket|documento/i.test(m.subject)), 'ticket e-mail sent');
   for (const m of withPdf) {
     assert.match(m.attachments[0].filename, /^maputo-blue-MB-[A-Z0-9]+\.pdf$/);
     assert.equal(Buffer.from(m.attachments[0].content, 'base64').subarray(0, 5).toString(), '%PDF-');

@@ -161,7 +161,7 @@
     () => `
       <label class="mb-field mb-field--full"><span>${T.name} *</span><input class="booking-input" name="name" required maxlength="120" autocomplete="name" value="${esc(data.name || '')}"></label>
       <label class="mb-field"><span>${T.email} *</span><input class="booking-input" type="email" name="email" required autocomplete="email" value="${esc(data.email || '')}"></label>
-      <label class="mb-field"><span>${T.phone} *</span><input class="booking-input" type="tel" name="phone" required maxlength="30" pattern="[\\d\\s+\\-\\(\\)]{6,30}" autocomplete="tel" value="${esc(data.phone || '')}"></label>
+      ${API.phoneField({ name: 'phone', label: T.phone, value: data.phone || '' })}
       <label class="booking-check mb-field--full qp-company-toggle"><input type="checkbox" name="as_company"${data.as_company ? ' checked' : ''}><span><strong>${T.asCompany}</strong> — ${T.asCompanyHint}</span></label>
       <div class="mb-field--full qp-company" ${data.as_company ? '' : 'hidden'}>
         <div class="mb-form-grid">
@@ -185,7 +185,10 @@
       data.budget = fd.get('budget') === '' ? null : Number(fd.get('budget')); data.budget_currency = fd.get('budget_currency'); data.special_requests = fd.get('special_requests').trim();
     }
     if (step === 3) {
-      data.name = fd.get('name').trim(); data.email = fd.get('email').trim(); data.phone = fd.get('phone').trim();
+      data.name = fd.get('name').trim(); data.email = fd.get('email').trim();
+      const tel = API.readPhone(form);
+      data.phone = tel.phone || '';
+      data.phone_error = !!tel.error;
       data.as_company = !!fd.get('as_company');
       data.billing = data.as_company ? { company_name: (fd.get('company_name') || '').trim(), nuit: (fd.get('nuit') || '').replace(/\s+/g, ''), address: (fd.get('company_address') || '').trim() } : null;
     }
@@ -197,6 +200,7 @@
     form.querySelectorAll('.is-invalid').forEach(i => i.classList.remove('is-invalid'));
     bad.forEach(i => i.classList.add('is-invalid'));
     if (bad.length) { bad[0].focus(); return T.required; }
+    if (step === 3 && data.phone_error) { form.elements.phone.classList.add('is-invalid'); form.elements.phone.focus(); return API.errorText(new API.ApiError(400, 'invalid_phone')); }
     if (step === 3 && data.billing && data.billing.nuit && !/^\d{9}$/.test(data.billing.nuit)) return T.nuitInvalid;
     if (step === 1) {
       if ((data.date_from && data.date_from < today) || data.items.some(i => i.date && i.date < today)) return T.datePast;
@@ -221,6 +225,7 @@
       </div>`;
     const form = root.querySelector('form');
     if (step === 0) wirePicker(form);
+    if (step === 3) API.wirePhone(form);
     const back = root.querySelector('[data-back]');
     if (back) back.addEventListener('click', () => { collect(form); step--; render(); });
     form.addEventListener('submit', e => {

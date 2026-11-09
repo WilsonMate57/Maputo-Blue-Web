@@ -30,7 +30,7 @@
     tabs: { bookings: 'My bookings', invoices: 'Invoices', requests: 'Quotes', loyalty: 'Loyalty', profile: 'Profile' },
     noBookings: 'You have no bookings yet.', explore: 'Explore experiences', noRequests: 'You have not requested a quotation yet.',
     newRequest: 'Request a custom tour', guests: 'guests', ref: 'Reference', total: 'Total', paid: 'Paid',
-    details: 'Details', hide: 'Hide', ticket: 'Ticket', cancel: 'Cancel request', requestCancel: 'Request cancellation',
+    details: 'Details', hide: 'Hide', ticket: 'Ticket', doc: 'Document', cancel: 'Cancel request', requestCancel: 'Request cancellation',
     confirmCancel: 'Cancel this booking request?', confirmRequestCancel: 'Ask Maputo Blue to cancel this confirmed booking? Our cancellation policy applies.',
     cancelRequested: 'Cancellation requested — our team will contact you.',
     holdNote: 'Waiting for confirmation by our team.',
@@ -62,7 +62,7 @@
     tabs: { bookings: 'As minhas reservas', invoices: 'Facturas', requests: 'Cotações', loyalty: 'Fidelização', profile: 'Perfil' },
     noBookings: 'Ainda não tem reservas.', explore: 'Explorar experiências', noRequests: 'Ainda não pediu nenhuma cotação.',
     newRequest: 'Pedir tour personalizado', guests: 'pessoas', ref: 'Referência', total: 'Total', paid: 'Pago',
-    details: 'Detalhes', hide: 'Ocultar', ticket: 'Ticket', cancel: 'Cancelar pedido', requestCancel: 'Pedir cancelamento',
+    details: 'Detalhes', hide: 'Ocultar', ticket: 'Bilhete', doc: 'Documento', cancel: 'Cancelar pedido', requestCancel: 'Pedir cancelamento',
     confirmCancel: 'Cancelar este pedido de reserva?', confirmRequestCancel: 'Pedir à Maputo Blue o cancelamento desta reserva confirmada? Aplica-se a nossa política de cancelamento.',
     cancelRequested: 'Cancelamento pedido — a nossa equipa vai contactá-lo.',
     holdNote: 'A aguardar confirmação da nossa equipa.',
@@ -259,7 +259,7 @@
           ${invoiceRow(b.invoice)}
           <div class="mb-booking-item__actions">
             <button type="button" class="mb-btn-sm" data-toggle aria-expanded="false"><i class='bx bx-list-ul'></i>${T.details}</button>
-            <a class="mb-btn-sm" href="${PAGE}/ticket.html?id=${encodeURIComponent(b.id)}"><i class='bx bx-qr'></i>${T.ticket}</a>
+            <a class="mb-btn-sm" href="${PAGE}/ticket.html?id=${encodeURIComponent(b.id)}"><i class='bx ${b.status === 'confirmed' && b.payment_status === 'paid' ? 'bx-qr' : 'bx-receipt'}'></i>${b.status === 'confirmed' && b.payment_status === 'paid' ? T.ticket : T.doc}</a>
             ${canCancel ? `<button type="button" class="mb-btn-sm mb-btn-sm--danger" data-cancel><i class='bx bx-x-circle'></i>${T.cancel}</button>` : ''}
             ${canRequest ? `<button type="button" class="mb-btn-sm mb-btn-sm--danger" data-cancel><i class='bx bx-x-circle'></i>${T.requestCancel}</button>` : ''}
           </div>

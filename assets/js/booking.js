@@ -410,7 +410,7 @@
           <div class="mb-form-grid">
             <label class="mb-field mb-field--full"><span>${T.name} *</span><input class="booking-input" name="name" required maxlength="120" autocomplete="name" value="${esc(u.name || '')}"></label>
             <label class="mb-field"><span>${T.email} *</span><input class="booking-input" name="email" type="email" required maxlength="200" autocomplete="email" value="${esc(u.email || '')}"></label>
-            <label class="mb-field"><span>${T.phone} *</span><input class="booking-input" name="phone" type="tel" required maxlength="30" autocomplete="tel" pattern="[\\d\\s+\\-\\(\\)]{6,30}" value="${esc(u.phone || '')}"></label>
+            ${API.phoneField({ name: 'phone', label: T.phone, value: u.phone || '', whatsapp: true })}
             <label class="mb-field mb-field--full"><span>${T.country}</span><input class="booking-input" name="country" maxlength="60" autocomplete="country-name" value="${esc(u.country || '')}"></label>
             <label class="mb-field mb-field--full"><span>${T.notes}</span><textarea class="booking-input" name="notes" rows="3" maxlength="1500"></textarea></label>
           </div>
@@ -425,16 +425,19 @@
         </form>`;
       const form = dlg.querySelector('form');
       const err = form.querySelector('.mb-alert');
+      API.wirePhone(form);
       dlg.querySelectorAll('.mb-dialog__close, [data-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
       form.addEventListener('submit', async e => {
         e.preventDefault();
         const f = form.elements;
         form.querySelectorAll('.is-invalid').forEach(x => x.classList.remove('is-invalid'));
-        const invalid = ['name', 'email', 'phone'].filter(n => !f[n].checkValidity());
+        const invalid = ['name', 'email'].filter(n => !f[n].checkValidity());
+        const tel = API.readPhone(form);
+        if (tel.error) invalid.push(tel.error);
         if (!f.consent.checked) invalid.push('consent');
         if (invalid.length) {
           invalid.forEach(n => (n === 'consent' ? f[n].closest('label') : f[n]).classList.add('is-invalid'));
-          err.textContent = T.required; err.hidden = false;
+          err.textContent = tel.error && invalid.length === 1 ? API.errorText(new API.ApiError(400, 'invalid_phone')) : T.required; err.hidden = false;
           (f[invalid[0]]).focus();
           return;
         }
@@ -445,7 +448,7 @@
         try {
           const res = await API.post('/bookings', {
             ...selection(),
-            customer: { name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), country: f.country.value.trim() || undefined },
+            customer: { name: f.name.value.trim(), email: f.email.value.trim(), ...tel, country: f.country.value.trim() || undefined },
             notes: f.notes.value.trim() || undefined, locale: LANG, consent: true,
             idempotency_key: state.idem, website: f.website.value,
           });
@@ -468,7 +471,6 @@
       const b = res.booking;
       const statusPage = `${ROOT}${EN ? 'en/booking-status.html' : 'pages/booking-status.html'}?ref=${encodeURIComponent(b.reference)}${res.token ? `&token=${encodeURIComponent(res.token)}` : ''}`;
       const accountPage = `${ROOT}${EN ? 'en' : 'pages'}/account.html`;
-      const ticketPage = `${ROOT}${EN ? 'en' : 'pages'}/ticket.html?ref=${encodeURIComponent(b.reference)}&token=${encodeURIComponent(res.token || '')}`;
       dlg.innerHTML = `
         <div class="mb-dialog__body mb-dialog__body--success">
           <button type="button" class="mb-dialog__close" aria-label="${T.close}"><i class='bx bx-x'></i></button>
@@ -478,8 +480,7 @@
           <p class="mb-ref">${esc(b.reference)}</p>
           <p>${T.successText}</p>
           <div class="mb-dialog__actions">
-            ${res.token ? `<a class="btn-primary-mb" href="${ticketPage}"><i class='bx bx-receipt'></i>${T.ticket}</a>` : ''}
-            <a class="btn-outline-mb" href="${statusPage}"><i class='bx bx-search-alt'></i>${T.track}</a>
+            <a class="btn-primary-mb" href="${statusPage}"><i class='bx bx-search-alt'></i>${T.track}</a>
             <button type="button" class="btn-outline-mb" data-copy><i class='bx bx-copy'></i>${T.copy}</button>
           </div>
           ${state.user ? '' : `<p class="mb-dialog__foot"><a href="${accountPage}">${T.createAccount}</a></p>`}

@@ -18,7 +18,9 @@
   const EN = API.LANG === 'en';
 
   const R = EN ? {
-    confirmed: ['Valid booking — confirmed', 'This booking is confirmed.', 'ok'],
+    confirmed: ['May board', 'This booking is confirmed and paid in full (or authorised by the team).', 'ok'],
+    unpaid: ['May NOT board — payment missing', 'The booking is confirmed, but the trip is not paid in full.', 'bad'],
+    due: 'Outstanding', authorised: 'Authorised without full payment',
     completed: ['Booking already completed', 'This experience has already taken place.', 'info'],
     pending: ['Booking pending', 'The booking exists but is NOT confirmed yet.', 'warn'],
     cancelled: ['Booking cancelled', 'This booking was cancelled and is not valid.', 'bad'],
@@ -29,7 +31,9 @@
     customer: 'Customer', phone: 'Phone', checkin: 'Register check-in', checked: 'Checked in at', open: 'Open in dashboard',
     scans: 'Recent scans', staffWord: 'staff', staffOnly: 'Staff view', confirmCheckin: 'Register the check-in for this booking?', publicNote: 'This page only checks validity. It cannot change the booking.',
   } : {
-    confirmed: ['Reserva válida — confirmada', 'Esta reserva está confirmada.', 'ok'],
+    confirmed: ['Pode embarcar', 'A reserva está confirmada e paga na totalidade (ou autorizada pela equipa).', 'ok'],
+    unpaid: ['NÃO pode embarcar — falta pagamento', 'A reserva está confirmada, mas a viagem não está paga na totalidade.', 'bad'],
+    due: 'Em falta', authorised: 'Autorizado sem pagamento total',
     completed: ['Reserva já concluída', 'Esta experiência já foi realizada.', 'info'],
     pending: ['Reserva pendente', 'A reserva existe, mas ainda NÃO está confirmada.', 'warn'],
     cancelled: ['Reserva cancelada', 'Esta reserva foi cancelada e não é válida.', 'bad'],
@@ -51,8 +55,9 @@
   }
 
   function show(r) {
-    const [title, text, tone] = R[r.result] || R.invalid;
     const b = r.booking;
+    const verdict = r.result === 'confirmed' && b && b.may_board === false ? 'unpaid' : r.result;
+    const [title, text, tone] = R[verdict] || R.invalid;
     const dateTxt = b ? `${API.date(b.start_date)}${b.end_date !== b.start_date ? ` → ${API.date(b.end_date)}` : ''}` : '';
     root.innerHTML = `
       <div class="verify verify--${tone}">
@@ -83,9 +88,11 @@
     const b = r.booking;
     return `<div class="verify__staff"><h3><i class='bx bx-id-card'></i> ${R.staffOnly}</h3>
       <dl class="mb-detail"><div><dt>${R.customer}</dt><dd>${esc(b.customer_name)}</dd></div>
+        ${b.amount_due > 0 ? `<div><dt>${R.due}</dt><dd><strong>${esc(API.money(b.amount_due, b.currency))}</strong></dd></div>` : ''}
+        ${b.boarding_override_reason ? `<div><dt>${R.authorised}</dt><dd>${esc(b.boarding_override_reason)}</dd></div>` : ''}
         <div><dt>${R.phone}</dt><dd><a class="mb-link" href="tel:${esc(b.customer_phone)}">${esc(b.customer_phone)}</a></dd></div></dl>
       ${b.checked_in_at ? `<p class="mb-alert mb-alert--success">${R.checked} ${new Date(b.checked_in_at).toLocaleString(EN ? 'en-GB' : 'pt-PT')}</p>`
-        : r.result === 'confirmed' ? `<button type="button" class="btn-primary-mb" data-checkin><i class='bx bx-log-in-circle'></i>${R.checkin}</button>` : ''}
+        : r.result === 'confirmed' && b.may_board ? `<button type="button" class="btn-primary-mb" data-checkin><i class='bx bx-log-in-circle'></i>${R.checkin}</button>` : ''}
       <p style="margin-top:12px;"><a class="mb-link" href="/admin/#/bookings/${esc(b.id)}">${R.open}</a></p>
       ${r.scans && r.scans.length ? `<h4>${R.scans}</h4><ul class="verify__scans">${r.scans.map(s => `<li>${new Date(s.at).toLocaleString(EN ? 'en-GB' : 'pt-PT')} — ${esc((R[s.result] || [s.result])[0])}${s.by_staff ? ` (${R.staffWord})` : ''}</li>`).join('')}</ul>` : ''}
     </div>`;

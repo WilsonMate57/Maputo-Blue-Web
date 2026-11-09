@@ -103,7 +103,7 @@ export async function enqueueAdminWhatsApp(db, { key, template, data }) {
   const phones = ((rows[0] && rows[0].value.admin_whatsapp) || []).map(normalizePhone).filter(Boolean);
   const params = phones.length ? alertParams(template, data) : null;
   if (!params) return 0;
-  const chat = CHAT_TEMPLATES.has(template) ? chatPhone(data.customer_phone) : null;
+  const chat = CHAT_TEMPLATES.has(template) ? chatPhone(data.chat_phone !== undefined ? data.chat_phone : data.customer_phone) : null;
   for (const phone of phones) {
     await db.query(
       `insert into whatsapp_outbox (idempotency_key, to_phone, template, params, chat_phone) values ($1,$2,$3,$4,$5)

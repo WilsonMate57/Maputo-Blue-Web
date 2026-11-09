@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // routes/admin/bookings.js — Dashboard metrics and booking management.
 // ─────────────────────────────────────────────────────────────────────────────
+import { amountDue, boardingState, sendTicketIfNowPaid } from '../../lib/boarding.js';
 import { mailData, statusUrl, transitionBooking, updateBooking } from '../../lib/bookings.js';
 import { recordPayment } from '../../lib/payments.js';
 import { displayStatus, queueInvoiceMail } from '../../lib/invoices.js';
@@ -247,8 +248,10 @@ export default async function bookingRoutes(app) {
 
   // Verified payments / refunds / reversals (rules in lib/payments.js)
   app.post('/bookings/:id/payments', { schema: { params: { type: 'object', properties: { id: uuid } }, body: paymentBody } }, async (req, reply) => {
+    const { rows: [before] } = await pool.query('select * from bookings where id = $1', [req.params.id]);
     const r = await recordPayment(pool, { ...req.body, bookingId: req.params.id, actor: req.user });
     if (r.becamePaid && r.invoice && req.body.notify !== false) await queueInvoiceMail(pool, r.invoice, 'invoice_paid', req.user);
+    if (before) await sendTicketIfNowPaid(pool, { before, booking: r.booking, invoice: r.invoice, becamePaid: r.becamePaid, notify: req.body.notify });
     reply.code(r.duplicate ? 200 : 201);
     return { ...r.booking, payment: r.payment, duplicate: r.duplicate, invoice: r.invoice ? { id: r.invoice.id, number: r.invoice.number, pay_status: r.invoice.pay_status } : null };
   });
@@ -277,15 +280,35 @@ export default async function bookingRoutes(app) {
     return { ok: true, ticket_version: b.ticket_version };
   });
 
-  // Staff check-in at the meeting point (only confirmed bookings, once)
+  // Staff check-in at the meeting point: confirmed, paid in full (or authorised), once
   app.post('/bookings/:id/check-in', { schema: idParams }, async req => tx(pool, async c => {
     const { rows: [b] } = await c.query('select * from bookings where id = $1 for update', [req.params.id]);
     if (!b) throw notFound('booking_not_found');
     if (b.status !== 'confirmed') throw conflict('not_confirmed', 'Only confirmed bookings can be checked in');
+    if (boardingState(b) !== 'boarding') throw conflict('payment_pending', 'The trip is not paid in full', [`${b.currency} ${amountDue(b)}`]);
     if (b.checked_in_at) throw conflict('already_checked_in', 'This booking was already checked in');
     const { rows: [u] } = await c.query('update bookings set checked_in_at = now(), checked_in_by = $2, updated_at = now() where id = $1 returning checked_in_at', [b.id, req.user.id]);
     await audit(c, req.user, 'booking', b.id, 'checked_in', {});
     return { ok: true, checked_in_at: u.checked_in_at };
+  }));
+
+  // An exception to "paid in full": the team lets this booking board, and says why
+  app.post('/bookings/:id/boarding', {
+    schema: { ...idParams, body: { type: 'object', required: ['allow'], properties: {
+      allow: { type: 'boolean' }, reason: { type: 'string', maxLength: 300 } } } },
+  }, async req => tx(pool, async c => {
+    const { rows: [b] } = await c.query('select * from bookings where id = $1 for update', [req.params.id]);
+    if (!b) throw notFound('booking_not_found');
+    const reason = (req.body.reason || '').trim();
+    if (req.body.allow) {
+      if (b.status !== 'confirmed') throw conflict('not_confirmed', 'Only confirmed bookings can board');
+      if (reason.length < 3) throw badRequest('reason_required', 'Say why this booking may board without full payment');
+    }
+    const { rows: [u] } = await c.query(
+      `update bookings set boarding_override_at = $2, boarding_override_by = $3, boarding_override_reason = $4, updated_at = now() where id = $1 returning *`,
+      req.body.allow ? [b.id, new Date(), req.user.id, reason] : [b.id, null, null, null]);
+    await audit(c, req.user, 'booking', b.id, req.body.allow ? 'boarding_authorised' : 'boarding_authorisation_removed', req.body.allow ? { reason } : {});
+    return u;
   }));
 
   // Re-send the e-mail matching the booking's current status

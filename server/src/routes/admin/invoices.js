@@ -2,6 +2,7 @@
 // routes/admin/invoices.js — Invoices, verified payments and financial
 // reporting. Mounted under /api/admin (admin role enforced by the parent).
 // ─────────────────────────────────────────────────────────────────────────────
+import { sendTicketIfNowPaid } from '../../lib/boarding.js';
 import {
   DISPLAY_STATUSES, cancelInvoice, createInvoice, currentInvoicePdf, deleteDraft, displayStatus, displayStatusSql,
   invoiceFilename, issueDraft, lookupForInvoice, queueInvoiceMail, updateDraft,
@@ -223,8 +224,10 @@ export default async function invoiceRoutes(app) {
   app.post('/invoices/:id/payments', { schema: { ...idParams, body: paymentBody } }, async (req, reply) => {
     const inv = await loadInvoice(req.params.id);
     if (inv.doc_status !== 'issued') throw badRequest('invoice_not_issued', 'Record payments on an issued invoice (or on the booking)');
+    const { rows: [before] } = await pool.query('select * from bookings where id = $1', [inv.booking_id]);
     const r = await recordPayment(pool, { ...req.body, bookingId: inv.booking_id, actor: req.user });
     if (r.becamePaid && r.invoice && req.body.notify !== false) await queueInvoiceMail(pool, r.invoice, 'invoice_paid', req.user);
+    if (before) await sendTicketIfNowPaid(pool, { before, booking: r.booking, invoice: r.invoice, becamePaid: r.becamePaid, notify: req.body.notify });
     reply.code(r.duplicate ? 200 : 201);
     return { payment: r.payment, duplicate: r.duplicate, invoice: r.invoice ? withStatus(r.invoice) : null, booking_payment_status: r.booking.payment_status };
   });
