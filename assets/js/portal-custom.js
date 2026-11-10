@@ -34,15 +34,14 @@
   ];
 
   const T = EN ? {
-    steps: ['Experiences', 'Dates & group', 'Preferences', 'Contact'],
+    steps: ['Experiences', 'Dates & group', 'Contact'],
     pickTitle: 'What would you like in your quotation?', pickHint: 'Choose one or more experiences, stays or services. You can also just describe your idea below.',
     search: 'Search experiences…', all: 'All', selected: n => `${n} selected`, add: 'Add', added: 'Added', from: 'from', perNight: '/ night',
     other: 'Other ideas or destinations (optional)', otherHint: 'e.g. 3 days in Inhaca, honeymoon, company event…',
     pickRequired: 'Choose at least one experience or service, or describe your idea.',
     tripFrom: 'Trip start', tripTo: 'Trip end', flexible: 'My dates are flexible', perItem: 'Preferred date for each item (optional)', sameDates: 'Any date within the trip',
-    adults: 'Adults', children: 'Children (4–10)', accommodation: 'Accommodation preferences', accHint: 'e.g. beach lodge, 2 rooms',
-    transport: 'Transport', transHint: 'e.g. airport pick-up, 4x4', budget: 'Estimated budget (optional)', currency: 'Currency',
-    special: 'Special requests', name: 'Full name', email: 'E-mail', phone: 'Phone / WhatsApp',
+    adults: 'Adults', children: 'Children (4–10)',
+    name: 'Full name', email: 'E-mail', phone: 'Phone / WhatsApp',
     consent: 'I agree that Maputo Blue uses my details to prepare this quotation, as described in the', privacy: 'privacy policy',
     next: 'Continue', back: 'Back', review: 'Review your request', send: 'Request quotation', sending: 'Sending…',
     items: 'Experiences & services', dates: 'Dates', flexibleDates: 'flexible', none: '—', guests: 'Group', remove: 'Remove',
@@ -52,15 +51,14 @@
     asCompany: 'Request on behalf of a company', asCompanyHint: 'the quotation will be addressed to the company', company: 'Company name', companyAddress: 'Billing address', nuitInvalid: 'The NUIT has 9 digits.',
     required: 'Please fill in the required fields.', dateOrder: 'The end date must be after the start date.', datePast: 'Please choose a future date.',
   } : {
-    steps: ['Experiências', 'Datas e grupo', 'Preferências', 'Contacto'],
+    steps: ['Experiências', 'Datas e grupo', 'Contacto'],
     pickTitle: 'O que gostaria de incluir na cotação?', pickHint: 'Escolha uma ou mais experiências, alojamentos ou serviços. Também pode apenas descrever a sua ideia abaixo.',
     search: 'Pesquisar experiências…', all: 'Todos', selected: n => `${n} seleccionado(s)`, add: 'Adicionar', added: 'Adicionado', from: 'desde', perNight: '/ noite',
     other: 'Outras ideias ou destinos (opcional)', otherHint: 'ex.: 3 dias na Inhaca, lua de mel, evento de empresa…',
     pickRequired: 'Escolha pelo menos uma experiência ou serviço, ou descreva a sua ideia.',
     tripFrom: 'Início da viagem', tripTo: 'Fim da viagem', flexible: 'As minhas datas são flexíveis', perItem: 'Data preferida para cada item (opcional)', sameDates: 'Qualquer data dentro da viagem',
-    adults: 'Adultos', children: 'Crianças (4–10)', accommodation: 'Preferências de alojamento', accHint: 'ex.: lodge de praia, 2 quartos',
-    transport: 'Transporte', transHint: 'ex.: recolha no aeroporto, 4x4', budget: 'Orçamento estimado (opcional)', currency: 'Moeda',
-    special: 'Pedidos especiais', name: 'Nome completo', email: 'E-mail', phone: 'Telefone / WhatsApp',
+    adults: 'Adultos', children: 'Crianças (4–10)',
+    name: 'Nome completo', email: 'E-mail', phone: 'Telefone / WhatsApp',
     consent: 'Aceito que a Maputo Blue use os meus dados para preparar esta cotação, conforme a', privacy: 'política de privacidade',
     next: 'Continuar', back: 'Voltar', review: 'Rever o pedido', send: 'Pedir cotação', sending: 'A enviar…',
     items: 'Experiências e serviços', dates: 'Datas', flexibleDates: 'flexíveis', none: '—', guests: 'Grupo', remove: 'Remover',
@@ -71,7 +69,7 @@
     required: 'Preencha os campos obrigatórios.', dateOrder: 'A data final deve ser posterior à data inicial.', datePast: 'Escolha uma data futura.',
   };
 
-  const data = { items: [], adults: 2, children: 0, budget_currency: 'MZN', flexible_dates: false };
+  const data = { items: [], adults: 2, children: 0, flexible_dates: false };
   let catalog = [];          // [{key, kind, package_id|service_key, title, sub, img, category, price, currency, per_night}]
   let filter = { cat: 'all', q: '' };
   let user = null;
@@ -153,12 +151,6 @@
           <li><span class="qp-dates__name">${esc(c.title)}</span>
             <input class="booking-input" type="date" min="${today}" data-item-date="${esc(i.key)}" value="${esc(i.date || '')}" aria-label="${esc(c.title)}" title="${esc(T.sameDates)}"></li>`; }).join('')}</ul></div>` : ''}`,
     () => `
-      <label class="mb-field mb-field--full"><span>${T.accommodation}</span><input class="booking-input" name="accommodation" maxlength="500" placeholder="${T.accHint}" value="${esc(data.accommodation || '')}"></label>
-      <label class="mb-field mb-field--full"><span>${T.transport}</span><input class="booking-input" name="transport" maxlength="500" placeholder="${T.transHint}" value="${esc(data.transport || '')}"></label>
-      <label class="mb-field"><span>${T.budget}</span><input class="booking-input" type="number" name="budget" min="0" step="100" value="${data.budget ?? ''}"></label>
-      <label class="mb-field"><span>${T.currency}</span><select class="booking-input" name="budget_currency">${['MZN', 'USD', 'ZAR', 'EUR'].map(c => `<option${data.budget_currency === c ? ' selected' : ''}>${c}</option>`).join('')}</select></label>
-      <label class="mb-field mb-field--full"><span>${T.special}</span><textarea class="booking-input" name="special_requests" rows="3" maxlength="2000">${esc(data.special_requests || '')}</textarea></label>`,
-    () => `
       <label class="mb-field mb-field--full"><span>${T.name} *</span><input class="booking-input" name="name" required maxlength="120" autocomplete="name" value="${esc(data.name || '')}"></label>
       <label class="mb-field"><span>${T.email} *</span><input class="booking-input" type="email" name="email" required autocomplete="email" value="${esc(data.email || '')}"></label>
       ${API.phoneField({ name: 'phone', label: T.phone, value: data.phone || '' })}
@@ -181,10 +173,6 @@
       form.querySelectorAll('[data-item-date]').forEach(inp => { const it = data.items.find(i => i.key === inp.dataset.itemDate); if (it) it.date = inp.value; });
     }
     if (step === 2) {
-      data.accommodation = fd.get('accommodation').trim(); data.transport = fd.get('transport').trim();
-      data.budget = fd.get('budget') === '' ? null : Number(fd.get('budget')); data.budget_currency = fd.get('budget_currency'); data.special_requests = fd.get('special_requests').trim();
-    }
-    if (step === 3) {
       data.name = fd.get('name').trim(); data.email = fd.get('email').trim();
       const tel = API.readPhone(form);
       data.phone = tel.phone || '';
@@ -200,8 +188,8 @@
     form.querySelectorAll('.is-invalid').forEach(i => i.classList.remove('is-invalid'));
     bad.forEach(i => i.classList.add('is-invalid'));
     if (bad.length) { bad[0].focus(); return T.required; }
-    if (step === 3 && data.phone_error) { form.elements.phone.classList.add('is-invalid'); form.elements.phone.focus(); return API.errorText(new API.ApiError(400, 'invalid_phone')); }
-    if (step === 3 && data.billing && data.billing.nuit && !/^\d{9}$/.test(data.billing.nuit)) return T.nuitInvalid;
+    if (step === 2 && data.phone_error) { form.elements.phone.classList.add('is-invalid'); form.elements.phone.focus(); return API.errorText(new API.ApiError(400, 'invalid_phone')); }
+    if (step === 2 && data.billing && data.billing.nuit && !/^\d{9}$/.test(data.billing.nuit)) return T.nuitInvalid;
     if (step === 1) {
       if ((data.date_from && data.date_from < today) || data.items.some(i => i.date && i.date < today)) return T.datePast;
       if (data.date_from && data.date_to && data.date_to < data.date_from) return T.dateOrder;
@@ -210,7 +198,7 @@
   }
 
   function render(msg = '') {
-    if (step === 4) return summary(msg);
+    if (step === 3) return summary(msg);
     root.innerHTML = `
       <div class="mb-panel" style="max-width:${step === 0 ? 1080 : 760}px;margin-inline:auto;">
         ${stepper()}
@@ -219,13 +207,13 @@
           <div class="mb-form-msg">${msg}</div>
           <div class="mb-form-actions">
             ${step > 0 ? `<button type="button" class="btn-outline-mb" data-back>${T.back}</button>` : ''}
-            <button type="submit" class="btn-primary-mb">${step === 3 ? T.review : T.next}<i class='bx bx-right-arrow-alt'></i></button>
+            <button type="submit" class="btn-primary-mb">${step === 2 ? T.review : T.next}<i class='bx bx-right-arrow-alt'></i></button>
           </div>
         </form>
       </div>`;
     const form = root.querySelector('form');
     if (step === 0) wirePicker(form);
-    if (step === 3) API.wirePhone(form);
+    if (step === 2) API.wirePhone(form);
     const back = root.querySelector('[data-back]');
     if (back) back.addEventListener('click', () => { collect(form); step--; render(); });
     form.addEventListener('submit', e => {
@@ -253,9 +241,7 @@
     const rows = [
       [T.dates, dates + (data.flexible_dates ? ` (${T.flexibleDates})` : '')],
       [T.guests, `${data.adults} ${T.adults.toLowerCase()}${data.children ? `, ${data.children} ${T.children.toLowerCase()}` : ''}`],
-      [T.other, data.activities || T.none], [T.accommodation, data.accommodation || T.none], [T.transport, data.transport || T.none],
-      [T.budget, data.budget ? `${data.budget_currency} ${Number(data.budget).toLocaleString('en-US')}` : T.none],
-      [T.special, data.special_requests || T.none], [T.name, data.name], [T.email, data.email], [T.phone, data.phone],
+      [T.other, data.activities || T.none], [T.name, data.name], [T.email, data.email], [T.phone, data.phone],
       ...(data.billing ? [[T.company, data.billing.company_name], ['NUIT', data.billing.nuit || T.none], [T.companyAddress, data.billing.address || T.none]] : []),
     ];
     root.innerHTML = `
@@ -276,7 +262,7 @@
         </form>
       </div>`;
     const form = root.querySelector('form');
-    root.querySelector('[data-back]').addEventListener('click', () => { step = 3; render(); });
+    root.querySelector('[data-back]').addEventListener('click', () => { step = 2; render(); });
     form.addEventListener('submit', async e => {
       e.preventDefault();
       if (!form.consent.checked) {
@@ -291,9 +277,7 @@
         name: data.name, email: data.email, phone: data.phone, locale: LANG, adults: data.adults, children: data.children,
         flexible_dates: data.flexible_dates, date_from: data.date_from || undefined, date_to: data.date_to || undefined,
         items: data.items.map(i => { const c = byKey(i.key) || {}; return { ...(c.package_id ? { package_id: c.package_id } : { service_key: c.service_key || i.key }), ...(i.date ? { date: i.date } : {}) }; }),
-        accommodation: data.accommodation || undefined, transport: data.transport || undefined, activities: data.activities || undefined,
-        budget: data.budget ?? undefined, budget_currency: data.budget ? data.budget_currency : undefined,
-        special_requests: data.special_requests || undefined, consent: true, idempotency_key: idem, website: form.website.value,
+        activities: data.activities || undefined, consent: true, idempotency_key: idem, website: form.website.value,
         billing: data.billing ? { company_name: data.billing.company_name, nuit: data.billing.nuit || undefined, address: data.billing.address || undefined } : undefined,
       };
       try {
