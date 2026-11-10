@@ -105,7 +105,7 @@ const T = {
     // Confirmed but not paid: the date is held, the booking is not complete yet
     if (d.event === 'confirmed' && d.state === 'unpaid') {
       map.confirmed = en
-        ? ['Your date is available — complete your booking with payment', `good news: <strong>the date you chose is available</strong> and we are holding your place. <strong>Your booking is not complete yet</strong>: to complete it, please pay <strong>${esc(fmtMoney(d.amount_due, d.currency))}</strong>.`]
+        ? ['Your date is available — complete your booking with payment', `good news: <strong>the date you chose is available</strong> and we are holding your place. <strong>Your booking is not complete yet.</strong> Please proceed with payment of the service requested to confirm your booking.`]
         : ['A data está disponível — conclua a reserva com o pagamento', `boas notícias: <strong>a data que escolheu está disponível</strong> e guardámos o seu lugar. <strong>A reserva ainda não está concluída</strong>: para a concluir, faça o pagamento de <strong>${esc(fmtMoney(d.amount_due, d.currency))}</strong>.`];
     } else if (d.event === 'confirmed' && d.state === 'boarding') {
       map.confirmed = en
