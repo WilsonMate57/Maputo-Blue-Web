@@ -123,6 +123,10 @@ export default async function analytics(main) {
           <button type="button" class="chip" data-range="90">90 dias</button>
           <button type="button" class="chip" data-range="365">12 meses</button>
         </div>
+        <div class="an-export">
+          <a class="btn btn--ghost btn--sm" id="an-pdf" download><i class='bx bxs-file-pdf'></i>Exportar PDF</a>
+          <a class="btn btn--ghost btn--sm" id="an-csv" download><i class='bx bx-spreadsheet'></i>Exportar CSV</a>
+        </div>
       </form>
       <p class="muted" style="margin:0;padding:10px 20px;font-size:12.5px;">Estatísticas próprias do site, sem cookies. Visitantes são contados por dia; as visitas da equipa com sessão iniciada no painel não contam.</p>
     </div>
@@ -138,6 +142,11 @@ export default async function analytics(main) {
 
   async function load() {
     body.innerHTML = '<div class="card"><div class="card__body"><div class="skeleton"></div><div class="skeleton"></div></div></div>';
+    // Exports follow the period on screen and the panel's language
+    let lang = 'pt';
+    try { lang = localStorage.getItem('mb_admin_lang') === 'en' ? 'en' : 'pt'; } catch { /* private window */ }
+    $('#an-pdf', main).href = '/api/admin/analytics.pdf' + qs({ from: state.from, to: state.to, lang });
+    $('#an-csv', main).href = '/api/admin/analytics.csv' + qs({ from: state.from, to: state.to, lang });
     const d = await get('/admin/analytics' + qs({ from: state.from, to: state.to }));
     const c = d.current, p = d.previous;
     const pps = c.sessions ? (c.pageviews / c.sessions) : 0, ppsPrev = p.sessions ? (p.pageviews / p.sessions) : 0;

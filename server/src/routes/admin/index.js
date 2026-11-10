@@ -38,7 +38,7 @@ const MANAGER_ROUTES = [
   /^GET \/customers(\/:id)?$/, /^POST \/customers\/:id\/notes$/,
   /^(GET|POST) \/requests(\/.*)?$/, /^(GET|POST) \/quotes\/.*$/,
   /^(GET|POST|PATCH) \/quotations(\/.*)?$/, /^GET \/contacts$/,
-  /^GET \/analytics(\/heatmap)?$/,
+  /^GET \/analytics(\/heatmap|\.pdf|\.csv)?$/,
   /^(GET|POST|PATCH|DELETE) \/chat\/.*$/,
 ];
 

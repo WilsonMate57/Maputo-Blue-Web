@@ -328,6 +328,7 @@ A cotação aparece na conta quando o pedido foi feito com sessão iniciada, ou 
   - as posições são guardadas como fracção da largura da página e píxeis desde o topo;
   - são agrupadas por largura do ecrã (telemóvel < 768 px, tablet < 1200 px, computador);
   - o painel desenha-as sobre a página real, carregada num iframe com `?mb_noanalytics=1`.
+- **Exportar:** «Exportar PDF» (relatório para partilhar: indicadores com a variação face ao período anterior, gráfico de visitas por dia e tabelas) e «Exportar CSV» (os mesmos dados, uma secção por tabela, para o Excel), no período escolhido e no idioma do painel. As listas trazem até 200 linhas; o mapa de cliques fica só no painel. O cálculo está em `server/src/lib/analytics-report.js`, partilhado com o ecrã, por isso os números são sempre os mesmos. Cada exportação fica no registo de actividade.
 
 ## 16. Painel em inglês
 

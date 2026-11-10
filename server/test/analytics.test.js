@@ -107,3 +107,38 @@ test('admin report: totals, per day, package names, clicks and heatmap', async (
   assert.deepEqual(h.body.points, [[0.5, 640]]);
   assert.equal((await admin.get(`/api/admin/analytics?from=2020-01-01&to=${today}`)).status, 400, 'period capped');
 });
+
+test('exports: PDF and CSV of the same report, for staff only, recorded in the activity log', async () => {
+  const today = todayLocal();
+  const q = `from=${today}&to=${today}`;
+  const screen = (await admin.get(`/api/admin/analytics?${q}`)).body;
+
+  const pdf = await admin.raw('GET', `/api/admin/analytics.pdf?${q}`);
+  assert.equal(pdf.status, 200, pdf.raw);
+  assert.equal(pdf.headers['content-type'], 'application/pdf');
+  assert.match(pdf.headers['content-disposition'], new RegExp(`visitas-site-${today}-a-${today}\.pdf`));
+  assert.equal(pdf.raw.slice(0, 5), '%PDF-');
+
+  const csv = await admin.raw('GET', `/api/admin/analytics.csv?${q}&lang=en`);
+  assert.equal(csv.status, 200);
+  assert.match(csv.headers['content-type'], /text\/csv/);
+  assert.match(csv.headers['content-disposition'], /site-visits-/);
+  const lines = csv.raw.replace(/^\uFEFF/, '').split('\r\n');
+  for (const section of ['Summary', 'Visits per day', 'Most visited pages', 'Where visits come from', 'Devices', 'Browsers', 'Most clicked buttons and links'])
+    assert.ok(lines.includes(section), section);
+  // The same numbers as the screen
+  assert.equal(lines.find(l => l.startsWith('Page views,')).split(',')[1], String(screen.current.pageviews));
+  assert.equal(lines.find(l => l.startsWith('Visitors,')).split(',')[1], String(screen.current.visitors));
+  assert.ok(lines.includes(`${today},${screen.daily[0].pageviews},${screen.daily[0].visitors}`));
+  const pt = (await admin.raw('GET', `/api/admin/analytics.csv?${q}`)).raw;
+  assert.match(pt, /Visualizações de páginas/);
+
+  assert.equal((await admin.raw('GET', `/api/admin/analytics.pdf?from=2020-01-01&to=${today}`)).status, 400, 'period capped');
+  assert.equal((await client(ctx.app).raw('GET', `/api/admin/analytics.csv?${q}`)).status, 401);
+  const m = client(ctx.app);
+  await m.post('/api/auth/login', { email: 'gestor@test.local', password: 'manager-password-1' });
+  assert.equal((await m.raw('GET', `/api/admin/analytics.pdf?${q}`)).status, 200, 'managers can export');
+
+  const { rows } = await ctx.pool.query(`select action from audit_log where entity_type = 'analytics' order by id`);
+  assert.deepEqual(rows.map(r => r.action).slice(0, 2), ['pdf_export', 'csv_export']);
+});

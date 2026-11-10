@@ -685,3 +685,6 @@ body:has(.chatv) .toasts { top: calc(var(--topbar-h) + 10px); bottom: auto; }
 .lang-toggle { min-height: 30px; padding: 2px 11px; border: 1px solid var(--border-strong); border-radius: 99px; background: var(--surface); color: var(--text-strong); font-size: 12px; font-weight: 750; cursor: pointer; }
 .lang-toggle:hover { border-color: var(--primary); }
 .lang-toggle:focus-visible { outline: none; box-shadow: var(--focus); }
+
+/* Statistics exports (views/analytics.js) */
+.an-export { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
