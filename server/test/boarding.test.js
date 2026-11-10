@@ -89,7 +89,7 @@ test('confirmed but not paid: still no ticket, check-in refused, the amount due 
   assert.equal(t.verify_url, null);
   assert.match(t.doc_title, /pagamento pendente/);
   assert.equal(t.amount_due, Number(b.total) - 500);
-  assert.match(t.notice, /só pode embarcar depois de pagar/);
+  assert.match(t.notice, /só fica concluída com o pagamento total/);
 
   const ci = await admin.post(`/api/admin/bookings/${b.id}/check-in`);
   assert.equal(ci.status, 409);
@@ -159,10 +159,37 @@ test('e-mails say boarding needs full payment', () => {
   const d = { reference: 'MB-TEST01', customer_name: 'Ana', package_title: 'Sunset', start_date: '2026-12-12', end_date: '2026-12-12', adults: 2, children: 0,
     total: 3600, currency: 'MZN', status: 'confirmed', event: 'confirmed', state: 'unpaid', amount_due: 3600 };
   const pt = renderTemplate('booking_status', 'pt', d);
-  assert.match(pt.html, /paga na totalidade/);
+  assert.match(pt.html, /pagamento total/);
   assert.match(pt.text, /MZN 3,600/);
   assert.match(renderTemplate('booking_status', 'en', d).html, /full payment/);
-  assert.doesNotMatch(renderTemplate('booking_status', 'pt', { ...d, state: 'boarding', amount_due: 0 }).html, /paga na totalidade/);
+  assert.doesNotMatch(renderTemplate('booking_status', 'pt', { ...d, state: 'boarding', amount_due: 0 }).html, /Não se dirija/);
   assert.match(renderTemplate('booking_received', 'pt', { ...d, status: 'pending' }).html, /bilhete/);
   assert.match(renderTemplate('booking_ticket', 'pt', { ...d, state: 'boarding' }).subject, /O seu bilhete/);
+});
+
+test('confirmation e-mail: the date is available, the booking is complete only once paid, and how to pay', async () => {
+  await admin.put('/api/admin/settings/invoicing', { payment_instructions: 'M-Pesa 84 000 0000 (Maputo Blue)', payment_instructions_en: 'M-Pesa 84 000 0000 (Maputo Blue)' });
+  const b = await book();
+  assert.equal((await admin.post(`/api/admin/bookings/${b.id}/status`, { to: 'confirmed' })).status, 200);
+  const { rows: [job] } = await ctx.pool.query(`select template, locale, data from mail_outbox where idempotency_key = $1`, [`booking:${b.id}:status:confirmed`]);
+  assert.equal(job.data.state, 'unpaid');
+  assert.equal(job.data.how_to_pay, 'M-Pesa 84 000 0000 (Maputo Blue)');
+  const m = renderTemplate(job.template, job.locale, job.data);
+  assert.match(m.subject, /A data está disponível — conclua a reserva com o pagamento/);
+  assert.doesNotMatch(m.subject, /reserva está confirmada/);
+  assert.match(m.html, /ainda não está concluída/);
+  assert.match(m.html, /MZN 3,600/);
+  assert.match(m.html, /M-Pesa 84 000 0000/);
+  assert.match(m.html, /Não se dirija ainda ao ponto de partida/);
+  assert.match(m.html, /Data disponível — a aguardar pagamento/);
+  assert.match(m.text, /Como pagar/);
+  const en = renderTemplate('booking_status', 'en', job.data);
+  assert.match(en.subject, /Your date is available/);
+  assert.match(en.html, /not complete yet/);
+
+  // Already paid when confirmed: the booking is complete and the ticket goes with it
+  const paid = renderTemplate('booking_status', 'pt', { ...job.data, state: 'boarding', amount_due: 0 });
+  assert.match(paid.subject, /A sua reserva está concluída/);
+  assert.match(paid.html, /bilhete com código QR/);
+  assert.doesNotMatch(paid.html, /Como pagar/);
 });

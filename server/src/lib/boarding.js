@@ -4,6 +4,7 @@
 // Everything else is a receipt that says, in large type, it is not a ticket.
 // ─────────────────────────────────────────────────────────────────────────────
 import { enqueueMail } from './mailer.js';
+import { getSetting } from './catalog.js';
 
 const cents = n => Math.round(Number(n || 0) * 100);
 
@@ -21,6 +22,15 @@ export function boardingState(b) {
   if (b.status === 'pending') return 'request';
   if (b.status !== 'confirmed') return 'closed';
   return isPaidInFull(b) || b.boarding_override_at ? 'boarding' : 'unpaid';
+}
+
+/** Adds how to pay (Settings → Invoicing, or the company's contacts) to e-mail data that still owes money. */
+export async function withPaymentInfo(db, data, locale) {
+  if (data.state !== 'unpaid') return data;
+  const [inv, company] = await Promise.all([getSetting(db, 'invoicing'), getSetting(db, 'company')]);
+  const text = locale === 'en' ? inv.payment_instructions_en || inv.payment_instructions : inv.payment_instructions;
+  const contact = [company.phone, company.email].filter(Boolean).join(' · ');
+  return { ...data, how_to_pay: text || (locale === 'en' ? `To pay, contact Maputo Blue: ${contact}.` : `Para pagar, contacte a Maputo Blue: ${contact}.`) };
 }
 
 /** After a payment: when the booking has just become paid in full, send the ticket. */

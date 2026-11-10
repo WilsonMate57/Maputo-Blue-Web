@@ -61,6 +61,12 @@ function payToBoard(d, L) {
     : `<strong>Só pode embarcar com a viagem paga na totalidade.</strong>${due} O bilhete com código QR é enviado por e-mail assim que o pagamento for confirmado. Os documentos recebidos antes disso não são bilhetes.`}</p>`;
 }
 
+/** How to pay, as the company wrote it in Settings. */
+function payBox(d, L) {
+  if (!d.how_to_pay) return '';
+  return `<div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;margin:16px 0 0;"><p style="margin:0 0 6px;font-weight:700;color:#0A2540;">${L === 'en' ? 'How to pay' : 'Como pagar'}</p><p style="margin:0;white-space:pre-line;">${esc(d.how_to_pay)}</p></div>`;
+}
+
 function bookingRows(d, L) {
   const en = L === 'en';
   const rows = [
@@ -71,7 +77,7 @@ function bookingRows(d, L) {
   ];
   if (d.option_name) rows.push([en ? 'Option' : 'Opção', d.option_name]);
   rows.push([en ? 'Total' : 'Total', fmtMoney(d.total, d.currency) + (d.child_price_on_request ? (en ? ' + children on request' : ' + crianças sob consulta') : '')]);
-  rows.push(['Estado / Status', STATUS[L][d.status] || d.status]);
+  rows.push(['Estado / Status', d.state === 'unpaid' ? (en ? 'Date available — awaiting payment' : 'Data disponível — a aguardar pagamento') : STATUS[L][d.status] || d.status]);
   return rows;
 }
 
@@ -96,14 +102,27 @@ const T = {
       completed: en ? ['Thank you for travelling with us', 'We hope you enjoyed your experience. We would love to read your review!'] : ['Obrigado por viajar connosco', 'Esperamos que tenha gostado da experiência. Gostaríamos muito de ler a sua avaliação!'],
       updated: en ? ['Your booking was updated', 'The details of your booking were updated. Please review them below.'] : ['A sua reserva foi actualizada', 'Os detalhes da sua reserva foram actualizados. Reveja-os abaixo.'],
     };
+    // Confirmed but not paid: the date is held, the booking is not complete yet
+    if (d.event === 'confirmed' && d.state === 'unpaid') {
+      map.confirmed = en
+        ? ['Your date is available — complete your booking with payment', `good news: <strong>the date you chose is available</strong> and we are holding your place. <strong>Your booking is not complete yet</strong>: to complete it, please pay <strong>${esc(fmtMoney(d.amount_due, d.currency))}</strong>.`]
+        : ['A data está disponível — conclua a reserva com o pagamento', `boas notícias: <strong>a data que escolheu está disponível</strong> e guardámos o seu lugar. <strong>A reserva ainda não está concluída</strong>: para a concluir, faça o pagamento de <strong>${esc(fmtMoney(d.amount_due, d.currency))}</strong>.`];
+    } else if (d.event === 'confirmed' && d.state === 'boarding') {
+      map.confirmed = en
+        ? ['Your booking is complete', 'your booking is <strong>confirmed and paid</strong>. Your ticket with its QR code is attached: please show it at the meeting point. We look forward to welcoming you.']
+        : ['A sua reserva está concluída', 'a sua reserva está <strong>confirmada e paga</strong>. Segue em anexo o bilhete com código QR: apresente-o no ponto de encontro. Aguardamos por si.'];
+    }
     const [title, msg] = map[d.event] || map.updated;
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${msg}`;
     const rows = bookingRows(d, L);
     const unpaid = d.state === 'unpaid' && (d.event === 'confirmed' || d.event === 'updated');
+    const stop = unpaid ? `<p style="background:#FEF2F2;border-left:3px solid #B91C1C;padding:12px 14px;margin:16px 0 0;color:#7F1D1D;">${en
+      ? '<strong>Please do not go to the meeting point yet.</strong> You can only board with the ticket and its QR code, which we e-mail as soon as the full payment is confirmed.'
+      : '<strong>Não se dirija ainda ao ponto de partida.</strong> Só pode embarcar com o bilhete com código QR, que enviamos por e-mail assim que o pagamento total for confirmado.'}</p>` : '';
     const body = (d.message ? `<p style="background:#F8FAFC;border-left:3px solid #00bcd4;padding:12px 14px;margin:0;">${esc(d.message)}</p>` : '')
-      + (unpaid ? payToBoard(d, L) : '');
+      + (unpaid ? payBox(d, L) + stop : '');
     const cta = d.status_url ? { url: d.status_url, label: en ? 'View booking' : 'Ver reserva' } : null;
-    return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, body, cta, locale: L }), text: toText(title, intro, rows, [d.message, unpaid ? plain(payToBoard(d, L)) : ''].filter(Boolean).join('\n\n')) };
+    return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, body, cta, locale: L }), text: toText(title, intro, rows, [d.message, unpaid ? plain(payBox(d, L) + stop) : ''].filter(Boolean).join('\n\n')) };
   },
   booking_ticket(d, L) {
     const en = L === 'en';
@@ -147,7 +166,7 @@ const T = {
     const intro = `${en ? 'Hello' : 'Olá'} ${esc(d.customer_name)}, ${en ? 'a friendly reminder of your upcoming experience with Maputo Blue.' : 'um lembrete da sua próxima experiência com a Maputo Blue.'}`;
     const rows = bookingRows(d, L);
     if (d.meeting_point) rows.push([en ? 'Meeting point' : 'Ponto de encontro', d.meeting_point]);
-    const body = d.state === 'unpaid' ? payToBoard(d, L) : '';
+    const body = d.state === 'unpaid' ? payToBoard(d, L) + payBox(d, L) : '';
     return { subject: `${title} — ${d.reference}`, html: layout({ title, intro, rows, body, locale: L }), text: toText(title, intro, rows, plain(body)) };
   },
   request_received(d, L) {

@@ -5,6 +5,7 @@
 // price snapshot, which is what tickets and invoices read. Capacity is checked
 // and taken for every catalogue item with a date; custom items have none.
 // ─────────────────────────────────────────────────────────────────────────────
+import { withPaymentInfo } from './boarding.js';
 import { tx } from '../db.js';
 import { audit } from './audit.js';
 import { checkAndLock } from './availability.js';
@@ -131,7 +132,7 @@ export async function convertQuote(pool, cfg, { quoteId, actor, notify = true })
     if (q.request_id) await audit(c, actor, 'request', q.request_id, 'quote_converted', { quote_id: q.id, booking_reference: b.reference });
     if (notify) {
       await enqueueMail(c, { key: `booking:${b.id}:status:confirmed`, to: b.customer_email, template: 'booking_status', locale: b.locale,
-        data: mailData(b, cfg, { event: 'confirmed', status_url: statusUrl(cfg, b, token), attach_ticket_booking: b.id }) });
+        data: await withPaymentInfo(c, mailData(b, cfg, { event: 'confirmed', status_url: statusUrl(cfg, b, token), attach_ticket_booking: b.id }), b.locale) });
     }
     return b;
   });

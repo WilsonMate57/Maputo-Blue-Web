@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // routes/admin/bookings.js — Dashboard metrics and booking management.
 // ─────────────────────────────────────────────────────────────────────────────
-import { amountDue, boardingState, sendTicketIfNowPaid } from '../../lib/boarding.js';
+import { amountDue, boardingState, sendTicketIfNowPaid, withPaymentInfo } from '../../lib/boarding.js';
 import { mailData, statusUrl, transitionBooking, updateBooking } from '../../lib/bookings.js';
 import { recordPayment } from '../../lib/payments.js';
 import { displayStatus, queueInvoiceMail } from '../../lib/invoices.js';
@@ -320,7 +320,7 @@ export default async function bookingRoutes(app) {
     const token = randomToken(24);
     await pool.query('update bookings set lookup_token_hash = $2 where id = $1', [b.id, sha256(token)]);
     await enqueueMail(pool, { key: `booking:${b.id}:resend:${Date.now()}`, to: b.customer_email, template, locale: b.locale,
-      data: mailData(b, cfg, { event: b.status, status_url: statusUrl(cfg, b, token) }) });
+      data: await withPaymentInfo(pool, mailData(b, cfg, { event: b.status, status_url: statusUrl(cfg, b, token) }), b.locale) });
     await audit(pool, req.user, 'booking', b.id, 'email_resent', { template });
     return { ok: true, template };
   });

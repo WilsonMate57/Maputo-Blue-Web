@@ -8,7 +8,7 @@
 //                ├──► rejected└──► cancelled
 //                └──► cancelled
 // ─────────────────────────────────────────────────────────────────────────────
-import { amountDue, boardingState } from './boarding.js';
+import { amountDue, boardingState, withPaymentInfo } from './boarding.js';
 import { tx } from '../db.js';
 import { getSetting, loadPackage } from './catalog.js';
 import { computeQuote } from './pricing.js';
@@ -173,7 +173,7 @@ export async function transitionBooking(pool, cfg, { bookingId, to, actor, messa
       { from: b.status, to, message, ...(isSystem ? { __system: true } : {}) });
     if (notify) {
       await enqueueMail(c, { key: `booking:${b.id}:status:${to}`, to: b.customer_email, template: 'booking_status', locale: b.locale,
-        data: mailData(updated, cfg, { event: to, message, status_url: statusUrl(cfg, updated), ...(to === 'confirmed' ? { attach_ticket_booking: b.id } : {}) }) });
+        data: await withPaymentInfo(c, mailData(updated, cfg, { event: to, message, status_url: statusUrl(cfg, updated), ...(to === 'confirmed' ? { attach_ticket_booking: b.id } : {}) }), b.locale) });
     }
     return updated;
   });
@@ -263,7 +263,7 @@ export async function updateBooking(pool, cfg, { bookingId, actor, patch }) {
     if (Number(u.total) !== Number(b.total)) Object.assign(u, (await syncFinancialState(c, b.id)).booking);
     if (patch.notify !== false && (tripChanged || patch.total_override !== undefined)) {
       await enqueueMail(c, { key: `booking:${b.id}:updated:${Date.now()}`, to: u.customer_email, template: 'booking_status', locale: u.locale,
-        data: mailData(u, cfg, { event: 'updated', status_url: statusUrl(cfg, u) }) });
+        data: await withPaymentInfo(c, mailData(u, cfg, { event: 'updated', status_url: statusUrl(cfg, u) }), u.locale) });
     }
     return u;
   });
@@ -306,7 +306,7 @@ export async function runBookingMaintenance(pool, cfg) {
     const { rows } = await pool.query(
       `select * from bookings where status = 'confirmed' and start_date = ($1::date + $2::int)`, [today, days]);
     for (const b of rows) {
-      await enqueueMail(pool, { key: `booking:${b.id}:reminder`, to: b.customer_email, template: 'trip_reminder', locale: b.locale, data: mailData(b, cfg) });
+      await enqueueMail(pool, { key: `booking:${b.id}:reminder`, to: b.customer_email, template: 'trip_reminder', locale: b.locale, data: await withPaymentInfo(pool, mailData(b, cfg), b.locale) });
       reminders++;
     }
   }

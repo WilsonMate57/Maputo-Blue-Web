@@ -241,7 +241,9 @@
         <div class="bk-card__main">
           <div class="bk-card__top">
             <h3>${esc(title)}</h3>
-            <span class="mb-status mb-status--${b.status}">${API.statusLabel(b.status)}</span>
+            ${b.status === 'confirmed' && b.payment_status !== 'paid'
+              ? `<span class="mb-status mb-status--pending">${API.statusLabel('awaiting_payment')}</span>`
+              : `<span class="mb-status mb-status--${b.status}">${API.statusLabel(b.status)}</span>`}
           </div>
           <div class="mb-booking-item__meta">
             <span><i class='bx bx-hash'></i>${esc(b.reference)}</span>

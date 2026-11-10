@@ -136,13 +136,13 @@
           new: 'Novo', under_review: 'Em análise', quote_sent: 'Cotação enviada', accepted: 'Aceite', closed: 'Fechado',
           sent: 'Por responder', viewed: 'Por responder', declined: 'Recusada', expired: 'Expirada',
           revision_requested: 'Alteração pedida', converted: 'Convertida em reserva', superseded: 'Substituída',
-          unpaid: 'Por pagar', partial: 'Pago parcialmente', paid: 'Pago', refunded: 'Reembolsado',
+          unpaid: 'Por pagar', partial: 'Pago parcialmente', paid: 'Pago', refunded: 'Reembolsado', awaiting_payment: 'Data disponível — a aguardar pagamento',
           partially_paid: 'Parcialmente paga', overdue: 'Vencida', issued: 'Emitida' },
     en: { pending: 'Pending', confirmed: 'Confirmed', rejected: 'Rejected', cancelled: 'Cancelled', completed: 'Completed',
           new: 'New', under_review: 'Under review', quote_sent: 'Quotation sent', accepted: 'Accepted', closed: 'Closed',
           sent: 'Awaiting your answer', viewed: 'Awaiting your answer', declined: 'Declined', expired: 'Expired',
           revision_requested: 'Changes requested', converted: 'Became a booking', superseded: 'Replaced',
-          unpaid: 'Unpaid', partial: 'Partially paid', paid: 'Paid', refunded: 'Refunded',
+          unpaid: 'Unpaid', awaiting_payment: 'Date available — awaiting payment', partial: 'Partially paid', paid: 'Paid', refunded: 'Refunded',
           partially_paid: 'Partially paid', overdue: 'Overdue', issued: 'Issued' },
   };
   const statusLabel = s => STATUS[LANG][s] || s;

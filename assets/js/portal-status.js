@@ -79,7 +79,9 @@
       <div class="mb-panel" style="max-width:720px;margin-inline:auto;">
         <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;">
           <div><p class="mb-ref-label" style="margin:0;">${T.ref}</p><p class="mb-ref" style="margin:0;">${esc(b.reference)}</p></div>
-          <span class="mb-status mb-status--${b.status}" style="font-size:.875rem;">${API.statusLabel(b.status)}</span>
+          ${b.status === 'confirmed' && b.payment_status !== 'paid'
+            ? `<span class="mb-status mb-status--pending" style="font-size:.875rem;">${API.statusLabel('awaiting_payment')}</span>`
+            : `<span class="mb-status mb-status--${b.status}" style="font-size:.875rem;">${API.statusLabel(b.status)}</span>`}
         </div>
         ${['cancelled', 'rejected'].includes(b.status) ? '' : `<ol class="bk-journey bk-journey--lg">${T.steps.map((st, k) => {
           const reached = { pending: 1, confirmed: 2, completed: 4 }[b.status] || 1;
