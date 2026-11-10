@@ -12,7 +12,7 @@ after(async () => ctx && ctx.close());
 
 async function customer(email) {
   const c = client(ctx.app);
-  const r = await c.post('/api/auth/register', { name: 'Cliente', email, password: 'customer-pass-123' });
+  const r = await c.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Cliente', email, password: 'customer-pass-123' });
   assert.equal(r.status, 201, r.raw);
   return c;
 }
@@ -40,7 +40,7 @@ test('2. a normal customer cannot use the admin dashboard', async () => {
     assert.equal(r.status, 403, `${m} ${u} → ${r.status}`);
   }
   // Role cannot be set through registration or profile update
-  const reg = await client(ctx.app).post('/api/auth/register', { name: 'Evil', email: 'evil@example.com', password: 'customer-pass-123', role: 'admin' });
+  const reg = await client(ctx.app).post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Evil', email: 'evil@example.com', password: 'customer-pass-123', role: 'admin' });
   assert.equal(reg.body.user.role, 'customer');
   const prof = await c.patch('/api/account/profile', { role: 'admin', name: 'Still customer' });
   assert.equal(prof.body.user.role, 'customer');
@@ -139,7 +139,7 @@ test('login: wrong password and unknown e-mail give the same answer; sessions en
   await c.post('/api/auth/logout');
   assert.equal((await c.get('/api/account/bookings')).status, 401);
   // Short passwords are refused
-  assert.equal((await client(ctx.app).post('/api/auth/register', { name: 'Short', email: 'short@example.com', password: 'short' })).status, 400);
+  assert.equal((await client(ctx.app).post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Short', email: 'short@example.com', password: 'short' })).status, 400);
 });
 
 test('admin cannot demote themselves; disabling a user ends their sessions', async () => {

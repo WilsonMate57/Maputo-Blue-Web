@@ -19,7 +19,7 @@
 
   const T = EN ? {
     login: 'Sign in', register: 'Create account', forgot: 'Forgot password?', email: 'E-mail', password: 'Password',
-    name: 'Full name', phone: 'Phone (optional)', country: 'Country (optional)', pwHint: 'At least 10 characters',
+    name: 'Full name', phone: 'Phone (optional)', country: 'Country (optional)', phoneReq: 'Mobile phone', countryReq: 'Country', pwHint: 'At least 10 characters',
     signIn: 'Sign in', create: 'Create account', sendReset: 'Send reset link', back: 'Back to sign in',
     resetSent: 'If an account exists for this e-mail, you will receive a link to reset your password.',
     newPassword: 'New password', setPassword: 'Save new password', resetDone: 'Password changed. You can now sign in.',
@@ -51,7 +51,7 @@
     quoteAccepted: 'You accepted this quotation — our team will contact you.', newQuote: 'Request a quote', quotePdf: 'Download PDF',
   } : {
     login: 'Entrar', register: 'Criar conta', forgot: 'Esqueceu a palavra-passe?', email: 'E-mail', password: 'Palavra-passe',
-    name: 'Nome completo', phone: 'Telefone (opcional)', country: 'País (opcional)', pwHint: 'Pelo menos 10 caracteres',
+    name: 'Nome completo', phone: 'Telefone (opcional)', country: 'País (opcional)', phoneReq: 'Telemóvel', countryReq: 'País', pwHint: 'Pelo menos 10 caracteres',
     signIn: 'Entrar', create: 'Criar conta', sendReset: 'Enviar link de recuperação', back: 'Voltar a entrar',
     resetSent: 'Se existir uma conta com este e-mail, receberá um link para redefinir a palavra-passe.',
     newPassword: 'Nova palavra-passe', setPassword: 'Guardar nova palavra-passe', resetDone: 'Palavra-passe alterada. Já pode entrar.',
@@ -145,19 +145,25 @@
       pane.innerHTML = `
         <form novalidate>
           <div class="mb-form-grid">
-            <label class="mb-field mb-field--full"><span>${T.name}</span><input class="booking-input" name="name" required minlength="2" maxlength="120" autocomplete="name"></label>
-            <label class="mb-field mb-field--full"><span>${T.email}</span><input class="booking-input" type="email" name="email" required autocomplete="email"></label>
-            <label class="mb-field"><span>${T.phone}</span><input class="booking-input" type="tel" name="phone" maxlength="30" autocomplete="tel"></label>
-            <label class="mb-field"><span>${T.country}</span><input class="booking-input" name="country" maxlength="60" autocomplete="country-name"></label>
-            <label class="mb-field mb-field--full"><span>${T.password} <small>(${T.pwHint})</small></span><input class="booking-input" type="password" name="password" required minlength="10" autocomplete="new-password"></label>
+            <label class="mb-field mb-field--full"><span>${T.name} *</span><input class="booking-input" name="name" required minlength="2" maxlength="120" autocomplete="name"></label>
+            <label class="mb-field mb-field--full"><span>${T.email} *</span><input class="booking-input" type="email" name="email" required autocomplete="email"></label>
+            ${API.phoneField({ name: 'phone', label: T.phoneReq })}
+            <label class="mb-field mb-field--full"><span>${T.countryReq} *</span><input class="booking-input" name="country" required minlength="2" maxlength="60" autocomplete="country-name"></label>
+            <label class="mb-field mb-field--full"><span>${T.password} * <small>(${T.pwHint})</small></span><input class="booking-input" type="password" name="password" required minlength="10" autocomplete="new-password"></label>
           </div>
           <div class="mb-hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
           <div class="mb-form-msg"></div>
           <div class="mb-form-actions"><button type="submit" class="btn-primary-mb"><i class='bx bx-user-plus'></i>${T.create}</button></div>
         </form>`;
-      handle(pane.querySelector('form'), async v => {
+      const regForm = pane.querySelector('form');
+      API.wirePhone(regForm);
+      handle(regForm, async v => {
+        const tel = API.readPhone(regForm);
+        regForm.querySelectorAll('.is-invalid').forEach(x => x.classList.remove('is-invalid'));
+        if (tel.error) { regForm.elements.phone.classList.add('is-invalid'); regForm.elements.phone.focus(); throw new API.ApiError(400, 'invalid_phone'); }
+        if ((v.country || '').trim().length < 2) { regForm.elements.country.classList.add('is-invalid'); regForm.elements.country.focus(); throw new API.ApiError(400, 'country_required'); }
         const r = await API.post('/auth/register', { name: v.name, email: v.email, password: v.password,
-          phone: v.phone || undefined, country: v.country || undefined, locale: LANG, website: v.website });
+          phone: tel.phone, country: v.country.trim(), locale: LANG, website: v.website });
         user = r.user;
         dashboard();
       });

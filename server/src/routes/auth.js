@@ -3,6 +3,7 @@
 // password reset. Registration always creates a *customer*; staff accounts are
 // created by `npm run create-admin` or by the super-administrator (admin/team.js).
 // ─────────────────────────────────────────────────────────────────────────────
+import { normalizeCustomerPhone } from '../lib/phone.js';
 import { createSession, destroySession, publicUser } from '../lib/auth.js';
 import { enqueueMail } from '../lib/mailer.js';
 import { audit } from '../lib/audit.js';
@@ -48,12 +49,16 @@ export default async function authRoutes(app) {
 
   app.post('/register', {
     config: strict,
-    schema: { body: { type: 'object', required: ['name', 'email', 'password'], properties: {
+    schema: { body: { type: 'object', required: ['name', 'email', 'password', 'phone', 'country'], properties: {
       name: { type: 'string', minLength: 2, maxLength: 120 }, email, password,
       phone: { type: 'string', maxLength: 30, pattern: '^[+0-9 ()-]*$' }, country: { type: 'string', maxLength: 60 },
       locale: { type: 'string', enum: ['pt', 'en'] }, website: { type: 'string', maxLength: 200 } } } },
   }, async (req, reply) => {
     if (req.body.website) throw badRequest('rejected');
+    const phone = normalizeCustomerPhone(req.body.phone);
+    if (!phone) throw badRequest('invalid_phone', 'Enter a mobile number with its country code, e.g. +258 84 123 4567', ['phone']);
+    const country = req.body.country.trim();
+    if (country.length < 2) throw badRequest('country_required', 'Enter your country', ['country']);
     const pwErr = passwordProblems(req.body.password);
     if (pwErr) throw badRequest(pwErr, 'Password must be at least 10 characters');
     const user = await tx(pool, async c => {
@@ -63,7 +68,7 @@ export default async function authRoutes(app) {
         `insert into users (email, password_hash, name, phone, country, locale) values ($1,$2,$3,$4,$5,$6)
          returning id, email, name, phone, country, locale, role, email_verified_at`,
         [req.body.email.trim().toLowerCase(), await hashPassword(req.body.password), req.body.name.trim(),
-         req.body.phone || null, req.body.country || null, req.body.locale || 'pt']);
+         phone, country, req.body.locale || 'pt']);
       await sendVerification(c, cfg, u);
       await audit(c, u, 'user', u.id, 'registered');
       return u;

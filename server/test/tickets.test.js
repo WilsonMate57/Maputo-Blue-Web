@@ -115,7 +115,7 @@ test('staff view, check-in rules and customer cannot check in', async () => {
   assert.equal(v.body.staff, true);
   assert.equal(v.body.booking.customer_name, 'Ana Teste');
   const cust = client(ctx.app);
-  await cust.post('/api/auth/register', { name: 'Cliente', email: 'cliente-ci@example.com', password: 'customer-pass-123' });
+  await cust.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Cliente', email: 'cliente-ci@example.com', password: 'customer-pass-123' });
   assert.equal((await cust.post(`/api/admin/bookings/${booking.id}/check-in`)).status, 403);
   assert.equal((await admin.post(`/api/admin/bookings/${booking.id}/check-in`)).status, 200);
   assert.equal((await admin.post(`/api/admin/bookings/${booking.id}/check-in`)).status, 409);
@@ -154,13 +154,13 @@ test('cancelled bookings verify as cancelled; tickets say so', async () => {
 
 test('account owner gets the ticket; other customers cannot', async () => {
   const a = client(ctx.app);
-  await a.post('/api/auth/register', { name: 'Owner', email: 'owner@example.com', password: 'customer-pass-123' });
+  await a.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Owner', email: 'owner@example.com', password: 'customer-pass-123' });
   const res = await a.post('/api/bookings', bookingBody({ customer: { name: 'Owner', email: 'owner@example.com', phone: '+258840000033' } }));
   const id = res.body.booking.id;
   assert.equal((await a.get(`/api/account/bookings/${id}/ticket`)).status, 200);
   assert.equal((await a.raw('GET', `/api/account/bookings/${id}/ticket.pdf`)).status, 200);
   const b = client(ctx.app);
-  await b.post('/api/auth/register', { name: 'Intruder', email: 'intruder@example.com', password: 'customer-pass-123' });
+  await b.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Intruder', email: 'intruder@example.com', password: 'customer-pass-123' });
   assert.equal((await b.get(`/api/account/bookings/${id}/ticket`)).status, 404);
   assert.equal((await b.raw('GET', `/api/account/bookings/${id}/ticket.pdf`)).status, 404);
   assert.equal((await client(ctx.app).get(`/api/account/bookings/${id}/ticket`)).status, 401);

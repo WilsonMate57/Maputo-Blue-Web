@@ -27,7 +27,7 @@ const requestBody = (over = {}) => ({
 
 async function signedIn(email, name = 'Carla Quote', verify = true) {
   const c = client(ctx.app);
-  const r = await c.post('/api/auth/register', { name, email, password: 'carla-password-1' });
+  const r = await c.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name, email, password: 'carla-password-1' });
   assert.equal(r.status, 201, r.raw);
   if (verify) await ctx.pool.query('update users set email_verified_at = now() where lower(email) = lower($1)', [email]);
   return c;

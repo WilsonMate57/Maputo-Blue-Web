@@ -79,7 +79,7 @@ test('changing a level ends the sessions; the owner and self are protected', asy
 
 test('an existing customer is promoted and keeps their password', async () => {
   const c = client(ctx.app);
-  await c.post('/api/auth/register', { name: 'Cliente', email: 'cliente@test.local', password: 'customer-pass-123' });
+  await c.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Cliente', email: 'cliente@test.local', password: 'customer-pass-123' });
   const r = await owner.post('/api/admin/team', { name: 'Ignored', email: 'cliente@test.local', role: 'manager' });
   assert.equal(r.status, 201, r.raw);
   assert.equal(r.body.promoted, true);

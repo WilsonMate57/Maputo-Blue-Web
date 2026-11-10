@@ -71,7 +71,7 @@ test('new customer: number, computed totals, contact created; the amounts sent b
 
 test('existing customer: their account sees the proposal once the e-mail is confirmed', async () => {
   const c = client(ctx.app);
-  await c.post('/api/auth/register', { name: 'Rui', email: 'rui@example.com', password: 'customer-pass-123' });
+  await c.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Rui', email: 'rui@example.com', password: 'customer-pass-123' });
   await ctx.pool.query(`update users set email_verified_at = now() where email = 'rui@example.com'`);
   const found = await admin.get('/api/admin/contacts?q=rui@example');
   assert.equal(found.body.items[0].source, 'account');
@@ -81,7 +81,7 @@ test('existing customer: their account sees the proposal once the e-mail is conf
   assert.equal(list.body[0].quote.id, q.id);
   assert.equal((await c.get(`/api/account/quotes/${q.id}`)).body.total, 476.25);
   const other = client(ctx.app);
-  await other.post('/api/auth/register', { name: 'Outro', email: 'outro@example.com', password: 'customer-pass-123' });
+  await other.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Outro', email: 'outro@example.com', password: 'customer-pass-123' });
   assert.equal((await other.get(`/api/account/quotes/${q.id}`)).status, 404);
   assert.equal((await other.get('/api/account/proposals')).body.length, 0);
 });
@@ -336,7 +336,7 @@ test('indicators come from real rows, per currency, and proposals are not income
 
 test('a manager works with proposals; a customer does not', async () => {
   const c = client(ctx.app);
-  await c.post('/api/auth/register', { name: 'Curioso', email: 'curioso@example.com', password: 'customer-pass-123' });
+  await c.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Curioso', email: 'curioso@example.com', password: 'customer-pass-123' });
   assert.equal((await c.get('/api/admin/quotations')).status, 403);
   assert.equal((await client(ctx.app).get('/api/admin/quotations')).status, 401);
   await ctx.pool.query(`update users set role = 'manager' where email = 'curioso@example.com'`);

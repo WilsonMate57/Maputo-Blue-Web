@@ -25,10 +25,10 @@ test('1–3. register, verify, sign in/out, view own history (incl. earlier gues
   assert.equal(guest.status, 201);
 
   const c = client(ctx.app);
-  const reg = await c.post('/api/auth/register', { name: 'Maria Silva', email: 'Maria@Example.com', password: 'maria-password-1', locale: 'pt' });
+  const reg = await c.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Maria Silva', email: 'Maria@Example.com', password: 'maria-password-1', locale: 'pt' });
   assert.equal(reg.status, 201, reg.raw);
   assert.equal(reg.body.user.email_verified, false);
-  assert.equal((await client(ctx.app).post('/api/auth/register', { name: 'Dup', email: 'maria@example.com', password: 'maria-password-1' })).status, 409);
+  assert.equal((await client(ctx.app).post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Dup', email: 'maria@example.com', password: 'maria-password-1' })).status, 409);
 
   // Not linked until the e-mail is verified
   assert.equal((await c.get('/api/account/bookings')).body.length, 0);
@@ -100,7 +100,7 @@ test('5. loyalty eligibility is computed from verified completed bookings', asyn
 
   // An unverified duplicate account with the same bookings' e-mail gets nothing
   const dup = client(ctx.app);
-  await dup.post('/api/auth/register', { name: 'Maria 2', email: 'maria+2@example.com', password: 'maria-password-2' });
+  await dup.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Maria 2', email: 'maria+2@example.com', password: 'maria-password-2' });
   assert.equal((await dup.get('/api/account/loyalty')).body.eligible, false);
   // A guest never gets the loyalty discount
   const gq = await client(ctx.app).post('/api/quote', { package_id: 'sunset-cruise-maputo-bay', date: bookingBody().date, adults: 2 });
@@ -144,4 +144,18 @@ test('6. custom tour request → admin review → quotation → customer accepts
   const det = await admin.get(`/api/admin/requests/${item.id}`);
   assert.equal(det.body.request.status, 'accepted');
   assert.equal(det.body.notes.length, 1);
+});
+
+test('creating an account requires a valid mobile number and a country', async () => {
+  const body = { name: 'Nova Conta', email: 'nova.conta@example.com', password: 'customer-pass-123', locale: 'pt' };
+  const reg = b => client(ctx.app).post('/api/auth/register', b);
+  assert.equal((await reg(body)).status, 400, 'no phone, no country');
+  assert.equal((await reg({ ...body, country: 'Moçambique' })).status, 400, 'no phone');
+  assert.equal((await reg({ ...body, phone: '84 123 4567' })).status, 400, 'no country');
+  assert.equal((await reg({ ...body, phone: '123456', country: 'Moçambique' })).body.error, 'invalid_phone');
+  assert.equal((await reg({ ...body, phone: '84 123 4567', country: ' ' })).body.error, 'country_required');
+  const ok = await reg({ ...body, phone: '84 123 4567', country: ' Moçambique ' });
+  assert.equal(ok.status, 201, ok.raw);
+  assert.equal(ok.body.user.phone, '+258 84 123 4567');
+  assert.equal(ok.body.user.country, 'Moçambique');
 });

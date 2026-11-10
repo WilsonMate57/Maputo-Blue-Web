@@ -307,7 +307,7 @@ test('only administrators issue invoices or record payments', async () => {
   assert.equal((await guest.post('/api/admin/invoices', { booking_reference: b.reference, issue: true })).status, 401);
   assert.equal((await guest.post(`/api/admin/invoices/${inv.id}/payments`, { amount: 10, method: 'cash', verified: true })).status, 401);
   const cust = client(ctx.app);
-  await cust.post('/api/auth/register', { name: 'Paula', email: 'paula@example.com', password: 'paula-password-1' });
+  await cust.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Paula', email: 'paula@example.com', password: 'paula-password-1' });
   assert.equal((await cust.post('/api/admin/invoices', { booking_reference: b.reference, issue: true })).status, 403);
   assert.equal((await cust.post(`/api/admin/invoices/${inv.id}/payments`, { amount: 10, method: 'cash', verified: true })).status, 403);
   assert.equal((await cust.post(`/api/admin/bookings/${b.id}/payments`, { amount: 10, method: 'cash', verified: true })).status, 403);
@@ -318,7 +318,7 @@ test('only administrators issue invoices or record payments', async () => {
 
 test('customers see their own invoices (status, balance, PDF) and never anyone else\'s', async () => {
   const maria = client(ctx.app);
-  await maria.post('/api/auth/register', { name: 'Maria Inv', email: 'maria.inv@example.com', password: 'maria-password-1' });
+  await maria.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Maria Inv', email: 'maria.inv@example.com', password: 'maria-password-1' });
   const mb = await newBooking({ customer: { name: 'Maria Inv', email: 'maria.inv@example.com', phone: '+258 84 111 1111' } }, maria);
   const minv = (await issue(mb.reference)).body;
   await pay(minv.id, 3600, { reference: 'MP-M1' });
@@ -336,7 +336,7 @@ test('customers see their own invoices (status, balance, PDF) and never anyone e
   assert.equal(pdf.statusCode, 200);
 
   const joao = client(ctx.app);
-  await joao.post('/api/auth/register', { name: 'Joao', email: 'joao.inv@example.com', password: 'joao-password-1' });
+  await joao.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Joao', email: 'joao.inv@example.com', password: 'joao-password-1' });
   assert.deepEqual((await joao.get('/api/account/invoices')).body, []);
   assert.equal((await joao.get(`/api/account/invoices/${minv.id}/pdf`)).status, 404);
   // Customers cannot change payments or statuses through their API

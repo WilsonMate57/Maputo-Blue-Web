@@ -133,7 +133,7 @@ test('isolation: other visitors, notes, and the admin area', async () => {
   assert.equal(forged.statusCode, 404);
 
   const customer = client(ctx.app);
-  await customer.post('/api/auth/register', { name: 'Cliente', email: 'cliente@example.com', password: 'customer-password-1', consent: true });
+  await customer.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Cliente', email: 'cliente@example.com', password: 'customer-password-1', consent: true });
   assert.notEqual((await customer.get('/api/admin/chat/conversations')).status, 200);
 });
 
@@ -249,7 +249,7 @@ test('alerts: unanswered conversations once; replies nobody read go by e-mail', 
 test('links are made by the team; the same e-mail is only a hint', async () => {
   await online();
   const owner = client(ctx.app);
-  await owner.post('/api/auth/register', { name: 'Ana Conta', email: 'conta@example.com', password: 'customer-password-1', consent: true });
+  await owner.post('/api/auth/register', { phone: '+258 84 000 1111', country: 'Moçambique', name: 'Ana Conta', email: 'conta@example.com', password: 'customer-password-1', consent: true });
   await ctx.pool.query(`update users set email_verified_at = now() where email = 'conta@example.com'`);
   const v = visitor();
   const { body: { conversation: { id } } } = await start(v, { name: 'Ana Conta', email: 'conta@example.com' });
