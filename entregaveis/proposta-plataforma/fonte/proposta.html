@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<title>Maputo Blue — Digital Tourism Platform · Proposta Comercial</title>
+<style>
+/* Fonte da marca, incorporada no PDF */
+@font-face { font-family: 'DM Sans'; src: url('../../../server/assets/fonts/DMSans-Regular.ttf'); font-weight: 400; }
+@font-face { font-family: 'DM Sans'; src: url('../../../server/assets/fonts/DMSans-Bold.ttf'); font-weight: 700; }
+@font-face { font-family: 'DM Sans'; src: url('../../../server/assets/fonts/DMSans-ExtraBold.ttf'); font-weight: 800; }
+@page { size: A4; margin: 0; }
+:root {
+  --navy: #0A2540; --deep: #071B2E; --teal: #00bcd4; --teal-text: #007A87; --coral: #ff8800; --sand: #F2E9E4; --sand-2: #FAF6F3; --light: #F8FAFC;
+  --ink: #334155; --muted: #5F6E80; --line: #E2E8F0; --green: #0E8F80; --blue: #1D5FAE;
+  --ok: #047857; --ok-bg: #ECFDF5; --part: #B45309; --part-bg: #FFF7ED; --dev: #475569; --dev-bg: #F1F5F9;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: 'DM Sans', Arial, sans-serif; color: var(--ink); font-size: 9.6pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; counter-reset: pg; }
+h1, h2, h3, h4 { color: var(--navy); margin: 0; line-height: 1.12; letter-spacing: -.02em; }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; background: #fff; counter-increment: pg; }
+.page:last-child { page-break-after: auto; }
+.pad { position: absolute; inset: 16mm 15mm 20mm; display: flex; flex-direction: column; gap: 5mm; }
+.kicker { font-size: 7.6pt; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-text); }
+.h1 { font-size: 26pt; font-weight: 800; }
+.h2 { font-size: 19pt; font-weight: 800; }
+.h3 { font-size: 11.5pt; font-weight: 700; }
+.lead { font-size: 11pt; line-height: 1.5; color: var(--ink); max-width: 160mm; }
+.muted { color: var(--muted); }
+.small { font-size: 8.2pt; }
+.row { display: flex; gap: 6mm; }
+.col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3mm; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.list { margin: 0; padding: 0; list-style: none; display: grid; gap: 1.6mm; }
+.list li { position: relative; padding-left: 4.5mm; }
+.list li::before { content: ''; position: absolute; left: 0; top: 2.1mm; width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--teal); }
+.rule { height: .6mm; width: 18mm; background: var(--coral); border-radius: 1mm; }
+
+/* Rodapé e cabeçalho das páginas interiores */
+.head { position: absolute; top: 7mm; left: 15mm; right: 15mm; display: flex; justify-content: space-between; align-items: center; font-size: 7.2pt; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.head b { color: var(--navy); }
+.foot { position: absolute; bottom: 7mm; left: 15mm; right: 15mm; display: flex; justify-content: space-between; align-items: flex-end; gap: 6mm; font-size: 6.9pt; color: var(--muted); border-top: .25mm solid var(--line); padding-top: 2mm; }
+.foot .n::before { content: counter(pg, decimal-leading-zero); font-weight: 800; color: var(--navy); font-size: 8.5pt; }
+.foot a { color: var(--teal-text); }
+.dark .head, .dark .foot { color: #9FB2C6; border-color: rgba(255,255,255,.15); }
+.dark .head b, .dark .foot .n::before { color: #fff; }
+.dark .foot a { color: #7FDCE8; }
+
+/* Capturas de ecrã */
+.shot { margin: 0; display: flex; flex-direction: column; gap: 1.8mm; min-height: 0; }
+.shot .frame { border-radius: 3mm; overflow: hidden; border: .3mm solid #D9E1EA; box-shadow: 0 1.2mm 3.5mm rgba(10,37,64,.10), 0 .3mm .8mm rgba(10,37,64,.06); background: #fff; }
+.shot .bar { height: 4.2mm; background: #EEF2F6; display: flex; align-items: center; gap: 1.2mm; padding: 0 2.5mm; border-bottom: .25mm solid #DDE4EC; }
+.shot .bar i { width: 1.6mm; height: 1.6mm; border-radius: 50%; background: #C9D3DE; }
+.shot .bar span { margin-left: 2mm; font-size: 6pt; color: var(--muted); letter-spacing: .02em; }
+.shot img { display: block; width: 100%; height: auto; }
+.shot.crop .frame img { height: var(--h, 70mm); object-fit: cover; object-position: top; }
+.shot figcaption { font-size: 7.6pt; color: var(--muted); }
+.shot figcaption b { color: var(--navy); }
+.demo { display: inline-block; font-size: 6.4pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--part); background: var(--part-bg); border-radius: 1mm; padding: .3mm 1.4mm; margin-left: 1mm; vertical-align: 1px; }
+
+/* Estado e pacotes */
+.st { display: inline-flex; align-items: center; gap: 1.2mm; font-size: 7pt; font-weight: 700; border-radius: 10mm; padding: .5mm 2.2mm; white-space: nowrap; }
+.st::before { content: ''; width: 1.6mm; height: 1.6mm; border-radius: 50%; background: currentColor; }
+.st-ok { color: var(--ok); background: var(--ok-bg); }
+.st-part { color: var(--part); background: var(--part-bg); }
+.st-dev { color: var(--dev); background: var(--dev-bg); }
+.pk { display: inline-block; font-size: 6.6pt; font-weight: 700; border-radius: 1mm; padding: .3mm 1.6mm; color: #fff; white-space: nowrap; }
+.pk-c { background: var(--green); } .pk-p { background: var(--blue); } .pk-x { background: var(--navy); }
+
+/* Blocos de módulo */
+.facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.4mm 6mm; }
+.fact h4 { font-size: 8pt; text-transform: uppercase; letter-spacing: .08em; color: var(--teal-text); margin-bottom: .8mm; }
+.fact p { font-size: 8.8pt; }
+.meta { display: flex; flex-wrap: wrap; gap: 2mm; align-items: center; }
+.note { background: var(--light); border-left: .8mm solid var(--teal); padding: 2.6mm 3.5mm; border-radius: 0 2mm 2mm 0; font-size: 8.6pt; }
+.note.warn { border-left-color: var(--part); background: var(--part-bg); color: #7C3E07; }
+.card { border: .3mm solid var(--line); border-radius: 3mm; padding: 4mm; background: #fff; }
+.card.soft { background: var(--sand-2); border-color: #EDE3DC; }
+
+table.t { width: 100%; border-collapse: collapse; font-size: 8.2pt; }
+table.t th { text-align: left; font-size: 6.9pt; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 1.8mm 2mm; border-bottom: .4mm solid var(--navy); }
+table.t td { padding: 1.55mm 2mm; border-bottom: .25mm solid var(--line); vertical-align: top; }
+table.t td:first-child { color: var(--navy); font-weight: 700; }
+#status-table td { padding-top: 1.15mm; padding-bottom: 1.15mm; }
+table.t tr.grp td { background: var(--light); font-size: 7pt; letter-spacing: .1em; text-transform: uppercase; color: var(--teal-text); font-weight: 700; padding-top: 2.2mm; }
+.c { text-align: center; }
+.yes { color: var(--ok); font-weight: 800; }
+.no { color: #B6C2CF; }
+.dot { display:inline-block; width:2.4mm; height:2.4mm; border-radius:50%; background:var(--ok); }
+.box { display:inline-block; width:3mm; height:3mm; border:.35mm solid #9FB2C6; border-radius:.6mm; margin-right:1.4mm; vertical-align:-.5mm; }
+</style>
+</head>
+<body>
+
+<!-- ═════════ 1 · CAPA ═════════ -->
+<section class="page" style="background:var(--deep);">
+  <img src="img/passeio-barco-1.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(7,27,46,.55) 0%, rgba(7,27,46,0) 30%, rgba(7,27,46,0) 46%, rgba(7,27,46,.88) 72%, #071B2E 100%);"></div>
+  <div style="position:absolute;top:14mm;left:15mm;right:15mm;display:flex;justify-content:space-between;align-items:center;">
+    <div style="background:#fff;border-radius:3mm;padding:2.5mm 4mm;display:flex;align-items:center;gap:3mm;">
+      <img src="img/logo.png" alt="Maputo Blue" style="height:16mm;">
+    </div>
+    <span style="color:#fff;font-size:8pt;letter-spacing:.16em;text-transform:uppercase;font-weight:700;">Proposta à gestão · Novembro de 2026</span>
+  </div>
+  <div style="position:absolute;left:15mm;right:15mm;bottom:30mm;color:#fff;">
+    <div class="kicker" style="color:#7FDCE8;margin-bottom:4mm;">Plataforma digital · Turismo · Gestão</div>
+    <h1 style="color:#fff;font-size:38pt;font-weight:800;line-height:1.02;letter-spacing:-.035em;">MAPUTO BLUE —<br>DIGITAL TOURISM<br>PLATFORM</h1>
+    <p style="margin-top:6mm;font-size:13pt;line-height:1.4;max-width:150mm;color:#D6E3EE;">An integrated platform for tourism experiences, reservations and business management.</p>
+    <p style="margin-top:3mm;font-size:10pt;color:#9FB2C6;max-width:150mm;">Uma plataforma integrada para experiências turísticas, reservas e gestão do negócio.</p>
+  </div>
+  <div style="position:absolute;left:15mm;right:15mm;bottom:10mm;display:flex;justify-content:space-between;font-size:7.4pt;color:#9FB2C6;border-top:.25mm solid rgba(255,255,255,.18);padding-top:3mm;">
+    <span>Apresentação institucional, funcionalidades e proposta comercial</span>
+    <span>Wilson Creative Studio · <a href="mailto:wilsoncreativestudio.mz@gmail.com" style="color:#7FDCE8;">wilsoncreativestudio.mz@gmail.com</a> · +258 87 845 4031</span>
+  </div>
+</section>
+
+<!-- ═════════ 2 · ÍNDICE ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>Índice</span></div>
+  <div class="pad">
+    <div class="kicker">Neste documento</div>
+    <h2 class="h1">Uma plataforma para vender, operar e crescer</h2>
+    <p class="lead">Este documento apresenta a plataforma digital da Maputo Blue: o que já faz, como funciona para o cliente e para a equipa, e as três opções de investimento disponíveis.</p>
+    <div class="row" style="margin-top:4mm;">
+      <div class="col">
+        <table class="t">
+          <tr class="grp"><td colspan="2">I · A plataforma</td></tr>
+          <tr><td>Visão geral</td><td class="muted">03</td></tr>
+          <tr><td>Como funciona</td><td class="muted">04</td></tr>
+          <tr><td>Tecnologia e estado das funcionalidades</td><td class="muted">05</td></tr>
+          <tr class="grp"><td colspan="2">II · Funcionalidades</td></tr>
+          <tr><td>Website, catálogo e reservas</td><td class="muted">06 – 08</td></tr>
+          <tr><td>Disponibilidade, preços e conteúdos</td><td class="muted">09 – 10</td></tr>
+          <tr><td>Cotações, conta de cliente e bilhetes</td><td class="muted">11 – 12</td></tr>
+          <tr><td>Clientes, avaliações e comunicação</td><td class="muted">13 – 14</td></tr>
+          <tr><td>Facturação, promoções e fidelização</td><td class="muted">15 – 16</td></tr>
+          <tr><td>Estatísticas, mapa de cliques e Live Chat</td><td class="muted">17 – 19</td></tr>
+          <tr><td>Painel administrativo e registo de actividade</td><td class="muted">20 – 21</td></tr>
+          <tr class="grp"><td colspan="2">III · Proposta</td></tr>
+          <tr><td>Estado de cada funcionalidade</td><td class="muted">22</td></tr>
+          <tr><td>Comparação dos pacotes</td><td class="muted">23</td></tr>
+          <tr><td>Pacotes e aprovação</td><td class="muted">24</td></tr>
+        </table>
+      </div>
+      <div class="col" style="flex:.82;">
+        <div class="card soft" style="display:grid;gap:3mm;">
+          <h3 class="h3">Como ler este documento</h3>
+          <p class="small">Cada funcionalidade indica o seu estado real e o pacote em que está incluída.</p>
+          <div style="display:grid;gap:2mm;">
+            <div><span class="st st-ok">Operacional</span><p class="small muted" style="margin-top:1mm;">Desenvolvida, testada e disponível na plataforma.</p></div>
+            <div><span class="st st-part">Parcial</span><p class="small muted" style="margin-top:1mm;">Uma parte funciona hoje; o restante está identificado.</p></div>
+            <div><span class="st st-dev">A desenvolver</span><p class="small muted" style="margin-top:1mm;">Incluída na proposta, mas ainda não construída.</p></div>
+          </div>
+          <div style="display:flex;gap:1.5mm;flex-wrap:wrap;margin-top:1mm;"><span class="pk pk-c">Crescimento</span><span class="pk pk-p">Professional</span><span class="pk pk-x">Completo</span></div>
+          <p class="small muted">Cada pacote inclui tudo o que está nos anteriores.</p>
+        </div>
+        <div class="note small">As capturas de ecrã foram feitas na plataforma real, num ambiente de demonstração com <b>dados fictícios</b>. Nenhum dado de clientes reais aparece neste documento. Fotografias, pacotes e preços são os da Maputo Blue.</div>
+      </div>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2.5mm;">
+      <img src="img/sunset-cruise-1.jpg" alt="" style="width:100%;height:28mm;object-fit:cover;border-radius:2mm;">
+      <img src="img/hero-6.jpg" alt="" style="width:100%;height:28mm;object-fit:cover;border-radius:2mm;">
+      <img src="img/farol-inhaca-1.jpg" alt="" style="width:100%;height:28mm;object-fit:cover;border-radius:2mm;">
+      <img src="img/hero-5.jpg" alt="" style="width:100%;height:28mm;object-fit:cover;border-radius:2mm;">
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 3 · VISÃO GERAL ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>I · Visão geral</span></div>
+  <div class="pad">
+    <div class="kicker">Visão geral</div>
+    <h2 class="h1">Toda a operação comercial num só lugar</h2>
+    <p class="lead">A plataforma junta o website da Maputo Blue, as reservas, as cotações, os clientes, a facturação e o atendimento num único sistema. O cliente descobre e reserva experiências a qualquer hora; a equipa gere tudo num painel, sem folhas soltas nem mensagens perdidas.</p>
+    <img src="img/dia-praia-4.jpg" alt="" style="width:100%;height:58mm;object-fit:cover;border-radius:3mm;">
+    <div class="h3" style="margin-top:1mm;">Os objectivos da plataforma</div>
+    <div class="grid2" style="gap:3mm 6mm;">
+      <div class="card"><b style="color:var(--navy);">Presença digital forte</b><p class="small muted">Um website profissional, em português e inglês, que apresenta a marca ao nível dos destinos que vende.</p></div>
+      <div class="card"><b style="color:var(--navy);">Reservas fáceis</b><p class="small muted">Calendário, preço calculado no momento e pedido de reserva em poucos passos.</p></div>
+      <div class="card"><b style="color:var(--navy);">Disponibilidade e preços sob controlo</b><p class="small muted">Capacidade por dia, épocas, regras de preço e bloqueios, sem sobre-reservas.</p></div>
+      <div class="card"><b style="color:var(--navy);">Clientes conhecidos</b><p class="small muted">Histórico de reservas, cotações, notas internas e contactos de cada cliente.</p></div>
+      <div class="card"><b style="color:var(--navy);">Comunicação automática</b><p class="small muted">E-mails a cada passo da reserva e avisos imediatos à equipa.</p></div>
+      <div class="card"><b style="color:var(--navy);">Propostas comerciais</b><p class="small muted">Cotações com versões, PDF e link para o cliente aceitar.</p></div>
+      <div class="card"><b style="color:var(--navy);">Pagamentos e facturas</b><p class="small muted">Registo de pagamentos verificados e facturas em PDF ligadas à reserva.</p></div>
+      <div class="card"><b style="color:var(--navy);">Decisões com dados</b><p class="small muted">Visitas, páginas, origem dos clientes, cliques e pedidos, sem cookies.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 4 · COMO FUNCIONA ═════════ -->
+<section class="page" style="background:var(--sand-2);">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>I · Como funciona</span></div>
+  <div class="pad">
+    <div class="kicker">Como funciona</div>
+    <h2 class="h1">Dois percursos, um só sistema</h2>
+    <p class="lead">O que o cliente faz no site chega imediatamente ao painel da equipa, e o que a equipa decide no painel chega ao cliente por e-mail e na sua página de reserva.</p>
+    <div style="display:grid;grid-template-columns:1fr 34mm 1fr;gap:4mm;align-items:stretch;margin-top:2mm;flex:1;">
+      <div style="display:flex;flex-direction:column;gap:2mm;">
+        <div style="background:var(--teal-text);color:#fff;border-radius:2.5mm;padding:2.5mm 3.5mm;font-weight:800;font-size:10pt;">Experiência do cliente</div>
+        <ol style="margin:0;padding:0;list-style:none;display:grid;gap:1.7mm;counter-reset:s;">
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">1</b> · Descobre a Maputo Blue no website</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">2</b> · Explora destinos e experiências</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">3</b> · Vê fotografias, itinerário, preços e informações</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">4</b> · Verifica a disponibilidade no calendário</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">5</b> · Reserva, ou pede uma cotação personalizada</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">6</b> · Recebe a confirmação e as instruções por e-mail</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">7</b> · Acompanha a reserva online ou na sua conta</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">8</b> · Recebe o bilhete com código QR depois de pagar</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--teal-text);">9</b> · Avalia a experiência no site</li>
+        </ol>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3mm;">
+        <div style="position:absolute;top:8mm;bottom:8mm;left:50%;width:.5mm;background:repeating-linear-gradient(180deg,var(--teal) 0 2mm,transparent 2mm 4mm);"></div>
+        <div style="position:relative;background:var(--navy);color:#fff;border-radius:3mm;padding:4mm 2.5mm;text-align:center;box-shadow:0 1.5mm 4mm rgba(10,37,64,.2);">
+          <img src="img/logo.png" alt="" style="height:12mm;background:#fff;border-radius:2mm;padding:1mm;">
+          <div style="font-weight:800;font-size:9pt;margin-top:2mm;">Plataforma<br>Maputo Blue</div>
+          <div style="font-size:6.8pt;color:#9FB2C6;margin-top:1.5mm;line-height:1.35;">Reservas · Clientes<br>Cotações · Facturas<br>Mensagens · Dados</div>
+        </div>
+        <div style="position:relative;font-size:6.8pt;text-align:center;color:var(--muted);background:var(--sand-2);padding:1mm;">pedidos e mensagens<br><b style="color:var(--teal-text);">&larr;&nbsp;&rarr;</b><br>confirmações e e-mails</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2mm;">
+        <div style="background:var(--navy);color:#fff;border-radius:2.5mm;padding:2.5mm 3.5mm;font-weight:800;font-size:10pt;">Experiência administrativa</div>
+        <ol style="margin:0;padding:0;list-style:none;display:grid;gap:1.7mm;">
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">1</b> · Entra no painel, com o seu nível de acesso</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">2</b> · Gere experiências, preços e conteúdos</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">3</b> · Actualiza fotografias e itinerários</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">4</b> · Controla datas e capacidade</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">5</b> · Confirma reservas e acompanha clientes</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">6</b> · Prepara e envia cotações</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">7</b> · Regista pagamentos e emite facturas</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">8</b> · Responde no Live Chat</li>
+          <li class="card" style="padding:2.3mm 3mm;"><b style="color:var(--navy);">9</b> · Analisa estatísticas e resultados</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 5 · TECNOLOGIA ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>I · Tecnologia</span></div>
+  <div class="pad">
+    <div class="kicker">Tecnologia e auditoria</div>
+    <h2 class="h1">Construída para durar, sem dependências caras</h2>
+    <p class="lead">A plataforma é própria da Maputo Blue: não depende de comissões de terceiros por reserva e os dados ficam nos seus servidores.</p>
+    <div class="grid3">
+      <div class="card"><div class="kicker" style="margin-bottom:1.5mm;">Website</div><b style="color:var(--navy);">HTML5, Bootstrap 5, JavaScript e CSS próprios</b><p class="small muted" style="margin-top:1mm;">Sem frameworks pesados. O catálogo é gerido a partir de dados, não editando páginas à mão.</p></div>
+      <div class="card"><div class="kicker" style="margin-bottom:1.5mm;">Servidor</div><b style="color:var(--navy);">Node.js com Fastify</b><p class="small muted" style="margin-top:1mm;">Calcula preços e disponibilidade no servidor, para que o browser nunca decida valores.</p></div>
+      <div class="card"><div class="kicker" style="margin-bottom:1.5mm;">Base de dados</div><b style="color:var(--navy);">PostgreSQL</b><p class="small muted" style="margin-top:1mm;">Reservas, clientes, cotações, facturas, conversas e estatísticas, com cópias de segurança.</p></div>
+      <div class="card"><div class="kicker" style="margin-bottom:1.5mm;">E-mail</div><b style="color:var(--navy);">Resend</b><p class="small muted" style="margin-top:1mm;">Envio dos e-mails automáticos, com fila e novas tentativas em caso de falha.</p></div>
+      <div class="card"><div class="kicker" style="margin-bottom:1.5mm;">WhatsApp</div><b style="color:var(--navy);">Meta WhatsApp Cloud API</b><p class="small muted" style="margin-top:1mm;">Avisos à equipa com modelos aprovados pela Meta. Requer as credenciais da empresa.</p></div>
+      <div class="card"><div class="kicker" style="margin-bottom:1.5mm;">Alojamento</div><b style="color:var(--navy);">Plesk · maputoblue.co.mz</b><p class="small muted" style="margin-top:1mm;">HTTPS, actualizações controladas e migrações da base de dados automáticas.</p></div>
+    </div>
+    <div class="h3" style="margin-top:2mm;">Segurança e privacidade</div>
+    <div class="grid2" style="gap:2mm 6mm;">
+      <ul class="list small">
+        <li>Sessões seguras; palavras-passe nunca guardadas em texto.</li>
+        <li>Três níveis de acesso: superadministrador, administrador e gestor.</li>
+        <li>Registo de actividade das acções da equipa.</li>
+      </ul>
+      <ul class="list small">
+        <li>Estatísticas sem cookies e sem serviços de terceiros.</li>
+        <li>Links de clientes com códigos secretos, nunca adivinháveis.</li>
+        <li>Testes automáticos a cada alteração (144 cenários).</li>
+      </ul>
+    </div>
+    <div class="h3" style="margin-top:2mm;">Resultado da auditoria</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3mm;">
+      <div class="card" style="border-color:#A7F3D0;background:var(--ok-bg);"><div style="font-size:26pt;font-weight:800;color:var(--ok);line-height:1;">23</div><div class="small" style="color:var(--ok);font-weight:700;margin-top:1mm;">funcionalidades operacionais</div></div>
+      <div class="card" style="border-color:#FED7AA;background:var(--part-bg);"><div style="font-size:26pt;font-weight:800;color:var(--part);line-height:1;">3</div><div class="small" style="color:var(--part);font-weight:700;margin-top:1mm;">parciais: WhatsApp, fidelização e estatísticas avançadas</div></div>
+      <div class="card" style="background:var(--dev-bg);"><div style="font-size:26pt;font-weight:800;color:var(--dev);line-height:1;">1</div><div class="small" style="color:var(--dev);font-weight:700;margin-top:1mm;">a desenvolver: pagamentos online</div></div>
+    </div>
+    <p class="small muted">Contagem das 27 funcionalidades dos pacotes propostos. O detalhe está na página 22.</p>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 6 · WEBSITE ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Website institucional</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.1 · Website institucional</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span></div>
+    <h2 class="h2">A porta de entrada digital da Maputo Blue</h2>
+    <div class="row">
+      <figure class="shot" style="flex:1;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>maputoblue.co.mz</span></div><img src="../screenshots/s01-home.jpg" alt="Página inicial"></div><figcaption><b>Página inicial</b> — fotografia real, chamada à acção e números de confiança.</figcaption></figure>
+      <figure class="shot" style="width:38mm;"><div class="frame"><img src="../screenshots/s10-mobile-home.jpg" alt="Website no telemóvel" style="height:78mm;object-fit:cover;object-position:top;"></div><figcaption><b>No telemóvel</b></figcaption></figure>
+    </div>
+    <div class="facts">
+      <div class="fact"><h4>O que é</h4><p>O website oficial, com página inicial, sobre nós, destinos, DayTours, alojamentos, serviços, galeria, contactos, FAQ e política de privacidade.</p></div>
+      <div class="fact"><h4>Como funciona</h4><p>As páginas são geradas a partir do catálogo: alterar um pacote no painel actualiza o site, sem mexer no código.</p></div>
+      <div class="fact"><h4>Para o cliente</h4><p>Navegação rápida em computador e telemóvel, em português e inglês, com WhatsApp e Live Chat sempre à mão.</p></div>
+      <div class="fact"><h4>Para a Maputo Blue</h4><p>Credibilidade, captação de clientes e páginas de pacote com título, descrição e dados próprios para o Google e as redes sociais.</p></div>
+    </div>
+    <div class="note"><b>Problema que resolve:</b> sem site próprio, a empresa depende de redes sociais e de terceiros para ser encontrada. O site dá à Maputo Blue um canal de venda seu, aberto 24 horas.</div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 7 · CATÁLOGO ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Catálogo</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.2 · Catálogo de experiências e serviços</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span></div>
+    <h2 class="h2">21 experiências e alojamentos, prontos a vender</h2>
+    <p class="lead" style="font-size:10pt;">O catálogo actual tem 17 experiências e 4 alojamentos, organizados em passeios às ilhas, praia e pôr do sol, safaris, transfers, city tour de Maputo, observação de baleias e pesca desportiva.</p>
+    <div class="grid2">
+      <figure class="shot crop" style="--h:72mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>DayTours</span></div><img src="../screenshots/s02-tours.jpg" alt="Catálogo"></div><figcaption><b>Catálogo</b> — filtros por categoria, pesquisa e ordenação.</figcaption></figure>
+      <figure class="shot crop" style="--h:72mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Santa Maria, Inhaca &amp; Ilha dos Portugueses</span></div><img src="../screenshots/s03-package.jpg" alt="Página de experiência"></div><figcaption><b>Página da experiência</b> — galeria, avaliações e destino.</figcaption></figure>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="h3">O que cada experiência mostra</div>
+        <ul class="list small" style="grid-template-columns:1fr 1fr;column-gap:5mm;">
+          <li>Nome e descrição (PT e EN)</li><li>Galeria de fotografias</li><li>Preço «a partir de»</li><li>Duração e tamanho do grupo</li>
+          <li>Itinerário por etapas</li><li>Incluído e não incluído</li><li>Informações importantes</li><li>Ponto de encontro</li>
+          <li>Calendário de disponibilidade</li><li>Botões de reserva e cotação</li>
+        </ul>
+      </div>
+      <div class="col" style="flex:.85;">
+        <div class="h3">Exemplos reais do catálogo</div>
+        <table class="t">
+          <tr><td>Santa Maria, Inhaca &amp; Ilha dos Portugueses</td><td class="muted">desde MZN 6,000</td></tr>
+          <tr><td>Cruzeiro ao pôr do sol</td><td class="muted">desde MZN 1,800</td></tr>
+          <tr><td>Safari Maputo Special Reserve</td><td class="muted">safari</td></tr>
+          <tr><td>Observação de baleias</td><td class="muted">época própria</td></tr>
+          <tr><td>Machangulo Beach Lodge</td><td class="muted">alojamento</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 8 · RESERVAS ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Reservas online</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.4 · Sistema de reservas online</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span></div>
+    <h2 class="h2">Da escolha da data ao pedido, em menos de um minuto</h2>
+    <div class="grid2">
+      <figure class="shot crop" style="--h:78mm;"><div class="frame"><img src="../screenshots/s04-package-booking.jpg" alt="Calendário e preço"></div><figcaption><b>Data e participantes</b> — o preço é calculado pelo servidor no momento. <span class="demo">demonstração</span></figcaption></figure>
+      <figure class="shot crop" style="--h:78mm;"><div class="frame"><img src="../screenshots/s05-booking-form.jpg" alt="Formulário de reserva"></div><figcaption><b>Pedido de reserva</b> — telemóvel com indicativo do país e WhatsApp. <span class="demo">dados fictícios</span></figcaption></figure>
+    </div>
+    <div class="h3">Os estados de uma reserva</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2.5mm;">
+      <div class="card" style="border-top:1.2mm solid #F59E0B;"><b style="color:var(--navy);">Pendente</b><p class="small muted">Pedido recebido. A equipa verifica a disponibilidade; a capacidade fica reservada 48 horas.</p></div>
+      <div class="card" style="border-top:1.2mm solid var(--teal);"><b style="color:var(--navy);">Data disponível</b><p class="small muted">Confirmada pela equipa. O cliente recebe o valor e as instruções para pagar.</p></div>
+      <div class="card" style="border-top:1.2mm solid var(--ok);"><b style="color:var(--navy);">Paga · bilhete</b><p class="small muted">Com o pagamento total, o bilhete com QR é enviado e o cliente pode embarcar.</p></div>
+      <div class="card" style="border-top:1.2mm solid var(--navy);"><b style="color:var(--navy);">Concluída</b><p class="small muted">Depois da viagem. Também existem os estados cancelada e rejeitada.</p></div>
+    </div>
+    <div class="facts">
+      <div class="fact"><h4>Para a equipa</h4><p>Lista com filtros e pesquisa, confirmação, alterações de data e grupo com novo cálculo de preço, cancelamentos, pagamentos e exportação para Excel.</p></div>
+      <div class="fact"><h4>Benefício</h4><p>O cliente nunca embarca sem pagar: até ao pagamento total recebe só um comprovativo que diz, em letras grandes, que não é bilhete.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 9 · DISPONIBILIDADE E PREÇOS ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Disponibilidade e preços</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.5 · Calendário de disponibilidade</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span></div>
+    <h2 class="h2">Nunca vender mais lugares do que existem</h2>
+    <figure class="shot crop" style="--h:88mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Disponibilidade</span></div><img src="../screenshots/a04-calendar.jpg" alt="Calendário de disponibilidade"></div><figcaption><b>Calendário</b> — estado de cada dia, capacidade e alterações em lote.</figcaption></figure>
+    <div class="facts">
+      <div class="fact"><h4>A equipa pode</h4><p>Abrir e fechar dias, definir capacidade por dia ou por opção (por exemplo, cada barco), dias da semana e épocas de operação, antecedência mínima e horizonte de reservas.</p></div>
+      <div class="fact"><h4>Sobre-reservas</h4><p>Cada pedido ocupa a capacidade no servidor, mesmo com pedidos simultâneos. O site só mostra datas que podem ser vendidas.</p></div>
+    </div>
+    <div class="meta" style="margin-top:1mm;"><span class="kicker">4.6 · Preços e condições</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span><span class="small muted">básico</span><span class="pk pk-p">Professional</span><span class="small muted">avançado</span></div>
+    <div class="row">
+      <figure class="shot crop" style="flex:1.15;--h:70mm;"><div class="frame"><img src="../screenshots/a05b-package-prices.jpg" alt="Preços do pacote"></div><figcaption><b>Preços do pacote</b> — modelo, opções, extras e regras.</figcaption></figure>
+      <div class="col">
+        <ul class="list small">
+          <li><b>Por pessoa</b>, com preço de criança próprio, igual ao adulto ou sob consulta.</li>
+          <li><b>Por grupo ou barco</b>, com opções e lotação máxima.</li>
+          <li><b>Por noite</b>, para alojamentos.</li>
+          <li><b>Extras e transfers</b> por pessoa, por reserva ou por noite.</li>
+          <li><b>Regras de preço</b> por dia da semana, época ou data, com prioridade.</li>
+          <li>O valor acordado fica gravado com a reserva: mudanças futuras de preço não a afectam.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 10 · PACOTES, FOTOGRAFIAS E ITINERÁRIOS ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Conteúdos</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.3 · Gestão de pacotes, fotografias e itinerários</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span></div>
+    <h2 class="h2">O catálogo muda no painel, não no código</h2>
+    <figure class="shot crop" style="--h:84mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Pacotes e alojamentos</span></div><img src="../screenshots/a05-package-edit.jpg" alt="Edição de pacote"></div><figcaption><b>Edição de pacote</b> — geral, conteúdo PT/EN, imagens, preços, disponibilidade, SEO e revisões.</figcaption></figure>
+    <div class="row">
+      <figure class="shot crop" style="flex:1.1;--h:80mm;"><div class="frame"><img src="../screenshots/a05c-package-itinerary.jpg" alt="Itinerário"></div><figcaption><b>Itinerário</b> — etapas com hora, título e descrição em PT e EN.</figcaption></figure>
+      <div class="col">
+        <div class="h3">O que a equipa gere</div>
+        <ul class="list small">
+          <li>Criar experiências e alojamentos e escolher a categoria.</li>
+          <li>Publicar, ocultar como rascunho ou arquivar.</li>
+          <li>Fotografias: carregar, reordenar, escolher a capa e o texto alternativo. As imagens são optimizadas automaticamente.</li>
+          <li>Itinerário, incluído, não incluído, informações importantes e ponto de encontro, nas duas línguas.</li>
+          <li>Título e descrição para motores de busca.</li>
+          <li>Histórico de versões, com reposição de uma versão anterior.</li>
+        </ul>
+        <div class="note small" style="margin-top:1mm;"><b>Benefício:</b> a equipa actualiza preços, fotos e programas no mesmo dia, sem depender de um programador.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 11 · COTAÇÕES ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Cotações e propostas</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.10 · Pedidos de cotação e propostas comerciais</span><span class="st st-ok">Operacional</span></div>
+    <h2 class="h2">Grupos, empresas e viagens à medida</h2>
+    <div class="row" style="align-items:flex-start;">
+      <div class="col" style="flex:1.25;">
+        <figure class="shot crop" style="--h:60mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Pedir cotação</span></div><img src="../screenshots/s06-custom-tour.jpg" alt="Pedido de cotação"></div><figcaption><b>Pedido no site</b> <span class="pk pk-c">Crescimento</span> — experiências, datas e grupo, contacto.</figcaption></figure>
+        <figure class="shot crop" style="--h:72mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Cotação COT-2026-0001</span></div><img src="../screenshots/a07-quotation.jpg" alt="Cotação no painel"></div><figcaption><b>Proposta no painel</b> <span class="pk pk-p">Professional</span> <span class="demo">dados fictícios</span></figcaption></figure>
+      </div>
+      <figure class="shot" style="flex:.8;"><div class="frame"><img src="../screenshots/p01-proposta-pdf.jpg" alt="Proposta em PDF"></div><figcaption><b>Proposta em PDF</b>, com os dados da empresa, serviços, itinerário e validade.</figcaption></figure>
+    </div>
+    <div class="facts">
+      <div class="fact"><h4>Como funciona</h4><p>O pedido chega ao painel e um clique abre o construtor da proposta já preenchido: serviços do catálogo ou à medida, descontos, taxas, condições e itinerário.</p></div>
+      <div class="fact"><h4>Para o cliente</h4><p>Recebe o PDF por e-mail e um link para aceitar, recusar ou pedir alterações. Pode também ver a proposta na sua conta.</p></div>
+      <div class="fact"><h4>Gestão avançada <span class="pk pk-x">Completo</span></h4><p>Versões numeradas, validade com expiração automática, histórico, propostas em PT ou EN e conversão da proposta aceite em reserva.</p></div>
+      <div class="fact"><h4>Benefício</h4><p>Propostas profissionais em minutos, sem Word nem Excel, e sem perder o rasto de nenhuma resposta.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 12 · CONTA E BILHETES ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Conta de cliente e bilhetes</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.8 · Conta de cliente</span><span class="st st-ok">Operacional</span><span class="pk pk-p">Professional</span></div>
+    <div class="row">
+      <figure class="shot crop" style="flex:1.2;--h:62mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>A minha conta</span></div><img src="../screenshots/s07-account.jpg" alt="Conta de cliente"></div><figcaption><b>Área do cliente</b> <span class="demo">dados fictícios</span></figcaption></figure>
+      <div class="col">
+        <h2 class="h3" style="font-size:13pt;">O cliente acompanha tudo num só sítio</h2>
+        <ul class="list small">
+          <li>Registo com e-mail confirmado, telemóvel e país.</li>
+          <li>Reservas com o percurso: pedido, confirmada, viagem, concluída.</li>
+          <li>Valor pago e em falta, facturas e documentos.</li>
+          <li>Cotações recebidas e pedidos de cancelamento.</li>
+          <li>Desconto de fidelização, quando activo.</li>
+          <li>Perfil e preferência de idioma dos e-mails.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meta" style="margin-top:2mm;"><span class="kicker">4.9 · Bilhetes digitais com código QR</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span></div>
+    <h2 class="h2">Um bilhete só quando a viagem está paga</h2>
+    <div class="row" style="align-items:flex-start;">
+      <figure class="shot" style="flex:.9;"><div class="frame"><img src="../screenshots/p02-bilhete-pdf.jpg" alt="Bilhete em PDF" style="height:98mm;object-fit:cover;object-position:top;"></div><figcaption><b>Bilhete pago</b> — com código QR. <span class="demo">fictício</span></figcaption></figure>
+      <figure class="shot" style="flex:1.1;"><div class="frame"><img src="../screenshots/s08b-receipt.jpg" alt="Comprovativo por pagar" style="height:98mm;object-fit:cover;object-position:top;"></div><figcaption><b>Por pagar</b> — comprovativo sem QR, «NÃO É BILHETE».</figcaption></figure>
+      <div class="col" style="flex:.95;">
+        <ul class="list small">
+          <li>Logótipo, referência, cliente, experiência, data, participantes e ponto de encontro.</li>
+          <li>PDF, impressão ou telemóvel, e envio por e-mail.</li>
+          <li>O QR leva a uma página de verificação que mostra se a reserva pode embarcar.</li>
+          <li>A equipa, com sessão iniciada, regista o <b>check-in</b> no ponto de encontro.</li>
+          <li>Um QR pode ser invalidado se for partilhado indevidamente.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 13 · CLIENTES E AVALIAÇÕES ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Clientes e avaliações</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.11 · Gestão de clientes</span><span class="st st-ok">Operacional</span><span class="pk pk-p">Professional</span></div>
+    <h2 class="h2">Conhecer cada cliente para o servir melhor</h2>
+    <figure class="shot crop" style="--h:80mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Clientes</span></div><img src="../screenshots/a08-customers.jpg" alt="Clientes"></div><figcaption><b>Clientes</b> — contactos, tipo, e-mail confirmado, reservas e viagens concluídas. <span class="demo">dados fictícios</span></figcaption></figure>
+    <div class="facts">
+      <div class="fact"><h4>No perfil do cliente</h4><p>Identificação e contactos, histórico de reservas e cotações, notas internas da equipa, viagens concluídas para fidelização e estado da conta.</p></div>
+      <div class="fact"><h4>Benefício</h4><p>Quem atende sabe com quem fala: reservas anteriores, preferências anotadas e o que ficou combinado.</p></div>
+    </div>
+    <div class="meta" style="margin-top:2mm;"><span class="kicker">4.12 · Reviews e avaliações</span><span class="st st-ok">Operacional</span><span class="pk pk-p">Professional</span></div>
+    <div class="row">
+      <figure class="shot crop" style="flex:1.2;--h:62mm;"><div class="frame"><img src="../screenshots/a13-reviews.jpg" alt="Avaliações"></div><figcaption><b>Moderação</b> — publicar ou ocultar cada avaliação. <span class="demo">exemplos</span></figcaption></figure>
+      <div class="col">
+        <ul class="list small">
+          <li>O cliente avalia a experiência no site, de 1 a 5 estrelas, com comentário.</li>
+          <li>Avaliações de reservas concluídas aparecem como «reserva verificada».</li>
+          <li>A equipa modera antes de publicar.</li>
+          <li>A classificação aparece nas páginas e nos cartões das experiências.</li>
+        </ul>
+        <div class="note small"><b>Benefício:</b> prova social real no momento da decisão de compra.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 14 · COMUNICAÇÃO ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Comunicação</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.13 · E-mails automáticos</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span></div>
+    <h2 class="h2">A mensagem certa, em cada momento</h2>
+    <div class="row" style="align-items:flex-start;">
+      <figure class="shot" style="flex:.95;"><div class="frame"><img src="../screenshots/s11-email.jpg" alt="E-mail de confirmação" style="height:128mm;object-fit:cover;object-position:top;"></div><figcaption><b>Data disponível</b> — o cliente sabe que ainda tem de pagar. <span class="demo">exemplo</span></figcaption></figure>
+      <div class="col">
+        <p class="small">20 modelos de e-mail, em português e inglês, enviados por uma fila com novas tentativas:</p>
+        <table class="t">
+          <tr><td>Clientes</td><td>Pedido recebido, data disponível, alterações, cancelamentos, lembrete da viagem, bilhete, factura, pagamento recebido, cotação, confirmação de e-mail e recuperação de palavra-passe.</td></tr>
+          <tr><td>Equipa</td><td>Nova reserva, pedido de cotação, pedido de cancelamento, respostas a cotações, Live Chat sem resposta e convite para o painel.</td></tr>
+        </table>
+        <div class="note small">Os e-mails já usam a marca Maputo Blue. Uma versão com fotografias das experiências e composição editorial está desenhada e pode ser implementada.</div>
+      </div>
+    </div>
+    <div class="meta" style="margin-top:2mm;"><span class="kicker">4.14 · Notificações WhatsApp</span><span class="st st-part">Parcial</span><span class="pk pk-p">Professional</span></div>
+    <div class="grid2">
+      <div class="card"><b style="color:var(--ok);">Operacional · avisos à equipa</b><p class="small" style="margin-top:1mm;">Nova reserva, pedidos de cotação e de cancelamento, respostas a cotações e Live Chat sem resposta, pela Meta WhatsApp Cloud API. A mensagem de reserva tem o botão «Conversar com o cliente».</p></div>
+      <div class="card"><b style="color:var(--dev);">A desenvolver · mensagens aos clientes</b><p class="small" style="margin-top:1mm;">Confirmações, alterações e lembretes por WhatsApp ao cliente. Exige modelos de mensagem aprovados pela Meta, e a Meta cobra cada mensagem enviada.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 15 · FACTURAÇÃO E PAGAMENTOS ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Facturação e pagamentos</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.15 · Facturação e pagamentos</span><span class="pk pk-p">Professional</span></div>
+    <h2 class="h2">Cada metical registado e ligado à reserva</h2>
+    <div class="grid2">
+      <figure class="shot crop" style="--h:76mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Facturas</span></div><img src="../screenshots/a09-invoices.jpg" alt="Facturas"></div><figcaption><b>Resumo financeiro</b> — facturado, recebido e em dívida. <span class="demo">fictício</span></figcaption></figure>
+      <figure class="shot crop" style="--h:76mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Factura FT 2026/0001</span></div><img src="../screenshots/a09b-invoice.jpg" alt="Factura"></div><figcaption><b>Factura</b> — PDF, pagamentos e documento original arquivado.</figcaption></figure>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="meta"><b style="color:var(--navy);">Facturação e pagamentos verificados</b><span class="st st-ok">Operacional</span></div>
+        <ul class="list small" style="margin-top:2mm;">
+          <li>Facturas numeradas por série, em PDF, a partir da reserva.</li>
+          <li>Registo de pagamentos verificados: M-Pesa, e-Mola, transferência, cartão e numerário.</li>
+          <li>Reembolsos e estornos com motivo; anulação e reemissão.</li>
+          <li>Ao completar o pagamento, o bilhete segue automaticamente.</li>
+          <li>Exportação para Excel.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="meta"><b style="color:var(--navy);">Pagamentos online</b><span class="st st-dev">A desenvolver</span></div>
+        <p class="small" style="margin-top:2mm;">Hoje o cliente paga fora do site e a equipa regista o pagamento depois de o verificar. O pagamento online, por exemplo por M-Pesa, e-Mola ou cartão, está incluído na proposta mas ainda não existe.</p>
+        <p class="small muted" style="margin-top:1.5mm;">Depende da escolha e aprovação de um fornecedor de pagamentos, que cobra comissões próprias.</p>
+      </div>
+    </div>
+    <div class="note warn small">As facturas da plataforma não estão certificadas por nenhum sistema fiscal. Antes de as usar como documento fiscal, a empresa deve confirmar os requisitos legais com o seu contabilista.</div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 16 · PROMOÇÕES E FIDELIZAÇÃO ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Promoções e fidelização</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.16 · Promoções e campanhas</span><span class="st st-ok">Operacional</span><span class="pk pk-p">Professional</span></div>
+    <h2 class="h2">Campanhas com regras, calculadas pelo servidor</h2>
+    <figure class="shot crop" style="--h:62mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Promoções</span></div><img src="../screenshots/a14-promotions.jpg" alt="Promoções"></div><figcaption><b>Promoções</b> — a campanha mostrada é um exemplo de demonstração, não uma oferta real. <span class="demo">exemplo</span></figcaption></figure>
+    <ul class="list small" style="grid-template-columns:1fr 1fr;column-gap:6mm;">
+      <li>Desconto em percentagem ou valor fixo, com máximo.</li><li>Automática ou com código introduzido na reserva.</li>
+      <li>Período da campanha e período da viagem.</li><li>Experiências ou categorias abrangidas.</li>
+      <li>Mínimo de pessoas ou de valor, limite de utilizações.</li><li>Pode ou não acumular com outras promoções.</li>
+    </ul>
+    <div class="meta" style="margin-top:3mm;"><span class="kicker">4.17 · Fidelização de clientes</span><span class="st st-part">Parcial</span><span class="pk pk-x">Completo</span></div>
+    <div class="row">
+      <figure class="shot crop" style="flex:1.1;--h:74mm;"><div class="frame"><img src="../screenshots/a15-loyalty.jpg" alt="Programa de fidelização"></div><figcaption><b>Programa de fidelização</b> nas definições.</figcaption></figure>
+      <div class="col">
+        <div class="card"><b style="color:var(--ok);">Operacional</b><p class="small" style="margin-top:1mm;">Desconto automático para clientes recorrentes, a partir de um número de viagens concluídas numa janela de meses, por percentagem ou valor, por categorias. A equipa pode ajustar viagens à mão.</p></div>
+        <div class="card"><b style="color:var(--dev);">A desenvolver</b><p class="small" style="margin-top:1mm;">Acumulação de pontos e catálogo de benefícios.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 17 · ESTATÍSTICAS ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Estatísticas e relatórios</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.18 · Estatísticas e relatórios</span><span class="st st-ok">Operacional</span><span class="pk pk-p">Professional</span></div>
+    <h2 class="h2">Saber o que funciona, com dados próprios</h2>
+    <figure class="shot crop" style="--h:108mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Estatísticas do site</span></div><img src="../screenshots/a10-analytics.jpg" alt="Estatísticas"></div><figcaption><b>Estatísticas do site</b> — visitas sintéticas do ambiente de demonstração. <span class="demo">dados fictícios</span></figcaption></figure>
+    <div class="grid2">
+      <div>
+        <div class="h3" style="margin-bottom:2mm;">O que é medido</div>
+        <ul class="list small">
+          <li>Visitantes, visualizações e visitas, comparados com o período anterior.</li>
+          <li>Páginas mais visitadas, tempo médio e rolagem.</li>
+          <li>Origem do tráfego (Google, redes sociais, campanhas).</li>
+          <li>Dispositivos e navegadores; botões e links mais clicados.</li>
+          <li>Pedidos de reserva e de cotação no período.</li>
+          <li>No painel: valores das reservas, recebido e em dívida, e pacotes mais reservados.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="h3" style="margin-bottom:2mm;">Relatórios e privacidade</div>
+        <ul class="list small">
+          <li>Exportação em PDF, para partilhar, e em CSV, para o Excel.</li>
+          <li>Sem cookies e sem serviços de terceiros; a equipa não conta como visita.</li>
+          <li>Os dados ficam nos servidores da Maputo Blue.</li>
+        </ul>
+        <div class="note small" style="margin-top:2.5mm;">O país dos visitantes não é recolhido: exigiria um serviço de geolocalização.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 18 · MAPA DE CLIQUES ═════════ -->
+<section class="page" style="background:var(--light);">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Mapa de cliques</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.20 · Mapa de cliques e análise da navegação</span><span class="st st-ok">Operacional</span><span class="pk pk-x">Completo</span></div>
+    <h2 class="h2">Ver onde os visitantes clicam, sobre a página real</h2>
+    <figure class="shot crop" style="--h:124mm;"><div class="frame"><img src="../screenshots/a11-heatmap.jpg" alt="Mapa de cliques"></div><figcaption><b>Mapa de cliques</b> sobre a página de uma experiência, separado por computador, tablet e telemóvel. <span class="demo">cliques sintéticos</span></figcaption></figure>
+    <div class="facts">
+      <div class="fact"><h4>Como funciona</h4><p>Cada clique fica registado com a posição na página. O painel desenha-os sobre a página real, com cores mais quentes onde há mais cliques, e lista os botões mais usados.</p></div>
+      <div class="fact"><h4>Benefício</h4><p>Mostra se os botões de reserva e cotação são vistos, que fotos e secções atraem, e onde a página pode melhorar.</p></div>
+    </div>
+    <div class="meta" style="margin-top:1mm;"><span class="kicker">Estatísticas avançadas de comportamento e conversão</span><span class="st st-part">Parcial</span><span class="pk pk-x">Completo</span></div>
+    <p class="small">Já existem: tempo por página, rolagem, saídas na primeira página, mapa de cliques e conversão de visitas em pedidos. Ainda não existem: percursos de navegação página a página e funis de conversão por etapa.</p>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 19 · LIVE CHAT ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Live Chat</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.19 · Live Chat</span><span class="st st-ok">Operacional</span><span class="pk pk-x">Completo</span></div>
+    <h2 class="h2">Responder enquanto o cliente ainda está a escolher</h2>
+    <figure class="shot crop" style="--h:78mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>maputoblue.co.mz · Santa Maria, Inhaca &amp; Ilha dos Portugueses</span></div><img src="../screenshots/s09-chat-widget.jpg" alt="Live Chat no site"></div><figcaption><b>No site</b> — botão flutuante, conversa em tempo real, sem conta. <span class="demo">conversa fictícia</span></figcaption></figure>
+    <figure class="shot crop" style="--h:78mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Live Chat</span></div><img src="../screenshots/a12-chat.jpg" alt="Live Chat no painel"></div><figcaption><b>No painel</b> — conversas, resposta, notas internas e informação do visitante.</figcaption></figure>
+    <div class="grid2" style="gap:2mm 6mm;">
+      <ul class="list small"><li>Estado da equipa: online, ausente ou offline, com horário de atendimento.</li><li>Fora do horário, o visitante deixa mensagem e a equipa é avisada.</li><li>Filtros: novas, não atribuídas, em atendimento, aguardando resposta, encerradas.</li></ul>
+      <ul class="list small"><li>Atribuição de conversas entre agentes, notas internas e respostas rápidas.</li><li>Mostra a página e o pacote de onde o visitante escreve; associa reserva, cotação ou cliente.</li><li>Respostas por ler seguem por e-mail; histórico com prazo de retenção.</li></ul>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 20 · PAINEL ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Painel administrativo</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.21 · Painel administrativo</span><span class="st st-ok">Operacional</span><span class="pk pk-c">Crescimento</span></div>
+    <h2 class="h2">O centro de controlo da operação</h2>
+    <figure class="shot crop" style="--h:100mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Visão geral</span></div><img src="../screenshots/a01-dashboard.jpg" alt="Visão geral do painel"></div><figcaption><b>Visão geral</b> — o que precisa de atenção hoje, reservas, valores e próximas partidas. <span class="demo">dados fictícios</span></figcaption></figure>
+    <div class="row">
+      <figure class="shot crop" style="flex:1;--h:64mm;"><div class="frame"><img src="../screenshots/a18-dashboard-en.jpg" alt="Painel em inglês"></div><figcaption><b>Painel bilingue</b> <span class="st st-ok">Operacional</span> <span class="pk pk-x">Completo</span> — PT e EN, à escolha de cada pessoa.</figcaption></figure>
+      <div class="col">
+        <div class="h3">Áreas do painel</div>
+        <p class="small">Visão geral · Estatísticas · Reservas · Disponibilidade · Live Chat · Pedidos de cotação · Cotações e propostas · Facturas · Pacotes e alojamentos · Promoções · Imagens · Clientes · Avaliações · E-mails · Definições · Equipa · Registo de actividade</p>
+        <div class="h3" style="margin-top:1mm;">Níveis de acesso</div>
+        <ul class="list small"><li><b>Superadministrador</b>: tudo, incluindo a equipa.</li><li><b>Administrador</b>: tudo, menos a gestão da equipa.</li><li><b>Gestor</b>: operação diária, sem definições nem dados sensíveis.</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 21 · REGISTO DE ACTIVIDADE ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>II · Registo de actividade</span></div>
+  <div class="pad">
+    <div class="meta"><span class="kicker">4.22 · Registo de actividade e auditoria</span><span class="st st-ok">Operacional</span><span class="pk pk-x">Completo</span></div>
+    <h2 class="h2">Quem fez o quê, e quando</h2>
+    <figure class="shot crop" style="--h:70mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Registo de actividade</span></div><img src="../screenshots/a16-audit.jpg" alt="Registo de actividade"></div><figcaption><b>Registo de actividade</b> — filtro por tipo de registo. <span class="demo">demonstração</span></figcaption></figure>
+    <div class="facts">
+      <div class="fact"><h4>O que fica registado</h4><p>Alterações de reservas e estados, preços, pacotes e disponibilidade, pagamentos, reembolsos e facturas, cotações, definições, exportações e acessos ao painel.</p></div>
+      <div class="fact"><h4>Benefício</h4><p>Controlo, rastreabilidade e responsabilização: cada decisão tem nome e data, mesmo com vários membros na equipa.</p></div>
+    </div>
+    <figure class="shot crop" style="--h:56mm;"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Painel · Reserva</span></div><img src="../screenshots/a03-booking-detail.jpg" alt="Detalhe de reserva"></div><figcaption><b>Detalhe de uma reserva</b> — histórico, pagamentos e regra de embarque: «Não pode embarcar» enquanto faltar pagar. <span class="demo">fictício</span></figcaption></figure>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 22 · ESTADO DAS FUNCIONALIDADES ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>III · Estado das funcionalidades</span></div>
+  <div class="pad" style="gap:3.5mm;">
+    <div class="kicker">Auditoria</div>
+    <h2 class="h2">O que existe hoje, e o que falta construir</h2>
+    <table class="t" style="font-size:7.7pt;" id="status-table">
+      <tr><th style="width:6mm;">#</th><th>Funcionalidade</th><th>Estado</th><th>Observação</th></tr>
+      <tr class="grp"><td colspan="4">Crescimento</td></tr>
+      <tr><td>1</td><td>Website institucional (PT e EN)</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>2</td><td>Catálogo de experiências e serviços</td><td><span class="st st-ok">Operacional</span></td><td class="muted">17 experiências e 4 alojamentos</td></tr>
+      <tr><td>3</td><td>Sistema de reservas online</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>4</td><td>Calendário de disponibilidade</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Sem sobre-reservas</td></tr>
+      <tr><td>5</td><td>Gestão de pacotes e preços</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>6</td><td>Fotografias e galerias</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Optimização automática</td></tr>
+      <tr><td>7</td><td>Itinerários e informações</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>8</td><td>E-mails automáticos</td><td><span class="st st-ok">Operacional</span></td><td class="muted">20 modelos, PT e EN</td></tr>
+      <tr><td>9</td><td>Pedidos de cotação</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>10</td><td>Bilhetes digitais com QR</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Com verificação e check-in</td></tr>
+      <tr class="grp"><td colspan="4">Professional</td></tr>
+      <tr><td>11</td><td>Conta de cliente</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>12</td><td>Gestão de clientes e histórico</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>13</td><td>Pagamentos online, vários métodos</td><td><span class="st st-dev">A desenvolver</span></td><td class="muted">Hoje: registo manual de pagamentos verificados</td></tr>
+      <tr><td>14</td><td>Facturação e documentos</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Sem certificação fiscal</td></tr>
+      <tr><td>15</td><td>Cotações profissionais em PDF</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>16</td><td>Promoções e campanhas</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>17</td><td>Notificações WhatsApp (Meta)</td><td><span class="st st-part">Parcial</span></td><td class="muted">Avisos à equipa; aos clientes a desenvolver</td></tr>
+      <tr><td>18</td><td>Estatísticas, reservas, vendas e receitas</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Sem país dos visitantes</td></tr>
+      <tr><td>19</td><td>Reviews e avaliações</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Com moderação</td></tr>
+      <tr><td>20</td><td>Gestão avançada de preços</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Épocas, dias, datas, opções, extras</td></tr>
+      <tr class="grp"><td colspan="4">Completo</td></tr>
+      <tr><td>21</td><td>Live Chat</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>22</td><td>Mapa de cliques</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Próprio, sem ferramentas externas</td></tr>
+      <tr><td>23</td><td>Estatísticas avançadas</td><td><span class="st st-part">Parcial</span></td><td class="muted">Faltam percursos e funis</td></tr>
+      <tr><td>24</td><td>Fidelização de clientes</td><td><span class="st st-part">Parcial</span></td><td class="muted">Descontos sim; pontos a desenvolver</td></tr>
+      <tr><td>25</td><td>Gestão avançada de propostas</td><td><span class="st st-ok">Operacional</span></td><td class="muted">Versões, aceitação, conversão</td></tr>
+      <tr><td>26</td><td>Painel bilingue (PT e EN)</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+      <tr><td>27</td><td>Registo de actividade</td><td><span class="st st-ok">Operacional</span></td><td class="muted"></td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 23 · COMPARAÇÃO ═════════ -->
+<section class="page">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>III · Comparação dos pacotes</span></div>
+  <div class="pad" style="gap:3.5mm;">
+    <div class="kicker">Comparação</div>
+    <h2 class="h2">Três níveis, cada um com tudo do anterior</h2>
+    <table class="t" style="font-size:8pt;">
+      <tr><th>Funcionalidade</th><th class="c" style="color:var(--green);">Crescimento</th><th class="c" style="color:var(--blue);">Professional</th><th class="c" style="color:var(--navy);">Completo</th></tr>
+      <tr class="grp"><td colspan="4">Presença e reservas</td></tr>
+      <tr><td>Website, catálogo, fotografias e itinerários</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Reservas online e calendário</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Gestão de pacotes e preços</td><td class="c">Básica</td><td class="c">Avançada</td><td class="c">Avançada</td></tr>
+      <tr><td>E-mails automáticos e bilhetes com QR</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr class="grp"><td colspan="4">Comercial e clientes</td></tr>
+      <tr><td>Pedidos de cotação</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Cotações profissionais em PDF</td><td class="c no">—</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Gestão avançada de propostas</td><td class="c no">—</td><td class="c no">—</td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Conta de cliente e gestão de clientes</td><td class="c no">—</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Reviews e avaliações</td><td class="c no">—</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Promoções e campanhas</td><td class="c no">—</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Fidelização de clientes</td><td class="c no">—</td><td class="c no">—</td><td class="c"><i class="dot"></i></td></tr>
+      <tr class="grp"><td colspan="4">Financeiro</td></tr>
+      <tr><td>Facturação e documentos</td><td class="c no">—</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Pagamentos online <span class="st st-dev" style="margin-left:1mm;">a desenvolver</span></td><td class="c no">—</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr class="grp"><td colspan="4">Atendimento e dados</td></tr>
+      <tr><td>Notificações WhatsApp (Meta)</td><td class="c no">—</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Estatísticas e relatórios</td><td class="c no">—</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Live Chat</td><td class="c no">—</td><td class="c no">—</td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Mapa de cliques e estatísticas avançadas</td><td class="c no">—</td><td class="c no">—</td><td class="c"><i class="dot"></i></td></tr>
+      <tr class="grp"><td colspan="4">Gestão</td></tr>
+      <tr><td>Painel administrativo</td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Painel bilingue (PT e EN)</td><td class="c no">—</td><td class="c no">—</td><td class="c"><i class="dot"></i></td></tr>
+      <tr><td>Registo de actividade e auditoria</td><td class="c no">—</td><td class="c no">—</td><td class="c"><i class="dot"></i></td></tr>
+      <tr class="grp"><td colspan="4">Investimento</td></tr>
+      <tr><td>Investimento</td><td class="c"><b>55.000 MT</b></td><td class="c"><b>70.000 MT</b></td><td class="c"><b>105.000 MT</b></td></tr>
+      <tr><td>Renovação anual</td><td class="c">15.500 MT</td><td class="c">15.500 MT</td><td class="c">17.500 MT</td></tr>
+    </table>
+    <p class="small muted">O âmbito dos serviços abrangidos pela renovação anual será confirmado comercialmente.</p>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+<!-- ═════════ 24 · PACOTES E APROVAÇÃO ═════════ -->
+<section class="page" style="background:var(--light);">
+  <div class="head"><span><b>Maputo Blue</b> · Digital Tourism Platform</span><span>III · Pacotes</span></div>
+  <div class="pad" style="inset:14mm 12mm 19mm;gap:3.5mm;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <div><div class="kicker">Proposta comercial</div><h2 class="h2" style="font-size:17pt;">Escolha a solução para a Maputo Blue</h2></div>
+      <p class="small muted" style="max-width:62mm;text-align:right;">Cada pacote inclui todas as funcionalidades dos anteriores.</p>
+    </div>
+    <style>
+      .pkg { border-radius: 4mm; background: #fff; border: .35mm solid var(--line); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 1mm 3mm rgba(10,37,64,.06); }
+      .pkg-top { padding: 4mm 4mm 3.5mm; color: #fff; position: relative; }
+      .pkg-top h3 { color: #fff; font-size: 14pt; font-weight: 800; }
+      .pkg-top p { font-size: 8.2pt; opacity: .9; margin-top: 1mm; line-height: 1.35; min-height: 17mm; }
+      .pkg-price { font-size: 19pt; font-weight: 800; letter-spacing: -.02em; margin-top: 2mm; line-height: 1; }
+      .pkg-price small { font-size: 8pt; font-weight: 700; }
+      .pkg-ren { font-size: 7.5pt; opacity: .92; margin-top: 1mm; }
+      .pkg-tagrow { height: 4.2mm; margin-bottom: 1.5mm; }
+      .pkg-tag { display: inline-block; font-size: 6.4pt; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; background: var(--coral); color: #1F1300; border-radius: 10mm; padding: .7mm 2.3mm; }
+      .pkg-body { padding: 4mm 4mm 4mm; display: flex; flex-direction: column; gap: 1.6mm; flex: 1; }
+      .pkg-body .inc { margin-bottom: 1mm; font-size: 7pt; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+      .pkg-body ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 2.4mm; font-size: 8.9pt; line-height: 1.3; }
+      .pkg-body ol li { display: grid; grid-template-columns: 6mm 1fr; padding-bottom: 2.1mm; border-bottom: .25mm dashed var(--line); }
+      .pkg-body ol li:last-child { border-bottom: 0; }
+      .pkg-body ol li b { color: var(--muted); font-weight: 700; }
+      .pkg-ben { margin-top: auto; font-size: 7.6pt; border-radius: 2mm; padding: 2mm 2.5mm; background: var(--light); }
+      .pkg-ben b { display: block; font-size: 6.6pt; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .5mm; }
+      .pkg.rec { border: .7mm solid var(--blue); box-shadow: 0 2.5mm 6mm rgba(29,95,174,.22); transform: translateY(-2mm); }
+    </style>
+    <div style="display:grid;grid-template-columns:1fr 1.06fr 1fr;gap:3.5mm;align-items:stretch;flex:1;min-height:0;">
+      <div class="pkg">
+        <div class="pkg-top" style="background:linear-gradient(140deg,#0E8F80,#00A6B8);">
+          <div class="pkg-tagrow"></div>
+          <h3>Crescimento</h3>
+          <p>Os recursos fundamentais para uma presença digital profissional e as reservas a funcionar na plataforma.</p>
+          <div class="pkg-price">55.000 <small>MT</small></div>
+          <div class="pkg-ren">Renovação anual: 15.500 MT</div>
+        </div>
+        <div class="pkg-body">
+          <div class="inc">Inclui</div>
+          <ol>
+            <li><b>1</b>Website institucional</li><li><b>2</b>Catálogo de experiências e serviços</li><li><b>3</b>Sistema de reservas online</li>
+            <li><b>4</b>Calendário de disponibilidade</li><li><b>5</b>Gestão básica de pacotes e preços</li><li><b>6</b>Gestão de fotografias e galerias</li>
+            <li><b>7</b>Itinerários e informações</li><li><b>8</b>E-mails automáticos essenciais</li><li><b>9</b>Pedidos de cotação</li><li><b>10</b>Bilhetes digitais com QR</li>
+          </ol>
+          <div class="pkg-ben" style="background:#E6F6F3;"><b style="color:#0E8F80;">Benefício principal</b>Digitalizar a presença comercial e as reservas.</div>
+        </div>
+      </div>
+      <div class="pkg rec">
+        <div class="pkg-top" style="background:linear-gradient(140deg,#1D5FAE,#2A7BD4);">
+          <div class="pkg-tagrow"><span class="pkg-tag">Recomendado</span></div>
+          <h3>Professional</h3>
+          <p>Para profissionalizar a operação comercial, a relação com os clientes e o acompanhamento do negócio.</p>
+          <div class="pkg-price">70.000 <small>MT</small></div>
+          <div class="pkg-ren">Renovação anual: 15.500 MT</div>
+        </div>
+        <div class="pkg-body">
+          <div class="inc">Tudo do Crescimento, e ainda</div>
+          <ol>
+            <li><b>11</b>Conta de cliente e área reservada</li><li><b>12</b>Gestão de clientes e histórico</li><li><b>13</b>Pagamentos online, vários métodos*</li>
+            <li><b>14</b>Facturação e documentos</li><li><b>15</b>Cotações profissionais em PDF</li><li><b>16</b>Promoções e campanhas</li>
+            <li><b>17</b>Notificações WhatsApp (Meta)*</li><li><b>18</b>Estatísticas: visitas, reservas, vendas e receitas</li><li><b>19</b>Reviews e avaliações</li><li><b>20</b>Gestão avançada de preços e condições</li>
+          </ol>
+          <div class="pkg-ben" style="background:#EAF2FB;"><b style="color:var(--blue);">Benefício principal</b>Operação comercial profissional, do pedido à factura.</div>
+        </div>
+      </div>
+      <div class="pkg">
+        <div class="pkg-top" style="background:linear-gradient(140deg,#071B2E,#0A2540);">
+          <div class="pkg-tagrow"><span class="pkg-tag" style="background:#fff;color:var(--navy);">Licença vitalícia</span></div>
+          <h3>Completo</h3>
+          <p>A solução completa: gestão comercial, atendimento, análise de dados e relacionamento com os clientes.</p>
+          <div class="pkg-price">105.000 <small>MT</small></div>
+          <div class="pkg-ren">Renovação anual: 17.500 MT</div>
+        </div>
+        <div class="pkg-body">
+          <div class="inc">Tudo do Professional, e ainda</div>
+          <ol>
+            <li><b>21</b>Live Chat em tempo real</li><li><b>22</b>Mapa de cliques e análise da navegação</li><li><b>23</b>Estatísticas avançadas de comportamento*</li>
+            <li><b>24</b>Fidelização de clientes*</li><li><b>25</b>Gestão avançada de propostas</li><li><b>26</b>Painel bilingue (PT e EN)</li><li><b>27</b>Registo de actividade e auditoria</li>
+          </ol>
+          <div class="pkg-ben" style="background:#E9EEF4;"><b style="color:var(--navy);">Benefício principal</b>Toda a operação, o atendimento e os dados centralizados.</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:6.9pt;color:var(--muted);">* Parcialmente disponível ou a desenvolver: ver o estado de cada funcionalidade na página 22. O âmbito dos serviços abrangidos pela renovação anual será confirmado comercialmente.</p>
+    <div style="background:var(--navy);color:#fff;border-radius:3.5mm;padding:4mm 5mm;display:grid;grid-template-columns:1.05fr 1fr;gap:5mm;">
+      <p style="font-size:8pt;line-height:1.45;color:#D6E3EE;">A Maputo Blue tem a oportunidade de consolidar a sua presença digital e centralizar a gestão das suas experiências turísticas através de uma plataforma concebida para acompanhar o crescimento do negócio.<br><br>Seleccione a solução que melhor responde às necessidades actuais da empresa e prepare a sua operação para uma nova etapa de crescimento digital.</p>
+      <div style="display:grid;gap:2.3mm;font-size:7.6pt;">
+        <b style="color:#7FDCE8;letter-spacing:.06em;text-transform:uppercase;font-size:6.8pt;">Pacote seleccionado</b>
+        <div style="display:flex;gap:5mm;align-items:center;">
+          <span><i class="box"></i>Crescimento</span><span><i class="box"></i>Professional</span><span><i class="box"></i>Completo</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2.3mm 4mm;">
+          <div>Nome do responsável<div style="border-bottom:.3mm solid #5C7590;height:5mm;"></div></div>
+          <div>Cargo<div style="border-bottom:.3mm solid #5C7590;height:5mm;"></div></div>
+          <div>Data<div style="border-bottom:.3mm solid #5C7590;height:5mm;"></div></div>
+          <div>Assinatura / aprovação<div style="border-bottom:.3mm solid #5C7590;height:5mm;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Desenvolvido por <b>Wilson Creative Studio</b> · <a href="mailto:wilsoncreativestudio.mz@gmail.com">wilsoncreativestudio.mz@gmail.com</a> · <a href="https://wa.me/258878454031">+258 87 845 4031</a></span><span class="n"></span></div>
+</section>
+
+</body>
+</html>
