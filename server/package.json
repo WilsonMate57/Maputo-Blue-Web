@@ -1,0 +1,6 @@
+{
+  "name": "maputoblue-site-estatico",
+  "private": true,
+  "description": "Site estático anterior à plataforma, servido pelo Node no Plesk. Sem dependências.",
+  "scripts": { "start": "node app.cjs" }
+}
