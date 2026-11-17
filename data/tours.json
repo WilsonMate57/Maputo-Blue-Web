@@ -434,8 +434,8 @@
       "Português",
       "English"
     ],
-    "price_from": 1800,
-    "child_price": 1200,
+    "price_from": 2000,
+    "child_price": 1400,
     "currency": "MZN",
     "rating": 4.9,
     "reviews_count": 0,
@@ -476,8 +476,8 @@
       "Parking fee — 250 MZN per car/day"
     ],
     "pricing": {
-      "adults": 1800,
-      "children": 1200
+      "adults": 2000,
+      "children": 1400
     },
     "images": [
       "../assets/images/tours/sunset-cruise/sunset-cruise-1.webp",
